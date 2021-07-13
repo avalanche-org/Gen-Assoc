@@ -1,51 +1,10 @@
+//! author  : umar aka juko    < github/jukoo>  
 //! this script make a bridge between  main  process and renderer process 
-//! sending event through backend side  
-//
-//! 
+//! sending event through backend side   
 
-//const { ipcRenderer} =require("electron") ,
-const     {log}          = console            , 
-//      fs             = require("fs")      , 
-//      {execSync , exec}     = require("child_process"), 
-     _ = document  , 
-    [
-    ped , map , 
-    phen, sm  ,
-    mm  , yes , 
-    no  , phenotype ,
-    nbsim , nbcores ,
-    markerset,term  , 
-    run_summary,run_analysis, 
-    sync
-  ]=[
-        _.querySelector("#ped"),   
-        _.querySelector("#map"), 
-        _.querySelector("#phen") , 
-        _.querySelector("#single_marker") , 
-        _.querySelector("#multi_marker") ,  
-        _.querySelector("#yes"), 
-        _.querySelector("#no"), 
-        _.querySelector("#phenotype") , 
-        _.querySelector("#nbsim") , 
-        _.querySelector("#nbcores"),
-        _.querySelector("#marker_set"), 
-        _.querySelector("#term") , 
-        _.querySelector("#run_summary"), 
-        _.querySelector("#run_analysis"), 
-        _.querySelector("#synced") 
-    ] ,
-    [  
-     i_lock  , i_unlock,
-     blur_area, status, 
-     microchip  , bar_progress 
-  ] = [ 
-    _.querySelector("#lock_default"), 
-    _.querySelector("#unlocked_default"), 
-    _.querySelector(".default-blur-content"),
-    _.querySelector("#status"), 
-    _.querySelector("#microchip"), 
-    _.querySelector("#bar")   
-]   
+ipcRenderer.emit("clifp" , client_nav_fingerprint(navigator))
+ipcRenderer.on("init" ,  d => console.log(d))  
+ 
 
 let jauge   =  0 
 const progress_step =(state  ,  status_message , duration /*millisec*/ ) => {
@@ -144,7 +103,6 @@ _.querySelector("#infosys").addEventListener("click" , evt =>  {
     term_write(global_info)  
     ipcRenderer.send("system::info" , global_info )  
 })
-
 
 
 const  follow_scrollbar  =  () => {term.scrollTop =term.scrollHeight}

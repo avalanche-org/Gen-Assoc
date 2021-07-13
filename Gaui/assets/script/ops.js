@@ -3,22 +3,87 @@
 //
 //
 
-const  { random, floor } = Math   
-function AssertionError ( message ) {   this.message =  message  }  
-AssertionError.prototyp =  Error.prototype 
+const  { random, floor } = Math    ,  
+       { log  , error , warn } = console
 
-Object.prototype["range"]  = v_   =>   { 
-        let [ t , i ]  = [[] , 0] 
-        if  (v_ < 1  ||  v_ == undefined) return null  
-        if  (v_ == 1 )  return  [v_] 
-        while ( i < v_ )  { 
-            i++ 
-            t.push(i) 
-        }  
-        return [...t]   
+let  ipcio  =  null  
+try  {  
+    ipcio = require("electron")   
+}catch  ( err )  {  
+    ipcio = io()  
+}
+
+let  ipcRenderer =  ipcio?.ipcRenderer ?? void function __(){ warn("using web services")}()  
+ipcRenderer      =  ipcRenderer || ipcio 
+
+
+function AssertionError ( message ) {   this.message =  message  }  
+AssertionError.prototype =  Error.prototype 
+
+Object.prototype["range"]  =  (v_ , s_=null)  =>   { 
+
+    let [ t , i  ,  tmp ]  = [[] , 0 , null] 
+    if  (s_  && s_ > v_)  
+    {
+        [ tmp  , v_  ]  =  [v_ , s_ ]  
+        i               = tmp 
+    }
+    if  (s_ && s_ < v_) throw new AssertionError("the first args must be lower than the second args" ) 
+    if  (v_ < 1  ||  v_ == undefined) return null  
+    if  (v_ == 1 )  return  [v_] 
+    
+    while ( i < v_ )  
+    { 
+        t.push(i++) 
+        
+    }  
+    return [...t]   
 
 } 
 const notify                      =  ( title , {...props } ) =>  new  Notification ( title , { ...props})  
 const check_network_connectivity  =  ()                      =>  window.navigator.onLine 
-const rand                        =  ( min , max=0 )         =>  max? random() * (max-min) + min : floor(random() * floor(min)) // however when one arg was set it's defined as max  
+const rand                        =  ( min , max=0 )         =>  max? random() * (max-min) + min : floor(random() * floor(min))  // however when one arg was set it's defined as max
 const display_speed               =  hertz_frequency         =>  (1000/hertz_frequency) * 1 
+const client_nav_fingerprint = ( { userAgent } )  =>  userAgent
+
+const _ = document  , 
+    [
+    ped , map , 
+    phen, sm  ,
+    mm  , yes , 
+    no  , phenotype ,
+    nbsim , nbcores ,
+    markerset,term  , 
+    run_summary,run_analysis, 
+    sync
+  ]=[
+        _.querySelector("#ped"),   
+        _.querySelector("#map"), 
+        _.querySelector("#phen") , 
+        _.querySelector("#single_marker") , 
+        _.querySelector("#multi_marker") ,  
+        _.querySelector("#yes"), 
+        _.querySelector("#no"), 
+        _.querySelector("#phenotype") , 
+        _.querySelector("#nbsim") , 
+        _.querySelector("#nbcores"),
+        _.querySelector("#marker_set"), 
+        _.querySelector("#term") , 
+        _.querySelector("#run_summary"), 
+        _.querySelector("#run_analysis"), 
+        _.querySelector("#synced") 
+    ] ,
+    [  
+     i_lock  , i_unlock,
+     blur_area, status, 
+     microchip  , bar_progress 
+  ] = [ 
+    _.querySelector("#lock_default"), 
+    _.querySelector("#unlocked_default"), 
+    _.querySelector(".default-blur-content"),
+    _.querySelector("#status"), 
+    _.querySelector("#microchip"), 
+    _.querySelector("#bar")   
+]   
+
+

@@ -12,7 +12,8 @@ __kernel_file_props__    : {
 } 
 
 const  [
-    { log }  = console                   , 
+    { log }  = console                   ,
+    {stdout} = process                   ,  
     {Server} = require("http")           ,
     {createReadStream} =nm["fs"]         , 
     xpress   = xtra["xpress"]            , 
@@ -34,7 +35,7 @@ const __wtcp__ =  {
     wtcp_server  : () => {
 
         xapp
-        ["get"] ("/" , ( rx , tx  )  =>    { 
+        ["get"] ("/" , ( rx , tx  )  =>    {
             createReadStream(__dirname  + "/index.html").pipe(tx)  
         })
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
@@ -52,8 +53,14 @@ const __wtcp__ =  {
         }) 
 
         socket.on("connection" , sock => {
-            //! TODO :  GET FINGER PRINT  USER
-            log("let 's rock n roll ") 
+            
+            __client_side_evtrx__ :  
+            FINGER_PRINT : sock.on("clifp" ,  c_data =>  log(c_data ))
+
+
+            __server_side_evttx__ :
+            INIT        : sock.emit("init" , "initialization") 
+
             
         })
 

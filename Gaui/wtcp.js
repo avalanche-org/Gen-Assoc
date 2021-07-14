@@ -12,8 +12,7 @@ __kernel_file_props__    : {
 } 
 
 const  [
-    { log }  = console                   ,
-    {stdout} = process                   ,  
+    { log }  = console                   , 
     {Server} = require("http")           ,
     {createReadStream} =nm["fs"]         , 
     xpress   = xtra["xpress"]            , 
@@ -27,7 +26,10 @@ server = Server(xapp)
 socket =  new ios(server)   //  binding  
 gateways=process.argv[2] || 4000  
 
+__config__ :
 xapp
+.set("view engine" ,  "ejs" )
+.set("views" , __dirname)   
 .use(xpress.static(__dirname+"/assets")) 
 
 const __wtcp__ =  {  
@@ -35,8 +37,9 @@ const __wtcp__ =  {
     wtcp_server  : () => {
 
         xapp
-        ["get"] ("/" , ( rx , tx  )  =>    {
-            createReadStream(__dirname  + "/index.html").pipe(tx)  
+        ["get"] ("/" , ( rx , tx  )  =>    { 
+            tx.setHeader("Content-type" ,  "text/html")  
+            tx.render("index.ejs"  ,  { socket : true })  
         })
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
         server 
@@ -53,14 +56,11 @@ const __wtcp__ =  {
         }) 
 
         socket.on("connection" , sock => {
-            
-            __client_side_evtrx__ :  
-            FINGER_PRINT : sock.on("clifp" ,  c_data =>  log(c_data ))
-
-
-            __server_side_evttx__ :
-            INIT        : sock.emit("init" , "initialization") 
-
+             __client_side_evt__  : 
+             NAVIGATOR_FPRINT  :   sock.on("clifp"  , user_agent =>   log (user_agent))   
+                
+             __server_side_evt__  :  
+             INIT              :  sock.emit("init" , "let's rock'n'roll")  
             
         })
 

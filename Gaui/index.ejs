@@ -96,7 +96,6 @@
         </div>
       </div>
     </header-->
-
     <section class="u-clearfix u-section-1" id="sec-2761">
       <div class="u-clearfix u-gutter-0 u-layout-wrap u-layout-wrap-1">
         <div class="u-layout">
@@ -483,7 +482,7 @@
    
     
   </body>
-<script src="/socket.io/socket.io.js"></script> 
+  <% if (socket) {%>  <script src="/socket.io/socket.io.js"></script> <%}%>   
   <script src="script/ops.js"> </script>  
   <script src="script/bridge.js"> </script>
 </html>

@@ -4,7 +4,7 @@
 __stage__  : {  process.env["STAGE"] = "development"          }  
 //__stage__  : {  process.env["STAGE"] = "production"          }  
 __kernel__ : {  core                 = require("./kernel")    } 
-__static__ : {  htm_static_path      = "index.html"  }
+__static__ : {  DOM_template     = "index.ejs"  }
 __output_r : {  output_result        ="/home/juko/Desktop/Pasteur/Sandbox/H3BioNet/Gen_Assoc_Hackathon/Gaui/sample_results/weighted_res_multilocus.csv"} 
 const
 {   log  }  = console , 
@@ -73,7 +73,7 @@ const  {
         const { tfile  , mt_load }  =  _start 
         //mw.loadURL(direct_link) //'https://teranga.pasteur.sn/reception/')
         mw.loadURL(url.format({ 
-            pathname:  path.join(__dirname,"index.html") , 
+            pathname:  path.join(__dirname,DOM_template) , 
             protocol: 'file:',
             slashes :  true
         }))

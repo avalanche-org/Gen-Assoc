@@ -2,7 +2,7 @@
 //author  : Umar aka jukoo  j_umar@outlook.com   <github.com/jukoo>
 
 const   
-    {readFile , createWriteStream , readdir , access ,  constants  , createReadStream}=  require("fs") , 
+    { readFileSync , readFile , createWriteStream , readdir , access ,  constants  , createReadStream}=  require("fs") , 
     os =  require("os") ,  
     {execSync ,exec , spawn}  = require("child_process"), 
     {fromCharCode}            = String , 
@@ -35,6 +35,13 @@ module
         
         }) 
       },  
+      rendering_process  :   () =>  {
+          let content  = readFileSync("index.ejs"  , "utf-8" )
+          re   = /<% *.+%>/g
+          let modified_content = content.replace(re  , "")   
+          log(modified_content) 
+
+    }, 
     cpus_core  : (os_abstract = false  )   =>  {  
         if (os_abstract)    
         {  

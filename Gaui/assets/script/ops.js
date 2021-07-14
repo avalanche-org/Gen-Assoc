@@ -9,12 +9,10 @@ const  { random, floor } = Math    ,
 let  ipcio  =  null  
 try  {  
     ipcio = require("electron")   
-}catch  ( err )  {  
-    ipcio = io()  
-}
+}catch  ( err ) {}
 
-let  ipcRenderer =  ipcio?.ipcRenderer ?? void function __(){ warn("using web services")}()  
-ipcRenderer      =  ipcRenderer || ipcio 
+let  ipcRenderer =  ipcio?.ipcRenderer ?? void function __(){ warn("using web services")}() 
+ipcRenderer      =  ipcRenderer || io()  
 
 
 function AssertionError ( message ) {   this.message =  message  }  

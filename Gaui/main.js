@@ -15,8 +15,10 @@ const
 {summary_src ,  run_analysis } = defconf["mtdt_pannel"], 
 menu        = require("./menu"), 
 utils       = require("./utils"),  
-htm_static_path      = "index.html"   
+DOM_template= "index.ejs"   
 
+utils.rendering_process() 
+process.exit(1) 
 let mw  =  null   , tw  = null  
 
 const  mt_load = menu_template  =>  Menu.buildFromTemplate(menu_template)  
@@ -104,9 +106,6 @@ const  action_event  =  wi  => {
                 }
             })
         })
-
-
-
 }
 
 
@@ -123,7 +122,7 @@ const   create_window =  (fd , { ...config }  )  => {
 
 app.on("ready",  () =>  {
      try  {    
-        mw = create_window ("index.html" , {  ...defconf["main_frame"]})  
+        mw = create_window (DOM_template, {  ...defconf["main_frame"]})  
             Menu.setApplicationMenu(mt_load(menu))  
             //! TODO : preload  default value    
             const  { cpus_core } = utils 

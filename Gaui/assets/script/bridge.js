@@ -100,8 +100,9 @@ _.querySelector("#clear").addEventListener("click", evt => {
 })
 _.querySelector("#infosys").addEventListener("click" , evt =>  {  
     term.value = "" 
-    term_write(global_info)  
-    ipcRenderer.send("system::info" , global_info )  
+    term_write(global_info) 
+   
+    if  (! activate_extra_elements ) ipcRenderer.send("system::info" , global_info )  
 })
 
 
@@ -153,11 +154,20 @@ const stop_blink_on_faillure   = ( target ,  action_ctrl_callback  ) => {
 //          ->  where the  log file  is supposed to be  
  
 let  logfile  =  null
+
+const  permut_datevt  =  ( c   ,evt  , data   )  =>  c ? evt : data  
+
 ipcRenderer.on("initialization" ,  (evt , data)  =>{
-    const  { version ,logpath_location,  available_cpus_core } =  data.initiate
-    const {os_detail_info}  =  data.initiate   
+    
+    data  = permut_datevt(activate_extra_elements , evt , data )  
+    const  { version ,logpath_location,  available_cpus_core } =  data.initiate ||   data  
+    let  {os_detail_info}  =  data?.initiate || data 
+    if (!os_detail_info) 
+        os_detail_info = data 
+
+    log (os_detail_info) 
     notify("mTdt ", { body : ` mTdt  version ${version}`})
-    if   ( data.init_proc == 1 &&  localStorage["iproc"] != 1 )
+    if   ( data.init_proc == 1 &&  localStorage["iproc"] != 1||  os_detail_info)
     {   
         for ( let si  in  os_detail_info )
         {
@@ -178,12 +188,15 @@ ipcRenderer.on("initialization" ,  (evt , data)  =>{
         } 
 
     }
+    if ( available_cpus_core)
+    { 
     logfile  = logpath_location
     for  ( let i of   range(available_cpus_core) ) { 
     // set  how many  cpus  the os got 
         const ncores_opt =  _.createElement("option") 
         ncores_opt.text=i 
         nbcores.add(ncores_opt) 
+    }
     }
 })
 
@@ -569,4 +582,21 @@ ipcRenderer.on("attach::term" , (evt ,data ) => {
 }) 
 
 ipcRenderer.on("annoucement" ,  (evt , data )  => { 
-} ) 
+} )
+
+
+__Socket_handlernamespace__ : 
+
+if  (activate_extra_elements) 
+{
+
+
+    files_browser.addEventListener("change" , evt =>  {  
+        const choosed_files  =  files_browser.files 
+        
+        log(choosed_files) 
+
+    }  , false )   
+
+}
+

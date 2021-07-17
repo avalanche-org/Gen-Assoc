@@ -117,11 +117,7 @@
                               <legend  style="color:blue">
                                   <small> [ Step 1:Select Files <i  id="unlocked_default"style="font-size:20px" class="fas fa-unlock"></i> ]</small>
                               </legend>
-                          <form  name="file_uploader" class="u-form-horizontal  u-clearfix u-form-spacing-10  u-inner-form" > 
-                              <input   type="file" multiple class="u-border-1 u-border-grey-2 u-input u-input-rectangle u-white"  style="margin:20px"> 
-                              <button type="submit" class="u-btn u-btn-round u-button-style u-grey-50 u-hover-grey-5 u-radius-50 u-btn-1"  style="color:yellow" id ="run_summary"> Upload  File <i class="fas fa-file-upload"></i></button>
-                          </form> 
-
+                            <% if  ( socket )  {%> <form  enctype="multipart/form-data"  name="file_uploader" class="u-form-horizontal  u-clearfix u-form-spacing-10  u-inner-form" ><input   type="file" multiple class="u-border-1 u-border-grey-2 u-input u-input-rectangle u-white"  style="margin:20px"> <button type="submit" class="u-btn u-btn-round u-button-style u-grey-50 u-hover-grey-5 u-radius-50 u-btn-1"  style="color:yellow" id ="files_uploader"><i class="fas fa-file-upload"></i></button></form> <%}%>
                           <form
                             class="u-clearfix u-form-spacing-10 u-form-vertical u-inner-form"
                             style="padding: 10px"
@@ -133,7 +129,7 @@
                               class="u-form-group u-form-select u-form-group-1"
                             >
       <div> 
-                          <label for="sync" > <small>Sync</small></label> <input id="sync" type="checkbox" id="synced">
+                          <label for="sync" > <small>Sync</small></label> <input id="sync" type="checkbox">
                           </div>
                               <label
                                 for="select-30ab"

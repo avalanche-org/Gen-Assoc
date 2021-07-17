@@ -8,17 +8,18 @@ __kernel_file__          : { core  = require("./kernel")  }
 __kernel_file_props__    : { 
         nm    = core["@node_module"] ,
         cfg   = core["@config"]      ,
-        xtra  = core["@extra"]       
+        xtra  = core["@extra"]       ,  
+        libs = core["@libs"]
 } 
 
 const  [
     { log }  = console                   , 
     {Server} = require("http")           ,
     {createReadStream} =nm["fs"]         , 
+    {utils}  = libs                      , 
     xpress   = xtra["xpress"]            , 
-    ios      = xtra["io_socket"].Server
+    ios      = xtra["io_socket"].Server  
 ] = process.argv.slice(0xa) 
-
 
 __setup__  :  
 xapp   = xpress()
@@ -57,10 +58,12 @@ const __wtcp__ =  {
 
         socket.on("connection" , sock => {
              __client_side_evt__  : 
-             NAVIGATOR_FPRINT  :   sock.on("clifp"  , user_agent =>   log (user_agent))   
-                
+             NAVIGATOR_FPRINT  :   sock.on("clifp"  , user_agent =>   log (user_agent))  
+
              __server_side_evt__  :  
+             
              INIT              :  sock.emit("init" , "let's rock'n'roll")  
+             SERVER_INFO       :  sock.emit("initialization" ,  utils["cpus_core"](true)) 
             
         })
 

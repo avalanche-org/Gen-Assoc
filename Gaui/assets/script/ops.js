@@ -4,14 +4,17 @@
 //
 
 const  { random, floor } = Math    ,  
-       { log  , error , warn } = console
-
+       { log  , error , warn } = console , 
+      _ = document   
 let  ipcio  =  null  
 try  {  
     ipcio = require("electron")   
 }catch  ( err ) {}
 
-let  ipcRenderer =  ipcio?.ipcRenderer ?? void function __(){ warn("using web services")}() 
+let  ipcRenderer =  ipcio?.ipcRenderer ?? void function __(){ warn("using web services")}()   
+
+const activate_extra_elements   = !ipcRenderer  
+
 ipcRenderer      =  ipcRenderer || io()  
 
 
@@ -44,8 +47,7 @@ const rand                        =  ( min , max=0 )         =>  max? random() *
 const display_speed               =  hertz_frequency         =>  (1000/hertz_frequency) * 1 
 const client_nav_fingerprint = ( { userAgent } )  =>  userAgent
 
-const _ = document  , 
-    [
+const  [
     ped , map , 
     phen, sm  ,
     mm  , yes , 
@@ -53,7 +55,7 @@ const _ = document  ,
     nbsim , nbcores ,
     markerset,term  , 
     run_summary,run_analysis, 
-    sync
+    sync ,  files_uploaders , files_browser  
   ]=[
         _.querySelector("#ped"),   
         _.querySelector("#map"), 
@@ -69,7 +71,9 @@ const _ = document  ,
         _.querySelector("#term") , 
         _.querySelector("#run_summary"), 
         _.querySelector("#run_analysis"), 
-        _.querySelector("#synced") 
+        _.querySelector("#sync")  ,  
+        activate_extra_elements  ?  _.querySelector("#files_uploader")      :  null  , 
+        activate_extra_elements  ?  _.querySelector("input[type='file']")   :  null   
     ] ,
     [  
      i_lock  , i_unlock,
@@ -81,7 +85,7 @@ const _ = document  ,
     _.querySelector(".default-blur-content"),
     _.querySelector("#status"), 
     _.querySelector("#microchip"), 
-    _.querySelector("#bar")   
+    _.querySelector("#bar")  
 ]   
 
-
+log (files_uploader) 

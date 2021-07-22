@@ -1,22 +1,21 @@
-//!  author  :  Umar aka  jukoo   < github.com/Jukoo  ||  j_umar@outlook.fr  
-//
-//
-//
-
-const  { random, floor } = Math    ,  
+//!  author  :  Umar aka  jukoo   < github.com/Jukoo  ||  j_umar@outlook.fr > 
+//!  LICENCE :  not yet  
+//!  ops.js  module  
+//!  -------------------------------------------------------------------------
+//!  This  web application is shared  between  2 client  
+//!  Desktop  client and  web service client  
+//!  so  the code source bellow  make an adaptation of each  
+//!  this is  a one source for 2 client 
+//!  -------------------------------------------------------------------------
+const  { random, floor }       = Math    ,  
        { log  , error , warn } = console , 
-      _ = document   
+       _                       = document   
+
 let  ipcio  =  null  
-try  {  
-    ipcio = require("electron")   
-}catch  ( err ) {}
-
-let  ipcRenderer =  ipcio?.ipcRenderer ?? void function __(){ warn("using web services")}()   
-
-const activate_extra_elements   = !ipcRenderer  
-
-ipcRenderer      =  ipcRenderer || io()  
-
+try  {ipcio = require("electron")}catch (err) {}   
+let  ipcRenderer                =  ipcio?.ipcRenderer ?? void function __(){ warn("using web services")}()   
+const activate_extra_elements   =  !ipcRenderer  
+ipcRenderer                     =  ipcRenderer || io()  
 
 function AssertionError ( message ) {   this.message =  message  }  
 AssertionError.prototype =  Error.prototype 
@@ -47,6 +46,7 @@ const rand                        =  ( min , max=0 )         =>  max? random() *
 const display_speed               =  hertz_frequency         =>  (1000/hertz_frequency) * 1 
 const client_nav_fingerprint = ( { userAgent } )  =>  userAgent
 
+//!  DOM  Html  mapping  
 const  [
     ped , map , 
     phen, sm  ,
@@ -55,7 +55,7 @@ const  [
     nbsim , nbcores ,
     markerset,term  , 
     run_summary,run_analysis, 
-    sync ,  files_uploaders , files_browser  
+    sync , files_uploaders/*element node  |  undefined */ , files_browser/* element node | undefined*/  
   ]=[
         _.querySelector("#ped"),   
         _.querySelector("#map"), 
@@ -72,8 +72,8 @@ const  [
         _.querySelector("#run_summary"), 
         _.querySelector("#run_analysis"), 
         _.querySelector("#sync")  ,  
-        activate_extra_elements  ?  _.querySelector("#files_uploader")      :  null  , 
-        activate_extra_elements  ?  _.querySelector("input[type='file']")   :  null   
+        activate_extra_elements  ?  _.querySelector("#files_uploader")      : (void function ()  { return  }() )  , 
+        activate_extra_elements  ?  _.querySelector("input[type='file']")   : (void function ()  { return  }() )
     ] ,
     [  
      i_lock  , i_unlock,
@@ -86,6 +86,8 @@ const  [
     _.querySelector("#status"), 
     _.querySelector("#microchip"), 
     _.querySelector("#bar")  
-]   
+]
+modal_term   =  _.querySelector("#myModal")  
+clone_term   =  term.cloneNode(true)  
+modal_term.appendChild(clone_term)  
 
-log (files_uploader) 

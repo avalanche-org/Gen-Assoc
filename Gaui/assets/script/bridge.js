@@ -554,10 +554,22 @@ let detach_term = _.querySelector("#detach_term")  ,
     container_attached = _.querySelector("#term_area"),
     term_footprint =  term  , 
     is_detached  = false
+_.querySelector(".close").addEventListener("click"  ,evt =>  modal_term.style.display="none")
+window.addEventListener("click" , evt  => {  if  ( evt.target == modal_term  ) modal_term.style.display = "none" } ) 
+
 detach_term.addEventListener("click" , evt =>  {
-     //send signal to create full terminal emulator  
+     //send signal to create full terminal emulator     
+    if  ( activate_extra_elements )  
+    {
+        is_detached = true  
+        //TODO :  ABOUT BLANK  
+        //open("term.htm" , "_blank") 
+        modal_term.style.display= "block"
+    
+    }
     if  ( !is_detached )  
     {   
+        
         const  mirror_cpy  = term.value   
         ipcRenderer.send("detach::term", mirror_cpy)
         //container_attached.removeChild(term) 
@@ -566,6 +578,8 @@ detach_term.addEventListener("click" , evt =>  {
         detach_term.title ="close  the terminal window to bring back it >_ "  
         detach_term.disable=true
         is_detached  = true 
+        
+      
     }
     /*
         ipcRenderer.send("attach::term ", false) 

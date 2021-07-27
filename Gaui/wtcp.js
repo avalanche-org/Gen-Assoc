@@ -19,7 +19,7 @@ const  [
     { log }  = console                   , 
     {Server} = require("http")           ,
     path     = require("path")           , 
-    {createReadStream} =nm["fs"]         , 
+    {createReadStream,access , readFile, constants} =nm["fs"]         , 
     {utils}  = libs                      , 
     xpress   = xtra["xpress"]            , 
     ios      = xtra["io_socket"].Server  
@@ -75,7 +75,7 @@ const __wtcp__ =  {
              })
              
             RUN_SUMMARY : sock.on("run::summary" ,  gobject   =>     { 
-                let   { paths ,  selected_fils  } = gobject  ,   
+                let   { paths ,  selected_files  } = gobject  ,   
                       [pedfile,mapfile,phenfile]  = selected_files
                 if(typeof(paths) ==  "object"  && paths.length == 0x03 )  
                 { 
@@ -92,16 +92,17 @@ const __wtcp__ =  {
                     utils.std_ofstream(`Rscript ${summary_source} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile}` ,
                         exit_code => {
                             if  (exit_code == 0x00)  {
-                                fs.readFile(".logout" , "utf8" ,  (e , d ) => {
+                                readFile(".logout" , "utf8" ,  (e , d ) => {
                                 if (e)  sock.emit("log::fail" , e  )   
                                 sock.emit("term::logout"  , d )   
                             })
                                 sock.emit("load::phenotype"  ,  res-2)   
                             }else {
                                 log("fail")  
-                                fs.access(".logerr" , fs.constants["F_OK"] , error => {
+                                access(".logerr" , constants["F_OK"] , error => {
+                                    log (error) 
                                     if (error ) sock.emit("logerr::notfound" , error)  
-                                    fs.readFile('.logerr' , "utf8" , (err , data) =>{
+                                    readFile('.logerr' , "utf8" , (err , data) =>{
                                         if(err) sock.emit("log::broken" ,  error ) 
                                         log(data)
                                         sock.emit("term::logerr" , data) 

@@ -144,9 +144,9 @@ const use_cpus_resources = signal_trap /* type : bool */ => {
         clearInterval(blink)  
 }
 
-const stop_blink_on_faillure   = ( target ,  action_ctrl_callback  ) => {
+const stop_blink_on_faillure   = ( target ,   state  ) => {
     if ( !target )  
-        action_ctrl_callback() 
+        use_cpus_resources(state) 
 }
 
 //!TODO  :  SEND ALL  CONFIG REQUIREMENT TO  PROCESS RENDERING ... 
@@ -464,7 +464,7 @@ ipcRenderer.on("log::fail" , (evt , data)  => {
     status.style.color ="red"
     status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> failure ` 
     bar_progress.style.backgroundColor = "firebrick"
-    stop_blink_on_faillure(analysis_on_going  ,  use_cpus_resources(false )) 
+    stop_blink_on_faillure(analysis_on_going  ,  false ) 
 }) 
 ipcRenderer.on("logerr::notfound" , (evt , data)  => {
     term.value = data 
@@ -473,7 +473,7 @@ ipcRenderer.on("logerr::notfound" , (evt , data)  => {
     status.style.color ="red"
     status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> error log not found`
     bar_progress.style.backgroundColor = "firebrick"
-    stop_blink_on_faillure(analysis_on_going  ,  use_cpus_resources(false )) 
+    stop_blink_on_faillure(analysis_on_going  , false) 
 }) 
 ipcRenderer.on("term::logerr"     , (evt , data)  => {
     term.value = data 
@@ -482,7 +482,7 @@ ipcRenderer.on("term::logerr"     , (evt , data)  => {
     status.style.color ="red"
     status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> An error has occurred  ` 
     bar_progress.style.backgroundColor = "firebrick"
-    stop_blink_on_faillure(analysis_on_going  ,  use_cpus_resources(false)) 
+    stop_blink_on_faillure(analysis_on_going  ,  false) 
 })  
 ipcRenderer.on("log::broken"      , (evt , data)  => {
     term.value = data  

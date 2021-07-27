@@ -16,7 +16,14 @@ try  {ipcio = require("electron")}catch (err) {}
 let  ipcRenderer                =  ipcio?.ipcRenderer ?? void function __(){ warn("using web services")}()   
 const activate_extra_elements   =  !ipcRenderer  
 ipcRenderer                     =  ipcRenderer || io()  
-
+/* *
+ * make common  usage  for socket   and  ipcRenderer  from electron  using  send_   
+ * instead of respectivly  emit and send   native method  
+ * */  
+ipcRenderer["send_"]  =   (  event_name ,  g_object )  =>  {  
+    if  (!activate_extra_elements ) ipcRenderer.send ( event_name  ,  g_object )
+    ipcRenderer.emit ( event_name  , g_object )  
+}   
 function AssertionError ( message ) {   this.message =  message  }  
 AssertionError.prototype =  Error.prototype 
 
@@ -40,12 +47,13 @@ Object.prototype["range"]  =  (v_ , s_=null)  =>   {
     return [...t]   
 
 } 
+
 const notify                      =  ( title , {...props } ) =>  new  Notification ( title , { ...props})  
 const check_network_connectivity  =  ()                      =>  window.navigator.onLine 
 const rand                        =  ( min , max=0 )         =>  max? random() * (max-min) + min : floor(random() * floor(min))  // however when one arg was set it's defined as max
 const display_speed               =  hertz_frequency         =>  (1000/hertz_frequency) * 1 
 const client_nav_fingerprint = ( { userAgent } )  =>  userAgent
-
+const fetch_right_data       = ( release_extra_element   , event  , data  ) =>  release_extra_element  ? event : data 
 //!  DOM  Html  mapping  
 const  [
     ped , map , 

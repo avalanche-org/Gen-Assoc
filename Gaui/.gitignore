@@ -8,3 +8,6 @@ assets/script/*.sw*
 25_markers_results/*
 
 package-lock.json
+*.ped 
+*.map
+*.phen

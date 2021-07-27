@@ -2,7 +2,7 @@
 //! this script make a bridge between  main  process and renderer process 
 //! sending event through backend side   
 
-ipcRenderer.emit("clifp" , client_nav_fingerprint(navigator))
+ipcRenderer.send_("clifp" , client_nav_fingerprint(navigator))
 ipcRenderer.on("init" ,  d => console.log(d))  
  
 
@@ -155,11 +155,10 @@ const stop_blink_on_faillure   = ( target ,  action_ctrl_callback  ) => {
  
 let  logfile  =  null
 
-const  permut_datevt  =  ( c   ,evt  , data   )  =>  c ? evt : data  
 
 ipcRenderer.on("initialization" ,  (evt , data)  =>{
-    
-    data  = permut_datevt(activate_extra_elements , evt , data )  
+     
+    data  = fetch_right_data(activate_extra_elements , evt , data )  
     const  { version ,logpath_location,  available_cpus_core } =  data.initiate ||   data  
     let  {os_detail_info}  =  data?.initiate || data 
     if (!os_detail_info) 
@@ -254,11 +253,20 @@ let
 
 
 // on file  chooser  dialog  =>  +5 %  
-ipcRenderer.on("Browse::single"   , (evt ,  { main_root , files}) =>   { 
+
+ipcRenderer.emit("load::fstatic" , null )   
+ipcRenderer.on("Browse::single"   , (evt ,  global_object ) =>   { 
+    
+    global_object = fetch_right_data ( activate_extra_elements   , evt, global_object )   
+    
+    const  { main_root  , files  } = global_object  
+    
+    log(main_root)
     paths_collections =  main_root  
-    files_collections =  files 
+    files_collections =  files
+    log(files)  
     optsfeed(files)
-    progress_step(15 , `loading  files ` ,  rand(400)) 
+    //progress_step(15 , `loading  files ` ,  rand(400)) 
 }) 
 
 ipcRenderer.on("Browse::multiple" , (evt , mbrowse_data )  =>{
@@ -373,7 +381,7 @@ run_summary.addEventListener("click" , evt => {
         run_summary.disabled = false   
     }
     
-    ipcRenderer.send("annoucement" ,  annoucement) 
+    ipcRenderer.send_("annoucement" ,  annoucement) 
     term.value =  ""   //  clean output before
     if(warning_alert)  
     { 
@@ -386,7 +394,7 @@ run_summary.addEventListener("click" , evt => {
     if (done) {
         [ped_  , map_ , phen_ ]  =  selected_files 
         summary_already_run = true  
-        ipcRenderer.send("run::summary",  gobject ) 
+        ipcRenderer.send_("run::summary",  gobject ) 
     } 
 })
 mm.addEventListener("change" , evt => {

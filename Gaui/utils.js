@@ -36,12 +36,20 @@ module
         }) 
       },  
       rendering_process  :   () =>  {
+          /* *
+           *  trying to adapt  index  file  for desktop  env application  
+           * */ 
           let content  = readFileSync("index.ejs"  , "utf-8" )
           re   = /<% *.+%>/g
           let modified_content = content.replace(re  , "")   
           log(modified_content) 
 
     }, 
+    auto_insject  : ( data   , object ,  default_symbol  = "<>" )  => {
+        if (object.includes(default_symbol) ) 
+            return   object.replace(default_symbol , data ) 
+        
+    },  
     cpus_core  : (os_abstract = false  )   =>  {  
         if (os_abstract)    
         {  

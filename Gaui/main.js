@@ -18,7 +18,6 @@ utils       = require("./utils"),
 DOM_template= "index.ejs"   
 
 utils.rendering_process() 
-process.exit(1) 
 let mw  =  null   , tw  = null  
 
 const  mt_load = menu_template  =>  Menu.buildFromTemplate(menu_template)  

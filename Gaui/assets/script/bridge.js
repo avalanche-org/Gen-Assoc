@@ -614,11 +614,18 @@ if  (activate_extra_elements)
 
 
     files_browser.addEventListener("change" , evt =>  {  
-        const choosed_files  =  files_browser.files 
-        
+        const choosed_files  =  [...files_browser.files] ,  
+              total_size_bytes  =  choosed_files.reduce( ( file_a , file_v  ) => file_a?.size  + file_v?.size ) 
+        log (total_size_bytes)  
+         
         log(choosed_files) 
 
-    }  , false )   
+    }  , false ) 
+    
+    files_uploaders.addEventListener("submit" , evt =>  { 
+       evt.preventDefault() 
+       log(evt)  
+   }) 
 
 }
 

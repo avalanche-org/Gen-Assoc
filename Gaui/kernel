@@ -22,6 +22,7 @@ module
     } , 
    ["@extra"]  :  {  
        xpress  : require("express"), 
+       xpressfu: require("express-fileupload") , 
        io_socket:  require("socket.io")
    }
 }

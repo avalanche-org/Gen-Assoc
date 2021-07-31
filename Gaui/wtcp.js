@@ -18,10 +18,11 @@ const  [
     {summary_src  , run_analysis } = require("./config.json")["mtdt_pannel"], 
     { log }  = console                   , 
     {Server} = require("http")           ,
-    path     = require("path")           , 
-    {createReadStream,access , readFile, constants} =nm["fs"]         , 
+    path     = require("path")           ,
+    {createReadStream,access , createWriteStream ,readFile  , writeFile, constants} =nm["fs"]         , 
     {utils}  = libs                      , 
-    xpress   = xtra["xpress"]            , 
+    xpress   = xtra["xpress"]            ,
+    xpressfu = xtra["xpressfu"]          ,  
     ios      = xtra["io_socket"].Server  
 ] = process.argv.slice(0xa) 
 
@@ -36,12 +37,33 @@ xapp
 .set("view engine" ,  "ejs" )
 .set("views" , __dirname)   
 .use(xpress.static(__dirname+"/assets")) 
+.use(xpress.json()) 
+.use(xpress.urlencoded({ extended: true } )) 
+.use(xpressfu( {})) 
 
 __required_static_files__ : 
 summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
 
+
 const __wtcp__ =  {  
+
+    fstream   :   file  => {
+        writeFile( file.name  , file.data  , err =>   { 
+            if   ( err ) throw err  
+            log(`file created :  ${file.name}\nsize :${file.size}`)
+
+        })  
+    } ,  
+    files_upload_processing   :   ( fu   , callback_handler  = false )   =>  {  
+        let   gfiles =[]   
+        if  ( typeof(fu) == "object"  &&   !fu.length     ) gfiles =  [[ ...gfiles ,    fu]]   
+        if  ( typeof(fu) == "object"  &&   fu.length > 1  ) gfiles =  [[ ...gfiles , ...fu]] 
+        gfiles[0]
+        ["forEach"](   ( file ) => {
+            if  (callback_handler)  callback_handler(file)
+        }) 
+    },  
 
     wtcp_server  : () => {
 
@@ -50,6 +72,13 @@ const __wtcp__ =  {
             tx.setHeader("Content-type" ,  "text/html")  
             tx.render("index.ejs"  ,  { socket : true })  
         })
+        ["post"] ("/", ( rx  ,tx  ) => {  
+            const { files_upload_processing  }  = __wtcp__ 
+            if (!rx?.files ) log ("file upload module not found ")  
+            const  { fupload  }  = rx.files 
+            files_upload_processing (  fupload,  __wtcp__.fstream) 
+            tx.redirect("/")    
+        }) 
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
         server 
         ["listen"](gateways , "0.0.0.0" ,log(`\x1b[1;32m * connected on  ${gateways}\x1b[0m`))

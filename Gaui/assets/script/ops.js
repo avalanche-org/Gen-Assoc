@@ -63,7 +63,8 @@ const  [
     nbsim , nbcores ,
     markerset,term  , 
     run_summary,run_analysis, 
-    sync , files_uploaders/*element node  |  undefined */ , files_browser/* element node | undefined*/  
+    sync , files_uploaders/*element node  |  undefined */ , files_browser/* element node | undefined*/ ,
+    form_upload  
   ]=[
         _.querySelector("#ped"),   
         _.querySelector("#map"), 
@@ -81,7 +82,8 @@ const  [
         _.querySelector("#run_analysis"), 
         _.querySelector("#sync")  ,  
         activate_extra_elements  ?  _.querySelector("#files_uploader")      : (void function ()  { return  }() )  , 
-        activate_extra_elements  ?  _.querySelector("input[type='file']")   : (void function ()  { return  }() )
+        activate_extra_elements  ?  _.querySelector("input[type='file']")   : (void function ()  { return  }() )  , 
+        activate_extra_elements  ?  _.querySelector("#form_upload")   : (void function ()  { return  }() )  
     ] ,
     [  
      i_lock  , i_unlock,
@@ -95,7 +97,25 @@ const  [
     _.querySelector("#microchip"), 
     _.querySelector("#bar")  
 ]
-modal_term   =  _.querySelector("#myModal")  
+__xtra_elements_ :   
+modal_term   =  _.querySelector("#myModal") 
 clone_term   =  term.cloneNode(true)  
 modal_term.appendChild(clone_term)  
+files_uploaders.disabled= true  
 
+
+const uploader  =   form_ =>  { 
+
+    if (!form_.ELEMENT_NODE ==  Element.ELEMENT_NODE) 
+    {
+        error(`${ form_} is not an node element `)
+        return  
+    }
+    const  payload = {  
+        method:"POST" , 
+        body  : new FormData(form_ ) 
+    }
+    window.fetch ("/" ,  { ...payload }  ) 
+    
+}
+ 

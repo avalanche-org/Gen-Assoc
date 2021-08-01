@@ -19,7 +19,7 @@ const  [
     { log }  = console                   , 
     {Server} = require("http")           ,
     path     = require("path")           ,
-    {createReadStream,access , createWriteStream ,readFile  , writeFile, constants} =nm["fs"]         , 
+    {createReadStream,access , createWriteStream ,readFile  , writeFile  , writeFileSync, constants} =nm["fs"]         , 
     {utils}  = libs                      , 
     xpress   = xtra["xpress"]            ,
     xpressfu = xtra["xpressfu"]          ,  
@@ -36,10 +36,10 @@ __config__ :
 xapp
 .set("view engine" ,  "ejs" )
 .set("views" , __dirname)   
-.use(xpress.static(__dirname+"/assets")) 
+.use(xpress.static(__dirname+"/assets"))  
 .use(xpress.json()) 
 .use(xpress.urlencoded({ extended: true } )) 
-.use(xpressfu( {})) 
+.use(xpressfu({})) 
 
 __required_static_files__ : 
 summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
@@ -49,20 +49,25 @@ run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysi
 const __wtcp__ =  {  
 
     fstream   :   file  => {
-        writeFile( file.name  , file.data  , err =>   { 
-            if   ( err ) throw err  
-            log(`file created :  ${file.name}\nsize :${file.size}`)
-
-        })  
+        const location_path  =`tmp/${file.name}` 
+        writeFileSync( location_path, file.data )  
+    
     } ,  
-    files_upload_processing   :   ( fu   , callback_handler  = false )   =>  {  
+    files_upload_processing   :   ( fu  , callback_handler  = false )   =>  {  
         let   gfiles =[]   
         if  ( typeof(fu) == "object"  &&   !fu.length     ) gfiles =  [[ ...gfiles ,    fu]]   
-        if  ( typeof(fu) == "object"  &&   fu.length > 1  ) gfiles =  [[ ...gfiles , ...fu]] 
+        if  ( typeof(fu) == "object"  &&   fu.length > 1  ) gfiles =  [[ ...gfiles , ...fu]]  
+        const  file_len  =  gfiles[0].length 
+        let  i =  0 
         gfiles[0]
-        ["forEach"](   ( file ) => {
+        ["forEach"](   ( file   , index  ) => {
             if  (callback_handler)  callback_handler(file)
+            i  = index +1 
         }) 
+        if ( file_len == i  ) 
+        { 
+           log ( "done ")  
+        } 
     },  
 
     wtcp_server  : () => {
@@ -72,14 +77,15 @@ const __wtcp__ =  {
             tx.setHeader("Content-type" ,  "text/html")  
             tx.render("index.ejs"  ,  { socket : true })  
         })
-        ["post"] ("/", ( rx  ,tx  ) => {  
+        ["post"] ("/",  ( rx  ,tx  ) => {  
             const { files_upload_processing  }  = __wtcp__ 
             if (!rx?.files ) log ("file upload module not found ")  
             const  { fupload  }  = rx.files 
-            files_upload_processing (  fupload,  __wtcp__.fstream) 
-            tx.redirect("/")    
+            files_upload_processing (  fupload  ,  __wtcp__.fstream) 
+            tx.redirect("/") 
         }) 
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
+
         server 
         ["listen"](gateways , "0.0.0.0" ,log(`\x1b[1;32m * connected on  ${gateways}\x1b[0m`))
         ["on"]("error" , err         => {  

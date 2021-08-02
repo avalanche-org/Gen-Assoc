@@ -428,6 +428,9 @@ ipcRenderer.on("load::phenotype" ,  (evt ,  incomming_data ) =>  {
 
 //! TODO  :  make realtime reading  stdout stream  
 ipcRenderer.on("term::logout" , ( evt , data ) => {
+    data = fetch_right_data ( activate_extra_elements ,  evt ,data )  
+
+    log(data) 
     term.focus() 
     if (summary_already_run)  
     {  
@@ -457,6 +460,7 @@ ipcRenderer.on("term::logout" , ( evt , data ) => {
 //! TODO :  [ optional]  style  output error  with red or orange color  ...
 let tigger  = false 
 ipcRenderer.on("log::fail" , (evt , data)  => {
+    data  =  fetch_right_data  ( activate_extra_elements ,  evt , data ) 
     term.value = data  
     mm.disable = true  
     run_summary.disabled=false  
@@ -467,6 +471,7 @@ ipcRenderer.on("log::fail" , (evt , data)  => {
     stop_blink_on_faillure(analysis_on_going  ,  false ) 
 }) 
 ipcRenderer.on("logerr::notfound" , (evt , data)  => {
+    data = fetch_right_data ( activate_extra_elements , evt  ,data ) 
     term.value = data 
     run_summary.disabled=false 
     term.style.color ="red"
@@ -476,6 +481,7 @@ ipcRenderer.on("logerr::notfound" , (evt , data)  => {
     stop_blink_on_faillure(analysis_on_going  , false) 
 }) 
 ipcRenderer.on("term::logerr"     , (evt , data)  => {
+    data = fetch_right_data ( activate_extra_elements , evt  ,data ) 
     term.value = data 
     run_summary.disabled=false 
     term.style.color   ="red"
@@ -485,6 +491,7 @@ ipcRenderer.on("term::logerr"     , (evt , data)  => {
     stop_blink_on_faillure(analysis_on_going  ,  false) 
 })  
 ipcRenderer.on("log::broken"      , (evt , data)  => {
+    data = fetch_right_data ( activate_extra_elements , evt  ,data ) 
     term.value = data  
     run_summary.disabled = false  
 }) 
@@ -613,17 +620,20 @@ if  (activate_extra_elements)
 {
 
     files_browser.addEventListener("change" , evt =>  {  
+        
         const choosed_files  =  [...files_browser.files]  
               total_size_bytes  =  choosed_files.reduce( ( file_a , file_v  ) => file_a?.size  + file_v?.size ) 
 
         if  (choosed_files.length) files_uploaders.disabled = false 
-        else  files_uploader.disabled  =  true   
+        else  files_uploader.disabled  =  true  
 
     }  , false ) 
     
     form_upload.addEventListener("submit" , evt =>  {   
         evt.preventDefault()
         uploader(form_upload) 
+        files_browser.value = "" 
+
    }) 
 
 }

@@ -15,7 +15,7 @@ __kernel_file_props__    : {
 so = process.platform == "win32" ? "\\"  : "/"  
 
 const  [
-    {summary_src  , run_analysis } = require("./config.json")["mtdt_pannel"], 
+    {summary_src  , run_analysis  , required_file_extension } = require("./config.json")["mtdt_pannel"], 
     { log }  = console                   , 
     {Server} = require("http")           ,
     path     = require("path")           ,
@@ -48,11 +48,19 @@ run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysi
 
 const __wtcp__ =  {  
 
-    fstream   :   file  => {
-        const location_path  =`tmp/${file.name}` 
-        writeFileSync( location_path, file.data )  
+    "#fstream"   :   file  => {
+        const location_path  =`tmp/${file.name}`
+        writeFile( location_path  ,  file.data  , ( err , data) => { 
+            if  (err ) throw err  
+
+        }) 
+        //writeFileSync( location_path, file.data )  
     
-    } ,  
+    } , 
+    "@parser"   :   ( data  , sep ="." ) => {
+        const  explode = data.split(sep) 
+        return  required_file_extension.includes(explode[explode.length -1 ] )  
+    },
     files_upload_processing   :   ( fu  , callback_handler  = false )   =>  {  
         let   gfiles =[]   
         if  ( typeof(fu) == "object"  &&   !fu.length     ) gfiles =  [[ ...gfiles ,    fu]]   
@@ -64,12 +72,8 @@ const __wtcp__ =  {
             if  (callback_handler)  callback_handler(file)
             i  = index +1 
         }) 
-        if ( file_len == i  ) 
-        { 
-           log ( "done ")  
-        } 
     },  
-
+    
     wtcp_server  : () => {
 
         xapp
@@ -80,8 +84,9 @@ const __wtcp__ =  {
         ["post"] ("/",  ( rx  ,tx  ) => {  
             const { files_upload_processing  }  = __wtcp__ 
             if (!rx?.files ) log ("file upload module not found ")  
-            const  { fupload  }  = rx.files 
-            files_upload_processing (  fupload  ,  __wtcp__.fstream) 
+            let  { fupload  }  = rx.files
+            fupload  = fupload.filter  ( file  => __wtcp__["@parser"](file.name))
+            files_upload_processing (fupload  ,   __wtcp__["#fstream"]) 
             tx.redirect("/") 
         }) 
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
@@ -118,10 +123,11 @@ const __wtcp__ =  {
                     mapfile  =  `/${paths[1]}/${mapfile}`
                     phenfile =  `/${paths[2]}/${phenfile}`
                 }else  {
-                    pedfile  =  `/${paths}/${pedfile}`
+                    pedfile  =  `${paths}/${pedfile}`
                     mapfile  =  `/${paths}/${mapfile}`
                     phenfile =  `/${paths}/${phenfile}`
-                }  
+                } 
+                
                 utils.rsv_file(phenfile ,  '\t')
                 .then(res => {
                     utils.std_ofstream(`Rscript ${summary_source} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile}` ,
@@ -135,11 +141,9 @@ const __wtcp__ =  {
                             }else {
                                 log("fail")  
                                 access(".logerr" , constants["F_OK"] , error => {
-                                    log (error) 
                                     if (error ) sock.emit("logerr::notfound" , error)  
                                     readFile('.logerr' , "utf8" , (err , data) =>{
                                         if(err) sock.emit("log::broken" ,  error ) 
-                                        log(data)
                                         sock.emit("term::logerr" , data) 
                                     })
                                 }) 

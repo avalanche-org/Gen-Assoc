@@ -10,7 +10,10 @@
             "contextIsolation": false  
         } 
     },   
-    "mtdt_pannel" : {  
+    "mtdt_pannel" : {
+        "required_file_extension" : [
+            "ped" , "map" , "phen"
+        ] , 
         "limite_nbsims": 10 ,
         "summary_src" : "<>/scripts/summary.R", 
         "run_analysis": "<>/scripts/run_analysis.R",
@@ -21,7 +24,7 @@
         "fstdout" : ".logout",
         "fstderr" : ".logerr",
         "fserror" : ".error" 
-    } ,
+    } , 
     "web_server" : {
         "homepage": "/views/home.ejs",
         "index_" : "/",

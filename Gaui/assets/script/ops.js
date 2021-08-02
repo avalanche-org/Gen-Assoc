@@ -101,7 +101,8 @@ __xtra_elements_ :
 modal_term   =  _.querySelector("#myModal") 
 clone_term   =  term.cloneNode(true)  
 modal_term.appendChild(clone_term)  
-files_uploaders.disabled= true  
+files_uploaders.disabled= true 
+files_browser.value= "" 
 
 
 const uploader  =   form_ =>  { 

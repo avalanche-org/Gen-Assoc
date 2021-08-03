@@ -124,24 +124,14 @@ const __wtcp__ =  {
                 
                 utils.rsv_file(phenfile ,  '\t')
                 .then(res => {
-                    utils.std_ofstream(`Rscript ${summary_source} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile}` ,
+                    utils.std_ofstream(`Rscript ${summary_source} --pedfile ${pedfile}--mapfile ${mapfile} --phenfile ${phenfile}` ,
                         exit_code => {
-                            if  (exit_code == 0x00)  {
-                                readFile(".logout" , "utf8" ,  (e , d ) => {
-                                if (e)  sock.emit("log::fail" , e  )   
-                                sock.emit("term::logout"  , d )   
-                            })
+                            if  (exit_code == 0x00)  
+                            {   
+                                utils._stdout(sock)  
                                 sock.emit("load::phenotype"  ,  res-2)   
-                            }else {
-                                log("fail")  
-                                access(".logerr" , constants["F_OK"] , error => {
-                                    if (error ) sock.emit("logerr::notfound" , error)  
-                                    readFile('.logerr' , "utf8" , (err , data) =>{
-                                        if(err) sock.emit("log::broken" ,  error ) 
-                                        sock.emit("term::logerr" , data) 
-                                    })
-                                }) 
-                            }
+                            }else   
+                                utils._stderr(sock , exit_code) 
                         })
                 }) 
             })
@@ -155,37 +145,23 @@ const __wtcp__ =  {
                 let cmdstr = null 
                 if (mm && markerset!= null && markerset != '')  
                 {  
-                    cmdstr =`Rscript ${run_analysis} --pedfile /${paths}/${ped} --mapfile /${paths}/${map} --phenfile /${paths}/${phen} --phen ${phenotype_} --nbsim ${nbsim_} --nbcores ${nbcores_} --markerset ${markerset}` 
+                    cmdstr =`Rscript ${run_analysis} --pedfile ${pedfile} --mapfile ${map} --phenfile ${phenfile} --phen ${phenotype_} --nbsim ${nbsim_} --nbcores ${nbcores_} --markerset ${markerset}` 
             
                 } 
                 if  (sm)  
                 {
-                cmdstr =`Rscript ${run_analysis} --pedfile /${paths}/${ped} --mapfile /${paths}/${map} --phenfile /${paths}/${phen} --phen ${phenotype_}  --nbcores ${nbcores_}`
+                cmdstr =`Rscript ${run_analysis} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_}  --nbcores ${nbcores_}`
                 }
 
                 utils.std_ofstream(cmdstr ,  exit_code  => {
-                    if(exit_code ==0x00) {
+                    if(exit_code ==0x00) 
+                    {
                         log("exit" , exit_code )
                         sock.emit("end"  , exit_code) 
-                        fs.readFile(".logout" , "utf8" , (e , d)  => {
-                            if  (e)    sock.emit("log::fail" , e  )  
-                            log("output result" ,  d) 
-                            //mw.webContents.send("run::analysis_result" ,  d  ) 
-                            sock.emit("term::logout" ,  d  ) 
-                         
-                        })
+                        utils._stdout(sock)   
                     }else {
                         log("error") 
-                        access(".logerr" , constants["F_OK"] , error => {
-                            if (error )  sock.emit("logerr::notfound" , error)  
-                            readFile('.logerr' , "utf8" , (err , data) =>{
-                                if(err) sock.emit("log::broken" ,  error ) 
-                                try 
-                                {  
-                                    sock.emit ("term::logerr" , data)
-                                }catch (err) { }
-                            })
-                        }) 
+                        utils._stderr(sock)   
                     }
                 })
 

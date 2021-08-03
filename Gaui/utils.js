@@ -9,9 +9,10 @@ const
     {log}                     = console,  
     { fstdout , fstderr , fserror} =  require("./config")["io_fstream"]  
  
+   
 module
 ["exports"]  =  {
-    //! TODO  : improve this function to manage correctly  csv or tsv  file ...  
+    //! TODO  : improve this function to manage correctly  csv or tsv  file ... 
     rsv_file :  (  file  , default_delimiter = ","  , readable_mode  = false  )  => {
         return new Promise  ( (resolve , reject )  => {
             readFile(file ,  "utf8" , (e , file_data ) => {
@@ -68,7 +69,42 @@ module
             }
         } 
        return  os.cpus().length 
+    },  
+    output_stream  :  (where ,  socket )   => {    
+        const sksf = stream_key_socket_flags =   { //  skfs   as alias  
+            ".logout"  :  [ "log::notfound"  , "log::fail" , "term::logout" ]  , 
+            ".logerr"  :  [  "log::notfound" , "log::broken" , "term::logerr"] 
+        }  
+        if ( !Object.keys(sksf).includes(where)  ) 
+        {
+            process.stderr.write (`stream file descriptor  is not definde\n`) 
+            process.exit(1) 
+        }
+        
+        access(where,  constants.F_OK,  stream_error  =>  { 
+             if  (  stream_error  ) socket.emit(skfs[where][0]  , stream_error )  
+             readFile ( where , "utf-8" ,  ( stream_error , buffer_data  )  => {
+                 if ( stream_error )  socket.emit (skfs[where][1] , stream_error ) 
+                 try {  
+                  socket.emit(skfs[where][2] ,  buffer_data ) 
+                 }catch ( error )  {}  
+             })
+        })  
+    }  ,
+    _stdout :  socket   => { 
+        const  {  output_stream }  = module.exports 
+        output_stream(".logout" , socket )  
     }, 
+    _stderr :  (socket  , exit_code = false ) => {
+        const  {  output_stream }  = module.exports 
+        output_stream(".logerr" , socket)  
+        if  ( exit_code ) 
+        { 
+            const  mesg_fail = `execution fail  : ${exit_code}` 
+            socket.emit("term::logerr" , mesg_fail)  
+        }
+    } , 
+    
      
     //! TODO :  check all requierment inside the directory file  [ ped map phen] 
     scan_directory  : (  dir_root_location , ...filter_extension  )  =>  {

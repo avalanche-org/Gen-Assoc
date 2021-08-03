@@ -460,8 +460,8 @@ ipcRenderer.on("term::logout" , ( evt , data ) => {
     }
 })
 //! TODO :  [ optional]  style  output error  with red or orange color  ...
-let tigger  = false 
-ipcRenderer.on("log::fail" , (evt , data)  => {
+let tigger  = false
+ipcRenderer.on("log::fail", (evt , data)  => {
     data  =  fetch_right_data  ( activate_extra_elements ,  evt , data ) 
     term.value = data  
     mm.disable = true  

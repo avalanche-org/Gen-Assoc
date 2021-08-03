@@ -158,13 +158,15 @@ let  logfile  =  null
 
 ipcRenderer.on("initialization" ,  (evt , data)  =>{
      
-    data  = fetch_right_data(activate_extra_elements , evt , data )  
-    const  { version ,logpath_location,  available_cpus_core } =  data.initiate ||   data  
+    data  = fetch_right_data(activate_extra_elements , evt , data ) 
+    let    { version ,logpath_location,  available_cpus_core } =  data.initiate ||   data  
     let  {os_detail_info}  =  data?.initiate || data 
     if (!os_detail_info) 
         os_detail_info = data 
 
-    log (os_detail_info) 
+    log (os_detail_info)  
+    if  (!available_cpus_core)  available_cpus_core =  os_detail_info?.cpus
+
     notify("mTdt ", { body : ` mTdt  version ${version}`})
     if   ( data.init_proc == 1 &&  localStorage["iproc"] != 1||  os_detail_info)
     {   
@@ -187,15 +189,15 @@ ipcRenderer.on("initialization" ,  (evt , data)  =>{
         } 
 
     }
-    if ( available_cpus_core)
+    if ( available_cpus_core )
     { 
-    logfile  = logpath_location
-    for  ( let i of   range(available_cpus_core) ) { 
-    // set  how many  cpus  the os got 
-        const ncores_opt =  _.createElement("option") 
-        ncores_opt.text=i 
-        nbcores.add(ncores_opt) 
-    }
+        logfile  = logpath_location
+        for  ( let i of   range(available_cpus_core) ) 
+        { 
+            const ncores_opt =  _.createElement("option") 
+            ncores_opt.text=i 
+            nbcores.add(ncores_opt) 
+        }
     }
 })
 
@@ -215,7 +217,7 @@ const get_prefix_filename =  ( file , separator = ".")  => {
 
 const  is_satisfied  =  needs   => { 
     for  ( need of needs )  
-         return !(( need == null ||  need  == ""))   
+         return !(( need == null ||  need  == "" ||  need ==  undefined ))   
 
     return true 
 }
@@ -374,7 +376,7 @@ run_summary.addEventListener("click" , evt => {
          ]
     }
  
-    let  done   = is_satisfied (selected_files)  
+    const done   = is_satisfied (selected_files)  
     if  (!done)  {
         annoucement = "❗ No files selected "  
         warning_alert   = true  
@@ -528,22 +530,22 @@ run_analysis.addEventListener("click" ,  evt => {
          }  = gobject  =  { 
         paths           :paths_collections ?? null ,
         selected_index  :  { 
-            ped        : ped_  ,   
-            map        : map_  ,   
-            phen       : phen_ ,   
-            phenotype_ : phenotype.options[phenotype.selectedIndex].value ?? null  , 
-            nbsim_     : nbsim.value     || 0  , 
-            nbcores_   : nbcores.options[nbcores.selectedIndex].value  ||  null  ,
-            mm         : mm.checked, 
-            sm         : sm.checked, 
-            markerset  : mm.checked ? markerset.value : null 
+            ped        : ped_  
+            ,map        : map_  
+            ,phen       : phen_ 
+            ,phenotype_ : phenotype.options[phenotype.selectedIndex].value ?? null  
+            ,nbsim_     : nbsim.value     || 0  
+            ,nbcores_   : nbcores.options[nbcores.selectedIndex].value  ||  null  
+            ,mm         : mm.checked
+            ,sm         : sm.checked
+            ,markerset  : mm.checked ? markerset.value : null 
         }  
     }
   
     const  {phenotype_, nbsim_, nbcores_}  = selected_index  
     const  require_needed   = [ phenotype_ ,  nbsim_ , nbcores_ ]  
-    let  not_statified  = false  
-    let  done  =  is_satisfied(require_needed) 
+    const  done  =  is_satisfied(require_needed)
+   
     if   ( !done ) 
     {   
         annoucement="❗Run analysis  need to be satisfied" 
@@ -557,8 +559,8 @@ run_analysis.addEventListener("click" ,  evt => {
             use_cpus_resources(true) 
         } 
 
-        ipcRenderer.send("annoucement" , annoucement) 
-        ipcRenderer.send("run::analysis" ,  gobject )
+        ipcRenderer.send_("annoucement" , annoucement) 
+        ipcRenderer.send_("run::analysis" ,  gobject )
     }
 })
 

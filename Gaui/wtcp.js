@@ -117,16 +117,10 @@ const __wtcp__ =  {
             RUN_SUMMARY : sock.on("run::summary" ,  gobject   =>     { 
                 let   { paths ,  selected_files  } = gobject  ,   
                       [pedfile,mapfile,phenfile]  = selected_files
-                if(typeof(paths) ==  "object"  && paths.length == 0x03 )  
-                { 
-                    pedfile  =  `/${paths[0]}/${pedfile}`
-                    mapfile  =  `/${paths[1]}/${mapfile}`
-                    phenfile =  `/${paths[2]}/${phenfile}`
-                }else  {
-                    pedfile  =  `${paths}/${pedfile}`
-                    mapfile  =  `/${paths}/${mapfile}`
-                    phenfile =  `/${paths}/${phenfile}`
-                } 
+                
+                pedfile  =  `${paths}/${pedfile}`
+                mapfile  =  `${paths}/${mapfile}`
+                phenfile =  `${paths}/${phenfile}`
                 
                 utils.rsv_file(phenfile ,  '\t')
                 .then(res => {
@@ -152,6 +146,51 @@ const __wtcp__ =  {
                 }) 
             })
 
+            RUN_ANALYSYS :   sock.on("run::analysis" ,  gobject => { 
+                const { paths  , selected_index  }  = gobject,
+                     {  mm    , sm , ped , map , phen , phenotype_,  nbsim_ , nbcores_ , markerset }  = selected_index, 
+                     [  pedfile , mapfile , phenfile  ] = [ `${paths}/${ped}` , `${paths}/${map}`,`${paths}/${map}` ]  
+
+                log ( pedfile ) 
+                let cmdstr = null 
+                if (mm && markerset!= null && markerset != '')  
+                {  
+                    cmdstr =`Rscript ${run_analysis} --pedfile /${paths}/${ped} --mapfile /${paths}/${map} --phenfile /${paths}/${phen} --phen ${phenotype_} --nbsim ${nbsim_} --nbcores ${nbcores_} --markerset ${markerset}` 
+            
+                } 
+                if  (sm)  
+                {
+                cmdstr =`Rscript ${run_analysis} --pedfile /${paths}/${ped} --mapfile /${paths}/${map} --phenfile /${paths}/${phen} --phen ${phenotype_}  --nbcores ${nbcores_}`
+                }
+
+                utils.std_ofstream(cmdstr ,  exit_code  => {
+                    if(exit_code ==0x00) {
+                        log("exit" , exit_code )
+                        sock.emit("end"  , exit_code) 
+                        fs.readFile(".logout" , "utf8" , (e , d)  => {
+                            if  (e)    sock.emit("log::fail" , e  )  
+                            log("output result" ,  d) 
+                            //mw.webContents.send("run::analysis_result" ,  d  ) 
+                            sock.emit("term::logout" ,  d  ) 
+                         
+                        })
+                    }else {
+                        log("error") 
+                        access(".logerr" , constants["F_OK"] , error => {
+                            if (error )  sock.emit("logerr::notfound" , error)  
+                            readFile('.logerr' , "utf8" , (err , data) =>{
+                                if(err) sock.emit("log::broken" ,  error ) 
+                                try 
+                                {  
+                                    sock.emit ("term::logerr" , data)
+                                }catch (err) { }
+                            })
+                        }) 
+                    }
+                })
+
+            
+            })
 
              __server_side_evt__  :  
              

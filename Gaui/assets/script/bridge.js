@@ -263,10 +263,8 @@ ipcRenderer.on("Browse::single"   , (evt ,  global_object ) =>   {
     
     const  { main_root  , files  } = global_object  
     
-    log(main_root)
     paths_collections =  main_root  
     files_collections =  files
-    log(files)  
     optsfeed(files)
     //progress_step(15 , `loading  files ` ,  rand(400)) 
 }) 

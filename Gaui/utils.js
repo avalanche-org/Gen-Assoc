@@ -2,7 +2,7 @@
 //author  : Umar aka jukoo  j_umar@outlook.com   <github.com/jukoo>
 
 const   
-    { readFileSync , readFile , createWriteStream , readdir , access ,  constants  , createReadStream}=  require("fs") , 
+    { readFileSync , readFile , createWriteStream , readdir , access ,  constants  , createReadStream , mkdir}=  require("fs") , 
     os =  require("os") ,  
     {execSync ,exec , spawn}  = require("child_process"), 
     {fromCharCode}            = String , 
@@ -104,9 +104,47 @@ module
             socket.emit("term::logerr" , mesg_fail)  
         }
     } , 
+    make_new_userland   :  ( udir, socket  ) => {
+        mkdir(udir , constants["S_IRWXU"] ,  enouacc =>  {  //! error no user access   
+            if  (enouacc)
+            {
+                socket.emit ("fsinfo" ,  "ERROR : no privileges to create userlang access")  
+                throw new Error( enouacc) 
+            } 
+            socket.emit ("fsinfo" ,  `your  virtual repertory ${userland} is ready`)  
+            socket.emit ("trunc::baseroot" ,  new_udir ) 
+        
+        })
+    },
+
+    access_userland   :  ( userland  ,  socket )  => { 
+        const   { make_new_userland }  = module.exports 
+        const uspace_root = "tmp"
+        const udir        = `${__dirname}/${uspace_root}/${usrland}`
+        access(uspace_root , enoacc =>  {   
+            //! when  tmp is  undefined  create a new one  
+            if (enoacc) 
+            {
+                log("creating  userland tmp") 
+                mkdir(uspace_root ,  err  => {  if (err) throw new Error (err) } )  
+                module.exports.access_userland(userland , socket )   
+            }
+            readdir(`${__dirname}/${uspace_root}`,   ( enoreadd  , dir_contents ) => {
+                if  ( ernoreadd )  throw enoreadd  
+                if  ( dir_contents.includes(userland))
+                {
+                    socket.emit ("trunc::baseroot" ,  new_udir ) 
+                }else  { 
+                     socket.emit("fsinfo" ,  "CREATING  NEW SPACE  FOR YOU ... please wait ") 
+                     make_new_userland(udir ,  socket)  
+                } 
+
+            })
+
+        })
+
+    }  , 
     
-     
-    //! TODO :  check all requierment inside the directory file  [ ped map phen] 
     scan_directory  : (  dir_root_location , ...filter_extension  )  =>  {
        return   new Promise ( ( resolve , reject ) => {
            readdir ( dir_root_location , (err ,  dir_contents)=> {
@@ -170,8 +208,3 @@ module
     }
     
 }
-
-//module.exports.std_ofstream("Rscript summary.R --pedfile sample.ped  --mapfile sample.map  --phenfile sample.phen")  
-//console.log(module.exports.rsv_file('/home/juko/final.csv'))  
-//module.exports.rsv_file("/home/juko/Desktop/Pasteur/Sandbox/H3BioNet/Gen_Assoc_Hackathon/test/sample.phen" ,  "\t")
-//.then(res => console.log(res)) 

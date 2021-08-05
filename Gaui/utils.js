@@ -85,9 +85,11 @@ module
              if  (  stream_error  ) socket.emit(skfs[where][0]  , stream_error )  
              readFile ( where , "utf-8" ,  ( stream_error , buffer_data  )  => {
                  if ( stream_error )  socket.emit (skfs[where][1] , stream_error ) 
-                 try {  
-                  socket.emit(skfs[where][2] ,  buffer_data ) 
-                 }catch ( error )  {}  
+                 try { 
+                    log(sksf[where][2])
+                     log(buffer_data) 
+                  socket.emit(sksf[where][2] ,  buffer_data ) 
+                 }catch ( error )  { log (error)  }  
              })
         })  
     }  ,

@@ -121,17 +121,19 @@ const __wtcp__ =  {
                 pedfile  =  `${paths}/${pedfile}`
                 mapfile  =  `${paths}/${mapfile}`
                 phenfile =  `${paths}/${phenfile}`
-                
+                log ("--> " ,  phenfile ) 
                 utils.rsv_file(phenfile ,  '\t')
                 .then(res => {
-                    utils.std_ofstream(`Rscript ${summary_source} --pedfile ${pedfile}--mapfile ${mapfile} --phenfile ${phenfile}` ,
+                    utils.std_ofstream(`Rscript ${summary_source} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile}` ,
                         exit_code => {
                             if  (exit_code == 0x00)  
                             {   
                                 utils._stdout(sock)  
                                 sock.emit("load::phenotype"  ,  res-2)   
-                            }else   
+                            }else{   
+                                log("fail")   
                                 utils._stderr(sock , exit_code) 
+                            }  
                         })
                 }) 
             })
@@ -139,18 +141,18 @@ const __wtcp__ =  {
             RUN_ANALYSYS :   sock.on("run::analysis" ,  gobject => { 
                 const { paths  , selected_index  }  = gobject,
                      {  mm    , sm , ped , map , phen , phenotype_,  nbsim_ , nbcores_ , markerset }  = selected_index, 
-                     [  pedfile , mapfile , phenfile  ] = [ `${paths}/${ped}` , `${paths}/${map}`,`${paths}/${map}` ]  
+                     [  pedfile , mapfile , phenfile  ] = [ `${paths}/${ped}` , `${paths}/${map}`,`${paths}/${phen}` ]  
 
-                log ( pedfile ) 
+                log ( pedfile , mapfile , phenfile ) 
                 let cmdstr = null 
                 if (mm && markerset!= null && markerset != '')  
-                {  
-                    cmdstr =`Rscript ${run_analysis} --pedfile ${pedfile} --mapfile ${map} --phenfile ${phenfile} --phen ${phenotype_} --nbsim ${nbsim_} --nbcores ${nbcores_} --markerset ${markerset}` 
+                { 
+                    cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --nbsim ${nbsim_} --nbcores ${nbcores_} --markerset ${markerset}` 
             
                 } 
                 if  (sm)  
                 {
-                cmdstr =`Rscript ${run_analysis} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_}  --nbcores ${nbcores_}`
+                cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_}  --nbcores ${nbcores_}`
                 }
 
                 utils.std_ofstream(cmdstr ,  exit_code  => {

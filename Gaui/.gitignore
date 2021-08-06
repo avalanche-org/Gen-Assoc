@@ -12,3 +12,4 @@ package-lock.json
 *.map
 *.phen
 tmp/
+weighted_res_multilocus.work 

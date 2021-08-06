@@ -129,7 +129,8 @@ const __wtcp__ =  {
                             if  (exit_code == 0x00)  
                             {   
                                 utils._stdout(sock)  
-                                sock.emit("load::phenotype"  ,  res-2)   
+                                sock.emit("load::phenotype"  ,  res-2)  
+                                
                             }else{   
                                 log("fail")   
                                 utils._stderr(sock , exit_code) 

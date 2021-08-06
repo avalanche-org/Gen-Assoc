@@ -192,11 +192,10 @@ ipcRenderer.on("initialization" ,  (evt , data)  =>{
     if ( available_cpus_core )
     {
         logfile  = logpath_location
-        for  ( let i of   range(available_cpus_core) ) 
+        for  ( let i of   range(available_cpus_core-1) ) 
         { 
             const ncores_opt =  _.createElement("option") 
-            ncores_opt.text=i
-            nbcores.disabled = false  
+            ncores_opt.text=i+1  
             nbcores.add(ncores_opt) 
         }
     }
@@ -419,7 +418,7 @@ sm.addEventListener("change" , evt => {
 })
 ipcRenderer.on("load::phenotype" ,  (evt ,  incomming_data ) =>  {
     phenotype.innerHTML = ""  
-    
+    nbcores.disabled =  false 
     incomming_data = fetch_right_data ( activate_extra_elements ,  evt , incomming_data)  
     for  ( let phen_index  of range(incomming_data )) { 
         const phenotype_opts = _.createElement("option")  

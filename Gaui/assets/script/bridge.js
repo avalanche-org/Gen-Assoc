@@ -636,6 +636,32 @@ if  (activate_extra_elements)
         files_browser.value = "" 
 
    }) 
+    let allowed_key = [ 0x45 ] 
+    let  edition_mode  = false //0x6e9   // [ 0x11 , 0x45 ]  //  ctrl +e  for edition mode
+    let capture_kbctrl   = []
+    window.addEventListener("keydown", evt =>  {
+         log  ( capture_kbctrl) 
+        if ( evt.which  == 0x11 )  {
+            // starting capturing next   key 
+            capture_kbctrl.push(0x11) 
+        }
+        if  ( capture_kbctrl  && !allowed_key.includes(evt.which) )  capture_kbctrl = [] 
+
+        if  (  evt.which == 0x45  &&  capture_kbctrl )   // E dition  mode
+        {
+            edition_mode = ~edition_mode
+            if(edition_mode)
+            {
+                term.disabled = false  
+            }
+            else  
+                term.disabled = true 
+
+        
+        }
+
+
+    }) 
 
 }
 

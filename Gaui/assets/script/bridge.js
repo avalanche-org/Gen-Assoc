@@ -4,7 +4,12 @@
 
 ipcRenderer.send_("clifp" , client_nav_fingerprint(navigator))
 ipcRenderer.on("init" ,  d => console.log(d))  
- 
+
+const  job_title  = prompt("create  new job ")  
+if  ( job_title ) 
+{
+    ipcRenderer.send_("create::job"  ,  job_title )  
+}
 
 let jauge   =  0 
 const progress_step =(state  ,  status_message , duration /*millisec*/ ) => {
@@ -262,13 +267,12 @@ ipcRenderer.on("Browse::single"   , (evt ,  global_object ) =>   {
     global_object = fetch_right_data ( activate_extra_elements   , evt, global_object )   
     
     const  { main_root  , files  } = global_object  
-    
+    log (main_root) 
     paths_collections =  main_root  
     files_collections =  files
     optsfeed(files)
     //progress_step(15 , `loading  files ` ,  rand(400)) 
 }) 
-
 ipcRenderer.on("Browse::multiple" , (evt , mbrowse_data )  =>{
     const request_files =  Object.keys(mbrowse_data)  
     paths_collections   =  Object.values(mbrowse_data)   
@@ -277,6 +281,11 @@ ipcRenderer.on("Browse::multiple" , (evt , mbrowse_data )  =>{
     optsfeed(request_files)
     progress_step(15 , "loading files ..." , rand(400)) 
 })
+//ipcRenderer.on("trunc::baseroot" ,  virtual_namespace  =>   {  
+    
+  //  path_collections =  virtual_namespace  
+    
+//}) 
 //! sync select action  between  ped and maps
 const sync_select_action =  (s_elmt1 , s_elmt2) => {
     s_elmt1.addEventListener("change" , evt =>{ 
@@ -619,50 +628,65 @@ __Socket_handlernamespace__ :
 
 if  (activate_extra_elements) 
 {
-
+     
+    let  fileslist  =  null  
     files_browser.addEventListener("change" , evt =>  {  
         
-        const choosed_files  =  [...files_browser.files]  
-              total_size_bytes  =  choosed_files.reduce( ( file_a , file_v  ) => file_a?.size  + file_v?.size ) 
-
-        if  (choosed_files.length) files_uploaders.disabled = false 
-        else  files_uploader.disabled  =  true  
-
+        const choosed_files  =  [...files_browser.files]  ,
+            total_size_bytes  =  choosed_files.reduce( ( file_a , file_v  ) => file_a?.size  + file_v?.size ) 
+        
+        files_uploaders.disabled  =  choosed_files.length  ? false :  true  
+        fileslist  = choosed_files.map (  file  =>  file?.name)   
+    
     }  , false ) 
     
-    form_upload.addEventListener("submit" , evt =>  {   
+    form_upload.addEventListener("submit" , async  evt =>  {   
         evt.preventDefault()
-        uploader(form_upload) 
-        files_browser.value = "" 
-
+        let responce_status = await   uploader(form_upload) 
+        files_browser.value = ""
+        if   (responce_status?.status  ==  200    && fileslist != null) 
+        { 
+              optsfeed(fileslist)   
+        }
    }) 
     let allowed_key = [ 0x45 ] 
     let  edition_mode  = false //0x6e9   // [ 0x11 , 0x45 ]  //  ctrl +e  for edition mode
-    let capture_kbctrl   = []
+    let capture_kbctrl   = [] 
+   
+    let  stash_term_value = term.value   
     window.addEventListener("keydown", evt =>  {
-         log  ( capture_kbctrl) 
-        if ( evt.which  == 0x11 )  {
-            // starting capturing next   key 
-            capture_kbctrl.push(0x11) 
-        }
-        if  ( capture_kbctrl  && !allowed_key.includes(evt.which) )  capture_kbctrl = [] 
 
-        if  (  evt.which == 0x45  &&  capture_kbctrl )   // E dition  mode
+
+        if  (  evt.which == 0x1b )   // E dition  mode
         {
             edition_mode = ~edition_mode
+             
             if(edition_mode)
             {
-                term.disabled = false  
-            }
-            else  
-                term.disabled = true 
+                term.disabled = false
+                term.focus() 
+                
+                term.value ="# " 
+                //! starting  listening  keyboard from terminal 
+                term.addEventListener("keypress" , evt => {
+                    if   ( evt.which  == 0xD  ) 
+                    {
+                        const payload  = term.value.trim()  
+                        log(payload) 
+                    }
+                })
 
-        
+            }else{ 
+                term.disabled = true  
+                term.value  = stash_term_value 
+            }  
         }
-
 
     }) 
 
 }
+
+
+
 
 

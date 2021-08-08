@@ -113,8 +113,8 @@ module
                 socket.emit ("fsinfo" ,  "ERROR : no privileges to create userlang access")  
                 throw new Error( enouacc) 
             } 
-            socket.emit ("fsinfo" ,  `your  virtual repertory ${userland} is ready`)  
-            socket.emit ("trunc::baseroot" ,  new_udir ) 
+            socket.emit ("fsinfo" ,  `your  virtual repertory  is ready`)  
+            socket.emit ("trunc::baseroot" ,  udir ) 
         
         })
     },
@@ -122,7 +122,7 @@ module
     access_userland   :  ( userland  ,  socket )  => { 
         const   { make_new_userland }  = module.exports 
         const uspace_root = "tmp"
-        const udir        = `${__dirname}/${uspace_root}/${usrland}`
+        const udir        = `${__dirname}/${uspace_root}/${userland}`
         access(uspace_root , enoacc =>  {   
             //! when  tmp is  undefined  create a new one  
             if (enoacc) 
@@ -132,10 +132,10 @@ module
                 module.exports.access_userland(userland , socket )   
             }
             readdir(`${__dirname}/${uspace_root}`,   ( enoreadd  , dir_contents ) => {
-                if  ( ernoreadd )  throw enoreadd  
+                if  ( enoreadd )  throw enoreadd  
                 if  ( dir_contents.includes(userland))
                 {
-                    socket.emit ("trunc::baseroot" ,  new_udir ) 
+                    socket.emit ("trunc::baseroot" ,  udir ) 
                 }else  { 
                      socket.emit("fsinfo" ,  "CREATING  NEW SPACE  FOR YOU ... please wait ") 
                      make_new_userland(udir ,  socket)  

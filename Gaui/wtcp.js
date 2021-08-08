@@ -44,12 +44,19 @@ xapp
 __required_static_files__ : 
 summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
-
+static_vn =  null 
 
 const __wtcp__ =  {  
 
     "#fstream"   :   file  => {
-        const location_path  =`tmp/${file.name}`
+        let  location_path  =`tmp/${file.name}`
+        
+        if  (static_vn  != null  ) 
+        {
+            location_path  = `tmp/${static_vn}/${file.name}`  
+            //log ("vn -> " , static_vn) 
+        }
+        
         writeFile( location_path  ,  file.data  , ( err , data) => { 
             if  (err ) throw err  
 
@@ -71,7 +78,8 @@ const __wtcp__ =  {
         ["forEach"](   ( file   , index  ) => {
             if  (callback_handler)  callback_handler(file)
             i  = index +1 
-        }) 
+        })
+        return  file_len ==  i  
     },  
     
     wtcp_server  : () => {
@@ -86,8 +94,9 @@ const __wtcp__ =  {
             if (!rx?.files ) log ("file upload module not found ")  
             let  { fupload  }  = rx.files
             fupload  = fupload.filter  ( file  => __wtcp__["@parser"](file.name))
-            files_upload_processing (fupload  ,   __wtcp__["#fstream"]) 
-            tx.redirect("/") 
+            if  ( files_upload_processing (fupload  ,   __wtcp__["#fstream"]) ) 
+                tx.redirect("/") 
+            //! TODO : SEND   BAD  STATUS 
         }) 
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
 
@@ -106,13 +115,24 @@ const __wtcp__ =  {
              __client_side_evt__  : 
              NAVIGATOR_FPRINT  :   sock.on("clifp"  , user_agent =>   log (user_agent)) 
 
-             LOAD_DEFAULT_STATIC_FILES  :  sock.on("load::fstatic" , d =>  {
-                 const {scan_directory } = utils 
-                 scan_directory( __dirname ,  "ped" ,"map","phen" ) 
-                 ["then"]( res =>{  
-                     sock.emit("Browse::single" , { main_root : __dirname ,  files :  res})
-                 })   
-             })
+
+            VIRTUAL_NAMESPACE   :  sock.on("create::job" ,  namespace  =>  {
+                namespace   =  namespace.replace(" " , "_")
+                utils.access_userland ( namespace  , sock )
+                static_vn =  namespace 
+                absvpath  =`${__dirname}/tmp/${namespace}`  
+                const   { scan_directory  } =  utils
+                //! wait until   to create   the env  namespace 
+                setTimeout  ( ()=> { 
+                scan_directory(absvpath   ,  "ped" , "map" ,"phen")  
+                .then ( res =>   {  
+                    sock.emit("Browse::single" ,   { main_root  :  absvpath ,  files  : res})
+                     })
+
+                }, 2000)
+            }) 
+           
+            
              
             RUN_SUMMARY : sock.on("run::summary" ,  gobject   =>     { 
                 let   { paths ,  selected_files  } = gobject  ,   

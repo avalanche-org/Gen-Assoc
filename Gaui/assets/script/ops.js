@@ -105,7 +105,7 @@ files_uploaders.disabled= true
 files_browser.value= "" 
 
 
-const uploader  =   form_ =>  { 
+const uploader  =   async   form_ =>  { 
 
     if (!form_.ELEMENT_NODE ==  Element.ELEMENT_NODE) 
     {
@@ -116,7 +116,8 @@ const uploader  =   form_ =>  {
         method:"POST" , 
         body  : new FormData(form_ ) 
     }
-    window.fetch ("/" ,  { ...payload }  ) 
-    
+    const  state  = await window.fetch ("/" ,  { ...payload }  )
+
+    return  state 
 }
  

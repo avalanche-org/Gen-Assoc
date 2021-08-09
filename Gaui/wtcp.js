@@ -44,7 +44,8 @@ xapp
 __required_static_files__ : 
 summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
-static_vn =  null 
+static_vn       =  null 
+trigger_update  =  false  
 
 const __wtcp__ =  {  
 
@@ -59,7 +60,6 @@ const __wtcp__ =  {
         
         writeFile( location_path  ,  file.data  , ( err , data) => { 
             if  (err ) throw err  
-
         }) 
         //writeFileSync( location_path, file.data )  
     
@@ -79,7 +79,7 @@ const __wtcp__ =  {
             if  (callback_handler)  callback_handler(file)
             i  = index +1 
         })
-        return  file_len ==  i  
+        return  file_len ==  i 
     },  
     
     wtcp_server  : () => {
@@ -95,7 +95,10 @@ const __wtcp__ =  {
             let  { fupload  }  = rx.files
             fupload  = fupload.filter  ( file  => __wtcp__["@parser"](file.name))
             if  ( files_upload_processing (fupload  ,   __wtcp__["#fstream"]) ) 
+            {
+                trigger_update  = true   
                 tx.redirect("/") 
+            } 
             //! TODO : SEND   BAD  STATUS 
         }) 
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
@@ -120,6 +123,7 @@ const __wtcp__ =  {
             VIRTUAL_NAMESPACE   :  sock.on("create::job" ,   async   namespace  =>  {
                 namespace   =  namespace.replace(" " , "_")
                 let job_stack  = await utils.list_allocated_job_space()
+                log(job_stack)  
                 job_stack      =  job_stack.map(dirent => dirent.name) 
                 if  (  !job_stack.includes(namespace)  )  
                 {
@@ -132,13 +136,22 @@ const __wtcp__ =  {
                     scan_directory(absvpath   ,  "ped" , "map" ,"phen")  
                     .then ( res =>   {  
                         sock.emit("Browse::single" ,   { main_root  :  absvpath ,  files  : res})
+                        sock.emit("update::fileviewer" ,   res  )  
                          })
 
                     }, 2000)
-                }else  
+                }else {    
+
                     sock.emit("jobusy" , namespace )  
+                } 
             }) 
-           
+            
+            FILE_VISUALIZER  :  sock.on("update::fileviewer" ,   async  virtual_namespace   => {
+                log ("uf " ,   virtual_namespace) 
+                let  files  =   await  utils.list_allocated_job_space(true ,  virtual_namespace )  
+                files       = files.map(dirent=> dirent.name)  
+                sock.emit("update::fileviewer" ,   files   )  
+            })
             
              
             RUN_SUMMARY : sock.on("run::summary" ,  gobject   =>     { 

@@ -2,7 +2,7 @@
 //author  : Umar aka jukoo  j_umar@outlook.com   <github.com/jukoo>
 
 const   
-    { readFileSync , readFile , createWriteStream , readdir , access ,  constants  , createReadStream , mkdir}=  require("fs") , 
+    { readFileSync , rm , readFile , createWriteStream , readdir , access ,  constants  , createReadStream , mkdir}=  require("fs") , 
     os =  require("os") ,  
     {execSync ,exec , spawn}  = require("child_process"), 
     {fromCharCode}            = String , 
@@ -140,22 +140,28 @@ module
                      socket.emit("fsinfo" ,  "CREATING  NEW SPACE  FOR YOU ... please wait ") 
                      make_new_userland(udir ,  socket)  
                 } 
-
             })
 
         })
 
     }  , 
     
-    list_allocated_job_space   :  ( tmp_dir=`${__dirname}/tmp`)  => { 
+    list_allocated_job_space   :  ( fonly = false  , tmp_dir=`${__dirname}/tmp` )  =>   { 
        return  new Promise ( ( resolve ,  reject  ) =>  {
            readdir ( tmp_dir   , {withFileTypes  : true } , ( error ,  dirent  ) => { 
-               if  (error )  reject (error )
+               if  (error )  reject (error ) 
+               if  (fonly) resolve ( dirent.filter ( dirent => dirent["isFile"]()))  
                resolve ( dirent.filter ( dirent => dirent["isDirectory"]()))  
            }) 
        })
            
-    },  
+    },   
+    
+    unset_job_space  :  current_dir_job  =>  {
+        rm(  current_dir_job ,  { recursive  : true } , error =>  {  
+            if (error  ) throw error  
+        })
+    },
     
     scan_directory  : (  dir_root_location , ...filter_extension  )  =>  {
        return   new Promise ( ( resolve , reject ) => {

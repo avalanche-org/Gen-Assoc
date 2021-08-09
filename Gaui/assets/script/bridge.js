@@ -5,10 +5,14 @@
 ipcRenderer.send_("clifp" , client_nav_fingerprint(navigator))
 ipcRenderer.on("init" ,  d => console.log(d))  
 
-const  job_title  = prompt("create  new job ")  
-if  ( job_title ) 
+let   job_title =  undefined  
+if  ( ! localStorage["current_task"] )  job_title = prompt("create  new job ")  
+
+if  (job_title) 
 {
-    ipcRenderer.send_("create::job"  ,  job_title )  
+    ipcRenderer.send_("create::job"  ,  job_title ) 
+    localStorage["current_task"]  =   job_title  
+    
 }
 
 let jauge   =  0 
@@ -646,7 +650,9 @@ if  (activate_extra_elements)
         files_browser.value = ""
         if   (responce_status?.status  ==  200    && fileslist != null) 
         { 
-              optsfeed(fileslist)   
+            optsfeed(fileslist)  
+            // update  file visualization  
+            ipcRenderer.send_("update::fileviewer" ,   paths_collections )  
         }
    }) 
     let allowed_key = [ 0x45 ] 
@@ -684,7 +690,12 @@ if  (activate_extra_elements)
 
     }) 
     
-    ipcRenderer.on("jobusy" ,   vn => log ("this  ->" , vn , " is busy  " ) ) 
+    ipcRenderer.on("update::fileviewer" ,   fileslist  =>  log (fileslist )  ) 
+
+    ipcRenderer.on("jobusy" ,   vn => {
+         localStorage.clear()  
+         log("no job")  
+    }) 
 }
 
 

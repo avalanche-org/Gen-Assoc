@@ -147,6 +147,16 @@ module
 
     }  , 
     
+    list_allocated_job_space   :  ( tmp_dir=`${__dirname}/tmp`)  => { 
+       return  new Promise ( ( resolve ,  reject  ) =>  {
+           readdir ( tmp_dir   , {withFileTypes  : true } , ( error ,  dirent  ) => { 
+               if  (error )  reject (error )
+               resolve ( dirent.filter ( dirent => dirent["isDirectory"]()))  
+           }) 
+       })
+           
+    },  
+    
     scan_directory  : (  dir_root_location , ...filter_extension  )  =>  {
        return   new Promise ( ( resolve , reject ) => {
            readdir ( dir_root_location , (err ,  dir_contents)=> {

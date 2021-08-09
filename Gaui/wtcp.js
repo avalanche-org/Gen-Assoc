@@ -111,25 +111,32 @@ const __wtcp__ =  {
             }
         }) 
 
-        socket.on("connection" , sock => {
+        socket.on("connection" , sock => { 
              __client_side_evt__  : 
-             NAVIGATOR_FPRINT  :   sock.on("clifp"  , user_agent =>   log (user_agent)) 
+             NAVIGATOR_FPRINT  :   sock.on("clifp"  , user_agent =>   log (user_agent))  
+             
+            //sock.disconnect()  
 
-
-            VIRTUAL_NAMESPACE   :  sock.on("create::job" ,  namespace  =>  {
+            VIRTUAL_NAMESPACE   :  sock.on("create::job" ,   async   namespace  =>  {
                 namespace   =  namespace.replace(" " , "_")
-                utils.access_userland ( namespace  , sock )
-                static_vn =  namespace 
-                absvpath  =`${__dirname}/tmp/${namespace}`  
-                const   { scan_directory  } =  utils
-                //! wait until   to create   the env  namespace 
-                setTimeout  ( ()=> { 
-                scan_directory(absvpath   ,  "ped" , "map" ,"phen")  
-                .then ( res =>   {  
-                    sock.emit("Browse::single" ,   { main_root  :  absvpath ,  files  : res})
-                     })
+                let job_stack  = await utils.list_allocated_job_space()
+                job_stack      =  job_stack.map(dirent => dirent.name) 
+                if  (  !job_stack.includes(namespace)  )  
+                {
+                    utils.access_userland ( namespace  , sock )
+                    static_vn =  namespace 
+                    absvpath  =`${__dirname}/tmp/${namespace}`  
+                    const   { scan_directory  } =  utils
+                    //! wait until   to create   the env  namespace 
+                    setTimeout  ( ()=> { 
+                    scan_directory(absvpath   ,  "ped" , "map" ,"phen")  
+                    .then ( res =>   {  
+                        sock.emit("Browse::single" ,   { main_root  :  absvpath ,  files  : res})
+                         })
 
-                }, 2000)
+                    }, 2000)
+                }else  
+                    sock.emit("jobusy" , namespace )  
             }) 
            
             

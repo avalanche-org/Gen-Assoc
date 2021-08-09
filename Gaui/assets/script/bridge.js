@@ -683,7 +683,8 @@ if  (activate_extra_elements)
         }
 
     }) 
-
+    
+    ipcRenderer.on("jobusy" ,   vn => log ("this  ->" , vn , " is busy  " ) ) 
 }
 
 

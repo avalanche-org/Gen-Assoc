@@ -54,6 +54,10 @@ const rand                        =  ( min , max=0 )         =>  max? random() *
 const display_speed               =  hertz_frequency         =>  (1000/hertz_frequency) * 1 
 const client_nav_fingerprint = ( { userAgent } )  =>  userAgent
 const fetch_right_data       = ( release_extra_element   , event  , data  ) =>  release_extra_element  ? event : data 
+
+const sleep  = ( duration  , callback_statement = false )   =>   {
+    setTimeout(  () => { callback_statement() ?? undefined  }   , duration )
+}
 //!  DOM  Html  mapping  
 const  [
     ped , map , 

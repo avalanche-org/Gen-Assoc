@@ -44,16 +44,17 @@ xapp
 __required_static_files__ : 
 summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
+
 static_vn       =  null 
-trigger_update  =  false  
 
 const __wtcp__ =  {  
 
     "#fstream"   :   file  => {
         let  location_path  =`tmp/${file.name}`
-        
+         
         if  (static_vn  != null  ) 
         {
+            log("static vn uploader " ,  static_vn ) 
             location_path  = `tmp/${static_vn}/${file.name}`  
             //log ("vn -> " , static_vn) 
         }
@@ -95,10 +96,7 @@ const __wtcp__ =  {
             let  { fupload  }  = rx.files
             fupload  = fupload.filter  ( file  => __wtcp__["@parser"](file.name))
             if  ( files_upload_processing (fupload  ,   __wtcp__["#fstream"]) ) 
-            {
-                trigger_update  = true   
                 tx.redirect("/") 
-            } 
             //! TODO : SEND   BAD  STATUS 
         }) 
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
@@ -116,14 +114,25 @@ const __wtcp__ =  {
 
         socket.on("connection" , sock => { 
              __client_side_evt__  : 
-             NAVIGATOR_FPRINT  :   sock.on("clifp"  , user_agent =>   log (user_agent))  
+             NAVIGATOR_FPRINT  :   sock.on("clifp"  ,  fprint => { 
+                 const  {  user_agent   ,  ls_session  } = fprint  
+                 log  ( user_agent) 
+                 if  ( ls_session )  
+                 {
+                     static_vn  =  ls_session.split(`${so}`).slice(-1) 
+                     setTimeout  ( ()=> { 
+                            utils.scan_directory(ls_session,  "ped" , "map" ,"phen")  
+                            .then ( res =>   {  
+                                sock.emit("Browse::single" ,   { main_root  :  ls_session ,  files  : res})
+                                sock.emit("update::fileviewer" ,   res  )  
+                            })
+                        }, 1000)
+                 }
+             })  
              
-            //sock.disconnect()  
-
             VIRTUAL_NAMESPACE   :  sock.on("create::job" ,   async   namespace  =>  {
                 namespace   =  namespace.replace(" " , "_")
-                let job_stack  = await utils.list_allocated_job_space()
-                log(job_stack)  
+                let job_stack  = await utils.list_allocated_job_space() 
                 job_stack      =  job_stack.map(dirent => dirent.name) 
                 if  (  !job_stack.includes(namespace)  )  
                 {
@@ -138,21 +147,23 @@ const __wtcp__ =  {
                         sock.emit("Browse::single" ,   { main_root  :  absvpath ,  files  : res})
                         sock.emit("update::fileviewer" ,   res  )  
                          })
-
                     }, 2000)
                 }else {    
-
                     sock.emit("jobusy" , namespace )  
                 } 
             }) 
             
             FILE_VISUALIZER  :  sock.on("update::fileviewer" ,   async  virtual_namespace   => {
-                log ("uf " ,   virtual_namespace) 
+                static_vn   = virtual_namespace.split(`${so}`).slice(-1) 
                 let  files  =   await  utils.list_allocated_job_space(true ,  virtual_namespace )  
                 files       = files.map(dirent=> dirent.name)  
-                sock.emit("update::fileviewer" ,   files   )  
+                sock.emit("update::fileviewer" ,   files)  
             })
-            
+
+            RELEASE_JOB  :  sock.on("client::disconnect" , path_collection  => {
+                utils.unset_job_space(path_collection) 
+                sock.disconnect() 
+            }) 
              
             RUN_SUMMARY : sock.on("run::summary" ,  gobject   =>     { 
                 let   { paths ,  selected_files  } = gobject  ,   

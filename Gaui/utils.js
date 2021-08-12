@@ -127,8 +127,13 @@ module
             //! when  tmp is  undefined  create a new one  
             if (enoacc) 
             {
-                log("creating  userland tmp") 
-                mkdir(uspace_root ,  err  => {  if (err) throw new Error (err) } )  
+                socket.emit("fsinfo" ,  "Intializing temporary volume ... ")  
+                mkdir(uspace_root ,  err  => {  
+                    if (err)
+                    {   socket.emit("fsinfo" ,  `[internal error] x failure  : ${err}`) 
+                        throw new Error (err) 
+                    }
+                } )  
                 module.exports.access_userland(userland , socket )   
             }
             readdir(`${__dirname}/${uspace_root}`,   ( enoreadd  , dir_contents ) => {
@@ -137,8 +142,8 @@ module
                 {
                     socket.emit ("trunc::baseroot" ,  udir ) 
                 }else  { 
-                     socket.emit("fsinfo" ,  "CREATING  NEW SPACE  FOR YOU ... please wait ") 
                      make_new_userland(udir ,  socket)  
+                     socket.emit("fsinfo" ,  "status :: ready  ") 
                 } 
             })
 
@@ -146,12 +151,12 @@ module
 
     }  , 
     
-    list_allocated_job_space   :  ( fonly = false  , tmp_dir=`${__dirname}/tmp` )  =>   { 
+    list_allocated_job_space   :  ( fonly = false  , tmp_dir=`${__dirname}/tmp` )  =>   {
        return  new Promise ( ( resolve ,  reject  ) =>  {
            readdir ( tmp_dir   , {withFileTypes  : true } , ( error ,  dirent  ) => { 
-               if  (error )  reject (error ) 
+               if  (error )  reject (error )
                if  (fonly) resolve ( dirent.filter ( dirent => dirent["isFile"]()))  
-               resolve ( dirent.filter ( dirent => dirent["isDirectory"]()))  
+                resolve ( dirent.filter ( dirent => dirent["isDirectory"]()))  
            }) 
        })
            
@@ -159,7 +164,7 @@ module
     
     unset_job_space  :  current_dir_job  =>  {
         rm(  current_dir_job ,  { recursive  : true } , error =>  {  
-            if (error  ) throw error  
+            if (error) throw error  
         })
     },
     

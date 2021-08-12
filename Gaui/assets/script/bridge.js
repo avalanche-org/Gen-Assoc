@@ -1,19 +1,13 @@
 //! author  : umar aka juko    < github/jukoo>  
 //! this script make a bridge between  main  process and renderer process 
 //! sending event through backend side   
-
-ipcRenderer.send_("clifp" , client_nav_fingerprint(navigator))
+ipcRenderer.send_("clifp" ,   { user_agent : client_nav_fingerprint(navigator) , ls_session : localStorage["task"]?? null})
 ipcRenderer.on("init" ,  d => console.log(d))  
 
-let   job_title =  undefined  
-if  ( ! localStorage["current_task"] )  job_title = prompt("create  new job ")  
-
-if  (job_title) 
-{
-    ipcRenderer.send_("create::job"  ,  job_title ) 
-    localStorage["current_task"]  =   job_title  
-    
-}
+let job_title =  undefined  
+if (!localStorage["task"] )  job_title = prompt("create  new job ")  
+if (!job_title) files_browser.disabled = true 
+if (job_title ) ipcRenderer.send_("create::job"  ,  job_title )  
 
 let jauge   =  0 
 const progress_step =(state  ,  status_message , duration /*millisec*/ ) => {
@@ -158,23 +152,16 @@ const stop_blink_on_faillure   = ( target ,   state  ) => {
         use_cpus_resources(state) 
 }
 
-//!TODO  :  SEND ALL  CONFIG REQUIREMENT TO  PROCESS RENDERING ... 
-//          ->  cpus core avlailable  
-//          ->  where the  log file  is supposed to be  
- 
 let  logfile  =  null
-
 
 ipcRenderer.on("initialization" ,  (evt , data)  =>{
      
     data  = fetch_right_data(activate_extra_elements , evt , data ) 
     let    { version ,logpath_location,  available_cpus_core } =  data.initiate ||   data  
     let  {os_detail_info}  =  data?.initiate || data 
-    if (!os_detail_info) 
-        os_detail_info = data 
 
-    log (os_detail_info)  
-    if  (!available_cpus_core)  available_cpus_core =  os_detail_info?.cpus
+    if (!os_detail_info) os_detail_info = data 
+    if (!available_cpus_core)  available_cpus_core =  os_detail_info?.cpus
 
     notify("mTdt ", { body : ` mTdt  version ${version}`})
     if   ( data.init_proc == 1 &&  localStorage["iproc"] != 1||  os_detail_info)
@@ -260,8 +247,7 @@ const  optsfeed  =  gdata   => {
 
 }
 let 
-[paths_collections  , files_collections] = [ [] , [] ]  
-
+[paths_collections ,   files_collections]   = [  localStorage["task"]  ||  []  , [] ] 
 
 // on file  chooser  dialog  =>  +5 %  
 
@@ -272,7 +258,9 @@ ipcRenderer.on("Browse::single"   , (evt ,  global_object ) =>   {
     
     const  { main_root  , files  } = global_object  
     log (main_root) 
-    paths_collections =  main_root  
+    
+    paths_collections =  main_root
+    localStorage["task"] =  main_root  
     files_collections =  files
     optsfeed(files)
     //progress_step(15 , `loading  files ` ,  rand(400)) 
@@ -432,7 +420,8 @@ sm.addEventListener("change" , evt => {
 ipcRenderer.on("load::phenotype" ,  (evt ,  incomming_data ) =>  {
     phenotype.innerHTML = ""  
     nbcores.disabled =  false 
-    incomming_data = fetch_right_data ( activate_extra_elements ,  evt , incomming_data)  
+    incomming_data = fetch_right_data ( activate_extra_elements ,  evt , incomming_data)   
+    term_write (`total phenotype ${incomming_data}` )
     for  ( let phen_index  of range(incomming_data )) { 
         const phenotype_opts = _.createElement("option")  
         phenotype_opts.text      =  phen_index  
@@ -591,8 +580,6 @@ detach_term.addEventListener("click" , evt =>  {
     if  ( activate_extra_elements )  
     {
         is_detached = true  
-        //TODO :  ABOUT BLANK  
-        //open("term.htm" , "_blank") 
         modal_term.style.display= "block"
     
     }
@@ -643,9 +630,16 @@ if  (activate_extra_elements)
         fileslist  = choosed_files.map (  file  =>  file?.name)   
     
     }  , false ) 
-    
+    ipcRenderer.on("jobusy" ,   vn => {
+         localStorage.clear()
+         allow_upload = false  
+         files_browser.disabled = true
+         term.value = "" 
+         term_write ( "----------\n->[WARNING] ! your not  allowed to upload filse this  job is being user by another"  ,  true )  
+    })  
+
     form_upload.addEventListener("submit" , async  evt =>  {   
-        evt.preventDefault()
+        evt.preventDefault()  
         let responce_status = await   uploader(form_upload) 
         files_browser.value = ""
         if   (responce_status?.status  ==  200    && fileslist != null) 
@@ -654,7 +648,8 @@ if  (activate_extra_elements)
             // update  file visualization  
             ipcRenderer.send_("update::fileviewer" ,   paths_collections )  
         }
-   }) 
+        
+    }) 
     let allowed_key = [ 0x45 ] 
     let  edition_mode  = false //0x6e9   // [ 0x11 , 0x45 ]  //  ctrl +e  for edition mode
     let capture_kbctrl   = [] 
@@ -689,13 +684,25 @@ if  (activate_extra_elements)
         }
 
     }) 
-    
-    ipcRenderer.on("update::fileviewer" ,   fileslist  =>  log (fileslist )  ) 
+    ipcRenderer.on("fsinfo" ,  dmesg  =>  { 
+        term_write(dmesg ,   true )  ; 
+    })  
+    ipcRenderer.on("update::fileviewer" ,   fileslist  =>  {
+        //! TODO :  update file views  rendering 
+        log (fileslist ) 
 
-    ipcRenderer.on("jobusy" ,   vn => {
-         localStorage.clear()  
-         log("no job")  
-    }) 
+    } ) 
+
+    //! TODO  : [] GET  DOM ELEMENT  ON CLICK  TO  DISCONNECT CLIENT  AND  UNSET  RELEASE   THE CURRENT JOB 
+     
+    _.querySelector("#disconnect" ,  evt =>   {  
+        ipcRenderer.send_("client::disconnect" ,  paths_collections); 
+        term.value="" 
+        term_write="[INFO]-> Disconnected" 
+        term_write="relasing allocated  job space "
+        sleep(2000 ,  ()=> term_write("[  Good bye ] "))
+    })
+   
 }
 
 

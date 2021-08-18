@@ -626,17 +626,11 @@ if  (activate_extra_elements)
         const choosed_files  =  [...files_browser.files]  ,
             total_size_bytes  =  choosed_files.reduce( ( file_a , file_v  ) => file_a?.size  + file_v?.size ) 
         
-        files_uploaders.disabled  =  choosed_files.length  ? false :  true  
+        files_uploaders.disabled  =  choosed_files.length ?? false    
         fileslist  = choosed_files.map (  file  =>  file?.name)   
     
     }  , false ) 
-    ipcRenderer.on("jobusy" ,   vn => {
-         localStorage.clear()
-         allow_upload = false  
-         files_browser.disabled = true
-         term.value = "" 
-         term_write ( "----------\n->[WARNING] ! your not  allowed to upload filse this  job is being user by another"  ,  true )  
-    })  
+ 
 
     form_upload.addEventListener("submit" , async  evt =>  {   
         evt.preventDefault()  
@@ -684,17 +678,25 @@ if  (activate_extra_elements)
         }
 
     }) 
-    ipcRenderer.on("fsinfo" ,  dmesg  =>  { 
-        term_write(dmesg ,   true )  ; 
+    ipcRenderer.on("jobusy" ,   vn => {
+         localStorage.clear()
+         allow_upload = false  
+         files_browser.disabled = true
+         term.value = "" 
+         term_write ( "----------\n->[WARNING] ! your not  allowed to upload filse this  job is being user by another"  ,  true )  
+    })  
+    ipcRenderer.on("fsinfo" ,  dmesg  =>    term_write(dmesg ,   true ))   ;  
+    ipcRenderer.on("session::expired"  ,  dmesg  =>  {  
+        alert(`${dmesg}  please set a new job `) 
+        localStorage.clear()
+        sleep ( 1000 ,location.reload())  
     })  
     ipcRenderer.on("update::fileviewer" ,   fileslist  =>  {
         //! TODO :  update file views  rendering 
         log (fileslist ) 
-
     } ) 
 
     //! TODO  : [] GET  DOM ELEMENT  ON CLICK  TO  DISCONNECT CLIENT  AND  UNSET  RELEASE   THE CURRENT JOB 
-     
     _.querySelector("#disconnect" ,  evt =>   {  
         ipcRenderer.send_("client::disconnect" ,  paths_collections); 
         term.value="" 
@@ -704,8 +706,3 @@ if  (activate_extra_elements)
     })
    
 }
-
-
-
-
-

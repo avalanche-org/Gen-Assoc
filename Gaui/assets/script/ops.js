@@ -87,7 +87,7 @@ const  [
         _.querySelector("#sync")  ,  
         activate_extra_elements  ?  _.querySelector("#files_uploader")      : (void function ()  { return  }() )  , 
         activate_extra_elements  ?  _.querySelector("input[type='file']")   : (void function ()  { return  }() )  , 
-        activate_extra_elements  ?  _.querySelector("#form_upload")   : (void function ()  { return  }() )  
+        activate_extra_elements  ?  _.querySelector("#form_upload")         : (void function ()  { return  }() )  
     ] ,
     [  
      i_lock  , i_unlock,

@@ -45,7 +45,9 @@ __required_static_files__ :
 summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
 
-static_vn       =  null 
+static_vn       =  null
+ 
+    
 
 const __wtcp__ =  {  
 
@@ -56,13 +58,11 @@ const __wtcp__ =  {
         {
             log("static vn uploader " ,  static_vn ) 
             location_path  = `tmp/${static_vn}/${file.name}`  
-            //log ("vn -> " , static_vn) 
         }
         
         writeFile( location_path  ,  file.data  , ( err , data) => { 
             if  (err ) throw err  
         }) 
-        //writeFileSync( location_path, file.data )  
     
     } , 
     "@parser"   :   ( data  , sep ="." ) => {
@@ -97,10 +97,15 @@ const __wtcp__ =  {
             fupload  = fupload.filter  ( file  => __wtcp__["@parser"](file.name))
             if  ( files_upload_processing (fupload  ,   __wtcp__["#fstream"]) ) 
                 tx.redirect("/") 
-            //! TODO : SEND   BAD  STATUS 
-        }) 
+            
+            else tx.status(500).send({ message  :"failed to upload  files"})
+        })
+        ["get"]("/download/:dfile" , ( rx ,tx ) => {
+            tx.download(`${__dirname}/tmp/${static_vn}/${rx.params.dfile}` , rx.params.dfiles  , err => {  
+                if   (err) tx.status(500).send( {  message  : `you tried to download an inexistant file `}) 
+            })
+        })
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
-
         server 
         ["listen"](gateways , "0.0.0.0" ,log(`\x1b[1;32m * connected on  ${gateways}\x1b[0m`))
         ["on"]("error" , err         => {  
@@ -121,11 +126,12 @@ const __wtcp__ =  {
                  {
                      static_vn  =  ls_session.split(`${so}`).slice(-1) 
                      setTimeout  ( ()=> { 
-                            utils.scan_directory(ls_session,  "ped" , "map" ,"phen")  
-                            .then ( res =>   {  
-                                sock.emit("Browse::single" ,   { main_root  :  ls_session ,  files  : res})
-                                sock.emit("update::fileviewer" ,   res  )  
-                            })
+                         utils.scan_directory(ls_session,  "ped" , "map" ,"phen")
+                         .then ( res =>   { 
+                             sock.emit("Browse::single" ,   { main_root  :  ls_session ,  files  : res})
+                             sock.emit("update::fileviewer" ,   res  )
+                         })
+                         .catch( error =>  sock.emit("session::expired" , "session expired since ..." ))  
                         }, 1000)
                  }
              })  
@@ -181,7 +187,6 @@ const __wtcp__ =  {
                             {   
                                 utils._stdout(sock)  
                                 sock.emit("load::phenotype"  ,  res-2)  
-                                
                             }else{   
                                 log("fail")   
                                 utils._stderr(sock , exit_code) 
@@ -200,7 +205,6 @@ const __wtcp__ =  {
                 if (mm && markerset!= null && markerset != '')  
                 { 
                     cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --nbsim ${nbsim_} --nbcores ${nbcores_} --markerset ${markerset}` 
-            
                 } 
                 if  (sm)  
                 {

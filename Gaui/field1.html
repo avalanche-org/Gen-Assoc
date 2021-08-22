@@ -1,0 +1,154 @@
+<html>
+    <body>
+        <div  class="u-form u-form-1 w3-container w3-center w3-animate-left">
+            <!--form to load files : run summary.R -->
+            <!--debut premier fieldset-->
+            <fieldset>
+                <legend  style="color:blue">
+                    <small> [ Step 1:Select Files <i  id="unlocked_default"style="font-size:20px" class="fas fa-unlock"></i> ]</small>
+                </legend>
+                <% if  ( socket )  {%> 
+                    <form   method="post"  action="" enctype="multipart/form-data"  name="file_uploader" id="form_upload" class="u-form-horizontal  u-clearfix u-form-spacing-10  u-inner-form" ><input    name="fupload"  type="file" accept=".ped,.map,.phen" multiple class="u-border-1 u-border-grey-2 u-input u-input-rectangle u-white"  style="margin:20px"> <button type="submit" class="u-btn u-btn-round u-button-style u-grey-50 u-hover-grey-5 u-radius-50 u-btn-1"  style="color:yellow" id ="files_uploader"><i class="fas fa-file-upload"></i></button>
+                    </form> 
+                <%}%>
+                <form name="form"> 
+                    <div class="u-form-group u-form-select u-form-group-1">
+                        <div> 
+                            <label for="sync" > <small>Sync</small></label> <input id="sync" type="checkbox">
+                        </div>
+                        <label for="select-30ab" class="u-form-control-hidden u-label">Select</label>
+                        <div class="u-form-select-wrapper">
+                            <select required id="ped" name="select">
+                                <option   value = ""  disabled selected> pedfile</option>
+                            </select>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14"height="12" version="1" class="u-caret">
+                                <path fill="currentColor" d="M4 8L0 4h8z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="u-form-group u-form-select u-form-group-2">
+                        <label for="select-68f0" class="u-form-control-hidden u-label">Select</label>
+                        <div class="u-form-select-wrapper">
+                            <select required id="map" name="select-1">
+                                <option   value = "" disabled selected > map  </option>
+                            </select>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" version="1" class="u-caret">
+                                <path fill="currentColor"d="M4 8L0 4h8z"></path>
+                            </svg>
+                            </div>
+                        </div>
+                        <div class="u-form-group u-form-select u-form-group-3">
+                            <label for="select-f55a" class="u-form-control-hidden u-label">Select</label>
+                            <div class="u-form-select-wrapper">
+                                <select required id="phen" name="select-2">
+                                    <option   value = ""  disabled selected > phen</option>
+                                </select>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" version="1" class="u-caret">
+                                <path fill="currentColor" d="M4 8L0 4h8z"></path>
+                            </svg>
+                            </div>
+                        </div>
+                        <div class="u-align-right u-form-group u-form-submit">
+                            <button type="submit" class="u-btn u-btn-round u-button-style u-grey-50 u-hover-grey-5 u-radius-50 u-btn-1" id ="run_summary">Launch Summary Statistics  <i class="fas fa-chart-bar"></i></button>
+                            <input type="submit" value="load" class="u-form-control-hidden"/>
+                        </div>
+                    </div>
+                </form>  
+            </fieldset> 
+            <!--fin premier fieldset-->   
+            <!--debut deuxieme fieldset-->     
+            </br>
+            <small style="color:blue" id="status">  </small>  
+            </br>
+            <div id="stepper-bar" class="w3-center w3-animate-opacity">
+                <div id="bar">1%</div>
+            </div>
+            <fieldset>  
+                <legend style="color:blue">
+                <small> [ Step 2 :Choose Options <i id="lock_default" style="font-size:20px" class="fas fa-lock"></i> ]</small>
+                </legend> 
+                <form style="padding: 10px" name="form-1">
+                    <input type="hidden" id="siteId"name="siteId" value="228560"/>
+                    <input type="hidden" id="pageId" name="pageId" value="232432"/>
+                    <div class="u-form-group u-form-radiobutton u-form-group-5"></div>
+                    <div class="u-form-group u-form-select u-form-group-6">
+                    <label for="select-1cd4" class="u-form-control-hidden u-label">Select</label> 
+                    <small style="color:firebrick"> choose your phenotype </small> 
+                    <select id="phenotype" name="phenotype"></select>
+                    <div class="u-form-group u-form-select u-form-group-7">
+                        <label for="select-4e3d" class="u-form-control-hidden u-label">Select</label>
+                        <small style="color:firebrick"> number of simulations you want </small> 
+                        <input  id="nbsim" placeholder="number of simulations you want " class ="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" >      
+                    </div> 
+                    <div class="u-form-group u-form-select u-form-group-8">
+                        <small style="color:firebrick;"> cpus cores available </small> 
+                        <select placeholder="cpus core available" id="nbcores" name="select-2"></select>
+                    </div>                         
+                    <div class="u-form-group u-form-radiobutton u-form-group-5">
+                        <div class="u-form-radio-button-wrapper">
+                            <input id="single_marker" type="radio" name="mradiobutton" value="Item 1" checked/>
+                            <label class="u-label" for="mradiobutton">Single-Marker &nbsp; &nbsp; &nbsp;&nbsp;</label>
+                            <input id="multi_marker" type="radio" name="mradiobutton" value="Item 2"/>
+                            <label class="u-label" for="mradiobutton">Multi-Marker</label>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="u-form-group u-form-message">
+                        <!--markerset -->
+                        <textarea placeholder="Choose your markers. eg: 1, 3, 24" rows="1" cols="30" id="marker_set" name="message" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required=""></textarea>
+                    </div> 
+                    <div class="u-align-right u-form-group u-form-submit">
+                        <button  id="run_analysis" class="u-btn u-btn-round u-button-style u-grey-50 u-hover-grey-5 u-radius-50 u-btn-1"  > Run Analysis <i class="fas fa-dna"></i></button>  
+                    </div> 
+                </form>
+            </fieldset>
+            <!--fin deuxieme fieldset-->
+            <div id="os-stat"> 
+                <!--troisieme fieldset-->
+                <fieldset>  
+                    <legend> 
+                        <i class="fas fa-info-circle" aria-hidden="true"></i>
+                    </legend>  
+                    <i id="network" class="fas fa-satellite-dish" title="network connectivity"></i><br>
+                    <i id="microchip" class="fas fa-microchip" aria-hidden="true" title="memory usage alert"></i><br>
+                </fieldset> 
+                <!--fin troisieme fieldset-->
+            </div> 
+            <div>
+                <div class=" ui small basic icon buttons"> 
+                    <button class=" ui icon button" id="clear" title ="clear console">
+                        <i class="fas fa-broom"></i>
+                    </button> 
+                    <button class=" ui  icon button" id="infosys" title="show system info">
+                        <i class="fas fa-info"></i>
+                    </button> 
+                    <button class=" ui  icon button" id="detach_term" title="detach terminal">
+                        <i class="fas fa-terminal"></i>
+                    </button> 
+                </div> 
+                <div id="term_area">
+                    <pre id="term_ascii_art"  hidden>                                                                                        
+,-.                ,--.   ,--.  ,--.     ,--. ,--------.                       
+\  \               |   `.'   |,-'  '-. ,-|  | '--.  .--',---. ,--.--.,--,--,--.
+ \  \              |  |'.'|  |'-.  .-'' .-. |    |  |  | .-. :|  .--'|        | 
+ /  /,----.        |  |   |  |  |  |  \ `-' |    |  |  \   --.|  |   |  |  |  | 
+/  / '----'        `--'   `--'  `--'   `---'     `--'   `----'`--'   `--`--`--' 
+`-'                                                                                                            
+                    </pre> 
+                    <textarea class="terminal" readonly autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="term" cols="400" rows="6"></textarea>
+                </div> 
+            </div>
+            <div id="myModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close"> &times;</span>
+                    <div id ="cloneTerm"></div>  
+                </div>
+        </div>
+    </body>
+   <% if (socket) {%>  <script src="/socket.io/socket.io.js"></script> <%}%>   
+   <script src="script/ops.js"> </script>  
+   <script src="script/bridge.js"> </script>
+</html>
+  
+    

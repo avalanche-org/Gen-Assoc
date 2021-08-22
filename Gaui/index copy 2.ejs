@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>mTDT</title>
+    <link rel="icon" href="/images/Logo_mtdt_transparency.png">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
+    <link rel="stylesheet" href="styles/style.css"/>
+    <link rel="stylesheet" href="styles/semantic/semantic.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"/>
+
+    <link rel="stylesheet" href="styles/fa/css/all.min.css">
+  </head>
+  <body>
+    <div id="myHeader">
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-xs-4">
+         <!--&nbsp;&nbsp;--><!--img src="/images/Logo_mtdt_transparency.png" alt="" width="20%"><br-->
+          <h1 style="margin-bottom: 0;">&nbsp;&nbsp;<b>m-TDT</b></h1>
+          <small>&nbsp;&nbsp;Multi-locus Transmission Disequilibrium Test</small>
+        </div>
+        <div class="col-lg-8 col-md-8 col-xs-8">
+          <ul class="myUl" style="margin-top: 27px; margin-right:10px;">
+            <li class="myIl">FAQ</li>
+            <li class="myIl">Download</li>
+            <li class="myIl">Tutorial</li>
+            <li class="myIl">Tool</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="wrapper">
+      <form action="" class="jobTitle_div" id="form1" >
+            <input type="text" class="jobTitle_field" placeholder="Job title" name="job_title" id="job_title" required/>
+            <label for="job_title" class="jobTitle_label">Job title</label>
+            <input type="submit"  class="myBtn myBtn-mtd-color" value="save">
+      </form>
+      <div>&nbsp;</div>
+      <!--debut du premier fieldset-->  
+      <fieldset class="fieldset1">
+        <legend>
+            <small>[ Step 1: Upload Files <i id="unlocked_default" style="font-size:20px" class="fas fa-unlock"></i> ]</small>
+        </legend>
+        <% if  ( socket )  {%> 
+          <div class="ui inverted segment" id="div_uploader">
+            <form   method="post"  action="" enctype="multipart/form-data"  name="file_uploader" id="form_upload" class="ui inverted form">
+              <div class="two fields"> 
+                <div class="field">
+                  <div class="file-field input-field">
+                    d
+                  </div>
+                  <input    name="fupload"  type="file" accept=".ped,.map,.phen" multiple> 
+                </div>
+                <div class="field">
+                  <button class="ui vertical animated button" type="submit" id ="files_uploader">
+                    <div class="hidden content">send</div>
+                    <div class="visible content">
+                      <i class="paper plane icon"></i>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </form> 
+          </div>
+          
+        <%}%>         
+        <form name="form">  
+          <label for="sync"><small>Sync</small></label><input id="sync" type="checkbox">
+          <label for="ped">pedigree file</label>
+          <select required id="ped" name="ped">
+              <option   value = ""  disabled selected> pedfile</option>
+          </select>
+          <label for="map">map file</label>
+          <select required id="map" name="map">
+              <option value="" disabled selected>map</option>
+          </select>
+          <label for="phen">phenotype file</label>
+          <select required id="phen" name="phen">
+            <option value = "" disabled selected >phen</option>
+          </select>
+          <button type="submit" id ="run_summary">Launch Summary Statistics<i class="fas fa-chart-bar"></i></button>
+          <input type="submit" value="load"/>
+        </form>  
+      </fieldset> 
+      <!--fin premier fieldset--> 
+      <!--The terminal-->
+      <div>
+        <div class="ui small basic icon buttons"> 
+          <button class=" ui icon button" id="clear" title ="clear console">
+              <i class="fas fa-broom"></i>
+          </button> 
+          <button class=" ui  icon button" id="infosys" title="show system info">
+              <i class="fas fa-info"></i>
+          </button> 
+          <button class=" ui  icon button" id="detach_term" title="detach terminal">
+              <i class="fas fa-terminal"></i>
+          </button> 
+        </div> 
+        <textarea name="" id="terminal" cols="30" rows="10">> mTDT term...
+        </textarea>
+      </div>
+      <!--END the terminal-->
+      <!--debut deuxieme fieldset--> 
+      <fieldset class="fieldset1">
+        <legend>
+          <small>[ Step 2: Genotype Inference <i id="unlocked_default" style="font-size:20px" class="fas fa-unlock"></i> ]</small></small>
+        </legend>
+        <form action="" class="form-1">
+          <p>Retrieve missing genotypes</p>
+          <input id="yes_retrieve_missing_genotypes" type="radio" name="retrieve_missing_genotypes" checked value="yes"/>
+          <label for="yes_retrieve_missing_genotypes">Yes</label>
+          
+          <input id="no_retrieve_missing_genotypes" type="radio" name="retrieve_missing_genotypes" vlaue="no"/>
+          <label for="no_retrieve_missing_genotypes">No</label>
+        </form>
+      </fieldset>
+      <!--fin deuxieme fieldset-->
+
+      <div></div>
+      <!--debut troisieme fieldset-->
+      <fieldset class="fieldset1">  
+        <legend>
+          <small>[ Step 3 :Choose Parameters <i id="lock_default" style="font-size:20px" class="fas fa-lock"></i> ]</small>
+        </legend> 
+        <form name="form-1">
+          
+          <p>run</p>
+          <input type="radio" id="theorical" name="type_of_run" value="thoerical" checked>
+          <label for="theorical">Theorical</label>  
+          <input type="radio" id="empirical" name="type_of_run" value="empirical">
+          <label for="empirical">Empirical</label>
+
+          <label for="phenotype">Number of phenotype</label> 
+          <select id="phenotype" name="phenotype"></select>
+
+          <label for="nbsim">Number of simulations</label>
+          <input  id="nbsim" placeholder="number of simulations you want ">
+
+          <label for="nbcores">cpus cores available</label>
+          <select placeholder="cpus core available" id="nbcores" name="nbcores"></select>
+          
+          <p>Markers</p>
+          <input id="single_marker" type="radio" name="mradiobutton" value="single_marker" checked/>
+          <label for="single_marker">Single-Marker</label>
+          
+          <input id="multi_marker" type="radio" name="mradiobutton" vlaue="multi_marker"/>
+          <label for="multi_marker">Multi-Marker</label>
+
+          <!--markerset -->
+          <p>select markerset</p>
+          <textarea placeholder="Choose your markers. eg: 1, 3, 24" rows="1" cols="30" id="marker_set" name="message" required></textarea>
+  
+          <button  id="run_analysis">Run Analysis<i class="fas fa-dna"></i></button>  
+        </form>
+      </fieldset>
+      <!-- END troisieme fieldset-->
+
+    </div>
+  </body>
+</html>

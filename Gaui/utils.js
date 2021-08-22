@@ -113,7 +113,9 @@ module
                 socket.emit ("fsinfo" ,  "ERROR : no privileges to create userlang access")  
                 throw new Error( enouacc) 
             } 
-            socket.emit ("fsinfo" ,  `your  virtual repertory  is ready`)  
+            socket.emit ("fsinfo" ,    `your  virtual repertory  is ready`)
+            socket.emit("ok" ,   200  ) 
+           
             socket.emit ("trunc::baseroot" ,  udir ) 
         
         })

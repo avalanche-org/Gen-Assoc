@@ -13,3 +13,4 @@ package-lock.json
 *.phen
 tmp/
 weighted_res_multilocus.work 
+"index copy*" 

@@ -68,8 +68,8 @@ const  [
     markerset,term  , 
     run_summary,run_analysis, 
     sync , files_uploaders/*element node  |  undefined */ , files_browser/* element node | undefined*/ ,
-    form_upload  
-  ]=[
+    form_upload ,  job_title ,  job_init  ,  disconnect , p_menu
+  ]=[ 
         _.querySelector("#ped"),   
         _.querySelector("#map"), 
         _.querySelector("#phen") , 
@@ -87,7 +87,12 @@ const  [
         _.querySelector("#sync")  ,  
         activate_extra_elements  ?  _.querySelector("#files_uploader")      : (void function ()  { return  }() )  , 
         activate_extra_elements  ?  _.querySelector("input[type='file']")   : (void function ()  { return  }() )  , 
-        activate_extra_elements  ?  _.querySelector("#form_upload")         : (void function ()  { return  }() )  
+        activate_extra_elements  ?  _.querySelector("#form_upload")         : (void function ()  { return  }() )  ,  
+        activate_extra_elements  ?  _.querySelector("#job_title")           : (void function ()  { return  }() )  ,  
+        activate_extra_elements  ?  _.querySelector("#start_job")           : (void function ()  { return  }() )  ,     
+        activate_extra_elements  ?  _.querySelector("#disconnect")          : (void function ()  { return  }() )  , 
+        activate_extra_elements  ?  _.querySelectorAll(".pointing > a")     : (void function ()  { return  }() ) 
+
     ] ,
     [  
      i_lock  , i_unlock,
@@ -102,9 +107,7 @@ const  [
     _.querySelector("#bar")  
 ]
 __xtra_elements_ :   
-modal_term   =  _.querySelector("#myModal") 
-clone_term   =  term.cloneNode(true)  
-modal_term.appendChild(clone_term)  
+
 files_uploaders.disabled= true 
 files_browser.value= "" 
 

@@ -4,13 +4,30 @@
 ipcRenderer.send_("clifp" ,   { user_agent : client_nav_fingerprint(navigator) , ls_session : localStorage["task"]?? null})
 ipcRenderer.on("init" ,  d => console.log(d))  
 
-let job_title =  undefined  
-if (!localStorage["task"] )  job_title = prompt("create  new job ")  
-if (!job_title) files_browser.disabled = true 
-if (job_title ) ipcRenderer.send_("create::job"  ,  job_title )  
+job_title.focus()  
+if (!localStorage["task"] )   
+{ 
+    job_init.addEventListener("click" , evt  => {
+        evt.preventDefault()  
+        if (!job_title.value) files_browser.disabled = true  
+        if (job_title.value)  
+        { 
+            ipcRenderer.send_("create::job"  ,  job_title.value )  
+        }
+    })
+}  
+if  ( localStorage["task"] )
+{
+    job_init.value="pending"
+    job_title.value= localStorage["task"].split("/").slice(-1) 
+    job_title.disabled = true 
+    job_init.disabled =  true 
+    files_browser.disabled  = false  
+}
 
 let jauge   =  0 
-const progress_step =(state  ,  status_message , duration /*millisec*/ ) => {
+/*
+const //progress_step =(state  ,  status_message , duration /*millisec) => {
     if  ( state >100 ) return 
     if  (jauge !=  0  && jauge >=  state)  return  
     status.innerHTML =`<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>${status_message}`
@@ -32,8 +49,8 @@ const progress_step =(state  ,  status_message , duration /*millisec*/ ) => {
 
 }
 
-progress_step(10 ,"initialization..." , 200 )
-
+//progress_step(10 ,"initialization..." , 200 )
+*/
  
 let terminal ,  writeSpeed  
 __init__  = ( ()=> {
@@ -57,11 +74,19 @@ setInterval( () => {
     if (check_network_connectivity()) 
     {   
         show_nt++ ;  
-        if  ( show_nt  == 1  ) notify("-><- " ,  {body : "Online"})
-        _.querySelector("#network").style.color="green"  
+        if  ( show_nt  == 1  )   
+        {
+            notify("-><- " ,  {body : "Online"}) 
+            if (_.querySelector("#network"))
+                _.querySelector("#network").style.color="green"
+            term_write("Status : online") 
+        }
+        
+        
     } else {  
         show_nt =0 
         _.querySelector("#network").style.color="firebrick"  
+        term_write("Status : offline") 
     } 
 } , 10000 )
 
@@ -263,7 +288,7 @@ ipcRenderer.on("Browse::single"   , (evt ,  global_object ) =>   {
     localStorage["task"] =  main_root  
     files_collections =  files
     optsfeed(files)
-    //progress_step(15 , `loading  files ` ,  rand(400)) 
+    ////progress_step(15 , `loading  files ` ,  rand(400)) 
 }) 
 ipcRenderer.on("Browse::multiple" , (evt , mbrowse_data )  =>{
     const request_files =  Object.keys(mbrowse_data)  
@@ -271,7 +296,7 @@ ipcRenderer.on("Browse::multiple" , (evt , mbrowse_data )  =>{
     
     for ( let  htm_elmt  of  [ ped  , map , phen ]  )  htm_elmt.innerHTML= ""    
     optsfeed(request_files)
-    progress_step(15 , "loading files ..." , rand(400)) 
+    //progress_step(15 , "loading files ..." , rand(400)) 
 })
 //ipcRenderer.on("trunc::baseroot" ,  virtual_namespace  =>   {  
     
@@ -297,7 +322,7 @@ const sync_select_action =  (s_elmt1 , s_elmt2) => {
     })
 } 
 //!  this section  make a synchronisation  between ped map and  phen file  
-sync.addEventListener("change" , evt =>  {  
+sync.addEventListener("change" , evt =>  { 
     if  ( evt.target.checked )  
     {   
         notify("synced mode " , {body:"synced mode is activated"}) 
@@ -358,9 +383,9 @@ run_summary.addEventListener("click" , evt => {
     let  warning_alert = false  
     //plugonlog() 
     //setInterval(plugonlog , term_display_speed)    
-    status.innerHTML =`<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i> processing ...`
-    status.style.color = "blue"   
-    bar_progress.style.backgroundColor = "limegreen"   
+    //status.innerHTML =`<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i> processing ...`
+    //status.style.color = "blue"   
+    //bar_progress.style.backgroundColor = "limegreen"   
     run_analysis.disabled = true 
     run_summary.disabled  = false   
     const  {
@@ -386,8 +411,8 @@ run_summary.addEventListener("click" , evt => {
     term.value =  ""   //  clean output before
     if(warning_alert)  
     { 
-        status.innerHTML =`<i style='color:orange' class="fas fa-exclamation-triangle"></i> Warning ${annoucement}...`
-        bar_progress.style.backgroundColor="orange"
+        //status.innerHTML =`<i style='color:orange' class="fas fa-exclamation-triangle"></i> Warning ${annoucement}...`
+        //bar_progress.style.backgroundColor="orange"
     }
 
     term_write(annoucement  , warning_alert )    
@@ -437,14 +462,14 @@ ipcRenderer.on("term::logout" , ( evt , data ) => {
     term.focus() 
     if (summary_already_run)  
     {  
-        progress_step(47 , "finishing ", 140)
+        //progress_step(47 , "finishing ", 140)
     }
     if (analysis_on_going)
     {  
-        progress_step(99 , "Analysising ... ", 240)
+        //progress_step(99 , "Analysising ... ", 240)
         use_cpus_resources(false) 
     }  
-    //progress_step(45 , 10) 
+    ////progress_step(45 , 10) 
     if  ( data  ) 
     { 
         term_write(data)  
@@ -468,9 +493,9 @@ ipcRenderer.on("log::fail", (evt , data)  => {
     mm.disable = true  
     run_summary.disabled=false  
     term.style.color ="red"
-    status.style.color ="red"
-    status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> failure ` 
-    bar_progress.style.backgroundColor = "firebrick"
+   // status.style.color ="red"
+    //status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> failure ` 
+    //bar_progress.style.backgroundColor = "firebrick"
     stop_blink_on_faillure(analysis_on_going  ,  false ) 
 }) 
 ipcRenderer.on("logerr::notfound" , (evt , data)  => {
@@ -478,9 +503,9 @@ ipcRenderer.on("logerr::notfound" , (evt , data)  => {
     term.value = data 
     run_summary.disabled=false 
     term.style.color ="red"
-    status.style.color ="red"
-    status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> error log not found`
-    bar_progress.style.backgroundColor = "firebrick"
+    //status.style.color ="red"
+    //status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> error log not found`
+    //bar_progress.style.backgroundColor = "firebrick"
     stop_blink_on_faillure(analysis_on_going  , false) 
 }) 
 ipcRenderer.on("term::logerr"     , (evt , data)  => {
@@ -488,9 +513,9 @@ ipcRenderer.on("term::logerr"     , (evt , data)  => {
     term.value = data 
     run_summary.disabled=false 
     term.style.color   ="red"
-    status.style.color ="red"
-    status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> An error has occurred  ` 
-    bar_progress.style.backgroundColor = "firebrick"
+   // status.style.color ="red"
+    //status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> An error has occurred  ` 
+    //bar_progress.style.backgroundColor = "firebrick"
     stop_blink_on_faillure(analysis_on_going  ,  false) 
 })  
 ipcRenderer.on("log::broken"      , (evt , data)  => {
@@ -507,19 +532,19 @@ run_analysis.addEventListener("click" ,  evt => {
     {
         annoucement = `✘ Error on marker set  syntax eg 1,3,23\n` 
         term_write(annoucement , warning = true )  
-        bar_progress.style.backgroundColor="orange"
+        //bar_progress.style.backgroundColor="orange"
         return 
     }
     if   ( mm.checked && markerset.value=="" )   
     {
         annoucement = "require marker set indexation to proceed ... \n"
         term_write (annoucement , warning= true ) 
-        bar_progress.style.backgroundColor="orange"
+        //bar_progress.style.backgroundColor="orange"
         return 
     }
-    status.innerHTML =`<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i> processing ...`
-    status.style.color = "blue"   
-    bar_progress.style.backgroundColor = "limegreen"  
+    //status.innerHTML =`<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i> processing ...`
+    //status.style.color = "blue"   
+    //bar_progress.style.backgroundColor = "limegreen"  
     annoucement ="▮ Running Analysis"
     term_write(annoucement) 
     analysis_on_going = true 
@@ -572,15 +597,12 @@ let detach_term = _.querySelector("#detach_term")  ,
     container_attached = _.querySelector("#term_area"),
     term_footprint =  term  , 
     is_detached  = false
-_.querySelector(".close").addEventListener("click"  ,evt =>  modal_term.style.display="none")
-window.addEventListener("click" , evt  => {  if  ( evt.target == modal_term  ) modal_term.style.display = "none" } ) 
 
 detach_term.addEventListener("click" , evt =>  {
-     //send signal to create full terminal emulator     
+     //send signal to create full terminal emulator    
     if  ( activate_extra_elements )  
     {
         is_detached = true  
-        modal_term.style.display= "block"
     
     }
     if  ( !is_detached )  
@@ -614,7 +636,6 @@ ipcRenderer.on("attach::term" , (evt ,data ) => {
 ipcRenderer.on("annoucement" ,  (evt , data )  => { 
 } )
 
-
 __Socket_handlernamespace__ : 
 
 if  (activate_extra_elements) 
@@ -625,14 +646,14 @@ if  (activate_extra_elements)
         
         const choosed_files  =  [...files_browser.files]  ,
             total_size_bytes  =  choosed_files.reduce( ( file_a , file_v  ) => file_a?.size  + file_v?.size ) 
-        
-        files_uploaders.disabled  =  choosed_files.length ?? false    
+        files_uploaders.disabled =  !choosed_files.length  ??   true    
+        log(files_uploaders.disabled )  
         fileslist  = choosed_files.map (  file  =>  file?.name)   
     
     }  , false ) 
  
 
-    form_upload.addEventListener("submit" , async  evt =>  {   
+    form_upload.addEventListener("submit" , async  evt =>  {    
         evt.preventDefault()  
         let responce_status = await   uploader(form_upload) 
         files_browser.value = ""
@@ -684,10 +705,18 @@ if  (activate_extra_elements)
          files_browser.disabled = true
          term.value = "" 
          term_write ( "----------\n->[WARNING] ! your not  allowed to upload filse this  job is being user by another"  ,  true )  
+         disconnect.disabled = true  
+         job_title.style.color = "firebrick"
     })  
-    ipcRenderer.on("fsinfo" ,  dmesg  =>    term_write(dmesg ,   true ))   ;  
+    ipcRenderer.on("fsinfo" ,  dmesg => term_write(dmesg  ,  true )  )  
+    ipcRenderer.on("ok", protocol => { 
+        disconnect.disabled = false 
+        files_uploaders.disabled=false 
+        files_browser.disabled = false  
+        job_title.style.color ="#22222"
+    })
     ipcRenderer.on("session::expired"  ,  dmesg  =>  {  
-        alert(`${dmesg}  please set a new job `) 
+        term_write(`\n * ${dmesg}  please set a new job `) 
         localStorage.clear()
         sleep ( 1000 ,location.reload())  
     })  
@@ -696,13 +725,35 @@ if  (activate_extra_elements)
         log (fileslist ) 
     } ) 
 
-    //! TODO  : [] GET  DOM ELEMENT  ON CLICK  TO  DISCONNECT CLIENT  AND  UNSET  RELEASE   THE CURRENT JOB 
-    _.querySelector("#disconnect" ,  evt =>   {  
+    disconnect.addEventListener("click"  ,  evt =>   {  
         ipcRenderer.send_("client::disconnect" ,  paths_collections); 
         term.value="" 
-        term_write="[INFO]-> Disconnected" 
-        term_write="relasing allocated  job space "
+        term_write("[INFO]-> Disconnected")
+        term_write("relasing allocated  job space ") 
         sleep(2000 ,  ()=> term_write("[  Good bye ] "))
+        evt.preventDefault() 
+        sleep(1000  ,  () => location.reload() ) 
     })
    
+
+
+    p_menu.forEach( pm =>   { 
+        
+        pm.addEventListener("mouseover" ,  evt  => {  
+                pm.classList.toggle("active")  
+        })
+        pm.addEventListener("mouseout" ,  evt  => {  
+                pm.classList.toggle("active")  
+        })
+    })
+    _.querySelectorAll(".fieldset1").forEach (  fs =>  {   
+        let  previews_box_style =  getComputedStyle(fs) 
+
+        fs.addEventListener("mouseenter" , evt  =>  {  
+            fs.style.boxShadow="12px 12px 12px #222222 "
+        } , true)
+        fs.addEventListener("mouseout" ,  evt   =>{ 
+            fs.style.boxShadow="8px 5px 5px grey"
+        }, true)
+    })
 }

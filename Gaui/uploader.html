@@ -1,0 +1,36 @@
+form#form_upload{
+    /*width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;*/
+    margin-top: -53px;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 5px;
+  
+  }
+  
+  .label_for_fupload{
+    /*background-color: indigo;*/
+    background-color: #59698D;
+    color: white;
+    padding: 8px;
+    font-family: sans-serif;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  
+  #file-chosen{
+    margin-left: 8px;
+    margin-right: 8px;
+    font-family: sans-serif;
+  }
+
+
+  <form   method="post"  action="" enctype="multipart/form-data"  name="file_uploader" id="form_upload" >
+              <input id="fupload" name="fupload"  type="file" accept=".ped,.map,.phen" multiple style="margin:20px" hidden> 
+              <label class="label_for_fupload" for="fupload">Choose files</label>
+              <span id="file-chosen">No file chosen</span>
+              <button type="submit" id ="files_uploader"><i class="fas fa-file-upload"></i></button>
+            </form> 

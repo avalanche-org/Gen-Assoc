@@ -2,18 +2,15 @@
 //! this script make a bridge between  main  process and renderer process 
 //! sending event through backend side   
 ipcRenderer.send_("clifp" ,   { user_agent : client_nav_fingerprint(navigator) , ls_session : localStorage["task"]?? null})
-ipcRenderer.on("init" ,  d => console.log(d))  
+ipcRenderer.on("init" ,  d =>  job_title.focus ())  
 
-job_title.focus()  
 if (!localStorage["task"] )   
 { 
     job_init.addEventListener("click" , evt  => {
         evt.preventDefault()  
         if (!job_title.value) files_browser.disabled = true  
         if (job_title.value)  
-        { 
             ipcRenderer.send_("create::job"  ,  job_title.value )  
-        }
     })
 }  
 if  ( localStorage["task"] )
@@ -725,35 +722,23 @@ if  (activate_extra_elements)
         log (fileslist ) 
     } ) 
 
-    disconnect.addEventListener("click"  ,  evt =>   {  
-        ipcRenderer.send_("client::disconnect" ,  paths_collections); 
-        term.value="" 
-        term_write("[INFO]-> Disconnected")
-        term_write("relasing allocated  job space ") 
-        sleep(2000 ,  ()=> term_write("[  Good bye ] "))
-        evt.preventDefault() 
-        sleep(1000  ,  () => location.reload() ) 
+    disconnect.addEventListener("click"  ,  evt =>   { 
+        if  (localStorage["task"] )  
+        {
+            ipcRenderer.send_("client::disconnect" ,  paths_collections); 
+            sleep(1000,  ()=> term_write("[  Good bye ] "))
+            evt.preventDefault() 
+            sleep(2000  ,  () => location.reload() ) 
+        }
+         
     })
-   
-
-
+     
     p_menu.forEach( pm =>   { 
-        
-        pm.addEventListener("mouseover" ,  evt  => {  
-                pm.classList.toggle("active")  
-        })
-        pm.addEventListener("mouseout" ,  evt  => {  
-                pm.classList.toggle("active")  
-        })
+        pm.addEventListener("mouseover" ,  evt => pm.classList.toggle("active")) 
+        pm.addEventListener("mouseout"  ,  evt => pm.classList.toggle("active"))  
     })
-    _.querySelectorAll(".fieldset1").forEach (  fs =>  {   
-        let  previews_box_style =  getComputedStyle(fs) 
 
-        fs.addEventListener("mouseenter" , evt  =>  {  
-            fs.style.boxShadow="12px 12px 12px #222222 "
-        } , true)
-        fs.addEventListener("mouseout" ,  evt   =>{ 
-            fs.style.boxShadow="8px 5px 5px grey"
-        }, true)
+    interm.addEventListener ("click" , evt => { 
+        //!  TODO  make an interative terminal 
     })
 }

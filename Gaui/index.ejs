@@ -19,6 +19,31 @@
     <link rel="stylesheet" href="styles/fa/css/all.min.css">
   </head>
   <body>
+       <div class="ui list  sidebar inverted vertical menu">
+    <a class="item">
+      <i class="folder icon"></i>
+                  <div class="header">default</div>
+                  <div class="description">Source files for project</div>
+      <div class="list">
+        <div class="item">
+          <i class="folder icon"></i>
+          <div class="content">
+            <div class="header">site</div>
+            <div class="description">Your site's theme</div>
+          </div>
+        </div> 
+        </div>
+    </a>
+    <a class="item">
+      2
+    </a>
+    <a class="item">
+      3
+    </a>
+  </div>
+  <div class="dimmed pusher">
+    <!-- Site content !-->
+  </div>
     <!--div id="myHeader">
       <div class="row">
         <div class="col-lg-4 col-md-4 col-xs-4"-->
@@ -54,9 +79,15 @@
         </div>
         <div class="col-lg-1 col-md-1 col-xs-1">
           <br>
-          <button  class="ui button" id="disconnect">Logout</button>
+          <div class="ui secondary animated button" id="disconnect" tabindex="0">
+  <div class="visible content">Exit</div>
+  <div class="hidden content">
+    <i class="sign-out icon"></i>
+  </div>
+</div>
         </div>
       </div>
+
     </div>
     <!--/div-->
     <div class="wrapper">
@@ -65,11 +96,13 @@
         <label for="job_title" class="jobTitle_label">Job Title</label>
         <input type="submit"  id="start_job" class="myBtn myBtn-mtd-color" value="Start">
       </form>
+              
       <div>&nbsp;</div>
-      <!--debut du premier fieldset-->  
-      <fieldset class="fieldset1">
+      <!--debut du premier fieldset--> 
+      
+      <fieldset class="fieldset1"> 
         <legend>
-            <small>[ Step 1: Upload Files <i id="unlocked_default" class="fas fa-unlock"></i> ]</small>
+            <a class="ui red ribbon label">  Summary Statistics <i id="unlocked_default" class="fas fa-unlock"></i> </a>
         </legend>
         <% if  ( socket )  {%> 
           <div class="ui inverted segment">
@@ -78,9 +111,9 @@
                 <input name="fupload" type="file" accept=".ped,.map,.phen" multiple style="padding: 20px;"> 
                 <div class="ui button">
                   <button class="ui vertical animated button" type="submit" id ="files_uploader">
-                    <div class="hidden content">send</div>
+                    <div class="hidden content">Upload</div>
                     <div class="visible content">
-                      <i class="paper plane icon"></i>
+                      <i class="upload icon"></i>
                     </div>
                   </button>
                 </div>
@@ -107,7 +140,7 @@
           </div>
           <div class="field">
             <label for="phen">Phenotype file</label>
-            <select required id="phen" name="phen">
+            <select required id="phen" name="phen" class ="ui search dropdown">
               <option value = "" disabled selected > Select a phen file</option>
             </select>
           </div>
@@ -143,7 +176,9 @@
                   <i id="network" class="fas fa-satellite-dish" title="network connectivity"></i><br>
                   
                   </div>
+
               </div>
+
 
               <!--div class="item">
                 <div class="ui labeled icon button">
@@ -170,8 +205,10 @@
                 </div>
               </div-->
             </div>
+
           </div>
           <div>
+
               <textarea name="" id="term" class="terminal"
                 readonly autocomplete ="off"
                 speelcheck="false"
@@ -184,7 +221,7 @@
       <!--debut deuxieme fieldset--> 
       <fieldset class="fieldset1">
         <legend>
-          <small>[ Step 2: Genotype Inference <i id="unlocked_default" style="font-size:20px" class="fas fa-unlock"></i> ]</small></small>
+            <a class ="ui blue ribbon label"> Genotype Inference <i id="lock_default" class="fas fa-lock"></i> </a>
         </legend>
         <form action="" class="ui form">
           <div class="inline fields">
@@ -205,15 +242,15 @@
       <!--debut troisieme fieldset-->
       <fieldset class="fieldset1">  
         <legend>
-          <small>[ Step 3 :Choose Parameters <i id="lock_default" style="font-size:20px" class="fas fa-lock"></i> ]</small>
+          <a class ="ui teal ribbon  label">Analysis <i id="lock_default" class=" fas fa-lock"></i> </a>
         </legend> 
         <form name="form" class="ui form  default-blur-content">
           <!--Empirical run or Theorical run-->
           <h4 class="ui horizontal divider header">
             RUN
           </h4>
-          <div class="ui placeholder segment" style="background-color: white; border:none !important;">
-            <div class="ui two column very relaxed grid">
+          <div class="ui placeholder segment" style="background-color: whitesmoke; border:none !important;">
+              <div class="ui two column stackable center  aligned  grid" ><!-- very relaxed grid-->
               <div class="middle aligned column">
                 <div class="ui form">
                   <div class="field">
@@ -223,23 +260,28 @@
                     </div>
                   </div>
                   <div class="field">
-                    <select id="nbcores" name="nbcores">
+                    <select id="nbcores" name="nbcores" class="ui search dropdown">
                       <option value = "" disabled selected > Cpus core available</option>
                     </select>
                   </div>
                   <div class="field">
-                    <select id="phenotype" name="phenotype">
+                    <select id="phenotype" name="phenotype" class="ui search dropdown">
                       <option value="" disabled selected>Number of phenotype</option>
                     </select>
                   </div>
                 </div>
-                <!--div class="ui big button">Empirical</div>
+                <!--div class="ui big button">Empirical</div-->
               </div>
-              <div class="middle aligned column">
-                <div class="ui big button" style="background-color: #59698D; color: white !important;">
-                  <!--i class="signup icon"></i-->
-                      <!--Theorical
-                </div-->
+              <div class="field">
+              <div class="ui icon  header" >   <!--big button" style="background-color: #59698D; color: white !important;"-->
+
+                  <i class="leaf icon"></i>
+
+                <div class="ui primary large button"> 
+
+                      Theorical
+                </div> 
+                </div>
               </div>
             </div>
             <div class="ui vertical divider">
@@ -278,6 +320,7 @@
       <!-- END troisieme fieldset-->
 
     </div>
+     </div> 
   </body>
   <% if (socket) {%>  <script src="/socket.io/socket.io.js"></script> <%}%>
   <script src="script/ops.js"> </script>

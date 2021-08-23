@@ -68,7 +68,7 @@ const  [
     markerset,term  , 
     run_summary,run_analysis, 
     sync , files_uploaders/*element node  |  undefined */ , files_browser/* element node | undefined*/ ,
-    form_upload ,  job_title ,  job_init  ,  disconnect , p_menu
+    form_upload ,  job_title ,  job_init  ,  disconnect , p_menu, interm  
   ]=[ 
         _.querySelector("#ped"),   
         _.querySelector("#map"), 
@@ -91,7 +91,8 @@ const  [
         activate_extra_elements  ?  _.querySelector("#job_title")           : (void function ()  { return  }() )  ,  
         activate_extra_elements  ?  _.querySelector("#start_job")           : (void function ()  { return  }() )  ,     
         activate_extra_elements  ?  _.querySelector("#disconnect")          : (void function ()  { return  }() )  , 
-        activate_extra_elements  ?  _.querySelectorAll(".pointing > a")     : (void function ()  { return  }() ) 
+        activate_extra_elements  ?  _.querySelectorAll(".pointing > a")     : (void function ()  { return  }() )  ,  
+        activate_extra_elements  ?  _.querySelector("#detach_term")     : (void function ()  { return  }() )    
 
     ] ,
     [  

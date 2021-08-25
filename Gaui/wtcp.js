@@ -15,8 +15,9 @@ __kernel_file_props__    : {
 so = process.platform == "win32" ? "\\"  : "/"  
 
 const  [
+    { log }  = console                  , 
     {summary_src  , run_analysis  , required_file_extension } = require("./config.json")["mtdt_pannel"], 
-    { log }  = console                   , 
+    {virtual_workstation} =  require("./config.json")["web_server"] ,
     {Server} = require("http")           ,
     path     = require("path")           ,
     {createReadStream,access , createWriteStream ,readFile  , writeFile  , writeFileSync, constants} =nm["fs"]         , 
@@ -44,10 +45,9 @@ xapp
 __required_static_files__ : 
 summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
-
+vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstation) 
 static_vn       =  null
- 
-    
+
 
 const __wtcp__ =  {  
 
@@ -87,10 +87,13 @@ const __wtcp__ =  {
 
         xapp
         ["get"] ("/" , ( rx , tx  )  =>    { 
+            
             tx.setHeader("Content-type" ,  "text/html")  
             tx.render("index.ejs"  ,  { socket : true })  
+       
         })
         ["post"] ("/",  ( rx  ,tx  ) => {  
+
             const { files_upload_processing  }  = __wtcp__ 
             if (!rx?.files ) log ("file upload module not found ")  
             let  { fupload  }  = rx.files
@@ -99,16 +102,23 @@ const __wtcp__ =  {
                 tx.redirect("/") 
             
             else tx.status(500).send({ message  :"failed to upload  files"})
+        
         })
         ["get"]("/download/:dfile" , ( rx ,tx ) => {
+        
             tx.download(`${__dirname}/tmp/${static_vn}/${rx.params.dfile}` , rx.params.dfiles  , err => {  
                 if   (err) tx.status(500).send( {  message  : `you tried to download an inexistant file `}) 
             })
         })
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
+       
         server 
-        ["listen"](gateways , "0.0.0.0" ,log(`\x1b[1;32m * connected on  ${gateways}\x1b[0m`))
-        ["on"]("error" , err         => {  
+        ["listen"](gateways , "0.0.0.0" ,  _void_args  => {  
+            utils["_auto_build_tmp_dir"](vworks)  
+            log(`\x1b[1;32m * connected on  ${gateways}\x1b[0m`)
+        
+        })
+        ["on"]("error" , err=> {  
             switch (err.errno)   
             {
                 case  -98  :  //!EADDRINUSE  
@@ -116,10 +126,11 @@ const __wtcp__ =  {
                     process.exit(err.errno) 
             }
         }) 
-
+        
         socket.on("connection" , sock => { 
-             __client_side_evt__  : 
-             NAVIGATOR_FPRINT  :   sock.on("clifp"  ,  fprint => { 
+            __client_side_evt__  : 
+            
+            NAVIGATOR_FPRINT  :   sock.on("clifp"  ,  fprint => { 
                  const  {  user_agent   ,  ls_session  } = fprint  
                  log  ( user_agent) 
                  if  ( ls_session )  
@@ -137,14 +148,14 @@ const __wtcp__ =  {
              })  
              
             VIRTUAL_NAMESPACE   :  sock.on("create::job" ,   async   namespace  =>  {
-                namespace   =  namespace.replace(" " , "_")
+                namespace      =  namespace.replace(" " , "_")
                 let job_stack  = await utils.list_allocated_job_space() 
                 job_stack      =  job_stack.map(dirent => dirent.name) 
                 if  (  !job_stack.includes(namespace)  )  
                 {
-                    utils.access_userland ( namespace  , sock )
+                    utils.access_userland ( vworks ,  namespace  , sock )
                     static_vn =  namespace 
-                    absvpath  =`${__dirname}/tmp/${namespace}`  
+                    absvpath  =`${vworks}/${namespace}`  
                     const   { scan_directory  } =  utils
                     //! wait until   to create   the env  namespace 
                     setTimeout  ( ()=> { 

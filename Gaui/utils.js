@@ -2,12 +2,33 @@
 //author  : Umar aka jukoo  j_umar@outlook.com   <github.com/jukoo>
 
 const   
-    { readFileSync , rm , readFile , createWriteStream , readdir , access ,  constants  , createReadStream , mkdir}=  require("fs") , 
+    { 
+        readFileSync 
+        , rm 
+        , readFile 
+        , createWriteStream 
+        , readdir 
+        , access 
+        , constants  
+        , createReadStream 
+        , mkdir
+    }   = require("fs") , 
+    
     os =  require("os") ,  
-    {execSync ,exec , spawn}  = require("child_process"), 
+    {
+        execSync
+        , exec 
+        , spawn
+    }   = require("child_process"), 
+    
     {fromCharCode}            = String , 
     {log}                     = console,  
-    { fstdout , fstderr , fserror} =  require("./config")["io_fstream"]  
+    
+    { 
+        fstdout 
+        , fstderr 
+        , fserror
+    }   = require("./config")["io_fstream"]  
  
    
 module
@@ -120,35 +141,34 @@ module
         
         })
     },
-
-    access_userland   :  ( userland  ,  socket )  => { 
-        const   { make_new_userland }  = module.exports 
-        const uspace_root = "tmp"
-        const udir        = `${__dirname}/${uspace_root}/${userland}`
-        access(uspace_root , enoacc =>  {   
-            //! when  tmp is  undefined  create a new one  
+     
+    _auto_build_tmp_dir  :    abs_tmp_dir_path  =>  {
+        access ( abs_tmp_dir_path ,  enoacc =>  {  
             if (enoacc) 
-            {
-                socket.emit("fsinfo" ,  "Intializing temporary volume ... ")  
-                mkdir(uspace_root ,  err  => {  
-                    if (err)
-                    {   socket.emit("fsinfo" ,  `[internal error] x failure  : ${err}`) 
-                        throw new Error (err) 
-                    }
-                } )  
-                module.exports.access_userland(userland , socket )   
+            {   
+                mkdir ( abs_tmp_dir_path ,  emake =>  { 
+                    process.stdout.write("Setting  up  virtual workspace \n")
+                    if (emake)  throw emake 
+                })
             }
-            readdir(`${__dirname}/${uspace_root}`,   ( enoreadd  , dir_contents ) => {
-                if  ( enoreadd )  throw enoreadd  
-                if  ( dir_contents.includes(userland))
-                {
-                    socket.emit ("trunc::baseroot" ,  udir ) 
-                }else  { 
+        })
+    },
+
+    access_userland   :  ( vworks , userland  ,  socket )  => { 
+        const   { make_new_userland }  = module.exports 
+        const udir        = `${vworks}/${userland}`
+        readdir(vworks,   { withFieTypes : true} ,  ( enoreadd  , dir_contents ) => {
+            if  ( enoreadd )  throw enoreadd  
+            const  catched_dir_only=  dir_contents.filter( item => item["isDirectory"]()) 
+            
+            if  ( catched_dir_only.includes(userland))
+            {
+                socket.emit ("trunc::baseroot" ,  udir ) 
+            }else{ 
                      make_new_userland(udir ,  socket)  
                      socket.emit("fsinfo" ,  "status :: ready  ") 
-                } 
-            })
-
+            } 
+            
         })
 
     }  , 

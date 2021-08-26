@@ -54,6 +54,7 @@ __init__  = ( ()=> {
     run_analysis.disabled =  true  
     term.innerText        =  "▮ "
     term.setEditable      =  false
+    term.disabled         =  true 
     phenotype.disabled    =  true 
     nbsim.disabled        =  true 
     nbcores.disabled      =  true 
@@ -76,14 +77,12 @@ setInterval( () => {
             notify("-><- " ,  {body : "Online"}) 
             if (_.querySelector("#network"))
                 _.querySelector("#network").style.color="green"
-            term_write("Status : online") 
         }
         
         
     } else {  
         show_nt =0 
         _.querySelector("#network").style.color="firebrick"  
-        term_write("Status : offline") 
     } 
 } , 10000 )
 
@@ -633,7 +632,7 @@ ipcRenderer.on("attach::term" , (evt ,data ) => {
 ipcRenderer.on("annoucement" ,  (evt , data )  => { 
 } )
 
-__Socket_handlernamespace__ : 
+__USING_WEB_SOCKET__ : 
 
 if  (activate_extra_elements) 
 {
@@ -660,42 +659,8 @@ if  (activate_extra_elements)
             // update  file visualization  
             ipcRenderer.send_("update::fileviewer" ,   paths_collections )  
         }
-        
     }) 
-    let allowed_key = [ 0x45 ] 
-    let  edition_mode  = false //0x6e9   // [ 0x11 , 0x45 ]  //  ctrl +e  for edition mode
-    let capture_kbctrl   = [] 
-   
-    let  stash_term_value = term.value   
-    window.addEventListener("keydown", evt =>  {
-
-
-        if  (  evt.which == 0x1b )   // E dition  mode
-        {
-            edition_mode = ~edition_mode
-             
-            if(edition_mode)
-            {
-                term.disabled = false
-                term.focus() 
-                
-                term.value ="# " 
-                //! starting  listening  keyboard from terminal 
-                term.addEventListener("keypress" , evt => {
-                    if   ( evt.which  == 0xD  ) 
-                    {
-                        const payload  = term.value.trim()  
-                        log(payload) 
-                    }
-                })
-
-            }else{ 
-                term.disabled = true  
-                term.value  = stash_term_value 
-            }  
-        }
-
-    }) 
+    
     ipcRenderer.on("jobusy" ,   vn => {
          localStorage.clear()
          allow_upload = false  
@@ -705,18 +670,22 @@ if  (activate_extra_elements)
          disconnect.disabled = true  
          job_title.style.color = "firebrick"
     })  
+
     ipcRenderer.on("fsinfo" ,  dmesg => term_write(dmesg  ,  true )  )  
+
     ipcRenderer.on("ok", protocol => { 
         disconnect.disabled = false 
         files_uploaders.disabled=false 
         files_browser.disabled = false  
         job_title.style.color ="#22222"
     })
+
     ipcRenderer.on("session::expired"  ,  dmesg  =>  {  
         term_write(`\n * ${dmesg}  please set a new job `) 
         localStorage.clear()
         sleep ( 1000 ,location.reload())  
     })  
+
     ipcRenderer.on("update::fileviewer" ,   fileslist  =>  {
         //! TODO :  update file views  rendering 
         log (fileslist ) 
@@ -737,8 +706,27 @@ if  (activate_extra_elements)
         pm.addEventListener("mouseover" ,  evt => pm.classList.toggle("active")) 
         pm.addEventListener("mouseout"  ,  evt => pm.classList.toggle("active"))  
     })
-
-    interm.addEventListener ("click" , evt => { 
-        //!  TODO  make an interative terminal 
+ 
+    let  edition_mode =  false 
+    interm.addEventListener ("click" , evt => {  
+        edition_mode  = ~edition_mode  
+        if (edition_mode) 
+        {
+            interm.classList.add("inverted")
+            term.disabled = false
+            term.focus() 
+            term.value    ="" 
+            term.addEventListener("keydown"  , evt => {
+                if  ( evt.which == 0x000d ) //! enter ascii   
+                {
+                    const  user_cmd=  term.value.trim()
+                    ipcRenderer.send_("user::interaction" ,  user_cmd  )  
+                }
+            })
+        }else { 
+            if ( interm.classList.contains("inverted") ) interm.classList.remove("inverted") 
+            term.disabled  = true 
+        
+        } 
     })
 }

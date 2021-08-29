@@ -128,4 +128,18 @@ const uploader  =   async   form_ =>  {
 
     return  state 
 }
- 
+
+const mtdterm_rowline_handlers   =  which_keycode   =>   { 
+    const  total_lines =  term.value.split("\n") 
+    let value  =  ( void function ()  { return} () )   //  is undefined  
+    switch  ( which_keycode ) 
+    {
+        case   0x00D : 
+            const  last_line =  total_lines[total_lines.length - 1 ]  
+            value   = last_line.trim() 
+            break ;
+        //! TODO :  you can implement other  keycode  operation bellow 
+    }
+
+    return value 
+}

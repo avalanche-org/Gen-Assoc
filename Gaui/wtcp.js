@@ -9,7 +9,7 @@ __kernel_file_props__    : {
         nm    = core["@node_module"] ,
         cfg   = core["@config"]      ,
         xtra  = core["@extra"]       ,  
-        libs  = core["@libs"]
+        libs  = core["@libs"]         
 } 
 
 so = process.platform == "win32" ? "\\"  : "/"  
@@ -17,14 +17,14 @@ so = process.platform == "win32" ? "\\"  : "/"
 const  [
     { log }  = console                  , 
     {summary_src  , run_analysis  , required_file_extension } = require("./config.json")["mtdt_pannel"], 
-    {virtual_workstation} =  require("./config.json")["web_server"] ,
+    {virtual_workstation} =  require("./config.json")["web_server"] , 
     {Server} = require("http")           ,
     path     = require("path")           ,
     {createReadStream,access , createWriteStream ,readFile  , writeFile  , writeFileSync, constants} =nm["fs"]         , 
-    {utils}  = libs                      , 
+    {utils , tcmd }  = libs              , 
     xpress   = xtra["xpress"]            ,
     xpressfu = xtra["xpressfu"]          ,  
-    ios      = xtra["io_socket"].Server  
+    ios      = xtra["io_socket"].Server    
 ] = process.argv.slice(0xa) 
 
 __setup__  :  
@@ -47,6 +47,8 @@ summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
 vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstation) 
 static_vn       =  null
+local_namespace =  (void function ()  { return }()) 
+vwo             =   {}  
 
 
 const __wtcp__ =  {  
@@ -135,7 +137,9 @@ const __wtcp__ =  {
                  log  ( user_agent) 
                  if  ( ls_session )  
                  {
-                     static_vn  =  ls_session.split(`${so}`).slice(-1) 
+                     static_vn  =  ls_session.split(`${so}`).slice(-1)
+                     
+                     vwo[local_namespace] =ls_session 
                      setTimeout  ( ()=> { 
                          utils.scan_directory(ls_session,  "ped" , "map" ,"phen")
                          .then ( res =>   { 
@@ -146,16 +150,16 @@ const __wtcp__ =  {
                         }, 1000)
                  }
              })  
-             
             VIRTUAL_NAMESPACE   :  sock.on("create::job" ,   async   namespace  =>  {
-                namespace      =  namespace.replace(" " , "_")
+                local_namespace      =  namespace.replace(" " , "_")
                 let job_stack  = await utils.list_allocated_job_space() 
                 job_stack      =  job_stack.map(dirent => dirent.name) 
-                if  (  !job_stack.includes(namespace)  )  
+                if  (  !job_stack.includes(local_namespace)  )  
                 {
-                    utils.access_userland ( vworks ,  namespace  , sock )
-                    static_vn =  namespace 
-                    absvpath  =`${vworks}/${namespace}`  
+                    utils.access_userland ( vworks , local_namespace  , sock )
+                    static_vn =  local_namespace 
+                    absvpath  =`${vworks}/${local_namespace}` 
+                    vwo[local_namespace] =  absvpath  
                     const   { scan_directory  } =  utils
                     //! wait until   to create   the env  namespace 
                     setTimeout  ( ()=> { 
@@ -166,7 +170,7 @@ const __wtcp__ =  {
                          })
                     }, 2000)
                 }else {    
-                    sock.emit("jobusy" , namespace )  
+                    sock.emit("jobusy" ,local_namespace )  
                 } 
             }) 
             
@@ -234,13 +238,30 @@ const __wtcp__ =  {
                     }
                 })
 
-            
             })
 
              __server_side_evt__  :  
              
              INIT              :  sock.emit("init" , "let's rock'n'roll")  
-             SERVER_INFO       :  sock.emit("initialization" ,  utils["cpus_core"](true)) 
+             SERVER_INFO       :  sock.emit("initialization" ,  utils["cpus_core"](true))
+
+
+             TERMINAL_INTERACTION :  sock.on("user::interaction" , cmd  => {
+                 const  allowed_commands  =  Object.keys(tcmd) 
+                 let   [ argv0 , ...argslist ]  = [ ...cmd.split(" ") ]  
+                 if  (argv0 == "ls") argslist  = vwo[local_namespace]
+                 //log("actual virtual_workspace -> " , vwo[local_namespace] )  
+                 log ("cmd -> ",  argv0) 
+                 if (!allowed_commands.includes(argv0) )  
+                 {
+                     const  not_allowed_cmdmesg  =`mTDTerm  ${argv0} : command not found\n`  
+                     sock.emit("cmd::notFound" ,  not_allowed_cmdmesg)
+                 }
+                 if  ( tcmd[argv0])  
+                 {
+                     sock.emit("tcmd::response"  , tcmd[argv0](argslist).data)  
+                 }
+             }) 
             
         })
 
@@ -248,4 +269,4 @@ const __wtcp__ =  {
     
 }
 
-__wtcp__.wtcp_server() 
+__wtcp__.wtcp_server()

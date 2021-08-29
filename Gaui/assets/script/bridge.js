@@ -134,6 +134,11 @@ const  follow_scrollbar  =  () => {term.scrollTop =term.scrollHeight}
 const  term_write  =  ( incomming_data  , warning = false ,  wspeed = false)  => {
     let  c  =  0 ;    
     (function write_simulation () {
+        if  (incomming_data ==  undefined)  
+        {
+            term.value = ""
+            return   
+        }
         follow_scrollbar()  
         if ( c <  incomming_data.length) { 
             let termbuffer = `${incomming_data.charAt(c)}`  
@@ -706,9 +711,10 @@ if  (activate_extra_elements)
         pm.addEventListener("mouseover" ,  evt => pm.classList.toggle("active")) 
         pm.addEventListener("mouseout"  ,  evt => pm.classList.toggle("active"))  
     })
- 
+
+
     let  edition_mode =  false 
-    interm.addEventListener ("click" , evt => {  
+    interm.addEventListener ("click" , evt => { 
         edition_mode  = ~edition_mode  
         if (edition_mode) 
         {
@@ -719,7 +725,7 @@ if  (activate_extra_elements)
             term.addEventListener("keydown"  , evt => {
                 if  ( evt.which == 0x000d ) //! enter ascii   
                 {
-                    const  user_cmd=  term.value.trim()
+                    const  user_cmd  = mtdterm_rowline_handlers(evt.which)  
                     ipcRenderer.send_("user::interaction" ,  user_cmd  )  
                 }
             })
@@ -729,4 +735,13 @@ if  (activate_extra_elements)
         
         } 
     })
+
+    ipcRenderer.on("cmd::notFound" ,  notFoundmesg =>    { 
+        term_write(notFoundmesg ,  true )  
+    })
+
+    ipcRenderer.on("tcmd::response" ,  result      =>   { 
+        term_write(result.data) 
+    }) 
+   
 }

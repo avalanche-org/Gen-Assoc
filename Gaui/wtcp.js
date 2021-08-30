@@ -175,6 +175,7 @@ const __wtcp__ =  {
             }) 
             
             FILE_VISUALIZER  :  sock.on("update::fileviewer" ,   async  virtual_namespace   => {
+     
                 static_vn   = virtual_namespace.split(`${so}`).slice(-1) 
                 let  files  =   await  utils.list_allocated_job_space(true ,  virtual_namespace )  
                 files       = files.map(dirent=> dirent.name)  
@@ -251,7 +252,6 @@ const __wtcp__ =  {
                  let   [ argv0 , ...argslist ]  = [ ...cmd.split(" ") ]  
                  if  (argv0 == "ls") argslist  = vwo[local_namespace]
                  //log("actual virtual_workspace -> " , vwo[local_namespace] )  
-                 log ("cmd -> ",  argv0) 
                  if (!allowed_commands.includes(argv0) )  
                  {
                      const  not_allowed_cmdmesg  =`mTDTerm  ${argv0} : command not found\n`  

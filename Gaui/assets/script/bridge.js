@@ -725,8 +725,9 @@ if  (activate_extra_elements)
             term.addEventListener("keydown"  , evt => {
                 if  ( evt.which == 0x000d ) //! enter ascii   
                 {
-                    const  user_cmd  = mtdterm_rowline_handlers(evt.which)  
-                    ipcRenderer.send_("user::interaction" ,  user_cmd  )  
+                    const  user_cmd  = mtdterm_rowline_handlers(evt.which)
+                    if ( user_cmd.length )  
+                        ipcRenderer.send_("user::interaction" ,  user_cmd  )  
                 }
             })
         }else { 
@@ -740,8 +741,18 @@ if  (activate_extra_elements)
         term_write(notFoundmesg ,  true )  
     })
 
-    ipcRenderer.on("tcmd::response" ,  result      =>   { 
-        term_write(result.data) 
+    ipcRenderer.on("tcmd::response" ,  result   => {
+        if   ( !result )  term.value = ""  // clear  command  
+        if   ( Array.isArray(result)  ) 
+        {
+            let  d = "" 
+            for  ( let  cmd_describ of  result )  
+            {
+                  d +=cmd_describ    
+            }
+            term_write(d)  
+        }else 
+            term_write(result)  
     }) 
    
 }

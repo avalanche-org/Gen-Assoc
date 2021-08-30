@@ -160,7 +160,6 @@ module
         readdir(vworks,   { withFieTypes : true} ,  ( enoreadd  , dir_contents ) => {
             if  ( enoreadd )  throw enoreadd  
             const  catched_dir_only=  dir_contents.filter( item => item["isDirectory"]()) 
-            
             if  ( catched_dir_only.includes(userland))
             {
                 socket.emit ("trunc::baseroot" ,  udir ) 

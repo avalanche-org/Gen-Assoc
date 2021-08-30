@@ -4,35 +4,56 @@
 
 
 const  {  
-    readdir  
-} = require("fs")  
+    readdirSync  
+} = require("fs") , 
+    { log } = console,  
+    { list_allocated_job_space } = require("./utils")  
+
+
 
 module.exports =   {  
 
     ["clear"]  : (...unused_argument)   =>    {
         return  { 
             data   : "" , 
-            description: "clear the terminal"
+            description: "clear the terminal\n"
         } 
     },  
-    ["help"]   : (...cmd_name) =>   {
-        let  cmd_helper_collects  =[]  
-        if  (!cmd_name )  
-        {  
+    ["help"]   :  (...cmd_name) =>   {
+        let  cmd_helper_collects  =[`
+        ----
+        mTDTerm  web version   v.1.0 Usage
+        ----
+        `]  
+        if  (!cmd_name[0].length)  
+        { 
+            log ( "no  cmd") 
             for (let key of  Object.keys(module.exports )  )  { 
-                if   ( key != help) 
+                if   ( key != "help") 
                 {
-                     cmd_helper_collects.push (`${key} :  ${module.exports.key().description}`)
+                     cmd_helper_collects.push(`\r[ ${key} ]\r\t${module.exports[key]().description}`)
                 }
             }
-            return cmd_helper_collects  
-        } 
-        return     {  data : module.exports[cmd_name[0]].description  , description : "show help  usage " }  
+            return    { data :  cmd_helper_collects }    
+        }
+         
+         return  {  data : module.exports[cmd_name[0]]().description }  
     },  
     
     ["ls"]  :   ( ...local_vworks  ) => {
         
-        const  virtual_workspace =  local_vworks[0] 
-        
+        const  virtual_workspace =  local_vworks[0]  ||  (void function ()  { return } ()) 
+        let files_list =  null  
+        if   ( virtual_workspace)  
+        {
+            let  files = readdirSync ( virtual_workspace ,  {withFileTypes : true } )  
+            if ( !files  )  files_list  = "No such file(s)  in your workspace "
+             else files_list             = files.map ( file => `${file.name} \n`)  
+        }
+        return   { 
+            data :  files_list , 
+            description  :  "list   all  files  on your  virtual workspace \n"
+        }
+       
     }
 }  

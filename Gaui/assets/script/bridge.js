@@ -754,5 +754,19 @@ if  (activate_extra_elements)
         }else 
             term_write(result)  
     }) 
-   
+
+    //! Genotype inference  
+    
+    let gi_status  =   { 
+        "no" : "" , 
+        "yes":  1  
+    } ;  
+
+    [giyes , gino]["forEach"] (gi_btn =>   { 
+        gi_btn.addEventListener("click" , evt => {
+            evt.preventDefault() 
+            const  gi_value  =  gi_btn.textContent.toLowerCase()  
+            ipcRenderer.send_("retive::missing::genotype" ,   gi_status[gi_value]) 
+        })
+    })
 }

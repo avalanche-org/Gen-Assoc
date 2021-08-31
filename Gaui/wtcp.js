@@ -71,11 +71,11 @@ const __wtcp__ =  {
         const  explode = data.split(sep) 
         return  required_file_extension.includes(explode[explode.length -1 ] )  
     },
-    files_upload_processing   :   ( fu  , callback_handler  = false )   =>  {  
+    files_upload_processing   :   ( fu  , callback_handler  = false )   =>  { 
         let   gfiles =[]   
         if  ( typeof(fu) == "object"  &&   !fu.length     ) gfiles =  [[ ...gfiles ,    fu]]   
-        if  ( typeof(fu) == "object"  &&   fu.length > 1  ) gfiles =  [[ ...gfiles , ...fu]]  
-        const  file_len  =  gfiles[0].length 
+        if  ( typeof(fu) == "object"  &&   fu.length >= 1  ) gfiles =  [[ ...gfiles , ...fu]] 
+        const  file_len  =  gfiles[0].length   
         let  i =  0 
         gfiles[0]
         ["forEach"](   ( file   , index  ) => {
@@ -99,11 +99,15 @@ const __wtcp__ =  {
             const { files_upload_processing  }  = __wtcp__ 
             if (!rx?.files ) log ("file upload module not found ")  
             let  { fupload  }  = rx.files
-            fupload  = fupload.filter  ( file  => __wtcp__["@parser"](file.name))
+
+            fupload  =  fupload.length ? fupload.filter( file  => __wtcp__["@parser"](file.name)):
+            [fupload].filter(file  => __wtcp__["@parser"](fupload.name))
+            
+            
             if  ( files_upload_processing (fupload  ,   __wtcp__["#fstream"]) ) 
                 tx.redirect("/") 
             
-            else tx.status(500).send({ message  :"failed to upload  files"})
+            else tx.status(500).send({ message  :"Upload Broken :  fail to upload  file (s) mea culpa !"})
         
         })
         ["get"]("/download/:dfile" , ( rx ,tx ) => {

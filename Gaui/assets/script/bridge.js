@@ -647,9 +647,12 @@ if  (activate_extra_elements)
         
         const choosed_files  =  [...files_browser.files]  ,
             total_size_bytes  =  choosed_files.reduce( ( file_a , file_v  ) => file_a?.size  + file_v?.size ) 
+            
+        log(choosed_files )  
         files_uploaders.disabled =  !choosed_files.length  ??   true    
         log(files_uploaders.disabled )  
-        fileslist  = choosed_files.map (  file  =>  file?.name)   
+        fileslist  = choosed_files.map (  file  =>  file?.name) 
+        log (fileslist) 
     
     }  , false ) 
  

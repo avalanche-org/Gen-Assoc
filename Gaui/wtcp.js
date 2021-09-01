@@ -119,7 +119,7 @@ const __wtcp__ =  {
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
        
         server 
-        ["listen"](gateways , "0.0.0.0" ,  _void_args  => {  
+        ["listen"](gateways ,"0.0.0.0" , _void_args  => {  
             utils["_auto_build_tmp_dir"](vworks)  
             log(`\x1b[1;32m * connected on  ${gateways}\x1b[0m`)
         

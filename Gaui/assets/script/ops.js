@@ -138,10 +138,11 @@ const mtdterm_rowline_handlers   =  which_keycode   =>   {
     {
         case   0x00D : 
             const  last_line =  total_lines[total_lines.length - 1 ]  
-            value   = last_line.trim() 
+            value   = last_line.replace(">" , "") 
+            value   = value.trim()
             break ;
         //! TODO :  you can implement other  keycode  operation bellow 
     }
 
     return value 
-}
+} 

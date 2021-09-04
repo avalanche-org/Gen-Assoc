@@ -2,10 +2,12 @@
 //! this script make a bridge between  main  process and renderer process 
 //! sending event through backend side   
 ipcRenderer.send_("clifp" ,   { user_agent : client_nav_fingerprint(navigator) , ls_session : localStorage["task"]?? null})
-ipcRenderer.on("init" ,  d =>  job_title.focus ())  
+
 
 if (!localStorage["task"] )   
-{ 
+{
+    files_browser.disabled  = true
+    files_uploader.disabled =  true
     job_init.addEventListener("click" , evt  => {
         evt.preventDefault()  
         if (!job_title.value) files_browser.disabled = true  
@@ -19,8 +21,10 @@ if  ( localStorage["task"] )
     job_title.value= localStorage["task"].split("/").slice(-1) 
     job_title.disabled = true 
     job_init.disabled =  true 
-    files_browser.disabled  = false  
-}
+    files_browser.disabled  = false 
+    files_uploader.disabled   = false 
+} else
+    job_title.value = ""  
 
 let jauge   =  0 
 /*
@@ -65,7 +69,6 @@ __init__  = ( ()=> {
     ipcRenderer.send("init",1)
     writeSpeed            =  0 
     display_              = display_speed(2)
-   
 })()    
 let   show_nt = 0  ;  
 setInterval( () => {
@@ -123,7 +126,8 @@ _.querySelector("#clear").addEventListener("click", evt => {
     ipcRenderer.send("clear::term" ,  null )   
 })
 _.querySelector("#infosys").addEventListener("click" , evt =>  {  
-    term.value = "" 
+    term.value = ""  
+    ipcRenderer.send_("info" ,  true )  
     term_write(global_info) 
    
     if  (! activate_extra_elements ) ipcRenderer.send("system::info" , global_info )  
@@ -131,8 +135,13 @@ _.querySelector("#infosys").addEventListener("click" , evt =>  {
 
 
 const  follow_scrollbar  =  () => {term.scrollTop =term.scrollHeight}
-const  term_write  =  ( incomming_data  , warning = false ,  wspeed = false)  => {
-    let  c  =  0 ;    
+const  term_write  =  ( incomming_data  , warning = false ,  wspeed = false , __brutal_splash =  true )  => {
+    let  c  =  0 ;     
+    if (__brutal_splash )  
+    {
+        term.value +=`${incomming_data}\n` 
+        return 
+    }
     (function write_simulation () {
         if  (incomming_data ==  undefined)  
         {
@@ -188,7 +197,7 @@ ipcRenderer.on("initialization" ,  (evt , data)  =>{
 
     if (!os_detail_info) os_detail_info = data 
     if (!available_cpus_core)  available_cpus_core =  os_detail_info?.cpus
-
+    /*
     notify("mTdt ", { body : ` mTdt  version ${version}`})
     if   ( data.init_proc == 1 &&  localStorage["iproc"] != 1||  os_detail_info)
     {   
@@ -210,7 +219,7 @@ ipcRenderer.on("initialization" ,  (evt , data)  =>{
                 global_info+= `${si} : ${os_detail_info[si]}\n`  
         } 
 
-    }
+    }*/
     if ( available_cpus_core )
     {
         logfile  = logpath_location
@@ -641,6 +650,25 @@ __USING_WEB_SOCKET__ :
 
 if  (activate_extra_elements) 
 {
+    const dispatch_server_info  =  server_information_packet => { 
+        const   { ascii_logo ,  sysinfo }  = server_information_packet 
+        term_write(ascii_logo ,  false ,false)
+        let formating_received_information=  "---------\n" 
+        for  ( let type  in sysinfo )  {
+            log(sysinfo)  
+            log(type) 
+            if  ( type != "range") 
+                formating_received_information +=`+ ${type}\t:\t${sysinfo[type]}\n` 
+        }
+        formating_received_information+="----------\n" 
+        term_write(formating_received_information , false , false , false  ) 
+} 
+    ipcRenderer.on( "init" ,   server_information=>   {
+        term.value = "" 
+        dispatch_server_info(server_information)
+        job_title.focus ()
+    }) 
+    ipcRenderer.on("info" ,   server_information => dispatch_server_info(server_information) )  
      
     let  fileslist  =  null  
     files_browser.addEventListener("change" , evt =>  {  
@@ -656,40 +684,47 @@ if  (activate_extra_elements)
     
     }  , false ) 
  
-
-    form_upload.addEventListener("submit" , async  evt =>  {    
-        evt.preventDefault()  
-        let responce_status = await   uploader(form_upload) 
-        files_browser.value = ""
-        if   (responce_status?.status  ==  200    && fileslist != null) 
-        { 
-            optsfeed(fileslist)  
-            // update  file visualization  
-            ipcRenderer.send_("update::fileviewer" ,   paths_collections )  
-        }
-    }) 
+    if  ( localStorage["task"]  ) 
+    {
+        form_upload.addEventListener("submit" , async  evt =>  {    
+            evt.preventDefault()  
+            let responce_status = await   uploader(form_upload) 
+            files_browser.value = ""
+            if   (responce_status?.status  ==  200    && fileslist != null) 
+            { 
+                optsfeed(fileslist)  
+                // update  file visualization  
+                ipcRenderer.send_("update::fileviewer" ,   paths_collections )  
+            }
+        }) 
+    }
     
     ipcRenderer.on("jobusy" ,   vn => {
          localStorage.clear()
          allow_upload = false  
          files_browser.disabled = true
          term.value = "" 
-         term_write ( "----------\n->[WARNING] ! your not  allowed to upload filse this  job is being user by another"  ,  true )  
+         term_write ( "----------\n->[WARNING] ! your not  allowed to upload filse this  job is being user by another"  ,  true , false , false )  
          disconnect.disabled = true  
          job_title.style.color = "firebrick"
     })  
 
-    ipcRenderer.on("fsinfo" ,  dmesg => term_write(dmesg  ,  true )  )  
+    ipcRenderer.on("fsinfo" ,  dmesg => term_write(dmesg  ,  true  ,false , false)  )  
 
     ipcRenderer.on("ok", protocol => { 
         disconnect.disabled = false 
         files_uploaders.disabled=false 
         files_browser.disabled = false  
         job_title.style.color ="#22222"
+        job_init.value        ="ready"
+        job_init.disabled     =true 
+        job_title.disabled    =true
+        files_uploader.disabled = false 
+        files_browser.disabled= false 
     })
 
     ipcRenderer.on("session::expired"  ,  dmesg  =>  {  
-        term_write(`\n * ${dmesg}  please set a new job `) 
+        //term_write(`\n * ${dmesg}  please set a new job ` , false , false  , false ) 
         localStorage.clear()
         sleep ( 1000 ,location.reload())  
     })  
@@ -705,7 +740,10 @@ if  (activate_extra_elements)
             ipcRenderer.send_("client::disconnect" ,  paths_collections); 
             sleep(1000,  ()=> term_write("[  Good bye ] "))
             evt.preventDefault() 
-            sleep(2000  ,  () => location.reload() ) 
+            sleep(2000  ,  () =>  {   
+                term.value=""
+                location.reload()
+            }) 
         }
          
     })
@@ -724,7 +762,7 @@ if  (activate_extra_elements)
             interm.classList.add("inverted")
             term.disabled = false
             term.focus() 
-            term.value    ="" 
+            term.value    ="> " 
             term.addEventListener("keydown"  , evt => {
                 if  ( evt.which == 0x000d ) //! enter ascii   
                 {
@@ -741,7 +779,8 @@ if  (activate_extra_elements)
     })
 
     ipcRenderer.on("cmd::notFound" ,  notFoundmesg =>    { 
-        term_write(notFoundmesg ,  true )  
+        term_write(notFoundmesg ,  true  , false )  
+        term.value+="> "
     })
 
     ipcRenderer.on("tcmd::response" ,  result   => {
@@ -753,9 +792,10 @@ if  (activate_extra_elements)
             {
                   d +=cmd_describ    
             }
-            term_write(d)  
+            d+="> " 
+            term_write(d , false , false , false )  
         }else 
-            term_write(result)  
+            term_write(`${result??''}> `,false  , false , false) 
     }) 
 
     //! Genotype inference  

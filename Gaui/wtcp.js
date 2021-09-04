@@ -4,6 +4,17 @@
  *    author  :   Umar aka < jukoo >  @  github.com/jukoo  
  */ 
 
+mtdtart = `
+---
+ ███╗   ███╗████████╗██████╗ ████████╗
+ ████╗ ████║╚══██╔══╝██╔══██╗╚══██╔══╝
+ ██╔████╔██║   ██║   ██║  ██║   ██║   
+ ██║╚██╔╝██║   ██║   ██║  ██║   ██║   
+ ██║ ╚═╝ ██║   ██║   ██████╔╝   ██║   
+ ╚═╝     ╚═╝   ╚═╝   ╚═════╝    ╚═╝ 
+\t\t\t\t* version  beta 4.5.2 
+`
+
 __kernel_file__          : { core  = require("./kernel")  }  
 __kernel_file_props__    : { 
         nm    = core["@node_module"] ,
@@ -246,10 +257,18 @@ const __wtcp__ =  {
             })
 
              __server_side_evt__  :  
+            
+             server_static_info = {  
+                ascii_logo : mtdtart , 
+                sysinfo    : utils["cpus_core"](true) 
+            }  
+            INIT              :  sock.emit("init" ,   server_static_info)  
+             //SERVER_INFO       :  sock.emit("initialization" ,  utils["cpus_core"](true))    //! DEPRECATED  
              
-             INIT              :  sock.emit("init" , "let's rock'n'roll")  
-             SERVER_INFO       :  sock.emit("initialization" ,  utils["cpus_core"](true))
-
+             SERVER_INFO       :  sock.on("info" , info_request => { 
+                 sock.emit("info", server_static_info) 
+             })  
+             
 
              TERMINAL_INTERACTION :  sock.on("user::interaction" , cmd  => {
                  const  allowed_commands  =  Object.keys(tcmd) 
@@ -258,12 +277,11 @@ const __wtcp__ =  {
                  //log("actual virtual_workspace -> " , vwo[local_namespace] )  
                  if (!allowed_commands.includes(argv0) )  
                  {
-                     const  not_allowed_cmdmesg  =`mTDTerm  ${argv0} : command not found\n`  
-                     sock.emit("cmd::notFound" ,  not_allowed_cmdmesg)
+                     sock.emit("cmd::notFound" ,  `mTDTerm  ${argv0} : command not found\n`)
                  }
                  if  ( tcmd[argv0])  
                  {
-                     sock.emit("tcmd::response"  , tcmd[argv0](argslist).data)  
+                     sock.emit("tcmd::response"  , tcmd[argv0](argslist)?.data ?? " ")  
                  }
              }) 
             

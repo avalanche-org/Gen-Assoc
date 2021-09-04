@@ -157,9 +157,13 @@ module
     access_userland   :  ( vworks , userland  ,  socket )  => { 
         const   { make_new_userland }  = module.exports 
         const udir        = `${vworks}/${userland}`
-        readdir(vworks,   { withFieTypes : true} ,  ( enoreadd  , dir_contents ) => {
+        readdir(vworks,   { withFileTypes : true} ,  ( enoreadd  , dir_contents ) => {
             if  ( enoreadd )  throw enoreadd  
-            const  catched_dir_only=  dir_contents.filter( item => item["isDirectory"]()) 
+            const  catched_dir_only=  dir_contents.filter( item => {  
+                log (item) 
+                item["isDirectory"]()
+                
+            }) 
             if  ( catched_dir_only.includes(userland))
             {
                 socket.emit ("trunc::baseroot" ,  udir ) 

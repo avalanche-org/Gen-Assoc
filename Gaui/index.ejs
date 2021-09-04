@@ -60,13 +60,16 @@
       <div>&nbsp;</div>
       
       <!-- ******************* Begin of the first fieldset ******************* --> 
-      <fieldset class="fieldset1"> 
-        <legend>
-            <a class="ui red ribbon label">  Summary Statistics <i id="unlocked_default" class="fas fa-unlock"></i> </a>
-        </legend>
-        <% if  ( socket )  {%> 
-          <div class="ui inverted segment">
-            <form method="post" action="" enctype="multipart/form-data"  name="file_uploader" id="form_upload" class="ui inverted form">
+      <fieldset class="fieldset1">
+        <div class="ui raised segment">
+          <legend>
+            <a class="ui big right ribbon label" style="background-color:#F1F7FD; color:#59698D;">  
+              Summary Statistics 
+              <i id="unlocked_default" class="fas fa-unlock"></i> 
+            </a>
+          </legend>
+          <% if  ( socket )  {%> 
+            <form method="post" action="" enctype="multipart/form-data" name="file_uploader" id="form_upload" class="ui form" style="padding:20px; padding-bottom: 0;">
               <div class="ui fluid action input">
                 <input name="fupload" type="file" accept=".ped,.map,.phen" multiple style="padding: 20px;"> 
                 <div class="ui button">
@@ -78,34 +81,34 @@
                   </button>
                 </div>
               </div>
-            </form> 
-          </div>
-        <%}%>         
-        <form name="form" class="ui form"> 
-          <div class="ui slider checkbox">
-              <input type="checkbox" id="sync" name="sync">
-              <label for="sync">Sync</label>
-          </div>
-          <div class="field">
-            <label for="ped">Pedigree File</label>
-            <select required id="ped" name="ped" class="ui fluid dropdown">
-                <option   value = ""  disabled selected>Select a ped file</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="map">Map file</label>
-            <select required id="map" name="map" class="ui fluid dropdown">
-                <option value="" disabled selected>Select a map file</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="phen">Phenotype file</label>
-            <select required id="phen" name="phen" class ="ui search dropdown">
-              <option value = "" disabled selected > Select a phen file</option>
-            </select>
-          </div>
-          <button type="submit" id ="run_summary" class="ui right floated button">Launch Summary Statistics &nbsp;<i class="fas fa-chart-bar"></i></button>
-        </form>  
+            </form>
+          <%}%>         
+          <form name="form" style="padding:20px;" class="ui form"> 
+            <div class="ui slider checkbox">
+                <input type="checkbox" id="sync" name="sync">
+                <label for="sync">Sync</label>
+            </div>
+            <div class="field">
+              <label for="ped">Pedigree File</label>
+              <select required id="ped" name="ped" class="ui fluid dropdown">
+                  <option   value = ""  disabled selected>Select a ped file</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="map">Map file</label>
+              <select required id="map" name="map" class="ui fluid dropdown">
+                  <option value="" disabled selected>Select a map file</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="phen">Phenotype file</label>
+              <select required id="phen" name="phen" class ="ui search dropdown">
+                <option value = "" disabled selected > Select a phen file</option>
+              </select>
+            </div>
+            <button type="submit" id ="run_summary" class="ui button">Launch Summary Statistics &nbsp;<i class="fas fa-chart-bar"></i></button>
+          </form> 
+        </div>  
       </fieldset> 
       <!-- ******************* END of the first fieldset ******************* --> 
       <!-- ******************* Terminal block ******************* -->
@@ -125,7 +128,7 @@
               </div> 
             </div>
             <div class="item">
-                <div  class="ui icon primary  button" id="detach_term"> 
+                <div class="ui icon button" style="background-color:#F1F7FD; color:#59698D;" id="detach_term"> 
               <i class="fas fa-terminal" title="detach terminal"></i>
                 use terminal 
                 </div> 
@@ -170,23 +173,30 @@
       </div>
       <!-- ******************* END Terminal block ******************* -->
       <!-- ******************* Begin of the second fieldset ******************* --> 
-      <fieldset class="fieldset1">
-        <legend>
-            <a class ="ui blue ribbon label"> Genotype Inference <i id="lock_default" class="fas fa-lock"></i> </a>
-        </legend>
-        <form action="" class="ui form">
-          <div class="inline fields">
-            <div class="field" style="align-content:center;">
-              <h4>Retrieve missing genotypes : &nbsp;
-              </h4>
+      <fieldset class="fieldset2">
+        <div class="ui raised segment">
+          <legend>
+            <a class ="ui big ribbon label" style="background-color: #59698D; color: white;"> 
+              Genotype Inference &nbsp; 
+              <i id="lock_default" class="fas fa-lock"></i>
+            </a>
+          </legend>
+          <span></span>
+          <br>
+          <form action="" class="ui form">
+            <div class="inline fields">
+              <div class="field" style="align-content:center;">
+                <h4>Retrieve missing genotypes : &nbsp;
+                </h4>
+              </div>
+              <div class="ui large buttons">
+                <button class="ui button"  id="gi-yes">Yes</button>
+                <div class="or"></div>
+                <button class="ui button" id ="gi-no">No</button>
+              </div>
             </div>
-            <div class="ui large buttons">
-              <button class="ui button"  id="gi-yes">Yes</button>
-              <div class="or"></div>
-              <button class="ui button" id ="gi-no">No</button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </fieldset>
       <!-- ******************* END of the second fieldset ******************* -->
       
@@ -194,40 +204,45 @@
       <div></div>
       
       <!-- ******************* Begin of the third fieldset ******************* -->
-      <fieldset class="fieldset1">  
-        <legend>
-          <a class ="ui teal ribbon  label">Analysis <i id="lock_default" class=" fas fa-lock"></i></a>
-        </legend> 
-        <form name="form" class="ui form  default-blur-content">
+      <fieldset class="fieldset3">  
+        <!--legend>
+          <a class ="ui ribbonlabel">
+            Analysis
+            <i id="lock_default" class="fas fa-lock"></i>
+          </a>
+        </legend--> 
+        <!--form name="form" class="ui form  default-blur-content"-->
+        <form name="form" class="ui form">
           <!-- Choosing an Empirical run or a Theorical run-->
-          <h4 class="ui horizontal divider header">RUN</h4>
+          <h3 class="ui horizontal divider header">ANALYSIS</h3>
           <div class="ui placeholder segment" style="background-color: whitesmoke; border:none !important;">
-            <div class="ui two column stackable center  aligned  grid" ><!-- very relaxed grid-->
-              <div class="middle aligned column">
-                <div class="ui form">
-                  <div class="field">
-                    <div class="ui left icon input">
-                      <input id="nbsim" placeholder="Number of simulations">
-                      <i class="redo icon"></i>
+            <div class="ui two column stackable center  aligned  grid" >
+              <div class="column">
+                  <h4 style="margin-top:-11px;margin-left: 67px;color: orange;">EMPIRICAL RUN</h4>
+                  <div class="ui form">
+                    <div class="field">
+                      <div class="ui left icon input">
+                        <input id="nbsim" placeholder="Number of simulations">
+                        <i class="redo icon"></i>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <select id="nbcores" name="nbcores" class="ui search dropdown">
+                        <option value = "" disabled selected > Cpus core available</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <select id="phenotype" name="phenotype" class="ui search dropdown">
+                        <option value="" disabled selected>Number of phenotype</option>
+                      </select>
                     </div>
                   </div>
-                  <div class="field">
-                    <select id="nbcores" name="nbcores" class="ui search dropdown">
-                      <option value = "" disabled selected > Cpus core available</option>
-                    </select>
-                  </div>
-                  <div class="field">
-                    <select id="phenotype" name="phenotype" class="ui search dropdown">
-                      <option value="" disabled selected>Number of phenotype</option>
-                    </select>
-                  </div>
-                </div>
-                <!--div class="ui big button">Empirical</div-->
               </div>
               <div class="field">
-                <div class="ui icon  header">   <!--big button" style="background-color: #59698D; color: white !important;"-->
+                <div class="ui icon  header">   
+                  <h4 style="color: #59698D;">THEORICAL RUN</h4>
                   <i class="leaf icon"></i>
-                  <div class="ui primary large button">Theorical</div> 
+                  <div class="ui large button" style="background-color: #59698D;color: white;">GO !</div> 
                 </div>
               </div>
             </div>

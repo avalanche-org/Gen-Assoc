@@ -54,6 +54,7 @@ __init__  = ( ()=> {
     run_analysis.disabled =  true  
     term.innerText        =  "▮ "
     term.setEditable      =  false
+    term.disabled         =  true 
     phenotype.disabled    =  true 
     nbsim.disabled        =  true 
     nbcores.disabled      =  true 
@@ -76,14 +77,12 @@ setInterval( () => {
             notify("-><- " ,  {body : "Online"}) 
             if (_.querySelector("#network"))
                 _.querySelector("#network").style.color="green"
-            term_write("Status : online") 
         }
         
         
     } else {  
         show_nt =0 
         _.querySelector("#network").style.color="firebrick"  
-        term_write("Status : offline") 
     } 
 } , 10000 )
 
@@ -135,6 +134,11 @@ const  follow_scrollbar  =  () => {term.scrollTop =term.scrollHeight}
 const  term_write  =  ( incomming_data  , warning = false ,  wspeed = false)  => {
     let  c  =  0 ;    
     (function write_simulation () {
+        if  (incomming_data ==  undefined)  
+        {
+            term.value = ""
+            return   
+        }
         follow_scrollbar()  
         if ( c <  incomming_data.length) { 
             let termbuffer = `${incomming_data.charAt(c)}`  
@@ -633,7 +637,7 @@ ipcRenderer.on("attach::term" , (evt ,data ) => {
 ipcRenderer.on("annoucement" ,  (evt , data )  => { 
 } )
 
-__Socket_handlernamespace__ : 
+__USING_WEB_SOCKET__ : 
 
 if  (activate_extra_elements) 
 {
@@ -643,9 +647,12 @@ if  (activate_extra_elements)
         
         const choosed_files  =  [...files_browser.files]  ,
             total_size_bytes  =  choosed_files.reduce( ( file_a , file_v  ) => file_a?.size  + file_v?.size ) 
+            
+        log(choosed_files )  
         files_uploaders.disabled =  !choosed_files.length  ??   true    
         log(files_uploaders.disabled )  
-        fileslist  = choosed_files.map (  file  =>  file?.name)   
+        fileslist  = choosed_files.map (  file  =>  file?.name) 
+        log (fileslist) 
     
     }  , false ) 
  
@@ -660,42 +667,8 @@ if  (activate_extra_elements)
             // update  file visualization  
             ipcRenderer.send_("update::fileviewer" ,   paths_collections )  
         }
-        
     }) 
-    let allowed_key = [ 0x45 ] 
-    let  edition_mode  = false //0x6e9   // [ 0x11 , 0x45 ]  //  ctrl +e  for edition mode
-    let capture_kbctrl   = [] 
-   
-    let  stash_term_value = term.value   
-    window.addEventListener("keydown", evt =>  {
-
-
-        if  (  evt.which == 0x1b )   // E dition  mode
-        {
-            edition_mode = ~edition_mode
-             
-            if(edition_mode)
-            {
-                term.disabled = false
-                term.focus() 
-                
-                term.value ="# " 
-                //! starting  listening  keyboard from terminal 
-                term.addEventListener("keypress" , evt => {
-                    if   ( evt.which  == 0xD  ) 
-                    {
-                        const payload  = term.value.trim()  
-                        log(payload) 
-                    }
-                })
-
-            }else{ 
-                term.disabled = true  
-                term.value  = stash_term_value 
-            }  
-        }
-
-    }) 
+    
     ipcRenderer.on("jobusy" ,   vn => {
          localStorage.clear()
          allow_upload = false  
@@ -705,18 +678,22 @@ if  (activate_extra_elements)
          disconnect.disabled = true  
          job_title.style.color = "firebrick"
     })  
+
     ipcRenderer.on("fsinfo" ,  dmesg => term_write(dmesg  ,  true )  )  
+
     ipcRenderer.on("ok", protocol => { 
         disconnect.disabled = false 
         files_uploaders.disabled=false 
         files_browser.disabled = false  
         job_title.style.color ="#22222"
     })
+
     ipcRenderer.on("session::expired"  ,  dmesg  =>  {  
         term_write(`\n * ${dmesg}  please set a new job `) 
         localStorage.clear()
         sleep ( 1000 ,location.reload())  
     })  
+
     ipcRenderer.on("update::fileviewer" ,   fileslist  =>  {
         //! TODO :  update file views  rendering 
         log (fileslist ) 
@@ -738,7 +715,61 @@ if  (activate_extra_elements)
         pm.addEventListener("mouseout"  ,  evt => pm.classList.toggle("active"))  
     })
 
+
+    let  edition_mode =  false 
     interm.addEventListener ("click" , evt => { 
-        //!  TODO  make an interative terminal 
+        edition_mode  = ~edition_mode  
+        if (edition_mode) 
+        {
+            interm.classList.add("inverted")
+            term.disabled = false
+            term.focus() 
+            term.value    ="" 
+            term.addEventListener("keydown"  , evt => {
+                if  ( evt.which == 0x000d ) //! enter ascii   
+                {
+                    const  user_cmd  = mtdterm_rowline_handlers(evt.which)
+                    if ( user_cmd.length )  
+                        ipcRenderer.send_("user::interaction" ,  user_cmd  )  
+                }
+            })
+        }else { 
+            if ( interm.classList.contains("inverted") ) interm.classList.remove("inverted") 
+            term.disabled  = true 
+        
+        } 
+    })
+
+    ipcRenderer.on("cmd::notFound" ,  notFoundmesg =>    { 
+        term_write(notFoundmesg ,  true )  
+    })
+
+    ipcRenderer.on("tcmd::response" ,  result   => {
+        if   ( !result )  term.value = ""  // clear  command  
+        if   ( Array.isArray(result)  ) 
+        {
+            let  d = "" 
+            for  ( let  cmd_describ of  result )  
+            {
+                  d +=cmd_describ    
+            }
+            term_write(d)  
+        }else 
+            term_write(result)  
+    }) 
+
+    //! Genotype inference  
+    
+    let gi_status  =   { 
+        "no" : "" , 
+        "yes":  1  
+    } ;  
+
+    [giyes , gino]["forEach"] (gi_btn =>   { 
+        gi_btn.addEventListener("click" , evt => {
+            evt.preventDefault() 
+            const  gi_value  =  gi_btn.textContent.toLowerCase()  
+            ipcRenderer.send_("retive::missing::genotype" ,   gi_status[gi_value]) 
+        })
     })
 }

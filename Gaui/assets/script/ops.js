@@ -68,7 +68,7 @@ const  [
     markerset,term  , 
     run_summary,run_analysis, 
     sync , files_uploaders/*element node  |  undefined */ , files_browser/* element node | undefined*/ ,
-    form_upload ,  job_title ,  job_init  ,  disconnect , p_menu, interm  
+    form_upload ,  job_title ,  job_init  ,  disconnect , p_menu, interm , giyes , gino 
   ]=[ 
         _.querySelector("#ped"),   
         _.querySelector("#map"), 
@@ -92,7 +92,9 @@ const  [
         activate_extra_elements  ?  _.querySelector("#start_job")           : (void function ()  { return  }() )  ,     
         activate_extra_elements  ?  _.querySelector("#disconnect")          : (void function ()  { return  }() )  , 
         activate_extra_elements  ?  _.querySelectorAll(".pointing > a")     : (void function ()  { return  }() )  ,  
-        activate_extra_elements  ?  _.querySelector("#detach_term")     : (void function ()  { return  }() )    
+        activate_extra_elements  ?  _.querySelector("#detach_term")         : (void function ()  { return  }() )  ,
+        activate_extra_elements  ?  _.querySelector("#gi-yes")              : (void function ()  { return  }() )  , 
+        activate_extra_elements  ?  _.querySelector("#gi-no")               : (void function ()  { return  }() )   
 
     ] ,
     [  
@@ -128,4 +130,18 @@ const uploader  =   async   form_ =>  {
 
     return  state 
 }
- 
+
+const mtdterm_rowline_handlers   =  which_keycode   =>   { 
+    const  total_lines =  term.value.split("\n") 
+    let value  =  ( void function ()  { return} () )   //  is undefined  
+    switch  ( which_keycode ) 
+    {
+        case   0x00D : 
+            const  last_line =  total_lines[total_lines.length - 1 ]  
+            value   = last_line.trim() 
+            break ;
+        //! TODO :  you can implement other  keycode  operation bellow 
+    }
+
+    return value 
+}

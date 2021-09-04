@@ -149,9 +149,10 @@
       </fieldset> 
       <!--fin premier fieldset--> 
       <!--The terminal-->
+      
       <div>
         <div class="div_terminal" style="position: fixed; margin: 8px;">
-          <div class="ui menu"> 
+        <div class="ui menu"> 
             <div class="item">
                <div class= "ui icon button" id="clear">
               <i class="fas fa-broom" id="clear" title ="clear console"></i>
@@ -165,8 +166,8 @@
               </div> 
             </div>
             <div class="item">
-                <div  class="ui icon button" id="detach_term"> 
-              <i class="fas fa-terminal" id="detach_term" title="detach terminal"></i>
+                <div  class="ui icon primary  button" id="detach_term"> 
+              <i class="fas fa-terminal" title="detach terminal"></i>
                 use terminal 
                 </div> 
             </div>
@@ -208,12 +209,12 @@
 
           </div>
           <div>
+ <!--readonly autocomplete ="off"
+                speelcheck="false"
+                autocapitalize="off"-->
 
               <textarea name="" id="term" class="terminal"
-                readonly autocomplete ="off"
-                speelcheck="false"
-                autocapitalize="off"
-              ></textarea>
+                             ></textarea>
           </div>
         </div>
       </div>
@@ -230,9 +231,9 @@
               </h4>
             </div>
             <div class="ui large buttons">
-              <button class="ui button">Yes</button>
+              <button class="ui button"  id="gi-yes">Yes</button>
               <div class="or"></div>
-              <button class="ui button">No</button>
+              <button class="ui button" id ="gi-no">No</button>
             </div>
           </div>
         </form>

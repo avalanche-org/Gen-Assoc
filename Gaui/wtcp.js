@@ -9,21 +9,22 @@ __kernel_file_props__    : {
         nm    = core["@node_module"] ,
         cfg   = core["@config"]      ,
         xtra  = core["@extra"]       ,  
-        libs  = core["@libs"]
+        libs  = core["@libs"]         
 } 
 
 so = process.platform == "win32" ? "\\"  : "/"  
 
 const  [
+    { log }  = console                  , 
     {summary_src  , run_analysis  , required_file_extension } = require("./config.json")["mtdt_pannel"], 
-    { log }  = console                   , 
+    {virtual_workstation} =  require("./config.json")["web_server"] , 
     {Server} = require("http")           ,
     path     = require("path")           ,
     {createReadStream,access , createWriteStream ,readFile  , writeFile  , writeFileSync, constants} =nm["fs"]         , 
-    {utils}  = libs                      , 
+    {utils , tcmd }  = libs              , 
     xpress   = xtra["xpress"]            ,
     xpressfu = xtra["xpressfu"]          ,  
-    ios      = xtra["io_socket"].Server  
+    ios      = xtra["io_socket"].Server    
 ] = process.argv.slice(0xa) 
 
 __setup__  :  
@@ -44,10 +45,11 @@ xapp
 __required_static_files__ : 
 summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
-
+vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstation) 
 static_vn       =  null
- 
-    
+local_namespace =  (void function ()  { return }()) 
+vwo             =   {}  
+
 
 const __wtcp__ =  {  
 
@@ -69,11 +71,11 @@ const __wtcp__ =  {
         const  explode = data.split(sep) 
         return  required_file_extension.includes(explode[explode.length -1 ] )  
     },
-    files_upload_processing   :   ( fu  , callback_handler  = false )   =>  {  
+    files_upload_processing   :   ( fu  , callback_handler  = false )   =>  { 
         let   gfiles =[]   
         if  ( typeof(fu) == "object"  &&   !fu.length     ) gfiles =  [[ ...gfiles ,    fu]]   
-        if  ( typeof(fu) == "object"  &&   fu.length > 1  ) gfiles =  [[ ...gfiles , ...fu]]  
-        const  file_len  =  gfiles[0].length 
+        if  ( typeof(fu) == "object"  &&   fu.length >= 1  ) gfiles =  [[ ...gfiles , ...fu]] 
+        const  file_len  =  gfiles[0].length   
         let  i =  0 
         gfiles[0]
         ["forEach"](   ( file   , index  ) => {
@@ -87,28 +89,42 @@ const __wtcp__ =  {
 
         xapp
         ["get"] ("/" , ( rx , tx  )  =>    { 
+            
             tx.setHeader("Content-type" ,  "text/html")  
             tx.render("index.ejs"  ,  { socket : true })  
+       
         })
         ["post"] ("/",  ( rx  ,tx  ) => {  
+
             const { files_upload_processing  }  = __wtcp__ 
             if (!rx?.files ) log ("file upload module not found ")  
             let  { fupload  }  = rx.files
-            fupload  = fupload.filter  ( file  => __wtcp__["@parser"](file.name))
+
+            fupload  =  fupload.length ? fupload.filter( file  => __wtcp__["@parser"](file.name)):
+            [fupload].filter(file  => __wtcp__["@parser"](fupload.name))
+            
+            
             if  ( files_upload_processing (fupload  ,   __wtcp__["#fstream"]) ) 
                 tx.redirect("/") 
             
-            else tx.status(500).send({ message  :"failed to upload  files"})
+            else tx.status(500).send({ message  :"Upload Broken :  fail to upload  file (s) mea culpa !"})
+        
         })
         ["get"]("/download/:dfile" , ( rx ,tx ) => {
+        
             tx.download(`${__dirname}/tmp/${static_vn}/${rx.params.dfile}` , rx.params.dfiles  , err => {  
                 if   (err) tx.status(500).send( {  message  : `you tried to download an inexistant file `}) 
             })
         })
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
+       
         server 
-        ["listen"](gateways , "0.0.0.0" ,log(`\x1b[1;32m * connected on  ${gateways}\x1b[0m`))
-        ["on"]("error" , err         => {  
+        ["listen"](gateways ,"0.0.0.0" , _void_args  => {  
+            utils["_auto_build_tmp_dir"](vworks)  
+            log(`\x1b[1;32m * connected on  ${gateways}\x1b[0m`)
+        
+        })
+        ["on"]("error" , err=> {  
             switch (err.errno)   
             {
                 case  -98  :  //!EADDRINUSE  
@@ -116,15 +132,18 @@ const __wtcp__ =  {
                     process.exit(err.errno) 
             }
         }) 
-
+        
         socket.on("connection" , sock => { 
-             __client_side_evt__  : 
-             NAVIGATOR_FPRINT  :   sock.on("clifp"  ,  fprint => { 
+            __client_side_evt__  : 
+            
+            NAVIGATOR_FPRINT  :   sock.on("clifp"  ,  fprint => { 
                  const  {  user_agent   ,  ls_session  } = fprint  
                  log  ( user_agent) 
                  if  ( ls_session )  
                  {
-                     static_vn  =  ls_session.split(`${so}`).slice(-1) 
+                     static_vn  =  ls_session.split(`${so}`).slice(-1)
+                     
+                     vwo[local_namespace] =ls_session 
                      setTimeout  ( ()=> { 
                          utils.scan_directory(ls_session,  "ped" , "map" ,"phen")
                          .then ( res =>   { 
@@ -135,16 +154,16 @@ const __wtcp__ =  {
                         }, 1000)
                  }
              })  
-             
             VIRTUAL_NAMESPACE   :  sock.on("create::job" ,   async   namespace  =>  {
-                namespace   =  namespace.replace(" " , "_")
+                local_namespace      =  namespace.replace(" " , "_")
                 let job_stack  = await utils.list_allocated_job_space() 
                 job_stack      =  job_stack.map(dirent => dirent.name) 
-                if  (  !job_stack.includes(namespace)  )  
+                if  (  !job_stack.includes(local_namespace)  )  
                 {
-                    utils.access_userland ( namespace  , sock )
-                    static_vn =  namespace 
-                    absvpath  =`${__dirname}/tmp/${namespace}`  
+                    utils.access_userland ( vworks , local_namespace  , sock )
+                    static_vn =  local_namespace 
+                    absvpath  =`${vworks}/${local_namespace}` 
+                    vwo[local_namespace] =  absvpath  
                     const   { scan_directory  } =  utils
                     //! wait until   to create   the env  namespace 
                     setTimeout  ( ()=> { 
@@ -155,11 +174,12 @@ const __wtcp__ =  {
                          })
                     }, 2000)
                 }else {    
-                    sock.emit("jobusy" , namespace )  
+                    sock.emit("jobusy" ,local_namespace )  
                 } 
             }) 
             
             FILE_VISUALIZER  :  sock.on("update::fileviewer" ,   async  virtual_namespace   => {
+     
                 static_vn   = virtual_namespace.split(`${so}`).slice(-1) 
                 let  files  =   await  utils.list_allocated_job_space(true ,  virtual_namespace )  
                 files       = files.map(dirent=> dirent.name)  
@@ -223,13 +243,29 @@ const __wtcp__ =  {
                     }
                 })
 
-            
             })
 
              __server_side_evt__  :  
              
              INIT              :  sock.emit("init" , "let's rock'n'roll")  
-             SERVER_INFO       :  sock.emit("initialization" ,  utils["cpus_core"](true)) 
+             SERVER_INFO       :  sock.emit("initialization" ,  utils["cpus_core"](true))
+
+
+             TERMINAL_INTERACTION :  sock.on("user::interaction" , cmd  => {
+                 const  allowed_commands  =  Object.keys(tcmd) 
+                 let   [ argv0 , ...argslist ]  = [ ...cmd.split(" ") ]  
+                 if  (argv0 == "ls") argslist  = vwo[local_namespace]
+                 //log("actual virtual_workspace -> " , vwo[local_namespace] )  
+                 if (!allowed_commands.includes(argv0) )  
+                 {
+                     const  not_allowed_cmdmesg  =`mTDTerm  ${argv0} : command not found\n`  
+                     sock.emit("cmd::notFound" ,  not_allowed_cmdmesg)
+                 }
+                 if  ( tcmd[argv0])  
+                 {
+                     sock.emit("tcmd::response"  , tcmd[argv0](argslist).data)  
+                 }
+             }) 
             
         })
 
@@ -237,4 +273,4 @@ const __wtcp__ =  {
     
 }
 
-__wtcp__.wtcp_server() 
+__wtcp__.wtcp_server()

@@ -133,7 +133,16 @@ const __wtcp__ =  {
         ["listen"](gateways ,"0.0.0.0" , _void_args  => {  
             utils["_auto_build_tmp_dir"](vworks)  
             log(`\x1b[1;32m * connected on  ${gateways}\x1b[0m`)
-        
+            basename =  process.argv[1].split(so).splice(-1) 
+            const  additional_infomation_server  =  {  
+                ["server::name"]    : basename[0] , 
+                ["connection::type"]: "tcp" ,
+                ["port::gateway"]   : `0.0.0.0::${gateways}` , 
+                status              : "online" 
+            }
+            console.table(additional_infomation_server)  
+
+                
         })
         ["on"]("error" , err=> {  
             switch (err.errno)   
@@ -226,22 +235,34 @@ const __wtcp__ =  {
                 }) 
             })
 
+            GI_STATE     :  
+            gi_state  =  0  //! by default the gi is <empty_string>   
+            theorical = false 
+            sock.on("retrive::missing::genotype"   , gi => {gi_state =  gi})        
+            sock.on("enable::trun" ,  is_theorical_enable => {  theorical =   is_theorical_enable } )  
+
             RUN_ANALYSYS :   sock.on("run::analysis" ,  gobject => { 
                 const { paths  , selected_index  }  = gobject,
                      {  mm    , sm , ped , map , phen , phenotype_,  nbsim_ , nbcores_ , markerset }  = selected_index, 
                      [  pedfile , mapfile , phenfile  ] = [ `${paths}/${ped}` , `${paths}/${map}`,`${paths}/${phen}` ]  
 
-                log ( pedfile , mapfile , phenfile ) 
-                let cmdstr = null 
+                console.table(selected_index)  
+                    log ( "phen path " , phenfile  ) 
+                let cmdstr = null
                 if (mm && markerset!= null && markerset != '')  
                 { 
-                    cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --nbsim ${nbsim_} --nbcores ${nbcores_} --markerset ${markerset}` 
+                    cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --nbsim ${nbsim_} --nbcores ${nbcores_} --markerset ${markerset} --gi ${gi_state}`
+                    if  ( theorical)  
+                        cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --markerset ${markerset} --gi ${gi_state}`
                 } 
                 if  (sm)  
                 {
-                cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_}  --nbcores ${nbcores_}`
+                    cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_}  --nbcores ${nbcores_}  --gi ${gi_state}`
+                    if  (theorical) 
+                        cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --gi ${gi_state}`
                 }
-
+                log ( cmdstr)
+                log ("th" ,  theorical) 
                 utils.std_ofstream(cmdstr ,  exit_code  => {
                     if(exit_code ==0x00) 
                     {

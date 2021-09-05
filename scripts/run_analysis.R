@@ -119,7 +119,9 @@ option_list = list(
   make_option(c("--nbsim"), type="numeric", help="number of simulations for the computation of empirical P-values. The default value is 0 and will correspond to the case where only asymptotic P-values are provided. If sample size is limited or if there is LD (linkage disequilibrium) among markers analyzed, asymptotic theory is no more valid and then empirical P-values should be computed using simulations", metavar="character"),
   make_option(c("--nbcores"), type="numeric", help="number of cores to use for the run, if the user wants to speed up the run by using multiple cores, as the program can run in parallelized at the simulation step if included to obtain empirical P-values. So, this option is useful only if --nbsim  option is used.``", metavar="character"),
   make_option(c("--markerset"), type="character", help="we advise at the running step to include a limited number of markers, e.g. 3 to 5, (using the markerset option describe below) to avoid both (i) facing a huge number of alternative hypotheses to test and (i i) having sparse count tables for transmitted versus non transmitted alleles combinations across markers. As discussed in the method paper, MTDT has not been optimized for screen multiple markers effect within a large number of markers, but within a set p redefined subgroup of markers of interest, e.g. markers with intermediate marginal effect.", metavar="character"),
-  make_option(c("--gi"), type="character", help="infer genotypes or not", metavar="character"))
+  make_option(c("--gi"), type="character", help="infer genotypes or not", metavar="character"),
+  make_option(c("--jobtitle"), type="character", help="user's working directory", metavar="character")
+  )
 
 opt_parser = OptionParser(option_list=option_list)
 opt = parse_args(opt_parser)
@@ -134,12 +136,15 @@ cat(" ----------------------------------------------------\n\n")
 
 x= as.character(Sys.time())
 cat(paste0("\t __ Started: ",x))
-cat("\n\t __ Working directory:",getwd(), "\n\n")
+working_directory = paste0(getwd(),'/tmp/',opt$jobtitle)
+cat("\n\t __ Working directory:",working_directory, "\n\n")
+setwd(working_directory)
 
+ 
 cat("\n_______ Starting analysis ________ \n\n")
 
 cmd= paste0("--pedfile ", opt$pedfile, " --mapfile ", opt$mapfile, " --phenfile ", opt$phenfile, " --phen ",opt$phen, 
-            " --markerset ", opt$markerset, " --nbsim ", opt$nbsim,  " --nbcores ", opt$nbcores,"--gi ", opt$gi)
+            " --markerset ", opt$markerset, " --nbsim ", opt$nbsim,  " --nbcores ", opt$nbcores," --gi ", opt$gi)
 
 # --- Detect selected options ------------------------------------------------------------------------------------
 
@@ -169,9 +174,12 @@ phen_basename = unlist(str_split(unlist(str_split(opt$phenfile,"/"))[length(unli
 
 cat("\n ** Reading files...\t")
 
-ped = read.delim(opt$pedfile, header = F , stringsAsFactors = F)
-map = read.delim(opt$mapfile, header = F , stringsAsFactors = F)
-phen = read.delim(opt$phenfile, header = F , stringsAsFactors = F)
+# A commenter pour serveur
+system(paste0("cp ../../", ped_basename,".* ."))
+
+ped = read.delim(paste0(ped_basename,".ped"), header = F , stringsAsFactors = F)
+map = read.delim(paste0(map_basename,".map"), header = F , stringsAsFactors = F)
+phen = read.delim(paste0(phen_basename,".phen"), header = F , stringsAsFactors = F)
 
 cat('Done. \n\n')
 
@@ -193,6 +201,9 @@ cat('\n')
 # -- /!\ Dependency : Plink
 
 if (opt$gi == 1){
+  
+  system("cp ../../genoInference.R ../../mendel_table.tsv .")
+  
   if(is.null(opt$nbcores)){opt$nbcores=1}
   cat("\n\n * Genotype Inference option selected...\n * Running...\n\n ")
   
@@ -234,6 +245,7 @@ if (opt$gi == 1){
   cat("Missing Values in new pedigree file :", n_miss_after, "markers \n")
   cat('Number of inferred genotypes : ', n_miss_before - n_miss_after )
   
+  system("rm genoInference.R mendel_table.tsv")
 }
 
 
@@ -294,10 +306,12 @@ cmd = paste0(cmd,f)
 
 # -- 
 cat("\n ** Starting run.. \n\n ")
+
+system("cp -r ../../mtdt.R ../../libs .")
 system(cmd)
 
 # -- remove intermediate files
-system("rm *_CP.*")
+system("rm *_CP.* inferred.*")
 cat("\n ** Analysis completed.  \n ")
 x_= as.character(Sys.time())
 cat(paste0("\t __ Finished: ",x_,"\n"))
@@ -424,7 +438,7 @@ if (is.null(opt$markerset) == FALSE){
 cmd = paste0("mkdir ", name_,"; mv weighted* ", name_)
 
 suppressMessages(system(cmd))
-
+system("rm -r mtdt.R libs")
 #------------
 
 cat("\n ** Run finished. Results are written in ", name_, "\n\n\n")

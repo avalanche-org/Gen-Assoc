@@ -175,7 +175,7 @@ phen_basename = unlist(str_split(unlist(str_split(opt$phenfile,"/"))[length(unli
 cat("\n ** Reading files...\t")
 
 # A commenter pour serveur
-system(paste0("cp ../../", ped_basename,".* ."))
+#system(paste0("cp ../../", ped_basename,".* ."))
 
 ped = read.delim(paste0(ped_basename,".ped"), header = F , stringsAsFactors = F)
 map = read.delim(paste0(map_basename,".map"), header = F , stringsAsFactors = F)

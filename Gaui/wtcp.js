@@ -248,18 +248,20 @@ const __wtcp__ =  {
 
                 console.table(selected_index)  
                     log ( "phen path " , phenfile  ) 
+                let user_namespace  =  paths.split(so).slice(-1)[0] 
+                
                 let cmdstr = null
                 if (mm && markerset!= null && markerset != '')  
                 { 
-                    cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --nbsim ${nbsim_} --nbcores ${nbcores_} --markerset ${markerset} --gi ${gi_state}`
+                    cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --nbsim ${nbsim_} --nbcores ${nbcores_} --markerset ${markerset} --gi ${gi_state} --jobtitle ${user_namespace}`
                     if  ( theorical)  
-                        cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --markerset ${markerset} --gi ${gi_state}`
+                        cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --markerset ${markerset} --gi ${gi_state} --jobtitle ${user_namespace}`
                 } 
                 if  (sm)  
                 {
-                    cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_}  --nbcores ${nbcores_}  --gi ${gi_state}`
+                    cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_}  --nbcores ${nbcores_}  --gi ${gi_state} --jobtitle ${user_namespace}`
                     if  (theorical) 
-                        cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --gi ${gi_state}`
+                        cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --gi ${gi_state} --jobtitle ${user_namespace}`
                 }
                 log ( cmdstr)
                 log ("th" ,  theorical) 
@@ -267,7 +269,7 @@ const __wtcp__ =  {
                     if(exit_code ==0x00) 
                     {
                         log("exit" , exit_code )
-                        sock.emit("end"  , exit_code) 
+                        //sock.emit("end"  , exit_code) 
                         utils._stdout(sock)   
                     }else {
                         log("error") 

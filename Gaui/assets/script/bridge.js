@@ -460,11 +460,11 @@ ipcRenderer.on("term::logout" , ( evt , data ) => {
     if (analysis_on_going)
     {  
         //progress_step(99 , "Analysising ... ", 240)
-        use_cpus_resources(false) 
+        //use_cpus_resources(false) 
     }  
     ////progress_step(45 , 10) 
     if  ( data  ) 
-    { 
+    {
         term_write(data)  
        // run_summary.disabled  = summary_already_run 
         //term.value = data

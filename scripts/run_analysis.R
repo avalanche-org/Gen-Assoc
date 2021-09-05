@@ -121,7 +121,7 @@ option_list = list(
   make_option(c("--markerset"), type="character", help="we advise at the running step to include a limited number of markers, e.g. 3 to 5, (using the markerset option describe below) to avoid both (i) facing a huge number of alternative hypotheses to test and (i i) having sparse count tables for transmitted versus non transmitted alleles combinations across markers. As discussed in the method paper, MTDT has not been optimized for screen multiple markers effect within a large number of markers, but within a set p redefined subgroup of markers of interest, e.g. markers with intermediate marginal effect.", metavar="character"),
   make_option(c("--gi"), type="character", help="infer genotypes or not", metavar="character"),
   make_option(c("--jobtitle"), type="character", help="user's working directory", metavar="character")
-  )
+)
 
 opt_parser = OptionParser(option_list=option_list)
 opt = parse_args(opt_parser)
@@ -138,9 +138,9 @@ x= as.character(Sys.time())
 cat(paste0("\t __ Started: ",x))
 working_directory = paste0(getwd(),'/tmp/',opt$jobtitle)
 cat("\n\t __ Working directory:",working_directory, "\n\n")
-setwd(working_directory)
+setwd(paste0('tmp/',opt$jobtitle))
 
- 
+
 cat("\n_______ Starting analysis ________ \n\n")
 
 cmd= paste0("--pedfile ", opt$pedfile, " --mapfile ", opt$mapfile, " --phenfile ", opt$phenfile, " --phen ",opt$phen, 
@@ -202,7 +202,7 @@ cat('\n')
 
 if (opt$gi == 1){
   
-  system("cp ../../genoInference.R ../../mendel_table.tsv .")
+  system("cp ../../../scripts/mendel_table.tsv  ../../../scripts/genoInference.R .")
   
   if(is.null(opt$nbcores)){opt$nbcores=1}
   cat("\n\n * Genotype Inference option selected...\n * Running...\n\n ")
@@ -294,7 +294,7 @@ if (length(positions)>0){flag = flag[-positions]}
 
 f=NULL
 
-cmd = paste0("Rscript mtdt.R --pedfile ", 
+cmd = paste0("Rscript ../../../scripts/mtdt.R --pedfile ", 
              unlist(str_split(ped_basename,".ped"))[1],"_CP.ped --mapfile ",
              unlist(str_split(ped_basename,".ped"))[1],"_CP.map --phenfile ", 
              phen_basename,".phen ")
@@ -307,7 +307,7 @@ cmd = paste0(cmd,f)
 # -- 
 cat("\n ** Starting run.. \n\n ")
 
-system("cp -r ../../mtdt.R ../../libs .")
+system("cp -r ../../../scripts/libs .")
 system(cmd)
 
 # -- remove intermediate files

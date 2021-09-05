@@ -162,8 +162,8 @@ const  term_write  =  ( incomming_data  , warning = false ,  wspeed = false , __
             clearTimeout(write_simulation) 
     })()
 }
-
-const toggle_blink =  (  element ,  ...colorshemes/* only 2 colors  are allowed */)  => {
+/*
+const toggle_blink =  (  element ,  ...colorshemes/* only 2 colors  are allowed )  => {
     if  (colorshemes.length > 2  || colorshemes <=1  ) 
         AssertionError("requires two colornames")  
 
@@ -172,16 +172,16 @@ const toggle_blink =  (  element ,  ...colorshemes/* only 2 colors  are allowed 
     else  
         element.style.color = colorshemes[0] 
 }
-const use_cpus_resources = signal_trap /* type : bool */ => {  
+const use_cpus_resources = signal_trap  => {  
     let  blink =  null 
     if  (signal_trap)   {
-        blink = setInterval( () => {  
+         blink = setInterval( () => {  
             toggle_blink(microchip ,  "black"  , "limegreen")
         } ,100) //display_)
     }else  
         clearInterval(blink)  
 }
-
+*/
 const stop_blink_on_faillure   = ( target ,   state  ) => {
     if ( !target )  
         use_cpus_resources(state) 
@@ -359,27 +359,6 @@ sm.addEventListener("change" , evt => {
     } 
 })
     
-/* TODO :  REAL TIME LOGOUT  FEATURING  NEED TO BE IMPLEMENTED 
- * NOTE :  THIS  A FEATURE REQUEST  !  
-let  p  = 0 
-const  plugonlog =   () => {   //TODO : do not forget to make the path as argument  ..
-    const  cl   = setInterval( function ()  {
-        const  plug  =  fs.createReadStream(logfile , encoding="utf8", start=p) 
-        plug.on("data"  , data  => {
-        if ( data.length != p ) {  
-            //follow_scrollbar()
-            term.value = data  
-            p+=  data.length
-        }
-    }) 
-        ipcRenderer.on("end"  , (evt ,data ) => {
-            log("end " ,data ) 
-            clearInterval(cl) 
-        })
-    } , term_display_speed ) 
-}
-*/ 
-
 let ped_  = null , 
     map_  = null ,
     phen_ = null   
@@ -451,7 +430,9 @@ sm.addEventListener("change" , evt => {
         markerset.placeholder="Choose your markers .eg 1,3,24"
         //nbsim.disabled     = true 
     } 
-})
+}) 
+
+let  enable_switch_between_theorical_or_emperical   = false  
 ipcRenderer.on("load::phenotype" ,  (evt ,  incomming_data ) =>  {
     phenotype.innerHTML = ""  
     nbcores.disabled =  false 
@@ -462,7 +443,9 @@ ipcRenderer.on("load::phenotype" ,  (evt ,  incomming_data ) =>  {
         phenotype_opts.text      =  phen_index  
         phenotype_opts.value     =  phen_index
         phenotype.add(phenotype_opts)   
-    }  
+    } 
+     
+    enable_switch_between_theorical_or_emperical  = true 
 })
 
 //! TODO  :  make realtime reading  stdout stream  
@@ -491,8 +474,8 @@ ipcRenderer.on("term::logout" , ( evt , data ) => {
         nbsim.disabled        = !summary_already_run
         i_lock.classList.remove("fa-lock") 
         i_lock.classList.add("fa-unlock") 
-        blur_area.style.filter = "blur(0px)"
         mm.disabled            =  false 
+        blur_area.style.filter = "blur(0px)"
     }
 })
 //! TODO :  [ optional]  style  output error  with red or orange color  ...
@@ -592,7 +575,7 @@ run_analysis.addEventListener("click" ,  evt => {
         if (!nbcores.disabled) 
         { 
             notify("memory cpus" , { body : `${nbcores_} are  stimulated`})
-            use_cpus_resources(true) 
+            //use_cpus_resources(true) 
         } 
 
         ipcRenderer.send_("annoucement" , annoucement) 
@@ -651,7 +634,8 @@ __USING_WEB_SOCKET__ :
 if  (activate_extra_elements) 
 {
     const dispatch_server_info  =  server_information_packet => { 
-        const   { ascii_logo ,  sysinfo }  = server_information_packet 
+        const   { ascii_logo ,  sysinfo }  = server_information_packet
+       
         term_write(ascii_logo ,  false ,false)
         let formating_received_information=  "---------\n" 
         for  ( let type  in sysinfo )  {
@@ -662,12 +646,26 @@ if  (activate_extra_elements)
         }
         formating_received_information+="----------\n" 
         term_write(formating_received_information , false , false , false  ) 
-} 
+        return  sysinfo.cpus   
+    } 
+    
     ipcRenderer.on( "init" ,   server_information=>   {
         term.value = "" 
-        dispatch_server_info(server_information)
         job_title.focus ()
+        const available_cpus = dispatch_server_info(server_information)
+        //dispatch cpus core  on select > option
+        let  cpus =  range(available_cpus)  
+        for  ( let cpu  in  cpus.slice(1) ) 
+        {  
+            if (isNaN(parseInt(cpu)) ) break 
+            let option = _.createElement("option") 
+            option.textContent=  parseInt(cpu) + 1    
+            nbcores.add(option)
+        
+        }
+        
     }) 
+    
     ipcRenderer.on("info" ,   server_information => dispatch_server_info(server_information) )  
      
     let  fileslist  =  null  
@@ -801,15 +799,32 @@ if  (activate_extra_elements)
     //! Genotype inference  
     
     let gi_status  =   { 
-        "no" : "" , 
-        "yes":  1  
+        "no" : 0 , 
+        "yes": 1  
     } ;  
 
     [giyes , gino]["forEach"] (gi_btn =>   { 
         gi_btn.addEventListener("click" , evt => {
             evt.preventDefault() 
             const  gi_value  =  gi_btn.textContent.toLowerCase()  
-            ipcRenderer.send_("retive::missing::genotype" ,   gi_status[gi_value]) 
+            ipcRenderer.send_("retrive::missing::genotype" ,   gi_status[gi_value]) 
         })
+    })
+    //  Theorical run 
+    trunbtn = _.querySelector(".t-run") 
+    
+    trunbtn.addEventListener("click"  , evt => { 
+        if  (trunbtn.classList.contains("toggle") && enable_switch_between_theorical_or_emperical )
+        {
+            trunbtn.classList.remove("toggle")  
+            nbcores.disabled = false 
+            nbsim.disabled   = false  
+            ipcRenderer.send_("enable::trun" ,  false )  
+        }else{  
+            trunbtn.classList.add("toggle")  
+            nbcores.disabled = true  
+            nbsim.disabled   = true  
+            ipcRenderer.send_("enable::trun" ,  true )  
+        }  
     })
 }

@@ -2,6 +2,7 @@
 
 #-------------------
 #-------------------
+#   Marieme Top
 #   @ : topmaryem@gmail.com
 #   IPD/ ECRDS/ BHI: avalanche-org: Gen_Assoc Project (H3ABioNet)
 
@@ -127,9 +128,10 @@ opt = parse_args(opt_parser)
 #-----------------------------------------------------------------------------------------------
 #                                         START OF ANALYSIS                     
 #-----------------------------------------------------------------------------------------------
+cat("\n\n ----------------------------------------------------\n")
+cat(" --- MULTI-LOCUS TRANSMISSION DISEQUILIBRIUM TEST ---\n")
+cat(" ----------------------------------------------------\n\n")
 
-cat("\n --- Multi-locus Transmission Disequilibrium Test tool ---\n")
-cat("-----------------------------------------------------------\n\n")
 x= as.character(Sys.time())
 cat(paste0("\t __ Started: ",x))
 cat("\n\t __ Working directory:",getwd(), "\n\n")
@@ -165,7 +167,7 @@ phen_basename = unlist(str_split(unlist(str_split(opt$phenfile,"/"))[length(unli
 
 # -- Read Files
 
-cat("\n __ Reading files...\t")
+cat("\n ** Reading files...\t")
 
 ped = read.delim(opt$pedfile, header = F , stringsAsFactors = F)
 map = read.delim(opt$mapfile, header = F , stringsAsFactors = F)
@@ -180,10 +182,10 @@ cat('Done. \n\n')
 # --- For now : path_to_plink = cste cuz tool present in the server
 # --- To do   : path_to_plink variable for Desktop version
 
-cat(" __ Check Mendelian errors with Plink.. \n\n")
+cat(" ** Check Mendelian errors with Plink.. \n\n")
 plink_check(plink_, ped_basename)
 
-cat('\n__________________')
+cat('\n')
 
 # --- Genotype Inference  ------------------------------------------------------------------------------------
 
@@ -192,7 +194,7 @@ cat('\n__________________')
 
 if (opt$gi == 1){
   if(is.null(opt$nbcores)){opt$nbcores=1}
-  cat("\n * Genotype Inference option selected...\n * Running ")
+  cat("\n\n * Genotype Inference option selected...\n * Running...\n\n ")
   
   if (isTRUE(ncol(ped) > 1000)){
     cmd = paste0("Rscript genoInference.R --file ", ped_basename," --cutsize 100" ," --cores ", opt$nbcores ," --out out")
@@ -206,27 +208,29 @@ if (opt$gi == 1){
   
   system(cmd)
   inferred_ped = merge_out_files()
-  #sum(ped$V2 == inferred_ped$V2)         # -- control
   system("rm out*")
   
+  
   # --- mendelian errors check after
+  cat("\n __ Control: check Mendelian errors with Plink.. \n\n")
+  plink_check(plink_, 'inferred')
   
   # --------- /!\ tester sur server & replace with function------------------------
   write.table(inferred_ped, "inferred.ped", sep = "\t", quote = F, col.names = F, row.names = F)
   system(paste0("cp ", map_basename,".map inferred.map"))
-  system(paste0(plink_ ," --file inferred --mendel --out ", ped_basename,"_gi_check"))
-  
-  # -- out: check number of mendelian 
-  
-  system(paste0("grep 'Mendel errors detected' ",ped_basename,"_gi_check.log |cut -c16-100"))  
-  system("rm *gi_check.*")
+  # system(paste0(plink_ ," --file inferred --mendel --out ", ped_basename,"_gi_check"))
+  # 
+  # # -- out: check number of mendelian 
+  # 
+  # system(paste0("grep 'Mendel errors detected' ",ped_basename,"_gi_check.log |cut -c16-100"))  
+  # system("rm *gi_check.*")
   #--------------------------------------------------------------------------------
   
   # -- total inferred 
-  
+  cat("\n\n---  GENOTYPE INFERENCE REPORT: \n")
   n_miss_before = length(ped[ped == '0 0'])
   n_miss_after  = length(inferred_ped[inferred_ped == '0 0'])
-  cat("Missing Values in -",ped_basename,"- :", n_miss_before, "markers \n")
+  cat("\nMissing Values in -",ped_basename,"- :", n_miss_before, "markers \n")
   cat("Missing Values in new pedigree file :", n_miss_after, "markers \n")
   cat('Number of inferred genotypes : ', n_miss_before - n_miss_after )
   
@@ -235,6 +239,8 @@ if (opt$gi == 1){
 
 # ---   Run M-TDT   ------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------
+cat("\n\n------------------------- \n")
+
 
 # --- Change ped file if genotype inference option selected
 
@@ -244,14 +250,14 @@ if (isTRUE(opt$gi == 1)){
 }
 # --- Process files with Complete Pedigree function
 
-cat("\n\n * Preparing files for mTDT run... \n ")
+cat("\n\n ** Preparing files for mTDT run... \n ")
 
 mtdt_ped = suppressWarnings(rbind(ped, completePedigree(ped))) ## Warning: number of columns [or rows] of result is not a multiple of vector length
 mtdt_map = paste0("M", (7:ncol(mtdt_ped)-6))
 
 # --- Write CP files
 
-cat("* Writing processed files... \n ")
+cat(" ** Writing processed files... \n ")
 
 write.table(mtdt_ped, paste0(unlist(str_split(ped_basename,".ped"))[1],"_CP.ped"),
             sep = "\t", quote = F, col.names = F, row.names = F)

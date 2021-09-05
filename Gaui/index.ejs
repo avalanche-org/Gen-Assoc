@@ -113,8 +113,8 @@
       </fieldset> 
       <!-- ******************* END of the first fieldset ******************* --> 
       <!-- ******************* Terminal block ******************* -->
-      <div>
-        <div class="div_terminal" style="position: fixed; margin: 8px; margin-top: 0;">
+      <div>  
+        <div class="div_terminal" style="position: fixed; margin: 8px; margin-top: 0;" >
           <div class="ui menu"> 
             <div class="item">
               <div class= "ui button" id="clear">
@@ -194,12 +194,14 @@
                 <h4 style="margin-top:-11px; margin-left: 67px;color: orange;">EMPIRICAL RUN</h4>
                 <div class="ui form">
                   <div class="field">
+                    <label for="nbsim"><span>Number of simulations</span></label>
                     <div class="ui left icon input">
-                      <input id="nbsim" placeholder="Number of simulations">
+                      <input id="nbsim" placeholder="10">
                       <i class="redo icon"></i>
                     </div>
                   </div>
                   <div class="field">
+                    <label for="nbcores">Number of Cores</label>
                     <select id="nbcores" name="nbcores" class="ui search dropdown">
                       <option value = "" disabled selected > Cpus core available</option>
                     </select>
@@ -253,6 +255,32 @@
       </fieldset>
       <!-- ******************* END of the third fieldset ******************* -->
     </div>
+    <footer class="ui inverted vertical footer segment">
+      <div>
+        <div >
+          <div class="ui container">
+            <div class="ui stackable inverted divided equal height stackable grid">
+              <div class="three wide column">
+                <h4 class="ui inverted header">Gen_Assoc Project</h4>
+                <div class="ui inverted link list">
+                  <div class="ui fluid image">
+                    <img src="/images/H3ABioNet_high_res.png">
+                  </div>
+                </div>
+              </div>
+              <div class="seven wide column">
+                <h4 class="ui inverted header"> © 2021 | Epidemiogy, Clinical Research, Data Science Department</h4>
+                <div class="ui inverted link list">
+                  <a href="#" class="item" style="color: #1F2F91;"><i class="sn flag"></i>Foundation Institut Pasteur de Dakar</a>
+                </div>
+                <div class="ui inverted link list"></div>
+                <a href="#" class="item"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
   </body>
   <% if (socket) {%>  <script src="/socket.io/socket.io.js"></script> <%}%>
   <script src="script/ops.js"> </script>

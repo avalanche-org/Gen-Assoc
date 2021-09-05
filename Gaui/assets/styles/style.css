@@ -179,7 +179,7 @@ div#button_terminal{
 textarea.terminal{
   position: fixed;
   width: 48%;
-  height: 500px;
+  height: 300px;
   border: 1px solid black;
   border-radius: 3px;
   color: whitesmoke;

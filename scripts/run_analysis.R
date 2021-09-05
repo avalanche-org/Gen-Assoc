@@ -2,7 +2,6 @@
 
 #-------------------
 #-------------------
-#   Marieme Top
 #   @ : topmaryem@gmail.com
 #   IPD/ ECRDS/ BHI: avalanche-org: Gen_Assoc Project (H3ABioNet)
 
@@ -18,6 +17,8 @@
 # Dependency: Plink
 
 # --- Points for improvement: Ctrl+f : /!\ 
+
+# cmd example: Rscript run_analysis.R --pedfile malaria_senegal_autosome_samp_clean.ped --mapfile malaria_senegal_autosome_samp_clean.map --phenfile malaria_senegal_autosome_samp_clean.phen --phen 1 --nbcores 3 --nbsim 10 --markerset 1,2 --gi 1
 
 #-------------------
 
@@ -91,11 +92,10 @@ plink_check <- function(path_to_plink, ped_basename){
   plink_ = path_to_plink
   
   if (plink_!=""){
-    system(paste0(plink_ ," --file ", ped_basename," --mendel --out ", ped_basename,"_check"))
+    suppressMessages(system(paste0(plink_ ," --file ", strsplit(opt$pedfile, ".ped") ," --mendel --out ", ped_basename,"_check")))
     
     # Check number of mendelian errors using log file
-    err = system(paste0("sed -n '25p' ",ped_basename,"_check.log |cut -c15-17")) 
-    
+    err = system(paste0("grep 'Mendel errors detected' ",ped_basename,"_check.log |cut -c15-17")) 
     # -- Out
     if (isTRUE(err[1] == "0")){
       cat("No Mendelian errors")
@@ -103,6 +103,7 @@ plink_check <- function(path_to_plink, ped_basename){
     if (isTRUE(err[1] != "0")) {
       cat("Mendelian errors detected")
     }
+    system(paste0("rm *check*"))
   } 
   else (cat("-- Alert: Plink tool must be installed to check for Mendelian errors"))
 }
@@ -127,7 +128,8 @@ opt = parse_args(opt_parser)
 #                                         START OF ANALYSIS                     
 #-----------------------------------------------------------------------------------------------
 
-cat("\n --- Multi-locus Transmission Disequilibrium Test tool ---\n\n")
+cat("\n --- Multi-locus Transmission Disequilibrium Test tool ---\n")
+cat("-----------------------------------------------------------\n\n")
 x= as.character(Sys.time())
 cat(paste0("\t __ Started: ",x))
 cat("\n\t __ Working directory:",getwd(), "\n\n")
@@ -151,7 +153,7 @@ cat(" __ Selected options: \n")
 
 for (i in 1:length(flag)){
   cat(paste0(" --",flag[i], "\n"))
-  }
+}
 
 # ---  File management  ------------------------------------------------------------------------------------
 
@@ -166,10 +168,10 @@ phen_basename = unlist(str_split(unlist(str_split(opt$phenfile,"/"))[length(unli
 cat("\n __ Reading files...\t")
 
 ped = read.delim(opt$pedfile, header = F , stringsAsFactors = F)
-map = read.delim(opt$mapfile, header = F , stringsAsFactors = F, sep = " ")
-phen = read.delim(opt$phenfile, header = F , stringsAsFactors = F, sep = " ")
+map = read.delim(opt$mapfile, header = F , stringsAsFactors = F)
+phen = read.delim(opt$phenfile, header = F , stringsAsFactors = F)
 
-cat('Done. \n')
+cat('Done. \n\n')
 
 # --- Check Mendel errors ------------------------------------------------------------------------------------
 
@@ -178,9 +180,10 @@ cat('Done. \n')
 # --- For now : path_to_plink = cste cuz tool present in the server
 # --- To do   : path_to_plink variable for Desktop version
 
-cat(" __ Check Mendelian errors")
+cat(" __ Check Mendelian errors with Plink.. \n\n")
 plink_check(plink_, ped_basename)
 
+cat('\n__________________')
 
 # --- Genotype Inference  ------------------------------------------------------------------------------------
 
@@ -188,15 +191,19 @@ plink_check(plink_, ped_basename)
 # -- /!\ Dependency : Plink
 
 if (opt$gi == 1){
-  
+  if(is.null(opt$nbcores)){opt$nbcores=1}
   cat("\n * Genotype Inference option selected...\n * Running ")
   
   if (isTRUE(ncol(ped) > 1000)){
     cmd = paste0("Rscript genoInference.R --file ", ped_basename," --cutsize 100" ," --cores ", opt$nbcores ," --out out")
   }
+  else if (isTRUE(ncol(ped) < 50)) {
+    cmd = paste0("Rscript genoInference.R --file ", ped_basename," --cutsize 10" ," --cores ", opt$nbcores ," --out out")
+  }
   else {
     cmd = paste0("Rscript genoInference.R --file ", ped_basename," --cutsize 50" ," --cores ", opt$nbcores ," --out out")
   }
+  
   system(cmd)
   inferred_ped = merge_out_files()
   #sum(ped$V2 == inferred_ped$V2)         # -- control
@@ -211,8 +218,8 @@ if (opt$gi == 1){
   
   # -- out: check number of mendelian 
   
-  system(paste0("sed -n '25p' ",ped_basename,"_gi_check.log |cut -c16-100"))  
-  system("rm malaria_senegal_autosome_samp_clean_*")
+  system(paste0("grep 'Mendel errors detected' ",ped_basename,"_gi_check.log |cut -c16-100"))  
+  system("rm *gi_check.*")
   #--------------------------------------------------------------------------------
   
   # -- total inferred 
@@ -232,14 +239,14 @@ if (opt$gi == 1){
 # --- Change ped file if genotype inference option selected
 
 if (isTRUE(opt$gi == 1)){
+  colnames(inferred_ped) <- colnames(ped)
   ped = inferred_ped
 }
-
 # --- Process files with Complete Pedigree function
 
-cat("\n * Preparing files for mTDT run... \n ")
+cat("\n\n * Preparing files for mTDT run... \n ")
 
-mtdt_ped = rbind(ped, completePedigree(ped))
+mtdt_ped = suppressWarnings(rbind(ped, completePedigree(ped))) ## Warning: number of columns [or rows] of result is not a multiple of vector length
 mtdt_map = paste0("M", (7:ncol(mtdt_ped)-6))
 
 # --- Write CP files
@@ -260,7 +267,7 @@ opt$gi=""
 cmd= paste0("--pedfile ", opt$pedfile, " --mapfile ", opt$mapfile, 
             " --phenfile ",opt$phenfile, " --phen ",opt$phen,
             " --markerset ", opt$markerset, " --nbsim ", opt$nbsim,
-            " --nbcores ", opt$nbcores,"--gi ", opt$gi)
+            " --nbcores ", opt$nbcores," --gi ", opt$gi)
 
 flag <- unlist(str_split(c(cmd),"--"))[-1]
 positions= NULL
@@ -280,7 +287,7 @@ for (i in 4:length(flag)){
 cmd = paste0(cmd,f)
 
 # -- 
-cat("\n ** Starting run.. \n ")
+cat("\n ** Starting run.. \n\n ")
 system(cmd)
 
 # -- remove intermediate files
@@ -288,13 +295,10 @@ system("rm *_CP.*")
 cat("\n ** Analysis completed.  \n ")
 x_= as.character(Sys.time())
 cat(paste0("\t __ Finished: ",x_,"\n"))
-cat(paste0("\t __ Total time: ",x_-x,"\n"))
 
 #-----------------------------------------------------------------------------------------------
 #                                         END OF ANALYSIS                     
 #-----------------------------------------------------------------------------------------------
-
-
 
 # --- Output Display  ----------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------
@@ -310,7 +314,7 @@ output <- read.csv("weighted_res_multilocus.csv", sep = ";")
 # No simulations, default value = 0, nbcores default = 1
 
 if (isTRUE(opt$nbsim  ==  0) | is.null(opt$nbsim) == TRUE) {
-  cat("\n> Theorical run results\n\n")
+  cat("\n> Theorical run results\n")
   #-- S-M no need corrected p-values
   if (is.null(opt$markerset) == TRUE){
     #   Display output
@@ -411,8 +415,9 @@ if (is.null(opt$markerset) == FALSE){
   name_ = paste0(unlist(str_split(ped_basename,".ped"))[1],"_MM_results")
 }
 
-cmd = paste0("mkdir ", name_,"; mv weighted* ", name_," ;  rm ",phen_basename ,".phen ")
-system(cmd)
+cmd = paste0("mkdir ", name_,"; mv weighted* ", name_)
+
+suppressMessages(system(cmd))
 
 #------------
 

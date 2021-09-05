@@ -62,6 +62,7 @@
       <!-- ******************* Begin of the first fieldset ******************* --> 
       <fieldset class="fieldset1">
         <div class="ui raised segment">
+          <!--i class="big icon question circle outline"></i-->
           <legend>
             <a class="ui big right ribbon label" style="background-color:#F1F7FD; color:#59698D;">  
               Summary Statistics 
@@ -190,37 +191,37 @@
           <div class="ui placeholder segment" style="background-color: whitesmoke; border:none !important;">
             <div class="ui two column stackable center  aligned  grid" >
               <div class="column">
-                  <h4 style="margin-top:-11px;margin-left: 67px;color: orange;">EMPIRICAL RUN</h4>
-                  <div class="ui form">
-                    <div class="field">
-                      <div class="ui left icon input">
-                        <input id="nbsim" placeholder="Number of simulations">
-                        <i class="redo icon"></i>
-                      </div>
-                    </div>
-                    <div class="field">
-                      <select id="nbcores" name="nbcores" class="ui search dropdown">
-                        <option value = "" disabled selected > Cpus core available</option>
-                      </select>
-                    </div>
-                    <div class="field">
-                      <select id="phenotype" name="phenotype" class="ui search dropdown">
-                        <option value="" disabled selected>Number of phenotype</option>
-                      </select>
+                <h4 style="margin-top:-11px; margin-left: 67px;color: orange;">EMPIRICAL RUN</h4>
+                <div class="ui form">
+                  <div class="field">
+                    <div class="ui left icon input">
+                      <input id="nbsim" placeholder="Number of simulations">
+                      <i class="redo icon"></i>
                     </div>
                   </div>
+                  <div class="field">
+                    <select id="nbcores" name="nbcores" class="ui search dropdown">
+                      <option value = "" disabled selected > Cpus core available</option>
+                    </select>
+                  </div>
+                </div>
               </div>
               <div class="field">
-                <div class="ui icon  header">   
+                <div class="ui icon header">   
                   <h4 style="color: #59698D;">THEORICAL RUN</h4>
                   <i class="leaf icon"></i>
-                  <div class="ui large button" style="background-color: #59698D;color: white;">GO !</div> 
+                  <div class="ui medium button" style="background-color: #59698D;color: white;">GO !</div> 
                 </div>
               </div>
             </div>
             <div class="ui vertical divider">
               Or
             </div>
+          </div>
+          <div class="field">
+            <select id="phenotype" name="phenotype" class="ui search dropdown">
+              <option value="" disabled selected>Number of phenotype</option>
+            </select>
           </div>
           <div class="ui form">
             <div class="inline fields">

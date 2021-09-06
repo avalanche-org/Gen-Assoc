@@ -1,5 +1,11 @@
 #!/usr/bin/env node 
-//author  : Umar aka jukoo  j_umar@outlook.com   <github.com/jukoo>
+/*!
+ * author  : Umar aka jukoo  j_umar@outlook.com   <github.com/jukoo>
+ * ======
+ * utils.js
+ * ======
+ * combine all utilities methodes  to process data    
+ */  
 
 const   
     { 
@@ -11,7 +17,8 @@ const
         , access 
         , constants  
         , createReadStream 
-        , mkdir
+        , mkdir 
+        , open 
     }   = require("fs") , 
     
     os =  require("os") ,  
@@ -30,9 +37,16 @@ const
         , fserror
     }   = require("./config")["io_fstream"]  
  
-   
+const d = [] 
 module
 ["exports"]  =  {
+    /** 
+     * ..rsv_file : read  seperated  value file like tsv or csv   ...  
+     * @param {string} file  :  the file targeted   to read  
+     * @param {char}   separator :  the separated  value  ';  ,  -  ...'  
+     * @param {bool}   readable_mode :    on true it's read  all datasheet  otherwise read only the header of the file 
+     * @return  Promise    
+     */ 
     //! TODO  : improve this function to manage correctly  csv or tsv  file ... 
     rsv_file :  (  file  , default_delimiter = ","  , readable_mode  = false  )  => {
         return new Promise  ( (resolve , reject )  => {
@@ -56,7 +70,8 @@ module
             })  
         
         }) 
-      },  
+      },
+
       rendering_process  :   () =>  {
           /* *
            *  trying to adapt  index  file  for desktop  env application  
@@ -91,18 +106,13 @@ module
         } 
        return  os.cpus().length 
     },  
-    output_stream  :  (where ,  socket )   => {    
+    output_stream  :  (where ,  socket  , logfile = (void  function (){return}())    )   => {    
         const sksf = stream_key_socket_flags =   { //  skfs   as alias  
-            ".logout"  :  [ "log::notfound"  , "log::fail" , "term::logout" ]  , 
+            ".logout":  [ "log::notfound"  , "log::fail" , "term::logout" ]  , 
             ".logerr"  :  [  "log::notfound" , "log::broken" , "term::logerr"] 
-        }  
-        if ( !Object.keys(sksf).includes(where)  ) 
-        {
-            process.stderr.write (`stream file descriptor  is not definde\n`) 
-            process.exit(1) 
-        }
-        
-        access(where,  constants.F_OK,  stream_error  =>  { 
+        } 
+      
+        access(logfile??where ,  constants.F_OK,  stream_error  =>  { 
              if  (  stream_error  ) socket.emit(skfs[where][0]  , stream_error )  
              readFile ( where , "utf-8" ,  ( stream_error , buffer_data  )  => {
                  if ( stream_error )  socket.emit (skfs[where][1] , stream_error ) 
@@ -114,27 +124,43 @@ module
              })
         })  
     }  ,
-    _stdout :  socket   => { 
-        const  {  output_stream }  = module.exports 
-        output_stream(".logout" , socket )  
+     // ! TODO  :  redirect stdandar output  to  local user  stream out  
+    _stdout :  ( socket , user_namespace_workdir )    => { 
+        const  {  output_stream }  = module.exports
+        const user_log =  module.exports["@user::stdout"](user_namespace_workdir , true)  
+        output_stream(".logout" ,socket ,  user_log )  
     }, 
     _stderr :  (socket  , exit_code = false ) => {
         const  {  output_stream }  = module.exports 
-        output_stream(".logerr" , socket)  
+        output_stream(".logerr" , socket )  
         if  ( exit_code ) 
         { 
             const  mesg_fail = `execution fail  : ${exit_code}` 
             socket.emit("term::logerr" , mesg_fail)  
         }
-    } , 
+    } ,
+    
+    //! create independante .user.log  for   output stream  
+    ["@user::stdout"]   :   (  udir ,   r_userfs   = false  )=>   { 
+        log("%^ " , udir) 
+        const  log_filename =  `.${udir.split(so).slice(-1)[0]}.log`
+        if  ( r_userfs ) return  `${udir}/${log_filename}` 
+        open(
+            `${udir}/${log_filename}` ,  
+            constants["O_CREAT"] | constants["O_RDONLY"] | constants["O_WRONLY"],
+            (error ,  ok  )  => { if (error)  throw  new Error(error) }
+        ) 
+         
+    }, 
     make_new_userland   :  ( udir, socket  ) => {
         mkdir(udir , constants["S_IRWXU"] ,  enouacc =>  {  //! error no user access   
             if  (enouacc)
             {
-                socket.emit ("fsinfo" ,  "ERROR : no privileges to create userlang access")  
+                socket.emit ("fsinfo" ,  "ERROR : no privileges to create userland access")  
                 throw new Error( enouacc) 
             } 
-            socket.emit ("fsinfo" ,    `your  virtual repertory  is ready`)
+            socket.emit ("fsinfo" ,    `your  virtual repertory  is ready`) 
+            module.exports["@user::stdout"] ( udir )   
             socket.emit("ok" ,   200  ) 
            
             socket.emit ("trunc::baseroot" ,  udir ) 
@@ -229,10 +255,12 @@ module
        return buffer.toString()  
     }, 
     
-    std_ofstream   : (command ,  callback )=> {
+    std_ofstream   : (command  , user_namespace_workdir,  callback )=> {
         const   cmd    = exec(command)
-        const stdout = createWriteStream(fstdout ) // ,  { flags : "a"}) 
-        const stderr = createWriteStream(fstderr) 
+        const user_log = module.exports["@user::stdout"](user_namespace_workdir, true) 
+        log   ( "ulog" ,  user_log ) 
+        const stdout = createWriteStream(user_log) // ,  { flags : "a"}) 
+        const stderr = createWriteStream(fstderr)  //!  point to standard logerr   
         cmd.stdout.pipe(stdout)  
         cmd.stderr.pipe(stderr)   
         try  {  

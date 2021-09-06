@@ -222,10 +222,10 @@ const __wtcp__ =  {
                 utils.rsv_file(phenfile ,  '\t')
                 .then(res => {
                     utils.std_ofstream(`Rscript ${summary_source} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile}` ,
-                        exit_code => {
+                        paths,  exit_code => {
                             if  (exit_code == 0x00)  
                             {   
-                                utils._stdout(sock)  
+                                utils._stdout(sock  , paths )  
                                 sock.emit("load::phenotype"  ,  res-2)  
                             }else{   
                                 log("fail")   
@@ -265,12 +265,12 @@ const __wtcp__ =  {
                 }
                 log ( cmdstr)
                 log ("th" ,  theorical) 
-                utils.std_ofstream(cmdstr ,  exit_code  => {
+                utils.std_ofstream(cmdstr ,  paths ,exit_code  => {
                     if(exit_code ==0x00) 
                     {
                         log("exit" , exit_code )
                         //sock.emit("end"  , exit_code) 
-                        utils._stdout(sock)   
+                        utils._stdout(sock  ,  paths)   
                     }else {
                         log("error") 
                         utils._stderr(sock)   

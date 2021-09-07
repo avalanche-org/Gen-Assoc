@@ -183,7 +183,7 @@ textarea.terminal{
   border: 1px solid black;
   border-radius: 3px;
   color: whitesmoke;
-  font-size: 20px;
+  font-size: 12px;
   font-family: VT323, Consolas, Lucida Console, monospace;
   transition:box-shadow 0.5s ease;
 	box-shadow:0 4px 6px rgba(0,0,0,0.1);

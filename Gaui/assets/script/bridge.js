@@ -827,4 +827,24 @@ if  (activate_extra_elements)
             ipcRenderer.send_("enable::trun" ,  true )  
         }  
     })
+
+    giyes.addEventListener("click" , evt => {
+        
+        if(gino.classList.contains("negative"))
+        {
+            gino.classList.remove("negative")
+            giyes.classList.add("positive") 
+
+        }
+    })
+    gino.addEventListener("click" , evt => {
+
+        if(giyes.classList.contains("positive"))
+        {
+            giyes.classList.remove("positive") 
+            gino.classList.add("negative")
+
+        }
+
+    })
 }

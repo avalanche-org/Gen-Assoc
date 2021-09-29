@@ -10,6 +10,16 @@ const  {
     { list_allocated_job_space } = require("./utils")  
 
 
+mtdtart = `
+---
+ ███╗   ███╗████████╗██████╗ ████████╗
+ ████╗ ████║╚══██╔══╝██╔══██╗╚══██╔══╝
+ ██╔████╔██║   ██║   ██║  ██║   ██║   
+ ██║╚██╔╝██║   ██║   ██║  ██║   ██║   
+ ██║ ╚═╝ ██║   ██║   ██████╔╝   ██║   
+ ╚═╝     ╚═╝   ╚═╝   ╚═════╝    ╚═╝ 
+\t\t\t\t* version  beta 4.5.2 
+`
 
 module.exports =   {  
 
@@ -20,9 +30,7 @@ module.exports =   {
         } 
     },  
     ["help"]   :  (...cmd_name) =>   {
-        let  cmd_helper_collects  =[`
-        * mTDTerm  web version   v.1.0 Usage
-        `]
+        let  cmd_helper_collects  =[ mtdtart ]
         try  {  
             
             if  (!cmd_name[0].length)  
@@ -56,5 +64,42 @@ module.exports =   {
             description  :  "list   all  files  on your  virtual workspace \n"
         }
        
+    } ,
+    ["cat"]  :    ( ...filetarget   ) => {
+
+        return  { 
+            data  :  ( void function ()  { return  } () ) , 
+            description : "show  file contents\n"
+        }
+    },
+    ["about"] :  (...unused_argument ) =>  {  
+     
+        return  { 
+            data  :  ( void function () { return } () )  , 
+            description : "tell about m-TDT\n"
+        }
+    },
+
+    ["credits"] :  (  ...unused_argument ) => {  
+        return  {
+            data :  ( void function () { return } () ) , 
+            description : "print  all support  behing  m-TDT\n"
+        }
+    },
+        
+    ["tree"]  :  ( ...local_vworks ) =>  {  
+
+        return  { 
+            data  :  ( void function ()  { return } () )  , 
+            description  :  "make a simple graph tree  view of files \n"
+        }
+    },
+
+    ["file"] :  ( ...filetarget) => {
+
+        return  { 
+            data  :  ( void function () { return } ()) , 
+            description : "show metadata files \n"
+        }
     }
 }  

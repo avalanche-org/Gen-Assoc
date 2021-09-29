@@ -67,7 +67,7 @@ const __wtcp__ =  {
     "#fstream"   :   file  => {
         const virtual_space =  vworks.split("/").splice(-1)[0]  
 
-        let  location_path  = static_vn != null  ?  `${virtual_space}/${static_vn}/${file.name}` : `${vitual_space}/${file.name}`  
+        let  location_path  = static_vn != null  ?  `${virtual_space}/${static_vn}/${file.name}` : `${virtual_space}/${file.name}`  
 
         writeFile( location_path  ,  file.data  , ( err , data) => { 
             if  (err ) throw err  
@@ -232,9 +232,9 @@ const __wtcp__ =  {
                 }) 
             })
 
-            GI_STATE     :  
             gi_state  =  0  //! by default the gi is <empty_string>   
             theorical = false 
+            
             sock.on("retrive::missing::genotype"   , gi => {gi_state =  gi})        
             sock.on("enable::trun" ,  is_theorical_enable => {  theorical =   is_theorical_enable } )  
 

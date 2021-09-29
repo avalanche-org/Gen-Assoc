@@ -28,7 +28,12 @@ const
         fstdout 
         , fstderr 
         , fserror
-    }   = require("./../config")["io_fstream"]  
+    }   = require("./../config")["io_fstream"] , 
+    {  
+        virtual_workstation
+    }   =  require ("./../config")["web_server"] , 
+    path=  require("path") 
+
  
    
 module
@@ -176,7 +181,9 @@ module
 
     }  , 
     
-    list_allocated_job_space   :  ( fonly = false  , tmp_dir=`${__dirname}/tmp` )  =>   {
+    list_allocated_job_space   :  ( fonly = false)=>   {
+       const  {  auto_insject}  = module.exports  
+       const  tmp_dir  =  auto_insject(path.join(__dirname , "..") , virtual_workstation)
        return  new Promise ( ( resolve ,  reject  ) =>  {
            readdir ( tmp_dir   , {withFileTypes  : true } , ( error ,  dirent  ) => { 
                if  (error )  reject (error )

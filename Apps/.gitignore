@@ -14,3 +14,5 @@ package-lock.json
 tmp/
 weighted_res_multilocus.work 
 "index copy*" 
+vtmp/*
+l

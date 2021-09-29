@@ -56,7 +56,7 @@ xapp
 __required_static_files__ : 
 summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
-vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstation) 
+vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstation)
 static_vn       =  null
 local_namespace =  (void function ()  { return }()) 
 vwo             =   {}  
@@ -65,14 +65,10 @@ vwo             =   {}
 const __wtcp__ =  {  
 
     "#fstream"   :   file  => {
-        let  location_path  =`tmp/${file.name}`
-         
-        if  (static_vn  != null  ) 
-        {
-            log("static vn uploader " ,  static_vn ) 
-            location_path  = `tmp/${static_vn}/${file.name}`  
-        }
-        
+        const virtual_space =  vworks.split("/").splice(-1)[0]  
+
+        let  location_path  = static_vn != null  ?  `${virtual_space}/${static_vn}/${file.name}` : `${vitual_space}/${file.name}`  
+
         writeFile( location_path  ,  file.data  , ( err , data) => { 
             if  (err ) throw err  
         }) 
@@ -82,6 +78,7 @@ const __wtcp__ =  {
         const  explode = data.split(sep) 
         return  required_file_extension.includes(explode[explode.length -1 ] )  
     },
+
     files_upload_processing   :   ( fu  , callback_handler  = false )   =>  { 
         let   gfiles =[]   
         if  ( typeof(fu) == "object"  &&   !fu.length     ) gfiles =  [[ ...gfiles ,    fu]]   
@@ -96,7 +93,7 @@ const __wtcp__ =  {
         return  file_len ==  i 
     },  
     
-    wtcp_server  : () => {
+    mtdt_server  : () => {
 
         xapp
         ["get"] ("/" , ( rx , tx  )  =>    { 
@@ -118,12 +115,12 @@ const __wtcp__ =  {
             if  ( files_upload_processing (fupload  ,   __wtcp__["#fstream"]) ) 
                 tx.redirect("/") 
             
-            else tx.status(500).send({ message  :"Upload Broken :  fail to upload  file (s) mea culpa !"})
+            else tx.status(500).send({ message  :"Upload Broken :  fail to upload  file (s) !"})
         
         })
         ["get"]("/download/:dfile" , ( rx ,tx ) => {
         
-            tx.download(`${__dirname}/tmp/${static_vn}/${rx.params.dfile}` , rx.params.dfiles  , err => {  
+            tx.download(`${vworks}/${static_vn}/${rx.params.dfile}` , rx.params.dfiles  , err => {  
                 if   (err) tx.status(500).send( {  message  : `you tried to download an inexistant file `}) 
             })
         })
@@ -286,11 +283,10 @@ const __wtcp__ =  {
                 sysinfo    : utils["cpus_core"](true) 
             }  
             INIT              :  sock.emit("init" ,   server_static_info)  
-             //SERVER_INFO       :  sock.emit("initialization" ,  utils["cpus_core"](true))    //! DEPRECATED  
-             
-             SERVER_INFO       :  sock.on("info" , info_request => { 
-                 sock.emit("info", server_static_info) 
-             })  
+            SERVER_INFO       :  sock.on("info" , info_request => { 
+                sock.emit("info", server_static_info) 
+            
+            })  
              
 
              TERMINAL_INTERACTION :  sock.on("user::interaction" , cmd  => {
@@ -314,4 +310,4 @@ const __wtcp__ =  {
     
 }
 
-__wtcp__.wtcp_server()
+__wtcp__.mtdt_server()

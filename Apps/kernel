@@ -1,15 +1,15 @@
 #!/usr/bin/env node 
  
 //author  : Umar aka jukoo  j_umar@outlook.com   <github.com/jukoo> 
+//menu  : require(".deprecated/menu") , 
 
 __KERNEL__v1 :   
 module 
 ["exports"] =  {
     
     ["@libs"]  :  { 
-         menu  : require("./menu") , 
-         utils : require("./utils"), 
-         tcmd  : require("./command")  
+         utils : require("./libs/utils"), 
+         tcmd  : require("./libs/command")  
     } ,
     ["@node_module"] : { 
         _ejs_  : require("electron"),

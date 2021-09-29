@@ -28,7 +28,7 @@ const
         fstdout 
         , fstderr 
         , fserror
-    }   = require("./config")["io_fstream"]  
+    }   = require("./../config")["io_fstream"]  
  
    
 module

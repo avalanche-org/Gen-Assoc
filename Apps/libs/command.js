@@ -90,10 +90,27 @@ module.exports =   {
             description : "show  file contents\n"
         }
     },
+    ["version"]  : ( ...no_Args) => {
+        
+        const  version = require("./../package.json")?.version 
+        return { 
+            data : version +"\n", 
+            description  : "show version number  of application\n"
+        } 
+    }, 
     ["about"] :  (...unused_argument ) =>  {  
      
+       const static_path  ="extra/about.txt"
+       let  file_content = null  
+       try {  
+
+           file_content = readFileSync(  static_path , "utf-8")
+           file_content +="\n" 
+        }catch   (Error) {  
+            file_content = `Error : ${Error.name } -> ${Error.code}`
+        }
         return  { 
-            data  :  ( void function () { return } () )  , 
+            data  :  file_content || ( void function () { return } () )  , 
             description : "tell about m-TDT\n"
         }
     },

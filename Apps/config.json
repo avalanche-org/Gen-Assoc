@@ -9,7 +9,7 @@
             "nodeIntegration" : true, 
             "contextIsolation": false  
         } 
-    },   
+    }, 
     "mtdt_pannel" : {
         "required_file_extension" : [
             "ped" , "map" , "phen"
@@ -33,7 +33,8 @@
         "defencode" :"utf-8",
         "Etag" : false, 
        "virtual_workstation" :"<>/vtmp" 
-    }, 
+    },
+     
     "_hint" : "if the  application does't run   please type this command bellow" ,  
     "_command" : "sudo sysctl kernel.unprivileged_userns_clone=1"
     

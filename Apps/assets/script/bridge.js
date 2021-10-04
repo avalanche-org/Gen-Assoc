@@ -139,7 +139,8 @@ const  term_write  =  ( incomming_data  , warning = false ,  wspeed = false , __
     let  c  =  0 ;     
     if (__brutal_splash )  
     {
-        term.value +=`${incomming_data}\n` 
+        term.value +=`${incomming_data}\n`
+        follow_scrollbar() 
         return 
     }
     (function write_simulation () {
@@ -783,7 +784,10 @@ if  (activate_extra_elements)
     })
 
     ipcRenderer.on("tcmd::response" ,  result   => {
-        if   ( !result )  term.value = ""  // clear  command  
+        if   (result == " ")  {  //  term.value = ""  // clear  command 
+            term.value= "> "
+             return  
+          }
         if   ( Array.isArray(result)  ) 
         {
             let  d = "" 
@@ -792,9 +796,9 @@ if  (activate_extra_elements)
                   d +=cmd_describ    
             }
             d+="> " 
-            term_write(d , false , false , false )  
+            term_write(d , false , false ,  false)  
         }else 
-            term_write(`${result??''}> `,false  , false , false)
+            term_write(`${result??''}> `,false  , false , true)
         
     }) 
 
@@ -807,9 +811,17 @@ if  (activate_extra_elements)
 
     [giyes , gino]["forEach"] (gi_btn =>   { 
         gi_btn.addEventListener("click" , evt => {
-            evt.preventDefault() 
+            evt.preventDefault()  
             const  gi_value  =  gi_btn.textContent.toLowerCase()  
-            ipcRenderer.send_("retrive::missing::genotype" ,   gi_status[gi_value]) 
+            if (gi_status[gi_value]) 
+            {
+                gino.classList.remove("negative") 
+                evt.target.classList.add("positive")
+            }else {  
+                giyes.classList.remove("positive")  
+                evt.target.classList.add("negative") 
+            }
+            ipcRenderer.send_("retrive::missing::genotype" ,   gi_status[gi_value])  
         })
     })
     //  Theorical run 
@@ -830,23 +842,5 @@ if  (activate_extra_elements)
         }  
     })
 
-    giyes.addEventListener("click" , evt => {
-        
-        if(gino.classList.contains("negative"))
-        {
-            gino.classList.remove("negative")
-            giyes.classList.add("positive") 
-
-        }
-    })
-    gino.addEventListener("click" , evt => {
-
-        if(giyes.classList.contains("positive"))
-        {
-            giyes.classList.remove("positive") 
-            gino.classList.add("negative")
-
-        }
-
-    })
+    
 }

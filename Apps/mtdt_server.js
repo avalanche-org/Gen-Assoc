@@ -285,23 +285,28 @@ const __wtcp__ =  {
             SERVER_INFO       :  sock.on("info" , info_request => { 
                 sock.emit("info", server_static_info) 
             
-            })  
+            }) 
+            
+
              
 
-             TERMINAL_INTERACTION :  sock.on("user::interaction" , cmd  => {
-                 const  allowed_commands  =  Object.keys(tcmd) 
-                 let   [ argv0 , ...argslist ]  = [ ...cmd.split(" ") ]  
-                 
-                 if  (argv0 == "ls") argslist  = vwo[local_namespace]
-                 
-                 if (!allowed_commands.includes(argv0) )  
-                 {
-                     sock.emit("cmd::notFound" ,  `mTDTerm  ${argv0} : command not found\n`)
-                 }
-                 if  ( tcmd[argv0])  
-                 {
-                     sock.emit("tcmd::response"  , tcmd[argv0](argslist)?.data ?? " ")  
-                 }
+            TERMINAL_INTERACTION : 
+
+            sock.on("user::interaction" , cmd  => {
+                const  allowed_commands  =  Object.keys(tcmd) 
+                let   [ argv0 , ...argslist ]  = [ ...cmd.split(" ") ]
+
+                if  ( argv0  == "ls" ) argslist = vwo[local_namespace]   
+                if  ( argv0  == "cat") argslist = [vwo[local_namespace], ...argslist]  
+               
+                if (!allowed_commands.includes(argv0) )  
+                {
+                    sock.emit("cmd::notFound" ,  `mTDTerm  ${argv0} : command not found\n`)
+                }
+                if  ( tcmd[argv0])  
+                {
+                     sock.emit("tcmd::response"  , tcmd[argv0](argslist)?.data || " ")  
+                }
              }) 
             
         })

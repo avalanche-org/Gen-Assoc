@@ -4,7 +4,9 @@
 
 
 const  {  
-    readdirSync  
+    readdirSync,  
+    readFileSync , 
+    constants
 } = require("fs") , 
     { log } = console,  
     { list_allocated_job_space } = require("./utils")  
@@ -25,23 +27,26 @@ module.exports =   {
 
     ["clear"]  : (...unused_argument)   =>    {
         return  { 
-            data   : "" , 
+            data   : " ", 
             description: "clear the terminal\n"
         } 
     },  
     ["help"]   :  (...cmd_name) =>   {
-        let  cmd_helper_collects  =[ mtdtart ]
+        let  cmd_helper_collects  = [ mtdtart ]
         try  {  
             
             if  (!cmd_name[0].length)  
             { 
                 log ( "no  cmd") 
-                for (let key of  Object.keys(module.exports )  )  { 
+                for (let key of  Object.keys(module.exports)  )  {
+                    
                     if   ( key != "help")
                     {
                          cmd_helper_collects.push(`\r${key}\t:\t${module.exports[key]().description}`)
                     }
+                   
                 }
+                
                 return    { data :  cmd_helper_collects }    
             }
          
@@ -64,10 +69,24 @@ module.exports =   {
         }
        
     } ,
-    ["cat"]  :    ( ...filetarget   ) => {
-
+    ["cat"]  :( ...filetarget) => {  
+      
+        filetarget =  filetarget[0]  ||  (void function () { return } () )   
+        if  ( filetarget   && filetarget.length   > 1 )  
+        {
+            const  path  = filetarget.join("/")  
+            const [ ,filename ]  =  [ ...filetarget] 
+            try  { 
+                file_content =  readFileSync(path, "utf-8")  
+                filetarget =  file_content +"\n" 
+            }catch  ( Err )  {
+                log(Err) 
+                filetarget  = `${filename}  not found\n` 
+            }
+        } 
+        else   filetarget = null  
         return  { 
-            data  :  ( void function ()  { return  } () ) , 
+            data  :   filetarget || ( void function ()  { return  } () ) , 
             description : "show  file contents\n"
         }
     },

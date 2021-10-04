@@ -50,17 +50,16 @@ module.exports =   {
     },  
     
     ["ls"]  :   ( ...local_vworks  ) => {
-        
         const  virtual_workspace =  local_vworks[0]  ||  (void function ()  { return } ()) 
-        let files_list =  null  
-        if   ( virtual_workspace)  
+        let files_list =  "No such  file(s) in your workspace\n"  
+
+        if   (virtual_workspace)  
         {
-            let  files = readdirSync ( virtual_workspace ,  {withFileTypes : true } )  
-            if ( !files  )  files_list  = "No such file(s)  in your workspace "
-             else files_list             = files.map ( file => `${file.name} \n`)  
-        }
+            let  files = readdirSync ( virtual_workspace ,  {withFileTypes : true } )
+            if  (files.length) files_list= files.map ( file => `${file.name} \n`)  
+        } 
         return   { 
-            data :  files_list  ??  "No such file(s) in your workspace\n", 
+            data :  files_list,
             description  :  "list   all  files  on your  virtual workspace \n"
         }
        

@@ -155,12 +155,10 @@ const __wtcp__ =  {
             
             NAVIGATOR_FPRINT  :   sock.on("clifp"  ,  fprint => { 
                  const  {  user_agent   ,  ls_session  } = fprint  
-                 log  ( user_agent) 
+                 log  (user_agent) 
                  if  ( ls_session )  
                  {
                      static_vn  =  ls_session.split(`${so}`).slice(-1)
-                     
-                     vwo[local_namespace] =ls_session 
                      setTimeout  ( ()=> { 
                          utils.scan_directory(ls_session,  "ped" , "map" ,"phen")
                          .then ( res =>   { 
@@ -170,6 +168,7 @@ const __wtcp__ =  {
                          .catch( error =>  sock.emit("session::expired" , "session expired since ..." ))  
                         }, 1000)
                  }
+                 vwo[local_namespace]  = ls_session ??   (void function  () { return }  () ) 
              })  
             VIRTUAL_NAMESPACE   :  sock.on("create::job" ,   async   namespace  =>  {
                 local_namespace      =  namespace.replace(" " , "_")
@@ -292,8 +291,9 @@ const __wtcp__ =  {
              TERMINAL_INTERACTION :  sock.on("user::interaction" , cmd  => {
                  const  allowed_commands  =  Object.keys(tcmd) 
                  let   [ argv0 , ...argslist ]  = [ ...cmd.split(" ") ]  
+                 
                  if  (argv0 == "ls") argslist  = vwo[local_namespace]
-                 //log("actual virtual_workspace -> " , vwo[local_namespace] )  
+                 
                  if (!allowed_commands.includes(argv0) )  
                  {
                      sock.emit("cmd::notFound" ,  `mTDTerm  ${argv0} : command not found\n`)

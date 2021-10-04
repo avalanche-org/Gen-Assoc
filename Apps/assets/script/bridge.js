@@ -735,9 +735,10 @@ if  (activate_extra_elements)
     disconnect.addEventListener("click"  ,  evt =>   { 
         if  (localStorage["task"] )  
         {
+            localStorage.clear()  
             ipcRenderer.send_("client::disconnect" ,  paths_collections); 
             sleep(1000,  ()=> term_write("[  Good bye ] "))
-            evt.preventDefault() 
+            evt.preventDefault()
             sleep(2000  ,  () =>  {   
                 term.value=""
                 location.reload()
@@ -793,7 +794,8 @@ if  (activate_extra_elements)
             d+="> " 
             term_write(d , false , false , false )  
         }else 
-            term_write(`${result??''}> `,false  , false , false) 
+            term_write(`${result??''}> `,false  , false , false)
+        
     }) 
 
     //! Genotype inference  

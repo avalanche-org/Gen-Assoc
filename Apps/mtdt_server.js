@@ -267,7 +267,7 @@ const __wtcp__ =  {
                         log("exit" , exit_code )
                     }else {
                         log("error") 
-                        utils._stderr(sock)   
+                        //utils._stderr(sock)   
                     }
                 })
 

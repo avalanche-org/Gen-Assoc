@@ -12,6 +12,7 @@ const
         , constants  
         , createReadStream 
         , mkdir
+        , open 
     }   = require("fs") , 
     
     os =  require("os") ,  
@@ -96,42 +97,22 @@ module
         } 
        return  os.cpus().length 
     },  
-    output_stream  :  (where ,  socket )   => {    
-        const sksf = stream_key_socket_flags =   { //  skfs   as alias  
-            ".logout"  :  [ "log::notfound"  , "log::fail" , "term::logout" ]  , 
-            ".logerr"  :  [  "log::notfound" , "log::broken" , "term::logerr"] 
-        }  
-        if ( !Object.keys(sksf).includes(where)  ) 
-        {
-            process.stderr.write (`stream file descriptor  is not definde\n`) 
-            process.exit(1) 
-        }
-        
-        access(where,  constants.F_OK,  stream_error  =>  { 
-             if  (  stream_error  ) socket.emit(skfs[where][0]  , stream_error )  
-             readFile ( where , "utf-8" ,  ( stream_error , buffer_data  )  => {
-                 if ( stream_error )  socket.emit (skfs[where][1] , stream_error ) 
-                 try { 
-                    log(sksf[where][2])
-                     log(buffer_data) 
-                  socket.emit(sksf[where][2] ,  buffer_data ) 
-                 }catch ( error )  { log (error)  }  
-             })
-        })  
-    }  ,
-    _stdout :  socket   => { 
-        const  {  output_stream }  = module.exports 
-        output_stream(".logout" , socket )  
+    "#get_user_log":  (virtual_directory ,  lgfile = false  )  =>  {
+        let ulog  =  `.${virtual_directory.split("/").slice(-1)}.log`
+        let ulog_abs_path  =`${virtual_directory}/${ulog}`
+        if  (lgfile) return ulog ;  
+        return  ulog_abs_path 
+    } ,    
+    "#user_log"   :   udir =>  { 
+        open( module.exports["#get_user_log"](udir),   constants["O_CREAT"]  | constants["O_RDWR"],enouacc  =>  { 
+            if (enouacc) 
+            {
+                socket.emit("fsinfo" , "Error :  cannot  build log  file  for you " ) 
+                throw new Error(enouacc)  
+            }
+             
+        }) 
     }, 
-    _stderr :  (socket  , exit_code = false ) => {
-        const  {  output_stream }  = module.exports 
-        output_stream(".logerr" , socket)  
-        if  ( exit_code ) 
-        { 
-            const  mesg_fail = `execution fail  : ${exit_code}` 
-            socket.emit("term::logerr" , mesg_fail)  
-        }
-    } , 
     make_new_userland   :  ( udir, socket  ) => {
         mkdir(udir , constants["S_IRWXU"] ,  enouacc =>  {  //! error no user access   
             if  (enouacc)
@@ -139,7 +120,8 @@ module
                 socket.emit ("fsinfo" ,  "ERROR : no privileges to create userlang access")  
                 throw new Error( enouacc) 
             } 
-            socket.emit ("fsinfo" ,    `your  virtual repertory  is ready`)
+            module.exports["#user_log"](udir)   
+            socket.emit ("fsinfo" ,    `your  virtual repertory  is ready`) 
             socket.emit("ok" ,   200  ) 
            
             socket.emit ("trunc::baseroot" ,  udir ) 
@@ -236,12 +218,17 @@ module
        return buffer.toString()  
     }, 
     
-    std_ofstream   : (command ,  callback )=> {
-        const   cmd    = exec(command)
-        const stdout = createWriteStream(fstdout ) // ,  { flags : "a"}) 
+    std_ofstream   : (user_virtual_ws, command , socket  , callback )=> {
+        const {  tail_logfiles  } =  module.exports  
+        const user_logout =  module.exports["#get_user_log"](user_virtual_ws)  
+        const cmd         =  exec(command)
+        const wstdout     =  createWriteStream(user_logout) // ,  { flags : "a"}) 
         const stderr = createWriteStream(fstderr) 
-        cmd.stdout.pipe(stdout)  
+        cmd.stdout.pipe(wstdout)
         cmd.stderr.pipe(stderr)   
+        tail_logfiles( socket , user_logout , "stdout")  
+        tail_logfiles( socket , fstderr , "stderr")  
+        
         try  {  
             cmd.on("close" , exit_code =>  {
                 callback(exit_code) 
@@ -250,16 +237,24 @@ module
         }catch (err) {  
             console.log(err) 
         } 
-    } ,  
-    Rlog :  ( logfile ,  mw_ ) => {  // Rlog  aka   realtime readable log 
-         access( logfile  , constants["F_OK"] , error => {   
-             if  (error) log("Unable  to access file or permission denied!") 
-             if  (!error) log("ok  streaming  out -> "  ,logfile)  
-         })
-        const  plug  =  createReadStream(logfile)
-        plug.on("data"  , data  => {
-             mw_?.webContents?.send("plug"  , data )  
-        }) 
+    } , 
+
+    tail_logfiles :   (socket , logfile ,   where) => {
+        const sksf = stream_key_socket_flags =   { //  skfs   as alias  
+            "stdout"  :  [ "log::notfound"  , "log::fail" , "term::logout" ]  , 
+            "stderr"  :  [  "log::notfound" , "log::broken" , "term::logerr"] 
+        }
+        if  (!Object.keys(sksf).includes(where))
+            throw new Error(`no log file  name ${where} found `)  
+
+        tailf  =  spawn ( "tail" , ["-f" ,  logfile ] )  
+        tailf?.[where].on("data" ,  buffer_data => {
+            try  { 
+                socket.emit(sksf[where][2] , buffer_data.toString("utf-8")) 
+            }catch ( error )  {  
+                socket.emit(sksf[where][1] ,  stream_error) 
+                process.exit(1) 
+            }
+        })
     }
-    
-}
+ }

@@ -784,10 +784,20 @@ if  (activate_extra_elements)
     })
 
     ipcRenderer.on("tcmd::response" ,  result   => {
-        if   (result == " ")  {  //  term.value = ""  // clear  command 
+        if (result.includes("GET")) 
+        {  
+            result+='\n'
+            const  [,file]  = result.split(" ")
+            download.href=`/download/${file}` 
+            setTimeout  ( () =>  { 
+            download.click()
+            } , 1000) 
+        }
+        if   (result == " ")  
+        {   
             term.value= "> "
              return  
-          }
+        }
         if   ( Array.isArray(result)  ) 
         {
             let  d = "" 

@@ -9,7 +9,8 @@ const  {
     constants
 } = require("fs") , 
     { log } = console,  
-    { list_allocated_job_space } = require("./utils")  
+    { list_allocated_job_space } = require("./utils"), 
+    http = require("http") 
 
 
 mtdtart = `
@@ -54,7 +55,7 @@ module.exports =   {
         }catch  (e)  { }  
     },  
     
-    ["ls"]  :   ( ...local_vworks  ) => {
+    ["ls"]  :   ( ...local_vworks ) => {
         const  virtual_workspace =  local_vworks[0]  ||  (void function ()  { return } ()) 
         let files_list =  "No such  file(s) in your workspace\n"  
 
@@ -117,7 +118,7 @@ module.exports =   {
 
     ["credits"] :  (  ...unused_argument ) => {  
         return  {
-            data :  ( void function () { return } () ) , 
+            data : ( void function () { return } () ) , 
             description : "print  all support  behing  m-TDT\n"
         }
     },
@@ -136,5 +137,20 @@ module.exports =   {
             data  :  ( void function () { return } ()) , 
             description : "show metadata files \n"
         }
-    }
+    } ,  
+    ["get"]  : (...filetarget )  => {    
+        const  [vpath , file]  =  filetarget[0]
+        
+        const    {method} = request_options  = {  
+            hostname :  "0.0.0.0", 
+            port     : 4000 , 
+            path     :`/download/${file}`,  
+            method   : 'GET'
+        }  
+        const head_flag  = `${method} ${file}` 
+        return  {  
+            data  :   head_flag ||(void function () { return } () ) , 
+            description :  "Download files\n"
+        } 
+    } 
 }  

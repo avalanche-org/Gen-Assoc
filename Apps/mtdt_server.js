@@ -60,7 +60,7 @@ vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstatio
 static_vn       =  null
 local_namespace =  (void function ()  { return }()) 
 vwo             =   {}  
-
+download        =  true 
 
 const __wtcp__ =  {  
 
@@ -119,9 +119,9 @@ const __wtcp__ =  {
         
         })
         ["get"]("/download/:dfile" , ( rx ,tx ) => {
-        
-            tx.download(`${vworks}/${static_vn}/${rx.params.dfile}` , rx.params.dfiles  , err => {  
-                if   (err) tx.status(500).send( {  message  : `you tried to download an inexistant file `}) 
+            tx.download(`${vworks}/${static_vn}/${rx.params.dfile}` , rx.params.dfiles  , err  => { 
+                if    (err)  
+                    tx.status(404).send( {  message  : `you tried to download an inexistant file `})
             })
         })
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
@@ -236,7 +236,7 @@ const __wtcp__ =  {
             
             sock.on("retrive::missing::genotype"   , gi => {gi_state =  gi})        
             sock.on("enable::trun" ,  is_theorical_enable => {  theorical =   is_theorical_enable } )  
-
+          
             RUN_ANALYSYS :   sock.on("run::analysis" ,  gobject => { 
                 const { paths  , selected_index  }  = gobject,
                      {  mm    , sm , ped , map , phen , phenotype_,  nbsim_ , nbcores_ , markerset }  = selected_index, 
@@ -285,9 +285,6 @@ const __wtcp__ =  {
             
             }) 
             
-
-             
-
             TERMINAL_INTERACTION : 
 
             sock.on("user::interaction" , cmd  => {
@@ -296,6 +293,7 @@ const __wtcp__ =  {
 
                 if  ( argv0  == "ls" ) argslist = vwo[local_namespace]   
                 if  ( argv0  == "cat") argslist = [vwo[local_namespace], ...argslist]  
+                if  ( argv0  == "get") argslist = [vwo[local_namespace], ...argslist]  
                
                 if (!allowed_commands.includes(argv0) )  
                 {

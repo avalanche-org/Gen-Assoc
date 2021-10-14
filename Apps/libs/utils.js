@@ -39,7 +39,10 @@ const
    
 module
 ["exports"]  =  {
-    //! TODO  : improve this function to manage correctly  csv or tsv  file ... 
+    /*
+     *
+     *
+     */   
     rsv_file :  (  file  , default_delimiter = ","  , readable_mode  = false  )  => {
         return new Promise  ( (resolve , reject )  => {
             readFile(file ,  "utf8" , (e , file_data ) => {
@@ -99,18 +102,25 @@ module
     },  
     "#get_user_log":  (virtual_directory ,  lgfile = false  )  =>  {
         let ulog  =  `.${virtual_directory.split("/").slice(-1)}.log`
+        let uerrlog  =  ulog.replace("log", "err")  
         let ulog_abs_path  =`${virtual_directory}/${ulog}`
-        if  (lgfile) return ulog ;  
-        return  ulog_abs_path 
+        let errlog_abs_path=`${virtual_directory}/${uerrlog}`
+        if  (lgfile)
+        {
+           return   [  ulog ,  uerrlog ]   
+        }
+        return  [ulog_abs_path ,errlog_abs_path ] 
     } ,    
     "#user_log"   :   udir =>  { 
-        open( module.exports["#get_user_log"](udir),   constants["O_CREAT"]  | constants["O_RDWR"],enouacc  =>  { 
-            if (enouacc) 
-            {
-                socket.emit("fsinfo" , "Error :  cannot  build log  file  for you " ) 
-                throw new Error(enouacc)  
-            }
-             
+        module.exports["#get_user_log"](udir).forEach (  log => {   
+
+            open( log,   constants["O_CREAT"]  | constants["O_RDWR"],enouacc  =>  { 
+                if (enouacc) 
+                {
+                    socket.emit("fsinfo" , "Error :  cannot  build log  file  for you " ) 
+                    throw new Error(enouacc)  
+                }
+            })
         }) 
     }, 
     make_new_userland   :  ( udir, socket  ) => {
@@ -149,14 +159,14 @@ module
             const  catched_dir_only=  dir_contents.filter( item => {  
                 log (item) 
                 item["isDirectory"]()
-                
             }) 
+
             if  ( catched_dir_only.includes(userland))
             {
                 socket.emit ("trunc::baseroot" ,  udir ) 
             }else{ 
-                     make_new_userland(udir ,  socket)  
-                     socket.emit("fsinfo" ,  "status :: ready  ") 
+                make_new_userland(udir ,  socket)  
+                socket.emit("fsinfo" ,  "status :: ready  ") 
             } 
             
         })
@@ -220,27 +230,32 @@ module
     
     std_ofstream   : (user_virtual_ws, command , socket  , callback )=> {
         const {  tail_logfiles  } =  module.exports  
-        const user_logout =  module.exports["#get_user_log"](user_virtual_ws)  
+        const [ustdout_log , ustderr_log  ]    =  module.exports["#get_user_log"](user_virtual_ws)  
         const cmd         =  exec(command)
-        const wstdout     =  createWriteStream(user_logout) // ,  { flags : "a"}) 
-        const stderr = createWriteStream(fstderr) 
+        const wstdout     =  createWriteStream(ustdout_log)   
+        const wstderr     =  createWriteStream(ustderr_log) 
         cmd.stdout.pipe(wstdout)
-        cmd.stderr.pipe(stderr)   
-        tail_logfiles( socket , user_logout , "stdout")  
-        tail_logfiles( socket , fstderr , "stderr")  
+        cmd.stderr.pipe(wstderr)   
+        tail_logfiles( socket ,  ustdout_log , "stdout")  
+        tail_logfiles( socket ,  ustderr_log , "stderr")  
         
         try  {  
-            cmd.on("close" , exit_code =>  {
+            cmd.on("close" , exit_code =>  { 
+                let  execute_status  =  exit_code  != 0  ? `FAILLURE : Exit code ${exit_code}\n` : "SUCCESS : [ ok ]\n"
+                process.stdout.write(execute_status)
+                socket.emit("term::logout" ,  execute_status)  
                 callback(exit_code) 
-                process.stdout.write(`exiting with code ${exit_code}\n`)
+                
             })
         }catch (err) {  
-            console.log(err) 
+            process.stderr.write(err)  
+            socket.emit("log::fail" , err) 
+            
         } 
     } , 
 
     tail_logfiles :   (socket , logfile ,   where) => {
-        const sksf = stream_key_socket_flags =   { //  skfs   as alias  
+        const sksf = stream_key_socket_flags =   { 
             "stdout"  :  [ "log::notfound"  , "log::fail" , "term::logout" ]  , 
             "stderr"  :  [  "log::notfound" , "log::broken" , "term::logerr"] 
         }
@@ -249,10 +264,11 @@ module
 
         tailf  =  spawn ( "tail" , ["-f" ,  logfile ] )  
         tailf?.[where].on("data" ,  buffer_data => {
+            log ("- >   " ,  buffer_data.toString("utf-8"))  
             try  { 
                 socket.emit(sksf[where][2] , buffer_data.toString("utf-8")) 
             }catch ( error )  {  
-                socket.emit(sksf[where][1] ,  stream_error) 
+                socket.emit(sksf[where][2] ,  stream_error) 
                 process.exit(1) 
             }
         })

@@ -211,21 +211,20 @@ const __wtcp__ =  {
                 let   { paths ,  selected_files  } = gobject  ,   
                       [pedfile,mapfile,phenfile]  = selected_files
                 
-                const  arguments_flags  =  { 
+                const  summary_arguments_flags  =  { 
                     pedfile  :  `${paths}/${pedfile}`
                     ,mapfile  :  `${paths}/${mapfile}`
                     ,phenfile :  `${paths}/${phenfile}`
                 } 
-                utils.rsv_file(arguments_flags.phenfile ,  '\t')
+                utils.rsv_file(summary_arguments_flags?.phenfile ,  '\t')
                 .then(res => {
-                    utils.std_ofstream(paths ,  utils.scripts(summary_source, {...arguments_flags})   ,sock,
+                    utils.std_ofstream(paths ,  utils.scripts(summary_source, {...summary_arguments_flags})   ,sock,
                         exit_code => {
                             if  (exit_code == 0x00)  
                             {   
                                 sock.emit("load::phenotype"  ,  res-2)  
                             }else{   
                                 log("fail")   
-                                utils._stderr(sock , exit_code) 
                             }  
                         })
                 }) 
@@ -245,28 +244,49 @@ const __wtcp__ =  {
                     log ( "phen path " , phenfile  ) 
                 let user_namespace  =  paths.split(so).slice(-1)[0] 
                 
-                let cmdstr = null
+                let  analysis_argument_flags = {}    
                 if (mm && markerset!= null && markerset != '')  
                 { 
-                    cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --nbsim ${nbsim_} --nbcores ${nbcores_} --markerset ${markerset} --gi ${gi_state} --jobtitle ${user_namespace}`
-                    if  ( theorical)  
-                        cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --markerset ${markerset} --gi ${gi_state} --jobtitle ${user_namespace}`
+                    analysis_argument_flags  =  {  
+                        "pedfile"    :  pedfile 
+                        ,"mapfile"   :  mapfile
+                        ,"phenfile"  :  phenfile 
+                        ,"phen"      :  phenotype_
+                        ,"nbsim"     :  nbsim_
+                        ,"nbcores"   :  nbcores_
+                        ,"markerset" :  markerset
+                        ,"gi"        :  gi_state 
+                        ,"jobtitle"  :  user_namespace
+                    }  
+                    if  ( theorical ) 
+                    {
+                        delete  analysis_argument_flags?.nbsim    
+                        delete  analysis_argument_flags?.nbcores  
+                    }
                 } 
+                
                 if  (sm)  
                 {
-                    cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_}  --nbcores ${nbcores_}  --gi ${gi_state} --jobtitle ${user_namespace}`
+                    analysis_argument_flags  =  {  
+                        "pedfile"    :  pedfile 
+                        ,"mapfile"   :  mapfile
+                        ,"phenfile"  :  phenfile 
+                        ,"phen"      :  phenotype_
+                        ,"nbcores"   :  nbcores_
+                        ,"gi"        :  gi_state 
+                        ,"jobtitle"  :  user_namespace 
+                    } 
                     if  (theorical) 
-                        cmdstr =`Rscript ${run_analyser} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile} --phen ${phenotype_} --gi ${gi_state} --jobtitle ${user_namespace}`
+                         delete  analysis_argument_flags?.nbcores_  
+
                 }
-                log ( cmdstr)
                 log ("th" ,  theorical) 
-                utils.std_ofstream(paths , cmdstr ,  sock ,   exit_code  => {
+                utils.std_ofstream(paths ,   utils.scripts(run_analyser  , {  ...analysis_argument_flags }  )  ,  sock ,   exit_code  => {
                     if(exit_code ==0x00) 
                     {
                         log("exit" , exit_code )
                     }else {
                         log("error") 
-                        //utils._stderr(sock)   
                     }
                 })
 

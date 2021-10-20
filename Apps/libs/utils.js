@@ -209,25 +209,24 @@ module
            })
        })
     },
-    execmd  : (main_cmd  ,  ...options)=> {
-        const  output_ =  spawn(main_cmd , options) 
-        log(...options)
-        console.log(`${main_cmd}` , ...options)
-        return  new Promise( (resolve ,  reject)   => {
-            output_.stdout.on("data"  ,  data      =>  { 
-                log (data.toString()) 
-                resolve(data.toString())
-            }) 
-            output_.stderr.on("data"  ,  e_data    => reject(e_data.toString()))
-            output_.on("error"        ,  err       => reject(err.message))  
-            output_.on("close"        ,  exit_code =>  console.log(`exited with ${exit_code}`)) 
+    scripts  :  ( script_source   ,   { ...arguments }  )  =>  {
+        access (script_source  ,  constants["F_OK"]  ,  err  =>  err ?? err  ) 
+        const allowed_keys_args  =   [ 
+            "pedfile" , "mapfile" ,  "phenfile" , "phen", 
+            "nbcores","nbsim", "markerset", "gi","jobtitle"
+        ]  
+        const  kwargs = Object.keys(arguments)  
+        
+        kwargs.forEach ( k =>  { 
+            if ( !allowed_keys_args.includes(k)) throw new Error ("undefined  key words") 
         }) 
-      }, 
-    execmd_ :  command => {
-       const  buffer  =  execSync(command)  
-       return buffer.toString()  
+        let interpreter = `Rscript ${script_source} ` 
+        for  ( let kw  in arguments)  
+             interpreter+=` --${kw}  ${arguments[kw]}` 
+       
+        return  interpreter     
+        
     }, 
-    
     std_ofstream   : (user_virtual_ws, command , socket  , callback )=> {
         const {  tail_logfiles  } =  module.exports  
         const [ustdout_log , ustderr_log  ]    =  module.exports["#get_user_log"](user_virtual_ws)  

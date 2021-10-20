@@ -211,17 +211,17 @@ const __wtcp__ =  {
                 let   { paths ,  selected_files  } = gobject  ,   
                       [pedfile,mapfile,phenfile]  = selected_files
                 
-                pedfile  =  `${paths}/${pedfile}`
-                mapfile  =  `${paths}/${mapfile}`
-                phenfile =  `${paths}/${phenfile}`
-                log ("--> " ,  phenfile ) 
-                utils.rsv_file(phenfile ,  '\t')
+                const  arguments_flags  =  { 
+                    pedfile  :  `${paths}/${pedfile}`
+                    ,mapfile  :  `${paths}/${mapfile}`
+                    ,phenfile :  `${paths}/${phenfile}`
+                } 
+                utils.rsv_file(arguments_flags.phenfile ,  '\t')
                 .then(res => {
-                    utils.std_ofstream(paths , `Rscript ${summary_source} --pedfile ${pedfile} --mapfile ${mapfile} --phenfile ${phenfile}` ,sock,
+                    utils.std_ofstream(paths ,  utils.scripts(summary_source, {...arguments_flags})   ,sock,
                         exit_code => {
                             if  (exit_code == 0x00)  
                             {   
-                                //utils._stdout(sock)  
                                 sock.emit("load::phenotype"  ,  res-2)  
                             }else{   
                                 log("fail")   
@@ -233,7 +233,6 @@ const __wtcp__ =  {
 
             gi_state  =  0  //! by default the gi is <empty_string>   
             theorical = false 
-            
             sock.on("retrive::missing::genotype"   , gi => {gi_state =  gi})        
             sock.on("enable::trun" ,  is_theorical_enable => {  theorical =   is_theorical_enable } )  
           

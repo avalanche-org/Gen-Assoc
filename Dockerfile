@@ -1,8 +1,8 @@
-FROM debian:latest
+FROM  debian:latest  
 
 MAINTAINER  "Umar" funscript@outlook.fr  
 
-ARG node_version=16
+ARG node_version=17
 
 RUN apt-get update -y  \
 && apt-get install curl -y  \
@@ -10,9 +10,8 @@ RUN apt-get update -y  \
 && apt-get install nodejs -y \
 && apt-get clean
 
-
-ADD  .  ./app
-WORKDIR  /app/Gaui/
+ADD  .  ./Sandbox 
+WORKDIR  /Sandbox/Apps/
 
 RUN npm install && npm install -g  pm2
 
@@ -20,4 +19,4 @@ EXPOSE 4000
 
 VOLUME app/libs
 
-CMD  ["pm2-runtime" , "wtcp.js"] 
+CMD  ["pm2-runtime" , "mtdt_server.js"] 

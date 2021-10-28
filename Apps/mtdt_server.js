@@ -1,7 +1,7 @@
-/**!  web Tcp  server  socket   
- *    for  synchronous exchange    
- *    ----
- *    author  :   Umar aka < jukoo >  @  github.com/jukoo  
+/** 
+ * author  :   Umar aka <jukoo>    <github.com/jukoo> 
+ * filename:   mtdt_server.js 
+ * description : Mtdt  Http  Server   with Socket io   
  */ 
 
 mtdtart = `
@@ -60,8 +60,8 @@ vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstatio
 static_vn       =  null
 local_namespace =  (void function ()  { return }()) 
 vwo             =   {}  
-download        =  true 
 
+/** @namespace __wtcp__ **/
 const __wtcp__ =  {  
 
     "#fstream"   :   file  => {

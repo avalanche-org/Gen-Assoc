@@ -1,5 +1,7 @@
 /*
- * author  : umar <Jukoo>  <github.com/jukoo> 
+ * author  : Umar <Jukoo>  <github.com/jukoo>
+ * filename:  command.js  
+ * description : simulate  unix  command line on  Mtdt web  service  
  */  
 
 
@@ -23,38 +25,47 @@ mtdtart = `
  ╚═╝     ╚═╝   ╚═╝   ╚═════╝    ╚═╝ 
 \t\t\t\t* version  beta 4.5.2 
 `
-
+/** @module libs/command **/  
 module.exports =   {  
-
+    /**
+     * clear  the console 
+     * @params  { Array }  
+     * @return  { Object} 
+     */  
     ["clear"]  : (...unused_argument)   =>    {
         return  { 
             data   : " ", 
             description: "clear the terminal\n"
         } 
     },  
+    /**
+     * display all command or  single command to get usage  
+     * @param  {  Array  }   
+     * @return {  Object } command name :  description  
+     */ 
     ["help"]   :  (...cmd_name) =>   {
         let  cmd_helper_collects  = [ mtdtart ]
         try  {  
-            
             if  (!cmd_name[0].length)  
             { 
                 log ( "no  cmd") 
-                for (let key of  Object.keys(module.exports)  )  {
-                    
+                for (let key of  Object.keys(module.exports)  )  { 
                     if   ( key != "help")
                     {
                          cmd_helper_collects.push(`\r${key}\t:\t${module.exports[key]().description}`)
                     }
-                   
                 }
-                
                 return    { data :  cmd_helper_collects }    
             }
          
             return  {  data : module.exports[cmd_name[0]]().description }  
         }catch  (e)  { }  
     },  
-    
+    /**
+     * list  all  files  in virtual user space  including   dot  files logs 
+     * @param    {Array} 
+     * @return   {Object}  files liste  and  description of the command  [ not used ] 
+     */ 
     ["ls"]  :   ( ...local_vworks ) => {
         const  virtual_workspace =  local_vworks[0]  ||  (void function ()  { return } ()) 
         let files_list =  "No such  file(s) in your workspace\n"  
@@ -68,8 +79,12 @@ module.exports =   {
             data :  files_list,
             description  :  "list   all  files  on your  virtual workspace \n"
         }
-       
     } ,
+    /**
+     * print  file inside  console  
+     * @param  { Array }  
+     * @return { Object}  file contents    and  description 
+     */
     ["cat"]  :( ...filetarget) => {  
       
         filetarget =  filetarget[0]  ||  (void function () { return } () )   
@@ -90,7 +105,12 @@ module.exports =   {
             data  :   filetarget || ( void function ()  { return  } () ) , 
             description : "show  file contents\n"
         }
-    },
+    }, 
+    /**
+     * display the  version of the Apps
+     * @params   {  Array  }  
+     * @return   {  Object }  
+     */ 
     ["version"]  : ( ...no_Args) => {
         
         const  version = require("./../package.json")?.version 
@@ -98,7 +118,12 @@ module.exports =   {
             data : version +"\n", 
             description  : "show version number  of application\n"
         } 
-    }, 
+    },
+    /**
+     * tell  about  the  Apps  
+     * @params {Array}  
+     * @return {Object}  
+     */
     ["about"] :  (...unused_argument ) =>  {  
      
        const static_path  ="extra/about.txt"
@@ -115,19 +140,15 @@ module.exports =   {
             description : "tell about m-TDT\n"
         }
     },
-
+    /**
+     * credits ...
+     * @params  { Array } 
+     * @return  {Object } 
+     */ 
     ["credits"] :  (  ...unused_argument ) => {  
         return  {
             data : ( void function () { return } () ) , 
             description : "print  all support  behing  m-TDT\n"
-        }
-    },
-        
-    ["tree"]  :  ( ...local_vworks ) =>  {  
-
-        return  { 
-            data  :  ( void function ()  { return } () )  , 
-            description  :  "make a simple graph tree  view of files \n"
         }
     },
 
@@ -137,19 +158,19 @@ module.exports =   {
             data  :  ( void function () { return } ()) , 
             description : "show metadata files \n"
         }
-    } ,  
-    ["get"]  : (...filetarget )  => {    
-        const  [vpath , file]  =  filetarget[0]
-        
-        const    {method} = request_options  = {  
-            hostname :  "0.0.0.0", 
-            port     : 4000 , 
-            path     :`/download/${file}`,  
-            method   : 'GET'
-        }  
-        const head_flag  = `${method} ${file}` 
+    } , 
+    /**
+     * Download file  via console 
+     * @param  { Array } 
+     * @return {Object } 
+     */  
+    ["get"]  : (...filetarget )  => { 
+        file  = (  void function () { return } ()) 
+        if  (filetarget[0]) 
+            [ ,file]  =  filetarget[0]
+     
         return  {  
-            data  :   head_flag ||(void function () { return } () ) , 
+            data  : `GET ${file}` || (void function () { return } () ) , 
             description :  "Download files\n"
         } 
     } 

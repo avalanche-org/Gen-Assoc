@@ -1,14 +1,6 @@
-FROM  debian:latest  
+FROM  node:17-alpine3.14
 
-MAINTAINER  "Umar" funscript@outlook.fr  
-
-ARG node_version=17
-
-RUN apt-get update -y  \
-&& apt-get install curl -y  \
-&& curl  -sL https://deb.nodesource.com/setup_$node_version.x | bash  \
-&& apt-get install nodejs -y \
-&& apt-get clean
+MAINTAINER  "Umar  <github/jukoo>" funscript@outlook.fr  
 
 ADD  .  ./Sandbox 
 WORKDIR  /Sandbox/apps/

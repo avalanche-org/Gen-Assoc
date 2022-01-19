@@ -12,8 +12,9 @@
 * 3 example input files: "MTDT_pedfile.ped", "MTDT_phenfile.phen" and "MTDT_mapfile.map".
  
  
-####  INPUT FILES FORMAT
  
+ INPUT FILES FORMAT
+ ======
  
 * No header in any of the 3 input files
  
@@ -68,17 +69,16 @@ __!!! ADVICES__ :
 - markers names (keeping the same order as in the 'ped' file)
  
  
-### SOME RULES
- 
- 
+SOME RULES
+======
  
 - alleles should be coded in integer (1: major allele, 2: minor allele for a bi-allelic marker for instance)
 - allele separator is SPACE (e.g., "1 2")  
 - missing genotypes should be coded "0 0"
  
  
-### HOW TO RUN
-  
+HOW TO RUN
+======
  * Place yourself in directory containing the main program file (cd to "mTDT" folder here)
  * parameters
  	```
@@ -96,15 +96,16 @@ __!!! ADVICES__ :
 		 --nbcores    : number of cores to use for the run, if the user wants to speed up the run by using multiple cores, as the program can run in parallelized at the simulation step if included to obtain
 		 empirical P-values. So, this option is useful only if "--nbsim" option is used.```
 
-### EXAMPLE OF RUN
- 
+EXAMPLE OF RUN
+=== 
 
-```
-cd  "mTDT_folder"
 
-Rscript mtdt.R  --nbsim 10 --nbcores 4 --markerset 1,2,3 --pedfile MTDT_pedfile.ped --mapfile MTDT_mapfile.map --phenfile MTDT_phenfile.phen  --phen 1
+``cd   mtdtFolder`` 
+
+	``Rscript mtdt.R  --nbsim 10 --nbcores 4 --markerset 1,2,3 --pedfile  
+	MTDT_pedfile.ped --mapfile MTDT_mapfile.map --phenfile MTDT_phenfile.phen  --phen 1``
+
  
-``` 
  
 __NOTA__ : Results are written in this file **weighted____res____multilocus.csv**, located in the main folder.
  

@@ -11,7 +11,7 @@ RUN apt-get update -y  \
 && apt-get clean
 
 ADD  .  ./Sandbox 
-WORKDIR  /Sandbox/Apps/
+WORKDIR  /Sandbox/apps/
 
 RUN npm install && npm install -g  pm2
 

@@ -38,28 +38,29 @@ supported_distribtions =  {
         "debian"  :  "apt-get" ,
         "fedora"  :   "dnf"    ,
         "RedHat"  :   "yum"    ,
-        "openSuse":  "zypper"
+        "openSuse":  "zypper"  , 
+        "Arch"    :  "pacman"  
         } 
 
-define_OS   =  lambda x = None :  sys.platform
+os_type     =   sys.platform
 Arch        =  lambda x = None :  platform.architecture()[0b00][0:2] 
 
 has_command =  lambda cmd  : (False , True) [ sbp_cmdexe("command -v {}".format(cmd)).__eq__(0b00) ]
 
 def  detect_current_base_distro () :
-    if  not define_OS.__eq__("linux") : return (  False , False )  
+    if  not os_type.__eq__("linux") : return (  False , False )  
     for  dist , pkgman  in supported_distribtions.items() : 
         if has_command(pkgman)  : return  ( dist , pkgman) 
    
 
-print(define_OS()) 
+print(os_type) 
 print(Arch())
 
 #  this  part is only  active on gnu/linux  os 
 
 distro_name  , pkgm  = None , None 
 
-if define_OS().__eq__("linux")  : 
+if os_type.__eq__("linux")  : 
     distro_name , pkgm = detect_current_base_distro() 
     if distro_name and pkgm : print("Your  base distribution is  \033[3;32m%s Base*\x1b[0m" % (distro_name) )   
 
@@ -72,7 +73,7 @@ except :
     exit_status  =  sbp_cmdexe(trooble_shooting_cmd)
     if  not exit_status.__eq__(0b0000)  :
         sys.stderr.write("-[w]  failed to trouble shooting  pip module install") 
-        if define_OS().__eq__("linux")  :  
+        if os_type.__eq__("linux")  :  
             print("-[w] force to  install pip module via  package manager")  
             pipmod =  sbp_cmdexe("sudo  {}  install   python3-pip -y  > /dev/null".format(pkgm)) 
 
@@ -157,7 +158,7 @@ def direct_downloader ( direct_link)  :
         return None
     
     # testing for mac    
-    if  define_OS().__eq__("darwin") and  filename.__eq__("RStudio-1.3.1056.dmg") : 
+    if  os_type.__eq__("darwin") and  filename.__eq__("RStudio-1.3.1056.dmg") : 
         print("-[mac osx warning] Cannot Download  {}  ".format(filename))
         avoid_deprecation_osx()  
     
@@ -179,7 +180,7 @@ def softpack_env   ( os_type , arch )  :
                 }
     if os_type.__eq__("win32") or  os_type.__eq__("win64")  :  
         return {
-               "Plink"   :source.plink  +"plink_{sys_arch}_{build_V}.zip".format(sys_arch=define_OS()[:3]+arch,build_V=PLINK_BUILD_VERSION) , 
+               "Plink"   :source.plink  +"plink_{sys_arch}_{build_V}.zip".format(sys_arch=os_type[:3]+arch,build_V=PLINK_BUILD_VERSION) , 
                "Rstudio" :source.rstudio+"windows/{}.exe".format(RSTUDIO_SOFT_VERSION)                                                    ,
                "Rlang"   :source.rlang  +"windows/base/{}-win.exe".format(RLANG_VERSION)
                }
@@ -196,7 +197,7 @@ def softpack_env   ( os_type , arch )  :
 
 def main ( )   :  
     
-    pckg_direct_link = softpack_env(define_OS()  ,Arch())
+    pckg_direct_link = softpack_env(os_type  ,Arch())
 
     for bin_pkg , d_link  in  pckg_direct_link.items() :  
         file_src=direct_downloader(d_link)
@@ -222,7 +223,7 @@ def main ( )   :
         else  :  
             plink_exec  = "{}/plink".format(plink_folder_name) 
             if os.path.exists(plink_exec) :  
-                if  define_OS.__eq__("darwin") or define_OS.__eq__("linux"):  
+                if  os_type.__eq__("darwin") or os_type.__eq__("linux"):  
                     exec_storage =  "/usr/bin/"
                     if  not os.path.exists(exec_storage+"plink")  :
                 	# make it executable 
@@ -237,7 +238,7 @@ def main ( )   :
             pckg_direct_link["Rstudio"].split("/")[-1] 
         )
 
-    if define_OS().__eq__("win32")  or define_OS().__eq__("win64") : 
+    if os_type.casefold__eq__("win32")  or os_type.__eq__("win64") : 
         current_path = os.getcwd() 
         sys.stdout.write("executing  Plink ") 
         abs_plink_path =  "{}/{}/plink.exe".format(current_path,plink_folder_name)
@@ -249,7 +250,7 @@ def main ( )   :
         sys.stdout.write("executing  R Studio\n") 
         os.system(current_path+"/"+rstudio)  
        
-    if define_OS().__eq__("darwin") : 
+    if os_type.__eq__("darwin") : 
         
         # R lang  
         if not has_command("R")  : 
@@ -274,7 +275,7 @@ def main ( )   :
             sys.exit(1) 
 
     
-    if define_OS().__eq__("linux") :  
+    if os_type.__eq__("linux") :  
         # Rlang  install 
         install  = lambda  x ,package: sbp_cmdexe("sudo {} install    {} -y  > /dev/null".format( x , package) ) 
         depackg  = lambda  x ,package: sbp_cmdexe("sudo {} --install  {}     > /dev/null".format( x , package) ) 

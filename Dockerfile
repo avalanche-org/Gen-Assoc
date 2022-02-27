@@ -1,14 +1,19 @@
 FROM  node:17-alpine3.14
 
-MAINTAINER  "Umar  <github/jukoo>" funscript@outlook.fr  
+MAINTAINER  Umar  jUmar@protonmail.com <github/Jukoo>  
 
-ADD  .  ./Sandbox 
-WORKDIR  /Sandbox/apps/
+
+ARG  port=4000
+ENV  PORT  $port   
+
+RUN apk add R  
+
+ADD  .  ./mTDT 
+WORKDIR  /mTDT/apps/
 
 RUN npm install && npm install -g  pm2
 
-EXPOSE 4000 
+EXPOSE $port
 
-VOLUME app/libs
 
 CMD  ["pm2-runtime" , "mtdt_server.js"] 

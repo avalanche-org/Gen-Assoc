@@ -27,9 +27,11 @@ class BaseAbort  ( Enum ) :
     EXIT_SUCCESS  = 0  
 
 
-def  sbp_cmdexe ( cmd )  : 
-    stdargv     =  subprocess.Popen(cmd , stdout=subprocess.PIPE  ,shell=True) 
+def  sbp_cmdexe ( cmd )  :
+    devnull_fd   = os.open(os.devnull,  os.O_RDONLY |  os.O_WRONLY ) 
+    stdargv     =  subprocess.Popen(cmd , stdout=devnull_fd ,shell=True) 
     status_code =  stdargv.wait() 
+    os.close (devnull_fd) 
     return  status_code     
 
 supported_distribtions =  {  

@@ -12,7 +12,6 @@ module
          tcmd  : require("./libs/command")  
     } ,
     ["@node_module"] : { 
-        _ejs_  : require("electron"),
         url    : require("url"), 
         path   : require("path"), 
         fs     : require("fs"),

@@ -23,7 +23,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Build
-      run: cd apps
       run: |
+        cd apps
         npm install
         npx webpack

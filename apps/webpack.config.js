@@ -1,5 +1,6 @@
 /*
- * webpack.config.js :  mtdt  Gen-Assoc  
+ * webpack.config.js :  mtdt  Gen-Assoc
+ * Basic webpack configuration . 
  * copyright (c) 2022 , jUmarB@protonmail.com  Umar <jukoo>  
  */  
 __kernel_file__ :  {  core = require("./kernel") }  
@@ -18,7 +19,7 @@ const  bundle_output_filename =   () =>  {
     
 
 module.exports  = {
-
+    mode   : "development", 
     ["entry"] :   {  
         app   :  source_app 
     } , 

@@ -1,6 +1,40 @@
 //! author  : umar aka juko    < github/jukoo>  
 //! this script make a bridge between  main  process and renderer process 
 //! sending event through backend side   
+
+import  {
+    _
+    ,ipcRenderer
+    ,__setup_ipcRenderer 
+    ,notify 
+    ,activate_extra_elements
+    ,check_network_connectivity
+    ,display_speed
+    ,client_nav_fingerprint 
+    ,fetch_right_data 
+    ,sleep
+    ,uploader
+    ,mtdterm_rowline_handlers
+    ,ped, map , phen,sm,mm ,yes,no,phenotype,nbsim,nbcores,markerset, term 
+    ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
+    ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init 
+    
+    ,i_lock ,i_unlock ,blur_area, status, microchip , bar_progress
+    ,__lock_web_ui_file_operation 
+    ,log , error,warn
+    ,random , floor 
+
+}  from  "./ops.js"   
+console.log(_) 
+console.log(activate_extra_elements) 
+console.log(notify) 
+console.log(ipcRenderer) 
+console.log(ped) 
+
+
+__setup_ipcRenderer(ipcRenderer)  
+__lock_web_ui_file_operation()  
+
 ipcRenderer.send_("clifp" ,   { user_agent : client_nav_fingerprint(navigator) , ls_session : localStorage["task"]?? null})
 
 
@@ -52,9 +86,12 @@ const //progress_step =(state  ,  status_message , duration /*millisec) => {
 
 //progress_step(10 ,"initialization..." , 200 )
 */
- 
-let terminal ,  writeSpeed  
-__init__  = ( ()=> {
+
+let display_= (void function ( ) { return  } ())   //  undefine 
+
+let terminal ,  writeSpeed 
+
+( ()=> {
     run_analysis.disabled =  true  
     term.innerText        =  "▮ "
     term.setEditable      =  false
@@ -69,7 +106,9 @@ __init__  = ( ()=> {
     ipcRenderer.send("init",1)
     writeSpeed            =  0 
     display_              = display_speed(2)
-})()    
+})() 
+
+
 let   show_nt = 0  ;  
 setInterval( () => {
     if (check_network_connectivity()) 
@@ -835,7 +874,7 @@ if  (activate_extra_elements)
         })
     })
     //  Theorical run 
-    trunbtn = _.querySelector(".t-run") 
+    let trunbtn = _.querySelector(".t-run") 
     
     trunbtn.addEventListener("click"  , evt => { 
         if  (trunbtn.classList.contains("toggle") && enable_switch_between_theorical_or_emperical )

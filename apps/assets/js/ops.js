@@ -7,25 +7,37 @@
 //!  so  the code source bellow  make an adaptation of each  
 //!  this is  a one source for 2 client 
 //!  -------------------------------------------------------------------------
-const  { random, floor }       = Math    ,  
+export const  { random, floor }       = Math    ,  
        { log  , error , warn } = console , 
        _                       = document   
-
+/*
 let  ipcio  =  null  
-try  {ipcio = require("electron")}catch (err) {}   
-let  ipcRenderer                =  ipcio?.ipcRenderer ?? void function __(){ warn("using web services")}()   
-const activate_extra_elements   =  !ipcRenderer  
+try  {
+    ipcio = require("electron")}
+catch (err) {}   
+
+export let  ipcRenderer                =  ipcio?.ipcRenderer ?? void function __(){ warn("using web services")}()  
+
+export const activate_extra_elements   =  !ipcRenderer  
 ipcRenderer                     =  ipcRenderer || io()  
+*/ 
+
 /* *
  * make common  usage  for socket   and  ipcRenderer  from electron  using  send_   
  * instead of respectivly  emit and send   native method  
- * */  
-ipcRenderer["send_"]  =   (  event_name ,  g_object )  =>  {  
-    if  (!activate_extra_elements ) ipcRenderer.send ( event_name  ,  g_object )
-    ipcRenderer.emit ( event_name  , g_object )  
-}   
-function AssertionError ( message ) {   this.message =  message  }  
-AssertionError.prototype =  Error.prototype 
+ * */
+
+export let ipcRenderer =  io()
+export const activate_extra_elements  = !!ipcRenderer 
+
+export const  __setup_ipcRenderer =  ipcRenderer =>   { 
+    if  (!ipcRenderer?.["send_"] ) 
+        ipcRenderer["send_"]  =   (  event_name ,  g_object )  =>  {  
+            if  (!activate_extra_elements ) ipcRenderer.send ( event_name  ,  g_object ) 
+            ipcRenderer.emit ( event_name  , g_object )
+        } 
+}
+
 
 Object.prototype["range"]  =  (v_ , s_=null)  =>   { 
 
@@ -48,18 +60,18 @@ Object.prototype["range"]  =  (v_ , s_=null)  =>   {
 
 } 
 
-const notify                      =  ( title , {...props } ) =>  new  Notification ( title , { ...props})  
-const check_network_connectivity  =  ()                      =>  window.navigator.onLine 
-const rand                        =  ( min , max=0 )         =>  max? random() * (max-min) + min : floor(random() * floor(min))  // however when one arg was set it's defined as max
-const display_speed               =  hertz_frequency         =>  (1000/hertz_frequency) * 1 
-const client_nav_fingerprint = ( { userAgent } )  =>  userAgent
-const fetch_right_data       = ( release_extra_element   , event  , data  ) =>  release_extra_element  ? event : data 
+export const notify                      =  ( title , {...props } ) =>  new  Notification ( title , { ...props})  
+export const check_network_connectivity  =  ()                      =>  window.navigator.onLine 
+export const rand                        =  ( min , max=0 )         =>  max? random() * (max-min) + min : floor(random() * floor(min))  // however when one arg was set it's defined as max
+export const display_speed               =  hertz_frequency         =>  (1000/hertz_frequency) * 1 
+export const client_nav_fingerprint = ( { userAgent } )  =>  userAgent
+export const fetch_right_data       = ( release_extra_element   , event  , data  ) =>  release_extra_element  ? event : data 
 
-const sleep  = ( duration  , callback_statement = false )   =>   {
+export const sleep  = ( duration  , callback_statement = false )   =>   {
     setTimeout(  () => { callback_statement() ?? undefined  }   , duration )
 }
 //!  DOM  Html  mapping  
-const  [
+export const  [
     ped , map , 
     phen, sm  ,
     mm  , yes , 
@@ -110,13 +122,13 @@ const  [
     _.querySelector("#microchip"), 
     _.querySelector("#bar")  
 ]
-__xtra_elements_ :   
 
-files_uploaders.disabled= true 
-files_browser.value= "" 
+export  const   __lock_web_ui_file_operation  =  () => { 
+    files_uploaders.disabled= true 
+    files_browser.value= "" 
+}
 
-
-const uploader  =   async   form_ =>  { 
+export const uploader  =   async   form_ =>  { 
 
     if (!form_.ELEMENT_NODE ==  Element.ELEMENT_NODE) 
     {
@@ -132,7 +144,7 @@ const uploader  =   async   form_ =>  {
     return  state 
 }
 
-const mtdterm_rowline_handlers   =  which_keycode   =>   { 
+export const mtdterm_rowline_handlers   =  which_keycode   =>   { 
     const  total_lines =  term.value.split("\n") 
     let value  =  ( void function ()  { return} () )   //  is undefined  
     switch  ( which_keycode ) 
@@ -146,4 +158,4 @@ const mtdterm_rowline_handlers   =  which_keycode   =>   {
     }
 
     return value 
-} 
+}  

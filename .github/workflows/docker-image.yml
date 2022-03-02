@@ -1,0 +1,18 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ maindev ]
+  pull_request:
+    branches: [ maindev ]
+
+jobs:
+
+  build:
+
+    runs-on: node:17-alpine3.14
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag mtdt:$(date +%s)

@@ -1,0 +1,12 @@
+PLINK v1.90b6.24 64-bit (6 Jun 2021)
+Options in effect:
+  --v
+
+Hostname: Mako
+Working directory: /home/umar/Desktop/SandBox/Gen_Assoc/bin
+Start time: Thu Mar  3 11:01:51 2022
+
+Error: Unrecognized flag ('--v').
+For more information, try "plink --help <flag name>" or "plink --help | more".
+
+End time: Thu Mar  3 11:01:51 2022

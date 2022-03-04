@@ -44,6 +44,12 @@ RUN wget $plink_bin -P bin/
 RUN cd bin/ && unzip $plink_filename.zip && rm $plink_filename.zip
 RUN cd ../
 
+### SETTING UP GIT 
+RUN git config --global user.email "gen@assoc.sr" 
+RUN git config --global user.name  "mtdt"
+RUN git add    --all
+RUN git commit -m "checkpoint::save"
+
 RUN npm install && npm install -g  pm2
 
 EXPOSE $port

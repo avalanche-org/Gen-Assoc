@@ -27,11 +27,16 @@ ARG  plink_filename="plink_linux_x86_64_${plink_build_version}"  # Plink File na
 
 ARG  plink_bin="https://s3.amazonaws.com/plink1-assets/${plink_filename}.zip" 
 
-ENV  PORT  $port   
-RUN apk add R
+ENV  PORT  $port  
+ 
+RUN apk add R &&  apk add git 
+
+
 
 ADD  .  ./mTDT 
 WORKDIR  /mTDT/apps/
+
+RUN echo "bin/" >> .gitignore 
 
 ###  EXTRACT  PLINK EXEC  TO CURRENT BIN FOLDER  
 RUN mkdir  bin

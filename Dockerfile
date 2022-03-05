@@ -1,4 +1,7 @@
-#  GEN ASSOC 
+# Dockerfile  for GEN ASSOC 
+# copyright  (c) 2022 , Umar <jUmarB@protonmail.com>  
+# -----------------------------------------------------------------
+# GEN ASSOC 
 #  ---------
 # A generic docker image to run the Gen Assoc application 
 # this docker image is based on node:alpine  
@@ -12,7 +15,7 @@
 # all lines with <ARG> in front can be modified during the build 
 #-------------------------------------------------------------------
 
-ARG   NAPL_V=17-alpine3.14
+ARG   NAPL_V=17-bullseye  
 
 FROM  node:$NAPL_V
 
@@ -28,10 +31,10 @@ ARG  plink_filename="plink_linux_x86_64_${plink_build_version}"  # Plink File na
 ARG  plink_bin="https://s3.amazonaws.com/plink1-assets/${plink_filename}.zip" 
 
 ENV  PORT  $port  
- 
-RUN apk add R &&  apk add git 
 
-
+### UPDATE  CORE PACKAGES
+RUN apt update  --assume-yes  
+RUN apt install git --assume-yes && apt install r-base r-base-dev --assume-yes 
 
 ADD  .  ./mTDT 
 WORKDIR  /mTDT/apps/
@@ -42,6 +45,8 @@ RUN echo "bin/" >> .gitignore
 RUN mkdir  bin
 RUN wget $plink_bin -P bin/  
 RUN cd bin/ && unzip $plink_filename.zip && rm $plink_filename.zip
+RUN ln -s `pwd`/bin/plink /usr/bin/plink
+RUN ln -s `pwd`/bin/prettify /usr/bin/prettify
 RUN cd ../
 
 ### SETTING UP GIT 

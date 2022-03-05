@@ -10,9 +10,9 @@ jobs:
 
   build:
 
-    runs-on: node:17-alpine3.14
+    runs-on: node:17-bullseye
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag mtdt:$(date +%s)
+    - name: Gen Assoc m-tdt image
+      run: docker build . -t  mtdt:$(date +%s)

@@ -28,7 +28,7 @@
 args= commandArgs(trailingOnly = TRUE) 
 
 #   --- Path to plink
-plink_ = "/home/g4bbm/tools/Plink/plink" 
+plink_ = "plink" 
 
 #   --- Install Required Packages
 
@@ -153,7 +153,9 @@ opt = parse_args(opt_parser)
 
 # Move to user's temporary directory tmp
 
-path_to_wd = paste0('~/Gen_Assoc/web/tmp/',opt$jobtitle)
+virtual_path = paste0(getwd() , "/vtmp/") 
+ 
+path_to_wd = paste0(virtual_path,opt$jobtitle)
 setwd(path_to_wd)
 
 cmd= paste0("--pedfile ", opt$pedfile, " --mapfile ", opt$mapfile, " --phenfile ", opt$phenfile, " --phen ",opt$phen, 

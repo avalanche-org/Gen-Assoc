@@ -32,6 +32,7 @@ console.log(ipcRenderer)
 console.log(ped) 
 
 
+
 __setup_ipcRenderer(ipcRenderer)  
 __lock_web_ui_file_operation()  
 
@@ -224,7 +225,8 @@ const use_cpus_resources = signal_trap  => {
 */
 const stop_blink_on_faillure   = ( target ,   state  ) => {
     if ( !target )  
-        use_cpus_resources(state) 
+        log("") 
+        //use_cpus_resources(state) 
 }
 
 let  logfile  =  null
@@ -287,7 +289,7 @@ const get_prefix_filename =  ( file , separator = ".")  => {
 }
 
 const  is_satisfied  =  needs   => { 
-    for  ( need of needs )  
+    for  ( let need of needs )  
          return !(( need == null ||  need  == "" ||  need ==  undefined ))   
 
     return true 
@@ -417,10 +419,7 @@ run_summary.addEventListener("click" , evt => {
     //bar_progress.style.backgroundColor = "limegreen"   
     run_analysis.disabled = true 
     run_summary.disabled  = false   
-    const  {
-        paths  , 
-        selected_files
-    }=  gobject ={ 
+    let gobject ={ 
          paths  : paths_collections ??  null ,  
          selected_files: [ 
               ped.options[ped.selectedIndex]?.value  ??  null ,   
@@ -428,6 +427,8 @@ run_summary.addEventListener("click" , evt => {
               phen.options[phen.selectedIndex]?.value ?? null  
          ]
     }
+
+    const  { paths , selected_files }  = gobject 
  
     const done   = is_satisfied (selected_files)  
     if  (!done)  {
@@ -584,9 +585,7 @@ run_analysis.addEventListener("click" ,  evt => {
     //setInterval(plugonlog , term_display_speed)   
      
     
-    const  { 
-        selected_index
-         }  = gobject  =  { 
+    let gobject  =  { 
         paths           :paths_collections ?? null ,
         selected_index  :  { 
             ped        : ped_  
@@ -600,6 +599,9 @@ run_analysis.addEventListener("click" ,  evt => {
             ,markerset  : mm.checked ? markerset.value : null 
         }  
     }
+
+    const { selected_index } = gobject 
+
   
     const  {phenotype_, nbsim_, nbcores_}  = selected_index  
     const  require_needed   = [ phenotype_ ,  nbsim_ , nbcores_ ]  
@@ -739,7 +741,7 @@ if  (activate_extra_elements)
     
     ipcRenderer.on("jobusy" ,   vn => {
          localStorage.clear()
-         allow_upload = false  
+         let allow_upload = false  
          files_browser.disabled = true
          term.value = "" 
          term_write ( "----------\n->[WARNING] ! your not  allowed to upload filse this  job is being user by another"  ,  true , false , false )  

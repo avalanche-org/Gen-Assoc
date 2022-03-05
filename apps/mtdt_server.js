@@ -207,7 +207,8 @@ const __wtcp__ =  {
                 sock.disconnect() 
             }) 
              
-            RUN_SUMMARY : sock.on("run::summary" ,  gobject   =>     { 
+            RUN_SUMMARY : sock.on("run::summary" ,  gobject   => { 
+                log ( "summary  run  - > " ,  gobject) 
                 let   { paths ,  selected_files  } = gobject  ,   
                       [pedfile,mapfile,phenfile]  = selected_files
                 
@@ -235,7 +236,7 @@ const __wtcp__ =  {
             sock.on("retrive::missing::genotype"   , gi => {gi_state =  gi})        
             sock.on("enable::trun" ,  is_theorical_enable => {  theorical =   is_theorical_enable } )  
           
-            RUN_ANALYSYS :   sock.on("run::analysis" ,  gobject => { 
+            RUN_ANALYSYS :   sock.on("run::analysis" ,  gobject => {
                 const { paths  , selected_index  }  = gobject,
                      {  mm    , sm , ped , map , phen , phenotype_,  nbsim_ , nbcores_ , markerset }  = selected_index, 
                      [  pedfile , mapfile , phenfile  ] = [ `${paths}/${ped}` , `${paths}/${map}`,`${paths}/${phen}` ]  

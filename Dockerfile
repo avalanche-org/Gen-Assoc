@@ -31,6 +31,7 @@ ARG  plink_filename="plink_linux_x86_64_${plink_build_version}"  # Plink File na
 ARG  plink_bin="https://s3.amazonaws.com/plink1-assets/${plink_filename}.zip" 
 
 ENV  PORT  $port  
+ARG  STATUS="production"  
 
 ### UPDATE  CORE PACKAGES
 RUN apt update  --assume-yes  

@@ -34,8 +34,11 @@ M-TDT tool Documentation.
 * Study of Infectious disease (multifactorial diseases, complex traits)
 * Need statistical analysis methods and tools to handle data from such studies
 
-
-
+<div align="center">
+<img src="images/familybase.png" alt="FamilyBaseDesign" align="center" width="400"/>
+<h5> Family Base Design </h5>
+</div> 
+ 
 ##  About 
 
 Gen-Assoc  is a  webservice version of the M-TDT (the multi-locus transmission disequilibrium test) tool. A tool developed to detect family-based multi-locus multi-allelic effects for qualitative or quantitative traits, extended from the original transmission disequilibrium test (TDT). 

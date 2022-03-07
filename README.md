@@ -19,12 +19,10 @@ M-TDT tool Documentation.
 
 ## Index
 * [About Gen-Assoc](#About)
-* [Installation Guide line](#Installation_Guide_Line)
-	* [By Cloning](#By_Cloning) 
+* [Installation Guide line](#Installation)
+	* [By Cloning](#Cloning) 
 		* [Requirement](#Requirements)
-
 	* [Using Docker Registry](#Docker)
-	
 * [Usage](#Usage)	
 	* [Following Steps](#Steps)
 
@@ -32,9 +30,10 @@ M-TDT tool Documentation.
 
 Gen-Assoc  is a  webservice version of the M-TDT (the multi-locus transmission disequilibrium test) tool. A tool developed to detect family-based multi-locus multi-allelic effects for qualitative or quantitative traits, extended from the original transmission disequilibrium test (TDT). 
 
-##  Installation Guide Line 
+##  Installation 
 
- > Two versions of the tool are available  the CLI and the Webservice.
+
+<span class="bg-info">Two versions of the tool are available  the CLI and the Webservice.</span>
  
  ```diff 
  ! This  Installation  guide is focused only on Webservice Version
@@ -44,7 +43,7 @@ Gen-Assoc  is a  webservice version of the M-TDT (the multi-locus transmission d
  by <u>**cloning the repos**</u> or <u>**using  Docker container**</u> 
  
 
- ### By Cloning
+ ### Cloning
  #### Requirements
  Before  Starting  installation Part we should  tell you   the requirements to run  the Application 
  correctly.

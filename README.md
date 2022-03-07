@@ -2,7 +2,7 @@
 <div>
 
 <h2>Gen-Assoc</h2>
-<hr>
+
 <img src="images/institupasteurdk.png" width="132"  height="" alt="h3abionet" style="margin-right:20px"  align="right"/>
 <div>
 <p>Tools and Web Service work Package<br>
@@ -11,23 +11,22 @@ M-TDT tool Documentation.
 <a href="https://github.com/avalanche-org/Gen_Assoc">Gen Assoc Project</a><p>
 
 </div>
-<br/>
 
-
+<hr>
 <div align="center">
-<img src="https://img.shields.io/github/issues/avalanche-org/Gen_Assoc?style=flat-square" alt="issues"/>
-<img src="https://img.shields.io/github/forks/avalanche-org/Gen_Assoc?style=flat-square" alt="forks"/>
-<img src="https://img.shields.io/github/stars/avalanche-org/Gen_Assoc?style=flat-square" alt="start"/>
+<img src="https://img.shields.io/github/issues/avalanche-org/Gen_Assoc?style=flat-square"  alt="issues"/>
+<img src="https://img.shields.io/github/forks/avalanche-org/Gen_Assoc?style=flat-square"   alt="forks"/>
+<img src="https://img.shields.io/github/stars/avalanche-org/Gen_Assoc?style=flat-square"   alt="start"/>
 <img src="https://img.shields.io/github/license/avalanche-org/Gen_Assoc?style=flat-square" alt="License"/>
 </div> 
 
 
-<hr>
-
 ## Index
 * [About Gen-Assoc](#About)
-* [Installation Guide line](#installation)
-	* [By Cloning](#Cloning) 
+* [Installation Guide line](#Installation_Guide_Line)
+	* [By Cloning](#By_Cloning) 
+		* [Requirement](#Requirements)
+
 	* [Using Docker Registry](#Docker)
 	
 * [Usage](#Usage)	
@@ -48,11 +47,7 @@ Gen-Assoc  is a  webservice version of the M-TDT (the multi-locus transmission d
  We  have two kind of installation  process in easy step  
  by <u>**cloning the repos**</u> or <u>**using  Docker container**</u> 
  
- 
- 
- 
 
- 
  ### By Cloning
  #### Requirements
  Before  Starting  installation Part we should  tell you   the requirements to run  the Application 

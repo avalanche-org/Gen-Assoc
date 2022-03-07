@@ -1,13 +1,20 @@
 <img src="images/mtdtlogobgTransparent.png" width=""  height="" alt="mtdtlogo" style="margin-right:20px;border-radius:35px"  align="left"/><img src="images/h3abionetafrica.png" width="132"  height="" alt="h3abionet" style="margin-right:20px;border-radius:35px"  align="right"/>
 <div>
 <h2>Gen-Assoc</h2>
+
 <img src="images/institupasteurdk.png" width="132"  height="" alt="instituPasteurDk" style="margin-right:20px"  align="right"/>
+
 <div>
+
 <p>Tools and Web Service work Package<br>
+
 M-TDT tool Documentation. 
-  
- <a href="https://github.com/avalanche-org/Gen_Assoc"><img src ='https://img.shields.io/badge/Gen--Assoc-m--TDT-teal?style=for-the-badge&logo=appveyor'/></a><p>
+
+<a href="https://github.com/avalanche-org/Gen_Assoc"><img src ='https://img.shields.io/badge/Gen--Assoc-m--TDT-teal?style=for-the-badge&logo=appveyor'/></a><p>
+
+ 
 </div>
+
 <hr>
 
 <div align="center">
@@ -18,14 +25,23 @@ M-TDT tool Documentation.
 </div> 
   
   
+
 ## Index
+
 * [Introduction](#Introduction)
+
 * [About Gen-Assoc](#About)
+
 * [Installation Guide line](#Installation)
+
 	* [By Cloning](#Cloning) 
+
 		* [Requirement](#Requirements)
+
 	* [Using Docker Registry](#Docker)
+
 * [Usage](#Usage)	
+
 	* [Following Steps](#Steps)
 	
 
@@ -37,8 +53,11 @@ M-TDT tool Documentation.
 
 
 <div align="center">
+
 <img src="images/familybasedesignTransparent.png" alt="FamilyBaseDesign" align="center" width="400"/>
+
 <h5> Family Base Design </h5>
+
 </div> 
 
 
@@ -50,15 +69,17 @@ Gen-Assoc  is a  webservice version of the M-TDT (the multi-locus transmission d
 
 
 ##  Installation 
+
 <span class="bg-info">Two versions of the tool are available  the CLI and the Webservice.</span>
  
 
- ```diff 
+```diff 
 
- ! This  Installation  guide is focused only on Webservice Version
+! This  Installation  guide is focused only on Webservice Version
  ```
  
  We  have two kind of installation  process in easy step  
+
  by <u>**cloning the repos**</u> or <u>**using  Docker container**</u> 
  
  ### Cloning

@@ -46,14 +46,14 @@ Gen-Assoc  is a  webservice version of the M-TDT (the multi-locus transmission d
 ##  Installation 
 
 
-<span class="bg-info">Two versions of the tool are available  the CLI and the Webservice.</span>
+> Two versions of the tool are available  the CLI and the Webservice.
  
  ```diff 
  ! This  Installation  guide is focused only on Webservice Version
  ```
  
  We  have two kind of installation  process in easy step  
- by <u>**cloning the repos**</u> or <u>**using  Docker container**</u> 
+ by **cloning the repos** or **using  Docker container** 
  
 
  ### Cloning
@@ -143,12 +143,6 @@ _The default port of  the container is **4000**_
 >  **docker run  -d  -p 3000:4000  jukoo/m-tdt**
 
 Here you are  now  let's see  to get your work done :rocket: 
-
-##  Usage 
-#### Steps
-
-
-
 
 
 **Love  Pull Request** 

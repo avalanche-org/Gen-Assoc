@@ -1,18 +1,13 @@
 <img src="images/mtdt-logo.png" width=""  height="" alt="mtdtlogo" style="margin-right:20px;border-radius:35px"  align="left"/><img src="images/h3abionetafrica.png" width="132"  height="" alt="h3abionet" style="margin-right:20px;border-radius:35px"  align="right"/>
 <div>
-
 <h2>Gen-Assoc</h2>
-
 <img src="images/institupasteurdk.png" width="132"  height="" alt="h3abionet" style="margin-right:20px"  align="right"/>
 <div>
 <p>Tools and Web Service work Package<br>
 M-TDT tool Documentation. 
 
-<a href="https://github.com/avalanche-org/Gen_Assoc">Gen Assoc Project</a><p>
+ <a href="https://github.com/avalanche-org/Gen_Assoc"><img src ='https://img.shields.io/badge/Gen--Assoc-m--TDT-teal?style=for-the-badge&logo=appveyor'/></a><p>
 </div>
-
-
-
 <hr>
 
 <div align="center">
@@ -24,6 +19,7 @@ M-TDT tool Documentation.
 
 
 ## Index
+* [Introduction](#Introduction)
 * [About Gen-Assoc](#About)
 * [Installation Guide line](#Installation)
 	* [By Cloning](#Cloning) 
@@ -31,6 +27,14 @@ M-TDT tool Documentation.
 	* [Using Docker Registry](#Docker)
 * [Usage](#Usage)	
 	* [Following Steps](#Steps)
+
+
+## Introduction
+* Many studies in Africa with recruitment in families (trio, nuclear families data)
+* Study of Infectious disease (multifactorial diseases, complex traits)
+* Need statistical analysis methods and tools to handle data from such studies
+
+
 
 ##  About 
 
@@ -141,9 +145,10 @@ Here you are  now  let's see  to get your work done :rocket:
 #### Steps
 
 
-###  Love pull reques 
 
 
+
+**Love  Pull Request** 
 
 ![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.png?v=103)
 

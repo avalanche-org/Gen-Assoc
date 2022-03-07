@@ -35,7 +35,7 @@ M-TDT tool Documentation.
 * Need statistical analysis methods and tools to handle data from such studies
 
 <div align="center">
-<img src="images/familybase.png" alt="FamilyBaseDesign" align="center" width="400"/>
+<img src="images/familybasedesignTransparent.png" alt="FamilyBaseDesign" align="center" width="400"/>
 <h5> Family Base Design </h5>
 </div> 
  

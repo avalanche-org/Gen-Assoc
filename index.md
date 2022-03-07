@@ -1,7 +1,7 @@
-<img src="../../images/mtdtlogobgTransparent.png" width=""  height="" alt="mtdtlogo" style="margin-right:20px;border-radius:35px"  align="left"/><img src="../../images/h3abionetafrica.png" width="132"  height="" alt="h3abionet" style="margin-right:20px;border-radius:35px"  align="right"/>
+<img src="images/mtdtlogobgTransparent.png" width=""  height="" alt="mtdtlogo" style="margin-right:20px;border-radius:35px"  align="left"/><img src="images/h3abionetafrica.png" width="132"  height="" alt="h3abionet" style="margin-right:20px;border-radius:35px"  align="right"/>
 <div>
 <h2>Gen-Assoc</h2>
-<img src="images/institupasteurdk.png" width="132"  height="" alt="h3abionet" style="margin-right:20px"  align="right"/>
+<img src="images/institupasteurdk.png" width="132"  height="" alt="instituPasteurDk" style="margin-right:20px"  align="right"/>
 <div>
 <p>Tools and Web Service work Package<br>
 M-TDT tool Documentation. 
@@ -32,7 +32,6 @@ M-TDT tool Documentation.
 * Need statistical analysis methods and tools to handle data from such studies
 
 <div align="center">
-<img src="images/familybase.png" alt="FamilyBaseDesign" align="center" width="400"/>
 <img src="images/familybasedesignTransparent.png" alt="FamilyBaseDesign" align="center" width="400"/>
 <h5> Family Base Design </h5>
 </div> 

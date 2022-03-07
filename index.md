@@ -14,9 +14,8 @@
 
 	* [Using Docker Registry](#Docker)
 
-* [Usage](#Usage)	
+* [Architure](#Architure)	
 
-	* [Following Steps](#Steps)
 	
 
 ## Introduction
@@ -44,7 +43,7 @@ Gen-Assoc  is a  webservice version of the M-TDT (the multi-locus transmission d
 
 ##  Installation 
 
-<span class="bg-info">Two versions of the tool are available  the CLI and the Webservice.</span>
+> Two versions of the tool are available  the CLI and the Webservice. 
  
 
 ```diff 
@@ -54,7 +53,7 @@ Gen-Assoc  is a  webservice version of the M-TDT (the multi-locus transmission d
  
  We  have two kind of installation  process in easy step  
 
- by <u>**cloning the repos**</u> or <u>**using  Docker container**</u> 
+ by **cloning the repos** or **using  Docker container** 
  
  ### Cloning
 
@@ -154,9 +153,10 @@ _The default port of  the container is **4000**_
 >  **docker run  -d  -p 3000:4000  jukoo/m-tdt**
 Here you are  now  let's see  to get your work done :rocket: 
 
-##  Usage 
-#### Steps
 
+### Architecture 
+
+![architecture](images/architecture3d.png)
 **Love  Pull Request** 
 
 ![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.png?v=103)

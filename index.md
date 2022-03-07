@@ -4,7 +4,7 @@
 
 <img src="images/institupasteurdk.png" width="132"  height="" alt="instituPasteurDk" style="margin-right:20px"  align="right"/>
 
-<div>
+</div>
 
 <p>Tools and Web Service work Package<br>
 

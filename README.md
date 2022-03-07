@@ -7,15 +7,21 @@
 <div>
 <p>Tools and Web Service work Package<br>
 M-TDT tool Documentation. 
+
 <a href="https://github.com/avalanche-org/Gen_Assoc">Gen Assoc Project</a><p>
 </div>
 
+
+
 <hr>
 
-![issues](https://img.shields.io/github/issues/avalanche-org/Gen_Assoc?style=flat-square)
-![forks](https://img.shields.io/github/forks/avalanche-org/Gen_Assoc?style=flat-square)
-![starts](https://img.shields.io/github/stars/avalanche-org/Gen_Assoc?style=flat-square)
-![License](https://img.shields.io/github/license/avalanche-org/Gen_Assoc?style=flat-square)
+<div align="center">
+<img src="https://img.shields.io/github/issues/avalanche-org/Gen_Assoc?style=flat-square" alt="issues"/>
+<img src="https://img.shields.io/github/forks/avalanche-org/Gen_Assoc?style=flat-square" alt="forks"/>
+<img src="https://img.shields.io/github/stars/avalanche-org/Gen_Assoc?style=flat-square" alt="start"/>
+<img src="https://img.shields.io/github/license/avalanche-org/Gen_Assoc?style=flat-square" alt="License"/>
+</div> 
+
 
 ## Index
 * [About Gen-Assoc](#About)
@@ -84,7 +90,7 @@ Once   it done  you can finaly run the application
 $ npm run build 
 ```
  _*hint_ :
- > [color=darkgreen]Check  the  package.json file  for more  command to  run [/color]   
+ > Check  the  package.json file  for more  command to  run
  
 
 

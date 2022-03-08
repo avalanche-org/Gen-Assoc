@@ -7,18 +7,197 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>mTDT</title>
     <link rel="icon" href="/images/Logo_mtdt_transparency.png">
-		<!-- Bootstrap CSS -->
+		<!-- CSS -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
     <link rel="stylesheet" href="styles/style.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323:regular" media="screen" />
     <link rel="stylesheet" href="styles/semantic/semantic.min.css"/>
-    <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"/>
-
     <link rel="stylesheet" href="styles/fa/css/all.min.css">
+    <!-- css conversion -->
+              
+<style id="dynCom" type="text/css"></style>
+<script language="JavaScript">
+function msoCommentShow(anchor_id, com_id)
+{
+	if(msoBrowserCheck()) 
+		{
+		c = document.all(com_id);
+		a = document.all(anchor_id);
+		if (null != c && null == c.length && null != a && null == a.length)
+			{
+			var cw = c.offsetWidth;
+			var ch = c.offsetHeight;
+			var aw = a.offsetWidth;
+			var ah = a.offsetHeight;
+			var x  = a.offsetLeft;
+			var y  = a.offsetTop;
+			var el = a;
+			while (el.tagName != "BODY") 
+				{
+				el = el.offsetParent;
+				x = x + el.offsetLeft;
+				y = y + el.offsetTop;
+				}
+			var bw = document.body.clientWidth;
+			var bh = document.body.clientHeight;
+			var bsl = document.body.scrollLeft;
+			var bst = document.body.scrollTop;
+			if (x + cw + ah / 2 > bw + bsl && x + aw - ah / 2 - cw >= bsl ) 
+				{ c.style.left = x + aw - ah / 2 - cw; }
+			else 
+				{ c.style.left = x + ah / 2; }
+			if (y + ch + ah / 2 > bh + bst && y + ah / 2 - ch >= bst ) 
+				{ c.style.top = y + ah / 2 - ch; }
+			else 
+				{ c.style.top = y + ah / 2; }
+			c.style.visibility = "visible";
+}	}	}
+function msoCommentHide(com_id) 
+{
+	if(msoBrowserCheck())
+		{
+		c = document.all(com_id);
+		if (null != c && null == c.length)
+		{
+		c.style.visibility = "hidden";
+		c.style.left = -1000;
+		c.style.top = -1000;
+		} } 
+}
+function msoBrowserCheck()
+{
+	ms = navigator.appVersion.indexOf("MSIE");
+	vers = navigator.appVersion.substring(ms + 5, ms + 6);
+	ie4 = (ms > 0) && (parseInt(vers) >= 4);
+	return ie4;
+}
+if (msoBrowserCheck())
+{
+	document.styleSheets.dynCom.addRule(".msocomanchor","background: infobackground");
+	document.styleSheets.dynCom.addRule(".msocomoff","display: none");
+	document.styleSheets.dynCom.addRule(".msocomtxt","visibility: hidden");
+	document.styleSheets.dynCom.addRule(".msocomtxt","position: absolute");
+	document.styleSheets.dynCom.addRule(".msocomtxt","top: -1000");
+	document.styleSheets.dynCom.addRule(".msocomtxt","left: -1000");
+	document.styleSheets.dynCom.addRule(".msocomtxt","width: 33%");
+	document.styleSheets.dynCom.addRule(".msocomtxt","background: infobackground");
+	document.styleSheets.dynCom.addRule(".msocomtxt","color: infotext");
+	document.styleSheets.dynCom.addRule(".msocomtxt","border-top: 1pt solid threedlightshadow");
+	document.styleSheets.dynCom.addRule(".msocomtxt","border-right: 2pt solid threedshadow");
+	document.styleSheets.dynCom.addRule(".msocomtxt","border-bottom: 2pt solid threedshadow");
+	document.styleSheets.dynCom.addRule(".msocomtxt","border-left: 1pt solid threedlightshadow");
+	document.styleSheets.dynCom.addRule(".msocomtxt","padding: 3pt 3pt 3pt 3pt");
+	document.styleSheets.dynCom.addRule(".msocomtxt","z-index: 100");
+}
+</script>
+<style>
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Georgia;
+	panose-1:2 4 5 2 5 4 5 2 3 3;}
+@font-face
+	{font-family:Lato;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	text-align:justify;
+	line-height:115%;
+	font-size:12.0pt;
+	font-family:"Arial",sans-serif;
+	color:#2F2F30;
+	background:white;}
+h1
+	{margin-top:20.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	text-align:justify;
+	line-height:115%;
+	page-break-after:avoid;
+	font-size:20.0pt;
+	font-family:"Arial",sans-serif;
+	color:#2F2F30;
+	background:white;
+	font-weight:normal;}
+h2
+	{margin-top:.25in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:1.0in;
+	text-align:justify;
+	text-indent:-.25in;
+	line-height:115%;
+	page-break-after:avoid;
+	font-size:15.0pt;
+	font-family:"Arial",sans-serif;
+	color:#073763;
+	background:white;
+	text-decoration:underline;}
+h3
+	{margin-top:16.0pt;
+	margin-right:0in;
+	margin-bottom:4.0pt;
+	margin-left:1.5in;
+	text-align:justify;
+	text-indent:-.25in;
+	line-height:115%;
+	page-break-after:avoid;
+	font-size:13.0pt;
+	font-family:"Arial",sans-serif;
+	color:#434343;
+	background:white;}
+h4
+	{margin-top:14.0pt;
+	margin-right:0in;
+	margin-bottom:4.0pt;
+	margin-left:.5in;
+	text-align:justify;
+	text-indent:-.25in;
+	line-height:115%;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Georgia;
+	color:#2F2F30;
+	background:white;}
+p.MsoTitle, li.MsoTitle, div.MsoTitle
+	{margin:0in;
+	text-align:justify;
+	line-height:115%;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:"Arial",sans-serif;
+	color:#2F2F30;
+	background:white;}
+.MsoChpDefault
+	{font-size:12.0pt;
+	font-family:"Arial",sans-serif;
+	color:#2F2F30;
+	background:white;}
+.MsoPapDefault
+	{text-align:justify;
+	line-height:115%;}
+@page WordSection1
+	{size:595.45pt 841.7pt;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+
+</style>
   </head>
-  <body>
+  <body lang=EN-US style='word-wrap:break-word' >
     <!-- ******************* Header ******************* -->
     <div class="col-lg-12 col-md-12 col-xs-12">
       <div class="row">
@@ -41,239 +220,1156 @@ Test
         </div>
         <div class="col-lg-7 col-md-7 col-xs-7" style="float: right; padding: 20px; margin-top: 12px;">
           <div class="ui secondary pointing menu" style="font-size: 20px;">
-            <a href="" class="active item">Tool</a>
-            <a href="" class="item">Tutorial</a>
+            <a href="#" class="item">Tool</a>
+            <a href="" class="active item">Documentation</a>
             <a href="/download/sample.ped" id="download"class="item">Download</a>
-            <a href="" class="item">FAQ</a>
+            <a href="#" class="item">FAQ</a>
           </div>
         </div>
-        <div class="col-lg-1 col-md-1 col-xs-1">
+        <!--div class="col-lg-1 col-md-1 col-xs-1">
           <div class="ui secondary animated button" id="disconnect" tabindex="0" style="margin-top: 40px;">
             <div class="visible content">Exit</div>
             <div class="hidden content">
               <i class="sign-out icon"></i>
             </div>
           </div>
-        </div>
+        </div-->
       </div>
     </div>
     <!-- ******************* END Header ******************* -->
     <!-- ******************* Site content ******************* -->
-    <div class="wrapper">
-      <!-- ******************* Job title block ******************* -->
-      <form action="" class="jobTitle_div" id="form1" >
-        <input type="text" class="jobTitle_field" placeholder="Specify Your Job Title" name="job_title" id="job_title" required/>
-        <label for="job_title" class="jobTitle_label">Job Title</label>
-        <input type="submit"  id="start_job" class="myBtn myBtn-mtd-color" value="Start">
-      </form>
-      <!-- ******************* END Job title block ******************* -->
-      
-      <!-- what is next is for managing grid position -->
-      <div>&nbsp;</div>
-      
-      <!-- ******************* Begin of the first fieldset ******************* --> 
-      <fieldset class="fieldset1">
-        <div class="ui raised segment">
-          <!--i class="big icon question circle outline"></i-->
-          <legend>
-            <a class="ui big right ribbon label" style="background-color:#F1F7FD; color:#59698D;">  
-              Summary Statistics 
-              <i id="unlocked_default" class="fas fa-unlock"></i> 
-            </a>
-          </legend>
-          <% if  ( socket )  {%> 
-            <form method="post" action="" enctype="multipart/form-data" name="file_uploader" id="form_upload" class="ui form" style="padding:20px; padding-bottom: 0;">
-              <div class="ui fluid action input">
-                <input name="fupload" type="file" accept=".ped,.map,.phen" multiple style="padding: 20px;"> 
-                <div class="ui button">
-                  <button class="ui vertical animated button" type="submit" id ="files_uploader">
-                    <div class="hidden content">Upload</div>
-                    <div class="visible content">
-                      <i class="upload icon"></i>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </form>
-          <%}%>         
-          <form name="form" style="padding:20px;" class="ui form"> 
-            <div class="ui toggle checkbox">
-                <input type="checkbox" id="sync" name="sync">
-                <label for="sync">Sync</label>
-            </div>
-            <div class="field">
-              <label for="ped">Pedigree File</label>
-              <select required id="ped" name="ped" class="ui fluid dropdown">
-                  <option   value = ""  disabled selected>Select a ped file</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="map">Map file</label>
-              <select required id="map" name="map" class="ui fluid dropdown">
-                  <option value="" disabled selected>Select a map file</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="phen">Phenotype file</label>
-              <select required id="phen" name="phen" class ="ui search dropdown">
-                <option value = "" disabled selected > Select a phen file</option>
-              </select>
-            </div>
-            <button type="submit" id ="run_summary" class="ui button">Launch Summary Statistics &nbsp;<i class="fas fa-chart-bar"></i></button>
-          </form> 
-        </div>  
-      </fieldset> 
-      <!-- ******************* END of the first fieldset ******************* --> 
-      <!-- ******************* Terminal block ******************* -->
-      <div>  
-        <div class="div_terminal" style="position: fixed; margin: 8px; margin-top: 0;" >
-          <div class="ui menu"> 
-            <div class="item">
-              <div class= "ui button" id="clear">
-                <i class="fas fa-broom" id="clear" title ="clear console"></i>
-              </div>
-            </div>
-            <div class="item">
-              <div class="ui button" id ="infosys">  
-                <i class="fas fa-info" id="infosys" title="show system info"></i>
-              </div> 
-            </div>
-            <div class="item">
-                <div class="ui icon button" style="background-color:#F1F7FD; color:#59698D;" id="detach_term"> 
-              <i class="fas fa-terminal" title="detach terminal"></i>
-                use terminal 
-                </div> 
-            </div>
-            <div class="right menu">
-              <div class="item">
-                <i id="network" class="fas fa-satellite-dish" title="network connectivity"></i><br>
-              </div>
-            </div>
-          </div>
-          <div>
-            <!--readonly autocomplete ="off" speelcheck="false" autocapitalize="off"-->
-            <textarea name="" id="term" class="terminal"></textarea>
-          </div>
+    <div class="container">
+      <div class="ui grid">
+        <br><br>
+        <div class="ui segment">
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=left style='text-align:left'><b><u><span lang=fr
+style='font-size:14.0pt;line-height:115%'><img width=169 height=77
+id=image4.png src="/images/Gen_Assoc_Project_Documentation_files/image001.jpg"></span></u></b><span
+lang=fr style='font-size:10.0pt;line-height:115%'> </span><b><span lang=fr
+style='font-size:11.0pt;line-height:115%;font-family:Lato;color:#1C4587'>|
+Epidemiology, Clinical Research &amp; Data Science Department</span></b></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:10.0pt;line-height:115%;
+color:#1D2B36'>      </span></p>
+
+<p class=MsoNormal><b><u><span lang=fr style='font-size:14.0pt;line-height:
+115%'><span style='text-decoration:none'>&nbsp;</span></span></u></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'><span lang=fr>
+
+<hr size=2 width="100%" align=center>
+
+</span></div>
+
+<p class=MsoNormal align=center style='text-align:center'><span lang=fr
+style='font-size:10.0pt;line-height:115%'><img width=184 height=47
+id=image2.png src="/images/Gen_Assoc_Project_Documentation_files/image002.png"
+alt="Home - H3ABioNet - Pan African Bioinformatics Network"></span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span lang=fr
+style='font-size:10.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span lang=fr
+style='font-size:17.0pt;line-height:115%;color:#073763'>  </span></b><b><span
+lang=fr style='font-size:17.0pt;line-height:115%;color:#0B5394'> </span></b><b><span
+lang=fr style='font-size:17.0pt;line-height:115%;color:#365068'>Gen Assoc
+Project</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span lang=fr
+style='font-size:14.0pt;line-height:115%;color:#365068'>Tools and Web Service
+work Package </span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span lang=fr
+style='font-size:13.0pt;line-height:115%;color:#365068'>M-TDT tool
+Documentation</span></b></p>
+
+<h1 style='margin-top:38.0pt;margin-right:0in;margin-bottom:24.0pt;margin-left:
+0in;line-height:158%;page-break-after:auto'><a name="_kfwe19i7vkfz"></a><u><span
+lang=fr style='font-size:24.5pt;line-height:158%;color:#403E3E'>Introduction</span></u></h1>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=fr>Many studies in Africa with recruitment in families (trio, nuclear
+families data)</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=fr>Study of Infectious disease (multifactorial diseases, complex traits)</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=fr>Need statistical analysis methods and tools to handle data from such
+studies</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr><img width=601 height=379 id=image1.png
+src="/images/Gen_Assoc_Project_Documentation_files/image003.png"></span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><u><span lang=fr>Family-based
+design </span></u></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=fr>Global</span></p>
+
+<p class=MsoNormal><span lang=fr>To develop an open source program computing a
+family-based statistic testing for association between a phenotype and a set of
+multi-allelic markers</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>●<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=fr> Specifics : </span></p>
+
+<p class=MsoNormal><span lang=fr>Handling of main statistical issues like:</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=fr>non-specified distribution of traits</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=fr>related individuals</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=fr>population admixture</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=fr>linkage disequilibrium among markers</span></p>
+
+<h1 style='margin-top:38.0pt;margin-right:0in;margin-bottom:24.0pt;margin-left:
+0in;line-height:158%;page-break-after:auto'><a name="_b44s3i8wduwd"></a><u><span
+lang=fr style='font-size:24.5pt;line-height:158%;color:#403E3E'>User
+documentation</span></u></h1>
+
+<p class=MsoNormal style='text-indent:.5in'><span lang=fr>We prese<span
+style='color:#073763'>n</span>t a webservice version of the M-TDT (the
+multi-locus transmission disequilibrium test) tool. A tool developed to detect
+family-based multi-locus multi-allelic effects for qualitative or quantitative
+traits, extended from the original transmission disequilibrium test (TDT). </span></p>
+
+<p class=MsoNormal><span lang=fr>This page contains the documentation related
+to the M-TDT tool and its functionalities. Two versions of the tool are
+available: the <b>CLI</b> and the <b>Webservice</b>.</span></p>
+
+<p class=MsoNormal><span lang=fr>The following sections will help you learn how
+to use the Web Service version of the tool. Here is the link to the tutorial
+for the <a><span style='color:blue'>CLI tutorial</span></a><a
+class=msocomanchor id="_anchor_1"
+onmouseover="msoCommentShow('_anchor_1','_com_1')"
+onmouseout="msoCommentHide('_com_1')" href="#_msocom_1" language=JavaScript
+name="_msoanchor_1">[1]</a>&nbsp;. </span></p>
+
+<h2><a name="_rd54gz3pkgz4"></a><span lang=fr style='text-decoration:none'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span lang=fr>Installation
+manual</span></h2>
+
+<p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<table class=10 border=1 cellspacing=0 cellpadding=0 width=691
+ style='margin-left:-16.0pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=691 valign=top style='width:518.25pt;border:solid #CCCCCC 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>--------------</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>Install
+  docker </span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>Pull
+  container </span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>Run
+  container</span></p>
+  <p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+  <p class=MsoNormal style='margin-left:1.0in'><span lang=fr style='font-family:
+  "Courier New"'>&nbsp;</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<h2><a name="_a2ze64e38djg"></a><a><span lang=fr style='text-decoration:none'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span lang=fr>README
+</span></a><span lang=fr><a class=msocomanchor id="_anchor_2"
+onmouseover="msoCommentShow('_anchor_2','_com_2')"
+onmouseout="msoCommentHide('_com_2')" href="#_msocom_2" language=JavaScript
+name="_msoanchor_2">[2]</a>&nbsp;</span></h2>
+
+<p class=MsoNormal><span lang=fr>This ReadMe is a tutorial to use the CLI
+version to run M-TDT.</span></p>
+
+<p class=MsoNormal><span lang=fr>You can download the dataset <u><span
+style='color:blue'>here</span></u>.</span></p>
+
+<p class=MsoNormal><img width=656 height=983
+src="/images/Gen_Assoc_Project_Documentation_files/image004.png" align=left
+hspace=12 vspace=12></p>
+
+<p class=MsoNormal align=left style='margin-left:1.0in;text-align:left'><span
+lang=fr>&nbsp;</span></p>
+
+<h2><a name="_9gcgansp6xwb"></a><span lang=fr style='text-decoration:none'>3.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span lang=fr>User
+guide</span></h2>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<h3><a name="_astcv5oiq9e5"></a><span lang=fr>a.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
+</span></span><span lang=fr>M-TDT method </span></h3>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>Principle:</span></p>
+
+<p class=MsoNormal><span lang=fr> </span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr><img width=602 height=263 id=image11.png
+src="/images/Gen_Assoc_Project_Documentation_files/image005.png"></span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><a><span lang=fr>Drawbacks:</span></a><span lang=fr><a
+class=msocomanchor id="_anchor_3"
+onmouseover="msoCommentShow('_anchor_3','_com_3')"
+onmouseout="msoCommentHide('_com_3')" href="#_msocom_3" language=JavaScript
+name="_msoanchor_3">[3]</a>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:.5in'><span lang=fr>Missing values</span></p>
+
+<p class=MsoNormal style='text-indent:.5in'><span lang=fr>Increase in
+complexity leads to invadility of asymptotic test</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<h3><a name="_un1i1r30i6of"></a><span lang=fr>b.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><span lang=fr>Genotype Inference module</span></h3>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>Principle:</span></p>
+
+<p class=MsoNormal><span lang=fr>Mendel table:</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>Trivial cases</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>Probabilistic cases</span></p>
+
+<p class=MsoNormal><span lang=fr>Example:</span></p>
+
+<p class=MsoNormal><span lang=fr><img width=602 height=320 id=image7.png
+src="/images/Gen_Assoc_Project_Documentation_files/image006.png"></span></p>
+
+<p class=MsoNormal><span lang=fr><img width=602 height=301 id=image14.png
+src="/images/Gen_Assoc_Project_Documentation_files/image007.png"></span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>CLI version </span></p>
+
+<p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<table class=9 border=1 cellspacing=0 cellpadding=0 width=691 style='margin-left:
+ -16.0pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=691 valign=top style='width:518.25pt;border:solid #CCCCCC 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>ReadMe for
+  CLI version</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>--------------</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>Dependencies:
+  </span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>        
+  PLINK, </span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>         R
+  (optparse, foreach, doParallel)</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>Options:</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>        
+  --cores : number of cores to use for computing</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>        
+  --cutsize : size of subsets</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>        
+  --out : name of the output file</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>      
+  --workdir : path of the directory containing the input files and output</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>Input
+  format:</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>     PLINK
+  format:</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>     familyID</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>     individualID</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>     fatherID</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>     motherID</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>     sex</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>     affection</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>     SNPs</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>Usage</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>-----</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>1.Put the
+  script and input files (genotype files .ped and .map) into the same directory</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>2.Open
+  terminal and move to that folder</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>3.Command
+  line example :  </span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>nohup
+  Rscript genoInference.R --file myDataset --cutsize 50 --cores 2 &amp;</span></p>
+  <p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+  <p class=MsoNormal style='margin-left:1.0in'><span lang=fr style='font-family:
+  "Courier New"'>&nbsp;</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<h3><a name="_op3yklbirzr6"></a><span lang=fr>c.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
+</span></span><span lang=fr>Determine threshold for validity of asymptotic test</span></h3>
+
+<p class=MsoNormal><span lang=fr>Simulated data </span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr><img width=332 height=570 id=image5.png
+src="/images/Gen_Assoc_Project_Documentation_files/image008.png"></span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr><img width=624 height=495 id=image3.png
+src="/images/Gen_Assoc_Project_Documentation_files/image009.png"></span></p>
+
+<h3><a name="_rr8ifx6pfjom"></a><span lang=fr>d.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><span lang=fr>Analysis diagram</span></h3>
+
+<p class=MsoNormal style='margin-left:1.5in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>Here is the diagram summarizing the different
+steps to perform an analysis.</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=fr><img width=629 height=319 id=image6.png
+src="/images/Gen_Assoc_Project_Documentation_files/image010.png"></span></b></p>
+
+<p class=MsoNormal><b><span lang=fr>&nbsp;</span></b></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>&nbsp;</span></p>
+
+<h2><a name="_nc48jfyztezp"></a><span lang=fr style='text-decoration:none'>4.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span lang=fr>Tutorial</span></h2>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>&nbsp;</span></p>
+
+<h3><a name="_ss5av8u2cnsb"></a><span lang=fr>a.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
+</span></span><span lang=fr>Input file format</span></h3>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>Three files formats are needed to perform an
+analysis. The format input must be in plink format.</span></p>
+
+<h4><a name="_ay6rn6pvxjnl"></a><span lang=fr style='font-size:13.0pt;
+line-height:115%;font-family:"Arial",sans-serif;color:#4E4E4E;font-weight:normal'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=fr>Pedigree file </span></h4>
+
+<p class=MsoNormal><span lang=fr>The <b>.ped</b> file begins with 6 columns
+following by genotypes columns, respecting the following order: </span></p>
+
+<p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<table class=8 border=1 cellspacing=0 cellpadding=0 width=691 style='margin-left:
+ -16.0pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=691 valign=top style='width:518.25pt;border:solid #CCCCCC 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>family ID</span></p>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>individual ID</span></p>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>Father ID</span></p>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>Mother ID</span></p>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>sex</span></p>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>affection (this
+  column will not be taken into account, but its presence is required)</span></p>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>genotypes
+  columns (...)</span></p>
+  <p class=MsoNormal style='margin-left:1.0in'><span lang=fr style='font-family:
+  "Courier New"'>&nbsp;</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span lang=fr style='font-family:
+"Georgia",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>Some rules: </span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>➔<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span lang=fr>alleles
+should be coded in integer</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:.5in'><span lang=fr> (1:
+major allele, 2: minor allele for a bi-allelic marker for instance)</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>➔<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span lang=fr>allele
+separator is SPACE (e.g., &quot;1 2&quot;)</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span lang=fr>➔<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span lang=fr>missing
+genotypes should be coded &quot;<b>0 0</b>&quot;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<table class=7 border=1 cellspacing=0 cellpadding=0 width=691 style='margin-left:
+ -20.5pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=691 valign=top style='width:518.25pt;border:solid #D9D9D9 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><b><span lang=fr style='color:red'>!!! ADVICE</span><span
+  lang=fr> </span></b></p>
+  <p class=MsoNormal style='text-indent:.5in'><span lang=fr>&nbsp;</span></p>
+  <p class=MsoNormal style='text-indent:.5in'><span lang=fr>The 'ped' file can
+  contain several markers, but we advise at the running step to include a
+  limited number of markers(by selecting e.g. 3 to 5) to avoid both: </span></p>
+  <p class=MsoNormal style='text-indent:.5in'><span lang=fr>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=fr>(i) facing a huge number of alternative
+  hypotheses to test and </span></p>
+  <p class=MsoNormal><span lang=fr>(ii) having sparse count tables for
+  transmitted versus non transmitted alleles combinations across markers. </span></p>
+  <p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=fr>As discussed in the method paper, M-TDT has
+  not been optimized for screen multiple markers effect within a large number
+  of markers, but within a set predefined subgroup of markers of interest, e.g.
+  markers with intermediate marginal effect.</span></p>
+  <p class=MsoNormal align=left style='text-align:left;line-height:normal;
+  border:none'><span lang=fr>&nbsp;</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:.5in'><span lang=fr style='font-family:
+"Georgia",serif'>&nbsp;</span></p>
+
+<h4><a name="_adxa49zahbbq"></a><span lang=fr style='font-size:13.0pt;
+line-height:115%;color:#4E4E4E;font-weight:normal'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=fr style='font-size:13.0pt;line-height:115%'>G</span><span
+lang=fr>enetic</span><span lang=fr style='font-size:13.0pt;line-height:115%'>
+MAP file </span></h4>
+
+<p class=MsoNormal><span lang=fr>The <b>.map</b> file describes a single marker
+and must contain exactly 4 columns:</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='border:none'><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<table class=6 border=1 cellspacing=0 cellpadding=0 width=691 style='margin-left:
+ -16.0pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=691 valign=top style='width:518.25pt;border:solid #CCCCCC 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>chromosome
+  (1-22)</span></p>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>rs# or snp
+  identifier (keeping the same order as in the 'ped' file)</span></p>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>Genetic
+  distance (morgans)</span></p>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>Base-pair
+  position (bp units)</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-left:1.0in;border:none'><span lang=fr>&nbsp;</span></p>
+
+<h4><a name="_yrsed2t7dojo"></a><span lang=fr style='font-weight:normal'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=fr>Phenotype file</span></h4>
+
+<p class=MsoNormal style='border:none'><span lang=fr>The <b>.phen</b> begins
+with 2 columns following by phenotypes columns, respecting the following order:</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<table class=5 border=1 cellspacing=0 cellpadding=0 width=691 style='margin-left:
+ -16.0pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=691 valign=top style='width:518.25pt;border:solid #CCCCCC 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>family ID</span></p>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>individual ID</span></p>
+  <p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in'><span
+  lang=fr style='font-family:"Courier New"'>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+  </span></span><span lang=fr style='font-family:"Courier New"'>phenotypes
+  columns (...)</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-family:"Georgia",serif'>&nbsp;</span></p>
+
+<p class=MsoTitle><a name="_2u6kjozhxsle"></a><u><span lang=fr>NB</span></u><span
+lang=fr>: Only individuals present in the phenotype file will be included in
+the analysis</span></p>
+
+<p class=MsoTitle><a name="_rq50gi5rwkwj"></a><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoTitle><a name="_hwi66pycmavw"></a><u><span lang=fr>Other
+requirements</span></u><span lang=fr>:</span></p>
+
+<p class=MsoTitle><a name="_jdt3r77yo77q"></a><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoTitle style='margin-left:.5in;text-indent:-.25in'><a
+name="_kw6umyjgltrb"></a><span lang=fr>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=fr>No header in any of the 3 input files</span></p>
+
+<p class=MsoTitle style='margin-left:.5in;text-indent:-.25in'><a
+name="_cjdr7iv8162b"></a><span lang=fr>●<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=fr>Columns in all input files are tab separated</span></p>
+
+<p class=MsoTitle><a name="_lr3d4zhwmoso"></a><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<h3><a name="_o5jot9vkgma3"></a><span lang=fr>b.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><span lang=fr>Graphical User Interface description</span></h3>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%;
+font-family:"Georgia",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>The graphical interface is subdivided into
+several sections to facilitate the conduct of analyzes. The headings are as
+follows:</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<h4><a name="_d4jz339ukemd"></a><span lang=fr style='font-family:"Arial",sans-serif'>-     Create
+Job </span></h4>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>To create a user space, complete the following
+section.</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span lang=fr
+style='font-size:13.0pt;line-height:115%'><img width=602 height=95
+id=image10.png src="/images/Gen_Assoc_Project_Documentation_files/image011.png"></span></p>
+
+<p class=MsoNormal><span lang=fr> A space will be created where the analysis
+will take place. The loaded files as well as the output files will be stored.
+You can choose the name of this space at the Job title text input and submit to
+validate the creation of your space.</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<h4><a name="_hgiwaipwrt3"></a><span lang=fr style='font-family:"Arial",sans-serif'>-     Upload
+files and View Summary Statistics</span></h4>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>            This is the section where the user
+uploads the files to be analyzed. After uploading the files you downloaded, you
+can select your files in the dedicated fields. These three files must have the
+same base name. </span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'><img
+width=602 height=433 id=image20.png
+src="/images/Gen_Assoc_Project_Documentation_files/image012.png"></span><span
+style='position:absolute;z-index:251659264;left:0px;margin-left:-28px;
+margin-top:383px;width:52px;height:177px'><img width=52 height=177
+src="/images/Gen_Assoc_Project_Documentation_files/image013.png"></span><span
+style='position:absolute;z-index:251660288;left:0px;margin-left:-14px;
+margin-top:160px;width:52px;height:349px'><img width=52 height=349
+src="/images/Gen_Assoc_Project_Documentation_files/image014.png"></span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:.5in'><span lang=fr>Allows you to
+pre-fill the other fields with the files corresponding to the same base name
+when a file is selected.</span></p>
+
+<p class=MsoNormal style='text-indent:.5in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>            Generates a small description of
+your data. </span></p>
+
+<p class=MsoNormal style='text-indent:.5in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:.5in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>Here is a summary statistics output example.</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'><img
+width=580 height=721 id=image17.png
+src="/images/Gen_Assoc_Project_Documentation_files/image015.png"></span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<h4><a name="_t0vbhe6gtsva"></a><span lang=fr style='font-family:"Arial",sans-serif'>-     Genotype
+Inference Option</span></h4>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'><img
+width=602 height=147 id=image8.png
+src="/images/Gen_Assoc_Project_Documentation_files/image016.png"></span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>            You will be suggested to use the
+genotype inference option to try to retrieve as many missing genotypes as
+possible since the method is very sensitive to missing data. Depending on how
+many missing markers you have in your dataset, you can choose whether or not to
+use the genotype inference option.</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<h4><a name="_drfs7dsti0sn"></a><span lang=fr style='font-family:"Arial",sans-serif'>-     Choose
+Options</span></h4>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>This section is blurred until you run the
+summary statistics. Here is where you choose the options to launch the mtdt
+script. </span></p>
+
+<p class=MsoNormal><span lang=fr>In the command line version of the tool, here
+is an example of a command to start the analysis. Below is the correspondence
+between each flag and its equivalent in the GUI:</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<table class=4 border=1 cellspacing=0 cellpadding=0 width=728 style='margin-left:
+ -43.75pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=728 valign=top style='width:546.0pt;border:solid #CCCCCC 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>Rscript
+  mtdt.R --pedfile 25markers.ped --mapfile 25markers.map --phenfile
+  25markers.phen  --phen 1 --nbsim 100 --nbcores 1 --markerset 2,3,5     </span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-family:"Courier New";color:#F3F3F3;
+background:#1D2B36'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-family:"Courier New";color:#F3F3F3;
+background:#1D2B36'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%;
+color:#F3F3F3;background:#1D2B36'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%;
+color:#F3F3F3;background:#1D2B36'>&nbsp;</span></p>
+
+<p class=MsoNormal align=left style='text-align:left'><span lang=fr
+style='font-size:13.0pt;line-height:115%'><img width=602 height=367
+id=image18.png src="/images/Gen_Assoc_Project_Documentation_files/image017.png"></span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<table class=3 border=1 cellspacing=0 cellpadding=0 width=659 style='margin-left:
+ .1pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=128 valign=top style='width:96.0pt;border:solid black 1.0pt;
+  background:#AFA2A2;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal align=center style='text-align:center;line-height:normal;
+  border:none'><b><span lang=fr style='color:#1D2B36'>Parameter</span></b></p>
+  </td>
+  <td width=531 valign=top style='width:398.25pt;border:solid black 1.0pt;
+  border-left:none;background:#AFA2A2;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal align=center style='text-align:center;line-height:normal;
+  border:none'><b><span lang=fr style='color:#1D2B36'>Description</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=128 valign=top style='width:96.0pt;border:solid black 1.0pt;
+  border-top:none;background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-family:"Courier New"'>--pedfile</span></p>
+  </td>
+  <td width=531 valign=top style='width:398.25pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-size:11.0pt;font-family:"Calibri",sans-serif'>name of 'ped' file</span></p>
+  </td>
+ </tr>
+ <tr style='height:22.75pt'>
+  <td width=128 valign=top style='width:96.0pt;border:solid black 1.0pt;
+  border-top:none;background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:22.75pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-family:"Courier New"'>--mapfile</span></p>
+  </td>
+  <td width=531 valign=top style='width:398.25pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:22.75pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-size:11.0pt;font-family:"Calibri",sans-serif'>name of 'map' file</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=128 valign=top style='width:96.0pt;border:solid black 1.0pt;
+  border-top:none;background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-family:"Courier New"'>--phenfile</span></p>
+  </td>
+  <td width=531 valign=top style='width:398.25pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-size:11.0pt;font-family:"Calibri",sans-serif'>name of phenotype
+  file</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=128 valign=top style='width:96.0pt;border:solid black 1.0pt;
+  border-top:none;background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-family:"Courier New"'>--markerset</span></p>
+  </td>
+  <td width=531 valign=top style='width:398.25pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=fr style='font-size:11.0pt;line-height:115%;
+  font-family:"Calibri",sans-serif'>list indicating positions of the set of
+  markers to analyze jointly</span></p>
+  <p class=MsoNormal><span lang=fr style='font-size:11.0pt;line-height:115%;
+  font-family:"Calibri",sans-serif'>(separated by &quot;,&quot; without SPACE);
+  position from the 'ped' file without counting the 6 first columns. </span></p>
+  <p class=MsoNormal><span lang=fr style='font-size:11.0pt;line-height:115%;
+  font-family:"Calibri",sans-serif'>If this &quot;--markerset&quot; option is
+  not precise, the software will run like single-marker GWAS, screen all
+  markers in the 'ped' file one-by-one in family-based association. </span></p>
+  <p class=MsoNormal><span lang=fr style='font-size:11.0pt;line-height:115%;
+  font-family:"Calibri",sans-serif'>A limited number of top SNPs from a GWAS
+  screening can be subsequently used for multilocus analysis.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=128 valign=top style='width:96.0pt;border:solid black 1.0pt;
+  border-top:none;background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-family:"Courier New"'>--phen</span></p>
+  </td>
+  <td width=531 valign=top style='width:398.25pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-size:11.0pt;font-family:"Calibri",sans-serif'>the position of the
+  phenotype (only one) to analyze from the 'phenotype' file without counting
+  the 2 first columns.</span></p>
+  </td>
+ </tr>
+ <tr style='height:84.75pt'>
+  <td width=128 valign=top style='width:96.0pt;border:solid black 1.0pt;
+  border-top:none;background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:84.75pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-family:"Courier New"'>--nbsim</span></p>
+  </td>
+  <td width=531 valign=top style='width:398.25pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:84.75pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-size:11.0pt;font-family:"Calibri",sans-serif'>number of
+  simulations for the computation of empirical P-values. The default value is 0
+  and will correspond to the case where only asymptotic P-values are provided.
+  If sample size is limited or if there is LD (linkage disequilibrium) among
+  markers analyzed, asymptotic theory is no more valid and then empirical
+  P-values should be computed using simulations</span></p>
+  </td>
+ </tr>
+ <tr style='height:35.85pt'>
+  <td width=128 valign=top style='width:96.0pt;border:solid black 1.0pt;
+  border-top:none;background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:35.85pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-family:"Courier New"'>--nbcores</span></p>
+  </td>
+  <td width=531 valign=top style='width:398.25pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:35.85pt'>
+  <p class=MsoNormal style='line-height:normal;border:none'><span lang=fr
+  style='font-size:11.0pt;font-family:"Calibri",sans-serif'>number of cores to
+  use for the run, if the user wants to speed up the run by using multiple
+  cores, as the program can run in parallel at the simulation step if included
+  to obtain empirical P-values. So, this option is useful only if —nbsim option
+  is used.</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>Note: The distinction between empirical run
+and theoretical run is made at this level. </span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span lang=fr
+style='font-size:13.0pt;line-height:115%'><img width=385 height=146
+id=image12.png src="/images/Gen_Assoc_Project_Documentation_files/image018.png"></span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span lang=fr
+style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span lang=fr
+style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>By clicking on <b><span style='color:white;
+background:#06BB06'> GO!  </span></b> the parameters for an empirical run
+(number of simulations and number of cores) are disabled. To deactivate it,
+click on it again.</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%'>&nbsp;</span></p>
+
+<h4><a name="_dr2ebgcaya4p"></a><span lang=fr style='font-family:"Arial",sans-serif'>-     Terminal</span></h4>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>All outputs are displayed in the terminal.
+Some basic commands are available like “ls” or “clear”. </span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%;
+font-family:"Georgia",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%;
+font-family:"Georgia",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span lang=fr
+style='font-size:13.0pt;line-height:115%;font-family:"Georgia",serif'><img
+width=602 height=409 id=image16.png
+src="/images/Gen_Assoc_Project_Documentation_files/image019.png"></span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%;
+font-family:"Georgia",serif'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:13.0pt;line-height:115%;
+font-family:"Georgia",serif'> </span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<h3><a name="_6lriscikw6xo"></a><span lang=fr>c.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
+</span></span><span lang=fr>Example run</span></h3>
+
+<p class=MsoNormal><b><span lang=fr style='font-size:13.0pt;line-height:115%;
+color:#434343'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span lang=fr style='color:#434343'>Example dataset :
+25markers</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.5in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>The dataset used for this tutorial is an
+extraction of <b>25 markers</b> from our data (a cohort from a Senegalese
+village Dielmo). You can download them <u><span style='color:blue'>here</span></u>.</span></p>
+
+<p class=MsoNormal style='text-indent:.5in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-size:10.0pt;line-height:115%;
+color:#999999'>(perspective: extract known markers with high p-values for
+example purposes)</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span lang=fr>Step 1</span></u></b><span lang=fr> :
+Description of your data </span></p>
+
+<p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<table class=2 border=1 cellspacing=0 cellpadding=0 width=728 style='margin-left:
+ -43.75pt;border-collapse:collapse;border:none'>
+ <tr style='height:85.5pt'>
+  <td width=728 valign=top style='width:546.0pt;border:solid #CCCCCC 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:85.5pt'>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>1- Choose
+  a name for your run </span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>2- Upload
+  your files : .ped, .map, .phen </span></p>
+  <p class=MsoNormal><span lang=fr style='font-size:11.0pt;line-height:115%;
+  font-family:"Courier New"'>   (same root for the name, e.g: 25markers.ped,
+  25markers.map, 25markers.phen) </span></p>
+  <p class=MsoNormal><span lang=fr style='font-size:11.0pt;line-height:115%;
+  font-family:"Courier New"'>3- Select the files in dedicated sections </span></p>
+  <p class=MsoNormal><span lang=fr style='font-size:11.0pt;line-height:115%;
+  font-family:"Courier New"'>4- Launch Summary Statistics</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>Output description</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span lang=fr>Step 2</span></u></b><span lang=fr> :
+Select options for analysis</span></p>
+
+<p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<table class=1 border=1 cellspacing=0 cellpadding=0 width=728 style='margin-left:
+ -43.75pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=728 valign=top style='width:546.0pt;border:solid #CCCCCC 1.0pt;
+  background:#ECE7DE;padding:5.0pt 5.0pt 5.0pt 5.0pt'>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>1- Choose
+  whether or not you run Genotype Inference module</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>2- Choose
+  between an empirical and a theoretical run</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>   If you
+  choose empirical choose the number of simulations &amp; the number of cores
+  you want to use</span></p>
+  <p class=MsoNormal><span lang=fr style='font-family:"Courier New"'>3- Choose
+  the phenotype column you want to use in your phenotype file</span></p>
+  <p class=MsoNormal><span lang=fr style='font-size:11.0pt;line-height:115%;
+  font-family:"Courier New"'>4- Choose between a Single-Marker and a
+  Multi-marker run in the radiobutton section</span></p>
+  <p class=MsoNormal><span lang=fr style='font-size:11.0pt;line-height:115%;
+  font-family:"Courier New"'>    If choose Multi-marker, fill the markerset
+  section </span></p>
+  <p class=MsoNormal><span lang=fr style='font-size:11.0pt;line-height:115%;
+  font-family:"Courier New"'>4- Launch Summary Statistics  </span><span
+  lang=fr style='font-family:"Courier New"'>   </span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>Output description </span></p>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<h1 style='margin-top:38.0pt;margin-right:0in;margin-bottom:24.0pt;margin-left:
+0in;line-height:158%;page-break-after:auto'><a name="_t6qc2mhetr79"></a><u><span
+lang=fr style='font-size:24.5pt;line-height:158%;color:#403E3E'>Technical
+documentation</span></u></h1>
+
+<h2><a name="_s7p758iqa2aj"></a><span lang=fr style='text-decoration:none'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span lang=fr>Technology
+</span></h2>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>Docker, NodeJs,
+Webpack</span></p>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>R for scripts</span></p>
+
+<h2><a name="_5h82elusvotm"></a><span lang=fr style='text-decoration:none'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span lang=fr>Web
+Service Architecture</span></h2>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0in'><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:-49.6pt'><span lang=fr><img width=721
+height=488 id=image21.png
+src="/images/Gen_Assoc_Project_Documentation_files/image020.png"></span></p>
+
+<p class=MsoNormal align=center style='margin-left:-49.6pt;text-align:center'><u><span
+lang=fr><span style='text-decoration:none'>&nbsp;</span></span></u></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=fr>&nbsp;</span></p>
+
+<p class=MsoNormal align=left style='text-align:left'><span lang=fr><img
+width=580 height=514 id=image9.png
+src="/images/Gen_Assoc_Project_Documentation_files/image021.png"></span></p>
+
+<p class=MsoNormal align=center style='margin-left:-49.6pt;text-align:center'><u><span
+lang=fr><span style='text-decoration:none'>&nbsp;</span></span></u></p>
+
+<p class=MsoNormal align=center style='margin-left:-49.6pt;text-align:center'><u><span
+lang=fr>2 and 3D Architecture of the tool</span></u></p>
+
+<p class=MsoNormal align=left style='margin-left:-49.6pt;text-align:left'><u><span
+lang=fr><span style='text-decoration:none'>&nbsp;</span></span></u></p>
+
+<p class=MsoNormal align=left style='margin-left:-49.6pt;text-align:left'><u><span
+lang=fr><span style='text-decoration:none'>&nbsp;</span></span></u></p>
+
+<p class=MsoNormal align=left style='margin-left:-49.6pt;text-align:left'><u><span
+lang=fr><span style='text-decoration:none'>&nbsp;</span></span></u></p>
+
+</div>
+
+<div>
+
+<hr class=msocomoff align=left size=1 width="33%">
+
+<div>
+
+<div id="_com_1" class=msocomtxt language=JavaScript
+onmouseover="msoCommentShow('_anchor_1','_com_1')"
+onmouseout="msoCommentHide('_com_1')"><a name="_msocom_1"></a>
+
+<p class=MsoNormal align=left style='text-align:left;line-height:normal;
+border:none'><span lang=fr style='font-size:11.0pt;color:black'>Use mtdt
+private GitHub with only scripts</span></p>
+
+</div>
+
+</div>
+
+<div>
+
+<div id="_com_2" class=msocomtxt language=JavaScript
+onmouseover="msoCommentShow('_anchor_2','_com_2')"
+onmouseout="msoCommentHide('_com_2')"><a name="_msocom_2"></a>
+
+<p class=MsoNormal align=left style='text-align:left;line-height:normal;
+border:none'><span lang=fr style='font-size:11.0pt;color:black'>link to github</span></p>
+
+</div>
+
+</div>
+
+<div>
+
+<div id="_com_3" class=msocomtxt language=JavaScript
+onmouseover="msoCommentShow('_anchor_3','_com_3')"
+onmouseout="msoCommentHide('_com_3')"><a name="_msocom_3"></a>
+
+<p class=MsoNormal align=left style='text-align:left;line-height:normal;
+border:none'><span lang=fr style='font-size:11.0pt;color:black'>drawbacks
+explains GI and VTAT</span></p>
+
+</div>
+
+</div>
+
+</div>
         </div>
       </div>
-      <!-- ******************* END Terminal block ******************* -->
-      <!-- ******************* Begin of the second fieldset ******************* --> 
-      <fieldset class="fieldset2">
-        <div class="ui raised segment">
-          <legend>
-            <a class ="ui big ribbon label" style="background-color: #59698D; color: white;"> 
-              Genotype Inference &nbsp; 
-              <i id="lock_default" class="fas fa-lock"></i>
-            </a>
-          </legend>
-          <span></span>
-          <br>
-          <form action="" class="ui form">
-            <div class="inline fields">
-              <div class="field" style="align-content:center;">
-                <h4>Retrieve missing genotypes : &nbsp;
-                </h4>
-              </div>
-              <div class="ui large buttons">
-                <button class="ui button positive"  id="gi-yes">Yes</button>
-                <div class="or"></div>
-                <button class="ui button negative" id ="gi-no">No</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </fieldset>
-      <!-- ******************* END of the second fieldset ******************* -->
-      
-      <!-- What is next is for managing grid position -->
-      <div></div>
-      
-      <!-- ******************* Begin of the third fieldset ******************* -->
-      <fieldset class="fieldset3">  
-        <!--legend>
-          <a class ="ui ribbonlabel">
-            Analysis
-            <i id="lock_default" class="fas fa-lock"></i>
-          </a>
-        </legend--> 
-        <!--form name="form" class="ui form  default-blur-content"-->
-        <form name="form" class="ui form default-blur-content">
-          <!-- Choosing an Empirical run or a Theorical run-->
-          <h3 class="ui horizontal divider header">ANALYSIS</h3>
-          <div class="ui placeholder segment" style="background-color: whitesmoke; border:none !important;">
-            <div class="ui two column stackable center  aligned  grid" >
-              <div class="column">
-                <h4 style="margin-top:-11px; margin-left: 67px;color: orange;">EMPIRICAL RUN</h4>
-                <div class="ui form">
-                  <div class="field">
-                    <label for="nbsim"><span>Number of simulations</span></label>
-                    <div class="ui left icon input">
-                      <input id="nbsim" placeholder="10">
-                      <i class="redo icon"></i>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label for="nbcores">Number of Cores</label>
-                    <select id="nbcores" name="nbcores" class="ui search dropdown">
-                      <option value = "" disabled selected > Cpus core available</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="field">
-                <div class="ui icon header">   
-                  <h4 style="color: #59698D;">THEORICAL RUN</h4>
-                  <i class="leaf icon"></i>
-                  <div class="ui medium  button active  t-run"  style="background-color: #59698D;color: white;">GO !</div> 
-                </div>
-              </div>
-            </div>
-            <div class="ui vertical divider">
-              Or
-            </div>
-          </div>
-          <div class="field">
-            <select id="phenotype" name="phenotype" class="ui search dropdown">
-              <option value="" disabled selected>Number of phenotype</option>
-            </select>
-          </div>
-          <div class="ui form">
-            <div class="inline fields">
-              <label>Choose markers  :</label>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input id="single_marker" type="radio" name="mradiobutton" value="single_marker" checked="checked">
-                  <label for="single_marker">Single-Marker</label>
-                </div>
-              </div>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input id="multi_marker" type="radio" name="mradiobutton" value="multi_marker">
-                  <label for="multi_marker">Multi-Marker</label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--markerset -->
-          <!-- Hidden if single marker is chosen -->
-          <div class="field">
-            <label for="marker_set">Select markerset</label>
-            <textarea placeholder="Choose your markers. eg: 1, 3, 24" rows="1" cols="30" id="marker_set" name="marker_set" required></textarea>
-          </div>
-          <div class="field"> 
-            <button id="run_analysis" class="ui right floated button">Run Analysis &nbsp;<i class="fas fa-dna"></i></button>
-          </div>
-        </form>
-      </fieldset>
-      <!-- ******************* END of the third fieldset ******************* -->
     </div>
+    <br><br>
     <footer class="ui inverted vertical footer segment">
       <div>
-        <div >
+        <div>
           <div class="ui container">
             <div class="ui stackable inverted divided equal height stackable grid">
               <div class="three wide column">
-                <h4 class="ui inverted header">Gen_Assoc Project</h4>
+                <!--h4 class="ui inverted header">Gen_Assoc Project</h4-->
                 <div class="ui inverted link list">
                   <div class="ui fluid image">
                     <img src="/images/H3ABioNet_high_res.png">
@@ -281,9 +1377,11 @@ Test
                 </div>
               </div>
               <div class="seven wide column">
-                <h4 class="ui inverted header"> © 2021 | Epidemiogy, Clinical Research, Data Science Department</h4>
+                <!--h4 class="ui inverted header"> © 2022 | Epidemiogy, Clinical Research, Data Science Department</h4-->
                 <div class="ui inverted link list">
-                  <a href="#" class="item" style="color: #1F2F91;"><i class="sn flag"></i>Foundation Institut Pasteur de Dakar</a>
+                  <a href="#" class="item" style="color: white;">
+                    <img src="/images/institupasteurdk.png" alt="" width="15%">
+                  </a>
                 </div>
                 <div class="ui inverted link list"></div>
                 <a href="#" class="item"></a>

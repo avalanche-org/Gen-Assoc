@@ -163,7 +163,7 @@ cat("\tMethod sensitive to missing data, you are strongly recommended to use the
 
 # --- Check for Mendelian errors  --- --- --- --- --- --- --- --- --- --- --- 
   
-plink_ = "/home/g4bbm/tools/Plink/plink"   #/!\ : option?
+plink_ = "plink"   #/!\ : option?
 cat("--- Check Mendelian errors")
 cmd = paste0("cp ",paste0(path_to_file, opt$pedfile)," check_mendel.ped ; cp ",paste0(path_to_file, opt$mapfile)," check_mendel.map")
 system(cmd)

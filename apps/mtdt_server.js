@@ -42,7 +42,7 @@ __setup__  :
 xapp   = xpress()
 server = Server(xapp) 
 socket =  new ios(server)   //  binding  
-gateways=process.argv[2] || 4000  
+gateways=process.env?.PORT  || 4000  
 
 __config__ :
 xapp

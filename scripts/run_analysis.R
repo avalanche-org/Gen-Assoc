@@ -302,11 +302,11 @@ if (opt$gi == 1){
   cat("\n * Inferring genotypes...\n\n")
   
   if (isTRUE(ncol(ped) > 1000)){
-    cmd = paste0("Rscript genoInference.R --file ", ped_basename," --cutsize 100" ," --cores ", opt$nbcores ," --out out")
+    cmd = paste0("nohup Rscript genoInference.R --file ", ped_basename," --cutsize 100" ," --cores ", opt$nbcores ," --out out &")
   }else if (isTRUE(ncol(ped) < 50)) {
-    cmd = paste0("Rscript genoInference.R --file ", ped_basename," --cutsize 10" ," --cores ", opt$nbcores ," --out out")
+    cmd = paste0("nohup Rscript genoInference.R --file ", ped_basename," --cutsize 10" ," --cores ", opt$nbcores ," --out out &")
   }else {
-    cmd = paste0("Rscript genoInference.R --file ", ped_basename," --cutsize 50" ," --cores ", opt$nbcores ," --out out")
+    cmd = paste0("nohup Rscript genoInference.R --file ", ped_basename," --cutsize 50" ," --cores ", opt$nbcores ," --out out &")
   }
   
   system(cmd)

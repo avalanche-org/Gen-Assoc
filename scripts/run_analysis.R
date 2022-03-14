@@ -310,6 +310,7 @@ if (opt$gi == 1){
   }
   
   system(cmd)
+  system("mv nohup.out geno.out")
   
   # output: out files - merging
   inferred_ped = merge_genoInference_out_files()

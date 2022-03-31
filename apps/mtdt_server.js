@@ -293,7 +293,11 @@ const __wtcp__ =  {
 
             })
 
-             __server_side_evt__  :  
+            sock.on("kill" , _=> utils.kill_subprocess() )  
+             
+        
+
+            __server_side_evt__  :  
             
              server_static_info = {  
                 ascii_logo : mtdtart , 

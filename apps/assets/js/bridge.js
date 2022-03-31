@@ -17,7 +17,7 @@ import  {
     ,mtdterm_rowline_handlers
     ,ped, map , phen,sm,mm ,yes,no,phenotype,nbsim,nbcores,markerset, term 
     ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
-    ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init 
+    ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort   
     
     ,i_lock ,i_unlock ,blur_area, status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
@@ -401,6 +401,13 @@ sm.addEventListener("change" , evt => {
     } 
 })
     
+abort.addEventListener("click"  , evt=>  { 
+    ipcRenderer.send_("kill"  ,   null)
+}) 
+
+
+
+
 let ped_  = null , 
     map_  = null ,
     phen_ = null   

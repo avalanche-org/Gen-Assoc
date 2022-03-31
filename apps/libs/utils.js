@@ -35,7 +35,9 @@ const
     }   =  require ("./../config")["web_server"] , 
     path=  require("path") 
 
- 
+
+let subprocess =  ( void function()  {return}())  
+
    
 module
 ["exports"]  =  {
@@ -203,13 +205,13 @@ module
                        let file_extention   = spread_filename[spread_filename.length -1 ]
                        if  (filter_extension.includes(file_extention) ) files.push(file)
                    }) 
-                    
                }
                resolve(files.length ?  files : dir_contents) 
            })
        })
     },
-    scripts  :  ( script_source   ,   { ...arguments }  )  =>  {
+    scripts  :  ( script_source   ,   { ...arguments }  )  =>  { 
+
         access (script_source  ,  constants["F_OK"]  ,  err  =>  err ?? err  ) 
         const allowed_keys_args  =   [ 
             "pedfile" , "mapfile" ,  "phenfile" , "phen", 
@@ -226,11 +228,25 @@ module
        
         return  interpreter     
         
-    }, 
+    },  
+   
+
+     kill_subprocess:() =>  {
+         if (subprocess?.kill && subprocess?.pid) 
+         {  
+             process.stdout.write(`killing  <${subprocess.pid} \n`)  
+             subprocess.kill("SIGHUP")  
+         }  
+         
+    } , 
+
     std_ofstream   : (user_virtual_ws, command , socket  , callback )=> {
-        const {  tail_logfiles  } =  module.exports  
+        const {  tail_logfiles   ,    kill_subprocess } =  module.exports  
+        
         const [ustdout_log , ustderr_log  ]    =  module.exports["#get_user_log"](user_virtual_ws)  
-        const cmd         =  exec(command)
+        const cmd         =  exec(command) 
+        subprocess  = cmd    
+
         const wstdout     =  createWriteStream(ustdout_log)   
         const wstderr     =  createWriteStream(ustderr_log) 
         cmd.stdout.pipe(wstdout)
@@ -239,8 +255,9 @@ module
         tail_logfiles( socket ,  ustderr_log , "stderr")  
         
         try  {  
-            cmd.on("close" , exit_code =>  { 
-                let  execute_status  =  exit_code  != 0  ? `FAILLURE : Exit code ${exit_code}\n` : "SUCCESS : [ ok ]\n"
+            cmd.on("close" , ( exit_code ,   signal  )  =>  { 
+                log(signal) 
+                let  execute_status  =  exit_code  != 0  ? `FAILLURE : ${exit_code || signal }\n` : "SUCCESS : [ ok ]\n"
                 process.stdout.write(execute_status)
                 socket.emit("term::logout" ,  execute_status)  
                 callback(exit_code) 

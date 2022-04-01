@@ -160,4 +160,38 @@ export const mtdterm_rowline_handlers   =  which_keycode   =>   {
     }
 
     return value 
+}
+
+export  const  shortcup_maping  =  {  
+    "ctrl_c" : (kb_combinaison)  =>   {  
+        const  ctrl_c_charCodes =  [17,67]  
+        const  ctrl_c_hold      =  [67,67]  
+        const  valdation_sc     = [ 
+            JSON.stringify(kb_combinaison) ==  JSON.stringify(ctrl_c_charCodes)  , 
+            JSON.stringify(kb_combinaison) ==  JSON.stringify(ctrl_c_hold) 
+        ]
+        if ( valdation_sc[0] || valdation_sc[1])  
+        {
+            kb_combinaison =  [] 
+            return  true  
+        }
+        kb_combinaison= []  
+    }  
+
+} 
+export  const  window_keyShortcut =( shortcut_behavior_action ,  callback_handler)  =>  {  
+    let  kb_combinaison  =[] 
+    document.addEventListener("keyup" , evt => {  
+        kb_combinaison.push(evt.which) 
+        if  (evt.which == 27  ) kb_combinaison= [] 
+        log(kb_combinaison) 
+        if ( kb_combinaison.length  == 2  )  
+        {
+
+            callback_handler(shortcut_behavior_action(kb_combinaison))  
+            kb_combinaison=[] 
+        }
+            
+        
+    }) 
 }  

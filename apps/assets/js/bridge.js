@@ -22,7 +22,9 @@ import  {
     ,i_lock ,i_unlock ,blur_area, status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
     ,log , error,warn
-    ,random , floor 
+    ,random , floor  
+
+    ,window_keyShortcut,shortcup_maping  
 
 }  from  "./ops.js"   
 console.log(_) 
@@ -400,10 +402,17 @@ sm.addEventListener("change" , evt => {
         //nbsim.disabled     = true 
     } 
 })
-    
+/*  Abort Execution Event send kill signal 
+ *  through socker  
+ **/  
 abort.addEventListener("click"  , evt=>  { 
     ipcRenderer.send_("kill"  ,   null)
 }) 
+
+window_keyShortcut(shortcup_maping["ctrl_c"] ,  action =>  {
+    ipcRenderer.send_("kill" , null )  
+}) 
+
 
 
 

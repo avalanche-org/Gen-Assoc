@@ -505,7 +505,10 @@ ipcRenderer.on("load::phenotype" ,  (evt ,  incomming_data ) =>  {
     enable_switch_between_theorical_or_emperical  = true 
 })
 
-//! TODO  :  make realtime reading  stdout stream  
+
+
+//FIXES [X]  double double  buffering on Terminal   #15 
+let force_buffer_clean =   ""  
 ipcRenderer.on("term::logout" , ( evt , data ) => {
     data = fetch_right_data ( activate_extra_elements ,  evt ,data )  
 
@@ -519,10 +522,11 @@ ipcRenderer.on("term::logout" , ( evt , data ) => {
         //progress_step(99 , "Analysising ... ", 240)
         //use_cpus_resources(false) 
     }  
-    ////progress_step(45 , 10) 
-    if  ( data  ) 
-    {
-        term_write(data)  
+    ////progress_step(45 , 10)   
+    
+    if  (data) 
+    { 
+        term_write(data) 
        // run_summary.disabled  = summary_already_run 
         //term.value = data
         follow_scrollbar()  

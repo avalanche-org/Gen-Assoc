@@ -37,6 +37,7 @@ const
 
 
 let subprocess =  ( void function()  {return}())  
+let buffer_sandbox =  ( void function () { return}()) 
 
    
 module
@@ -256,7 +257,6 @@ module
         
         try  {  
             cmd.on("close" , ( exit_code ,   signal  )  =>  { 
-                log(signal) 
                 let  execute_status  =  exit_code  != 0  ? `FAILLURE : ${exit_code || signal }\n` : "SUCCESS : [ ok ]\n"
                 process.stdout.write(execute_status)
                 socket.emit("term::logout" ,  execute_status)  
@@ -268,8 +268,21 @@ module
             socket.emit("log::fail" , err) 
             
         } 
-    } , 
+    } ,
+    
+    flush_sandbox_buffer  :   tailout_data  =>  {   
 
+        if  ( tailout_data  !=  buffer_sandbox  )   
+        {
+            buffer_sandbox  =  tailout_data   
+            return  buffer_sandbox  
+        } 
+
+        buffer_sandbox = "" 
+        return buffer_sandbox 
+
+
+    } ,  
     tail_logfiles :   (socket , logfile ,   where) => {
         const sksf = stream_key_socket_flags =   { 
             "stdout"  :  [ "log::notfound"  , "log::fail" , "term::logout" ]  , 
@@ -278,11 +291,12 @@ module
         if  (!Object.keys(sksf).includes(where))
             throw new Error(`no log file  name ${where} found `)  
 
-        tailf  =  spawn ( "tail" , ["-f" ,  logfile ] )  
+        tailf  =  spawn ( "tail" , ["-f"   ,  logfile ] )  
         tailf?.[where].on("data" ,  buffer_data => {
-            log ("- >   " ,  buffer_data.toString("utf-8"))  
-            try  { 
-                socket.emit(sksf[where][2] , buffer_data.toString("utf-8")) 
+            let  data  =   module.exports.flush_sandbox_buffer(buffer_data.toString("utf-8"))  
+            try 
+            { 
+                socket.emit(sksf[where][2] ,  data ) 
             }catch ( error )  {  
                 socket.emit(sksf[where][2] ,  stream_error) 
                 process.exit(1) 

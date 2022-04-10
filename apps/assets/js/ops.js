@@ -10,23 +10,11 @@
 export const  { random, floor }       = Math    ,  
        { log  , error , warn } = console , 
        _                       = document   
-/*
-let  ipcio  =  null  
-try  {
-    ipcio = require("electron")}
-catch (err) {}   
-
-export let  ipcRenderer                =  ipcio?.ipcRenderer ?? void function __(){ warn("using web services")}()  
-
-export const activate_extra_elements   =  !ipcRenderer  
-ipcRenderer                     =  ipcRenderer || io()  
-*/ 
 
 /* *
  * make common  usage  for socket   and  ipcRenderer  from electron  using  send_   
  * instead of respectivly  emit and send   native method  
  * */
-
 export let ipcRenderer =  io()
 export const activate_extra_elements  = !!ipcRenderer 
 
@@ -162,7 +150,8 @@ export const mtdterm_rowline_handlers   =  which_keycode   =>   {
     return value 
 }
 
-export  const  shortcup_maping  =  {  
+export  const  shortcup_maping  =  { 
+
     "ctrl_c" : (kb_combinaison)  =>   {  
         const  ctrl_c_charCodes =  [17,67]  
         const  ctrl_c_hold      =  [67,67]  
@@ -184,10 +173,9 @@ export  const  window_keyShortcut =( shortcut_behavior_action ,  callback_handle
     document.addEventListener("keyup" , evt => {  
         kb_combinaison.push(evt.which) 
         if  (evt.which == 27  ) kb_combinaison= [] 
-        log(kb_combinaison) 
+        
         if ( kb_combinaison.length  == 2  )  
         {
-
             callback_handler(shortcut_behavior_action(kb_combinaison))  
             kb_combinaison=[] 
         }

@@ -36,8 +36,10 @@ const
     path=  require("path") 
 
 
-let subprocess =  ( void function()  {return}())  
-let buffer_sandbox =  ( void function () { return}()) 
+let subprocess =  ( void function()  {return}())  /* get current   running  subprocess  */  
+
+/*buffer  sandbox  it use  as filter  to  avoid  double  rendering   on terminal */
+let buffer_sandbox =  ( void function () { return}())  
 
    
 module

@@ -408,7 +408,9 @@ sm.addEventListener("change" , evt => {
 abort.addEventListener("click"  , evt=>  { 
     ipcRenderer.send_("kill"  ,   null)
 }) 
-
+/**
+ * bind Ctrl^C  key to   window  for easy aborting  execution 
+ */
 window_keyShortcut(shortcup_maping["ctrl_c"] ,  action =>  {
     ipcRenderer.send_("kill" , null )  
 }) 

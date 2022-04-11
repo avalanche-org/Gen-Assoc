@@ -133,14 +133,18 @@ $ docker search  m-tdt
  
 To  launch  The  docker application 
 
+
 ```bash
 $  docker  run  -d  -p <localport>:<containerPort> jukoo/m-tdt  
 ```
 
-_The default port of  the container is **4000**_ 
+_The default port of  the container is **4000**_  using  environment variable  
 
 <u>_example_</u>: 
 >  **docker run  -d  -p 3000:4000  jukoo/m-tdt**
+
+<u>if  you  want to modify the default 
+> **docker  run  -d  -e PORT=5000   -p 3000:5000   jukoo/m-tdt**
 
 Here you are  now  let's see  to get your work done :rocket: 
 

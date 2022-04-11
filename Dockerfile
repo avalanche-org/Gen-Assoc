@@ -4,7 +4,7 @@
 # GEN ASSOC 
 #  ---------
 # A generic docker image to run the Gen Assoc application 
-# this docker image is based on node:alpine  
+# this docker image is based on node: container   
 # see on https://hub.docker.com/_/node  
 # however the application requires <plink> and the <R language>
 # to run the scripts. 
@@ -21,17 +21,15 @@ FROM  node:$NAPL_V
 
 MAINTAINER  Umar  jUmar@protonmail.com <github/Jukoo>  
 
-ARG  port=4000                                  #   Default  port  is set to  4000  
 ARG  plink_build_version="20210606"             #   Default  Plink  Build Release  
 ARG  plink_filename="plink_linux_x86_64_${plink_build_version}"  # Plink File name 
+
 
 # See https://www.cog-genomics.org/plink/   on  Binary Download section 
 # To change the build, you can do -build-arg plink_build_version=<numberOfBuild> 
 
 ARG  plink_bin="https://s3.amazonaws.com/plink1-assets/${plink_filename}.zip" 
 
-ENV  PORT  $port  
-ARG  STATUS="production"  
 
 ### UPDATE  CORE PACKAGES
 RUN apt update  --assume-yes  
@@ -39,6 +37,7 @@ RUN apt install git --assume-yes && apt install r-base r-base-dev --assume-yes
 
 ADD  .  ./mTDT 
 WORKDIR  /mTDT/apps/
+
 
 RUN echo "bin/" >> .gitignore 
 
@@ -58,6 +57,8 @@ RUN git commit -m "checkpoint::save"
 
 RUN npm install && npm install -g  pm2
 
-EXPOSE $port
+ENV PORT=4000 
+ 
+EXPOSE $PORT 
 
 CMD  ["pm2-runtime" , "mtdt_server.js"] 

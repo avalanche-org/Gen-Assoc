@@ -61,6 +61,7 @@ static_vn       =  null
 local_namespace =  (void function ()  { return }()) 
 vwo             =   {}  
 
+download_item_status_fail =  false 
 /** @namespace __wtcp__ **/
 const __wtcp__ =  {  
 
@@ -120,8 +121,10 @@ const __wtcp__ =  {
         })
         ["get"]("/download/:dfile" , ( rx ,tx ) => {
             tx.download(`${vworks}/${static_vn}/${rx.params.dfile}` , rx.params.dfiles  , err  => { 
-                if    (err)  
-                    tx.status(404).send( {  message  : `you tried to download an inexistant file `})
+                if(err)  
+                { 
+                   tx.status(404).send( {  message  : `you tried to download an inexistant file `}) 
+                }
             })
         })
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
@@ -292,7 +295,9 @@ const __wtcp__ =  {
                 })
 
             })
-
+            
+     
+            //!  listen kill  signal 
             sock.on("kill" , _=> utils.kill_subprocess() )  
 
             __server_side_evt__  :  

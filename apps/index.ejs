@@ -9,7 +9,6 @@
     <link rel="icon" href="/images/Logo_mtdt_transparency.png">
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
     <link rel="stylesheet" href="styles/style.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323:regular" media="screen" />
     <link rel="stylesheet" href="styles/semantic/semantic.min.css"/>
@@ -138,24 +137,38 @@ Test
                 <i class="fas fa-info" id="infosys" title="show system info"></i>
               </div> 
             </div>
-            <div class="item">
+            <div class="item"  title="use the terminal  interative mode">
                 <div class="ui icon button" style="background-color:#F1F7FD; color:#59698D;" id="detach_term"> 
               <i class="fas fa-terminal" title="detach terminal"></i>
-                use terminal 
+                m-tdterm  
                 </div> 
             </div> 
-            <div class="item">
+            <div class="item"  title = "Download  Assets ">
+                <div class="ui icon button" style="background-color:#f1f7fd; color:#59698D;" id="download_assets"> 
+                    <i class="fa-solid  fa-circle-arrow-down"></i>
+                Download  Assets  
+                </div> 
+            </div> 
+            <div class="item" title ="Abort  Running Execution  or you Can hit Ctlr+C  to abort ">
                 <div class="ui icon button" style="background-color:#f56f42; color:#59698D;" id="abort_execution"> 
-              <i class="fas fa-close" title="abort execution"></i>
+              <i class="fa-solid  fa-ban" title="abort execution"></i>
                 Abort execution  
                 </div> 
+        
             </div>
             <div class="right menu">
-              <div class="item">
-                <i id="network" class="fas fa-satellite-dish" title="network connectivity"></i><br>
+              <div class="item"  id="zoom_out">
+                  <i class="fa-solid fa-magnifying-glass-minus"></i>
               </div>
             </div>
-          </div>
+
+            <div class="right menu">
+              <div class="item" id="zoom_in">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+              </div>
+            </div>
+
+                      </div>
           <div>
             <!--readonly autocomplete ="off" speelcheck="false" autocapitalize="off"-->
             <textarea name="" id="term" class="terminal"></textarea>

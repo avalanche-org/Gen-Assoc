@@ -68,7 +68,7 @@ export const  [
     markerset,term  , 
     run_summary,run_analysis, 
     sync , files_uploaders/*element node  |  undefined */ , files_browser/* element node | undefined*/ ,
-    form_upload ,  job_title ,  job_init  ,  disconnect , p_menu, interm , giyes , gino , download , abort  
+    form_upload ,  job_title ,  job_init  ,  disconnect , p_menu, interm , giyes , gino , download , abort , download_assets, zoom_in, zoom_out     
   ]=[ 
         _.querySelector("#ped"),   
         _.querySelector("#map"), 
@@ -97,6 +97,9 @@ export const  [
         activate_extra_elements  ?  _.querySelector("#gi-no")               : (void function ()  { return  }() )  ,  
         activate_extra_elements  ?  _.querySelector("#download")            : (void function ()  { return  }() )  ,  
         activate_extra_elements  ?  _.querySelector("#abort_execution")     : (void function ()  { return  }() )  ,  
+        activate_extra_elements  ?  _.querySelector("#download_assets")     : (void function ()  { return  }() )  ,  
+        activate_extra_elements  ?  _.querySelector("#zoom_out")            : (void function ()  { return  }() )  ,  
+        activate_extra_elements  ?  _.querySelector("#zoom_in")             : (void function ()  { return  }() )   
 
     ] ,
     [  

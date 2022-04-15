@@ -17,7 +17,8 @@ import  {
     ,mtdterm_rowline_handlers
     ,ped, map , phen,sm,mm ,yes,no,phenotype,nbsim,nbcores,markerset, term 
     ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
-    ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort   
+    ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort
+    ,download_assets ,zoom_out , zoom_in 
     
     ,i_lock ,i_unlock ,blur_area, status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
@@ -32,7 +33,7 @@ console.log(activate_extra_elements)
 console.log(notify) 
 console.log(ipcRenderer) 
 console.log(ped) 
-
+console.log(zoom_out) 
 
 
 __setup_ipcRenderer(ipcRenderer)  
@@ -915,5 +916,20 @@ if  (activate_extra_elements)
         }  
     })
 
-    
+    //! zoomin and zoom out  
+    const  zooms  =  [ zoom_out ,  zoom_in ] 
+    const LIMTE_FSIZE  = [ 6, 24]  
+    zooms.map ( (zoom_operation  , z_index )  =>   { 
+        zoom_operation.addEventListener("click" , evt => {
+            let  term_fontsize =  parseInt(window.getComputedStyle(term).getPropertyValue("font-size"))  
+            if  ( z_index ==  0   && term_fontsize  >=LIMTE_FSIZE[z_index] )  
+            { 
+                term.style.fontSize =  term_fontsize + 2 +"px"  
+            }
+            if  ( z_index ==  1   && term_fontsize  <= LIMTE_FSIZE[z_index] ) 
+            {  
+                term.style.fontSize = term_fontsize - 2 +"px"
+            } 
+        })
+    }) 
 }

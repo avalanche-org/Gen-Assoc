@@ -91,15 +91,16 @@ module
         {  
             return   {
                 
-                "version" :  os.version() , 
-                "release" :  os.release() ,
-                "type"    :  os.type() , 
-                "arch"    :  os.arch() , 
-                "cpus"    :  os.cpus().length, 
+                //"version" :  os.version() , 
+                //"release" :  os.release() ,
+                //"type"    :  os.type() , 
+                //"arch"    :  os.arch() , 
+                "cpus"      :  os.cpus().length, 
                 //"cpusInfo":  os.cpus().map(cpu =>  cpu.model), 
-                "username":  os.userInfo().username, 
-                "plvl"    :  os.userInfo().uid, // plvl as permission level  
-                "shellType": os.userInfo().shell 
+                //TODO :  get  username  or userspace environment
+               // "username"  :  os.userInfo().username, 
+               // "plvl"    :  os.userInfo().uid, // plvl as permission level  
+                "shellType" :  "m-tdterm"  //os.userInfo().shell 
                 
             }
         } 

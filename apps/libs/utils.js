@@ -13,6 +13,8 @@ const
         , createReadStream 
         , mkdir
         , open 
+        , stat
+        , copyFile
     }   = require("fs") , 
     
     os =  require("os") ,  
@@ -31,7 +33,8 @@ const
         , fserror
     }   = require("./../config")["io_fstream"] , 
     {  
-        virtual_workstation
+        virtual_workstation ,  
+        sandbox  
     }   =  require ("./../config")["web_server"] , 
     path=  require("path") 
 
@@ -234,7 +237,20 @@ module
         
     },  
    
+    compress  :     (  payload_data   ,  compression_algorithm =  "zip")   =>  { 
+        const [ chanel , virtual_userspace ]  = payload_data 
+        let  sandbox_path  =  module.exports.auto_insject(path.join(__dirname  , '..')  , sandbox)  
+        let compress_name  = virtual_userspace.split("/").at(-1) +`.${compression_algorithm}` 
+        sandbox_path+=  `/${compress_name}` 
+        chanel.emit("fsinfo" ,  `+ Compressed as  ::  ${compress_name}`) 
+        let cmd  = `${compression_algorithm}  -r ${sandbox_path}  ${virtual_userspace}` 
+        let subprocess = exec(cmd)  
+        return  sandbox_path  
+       
+    } , 
 
+
+     /* kill  the running subprocess  */ 
      kill_subprocess:() =>  {
          if (subprocess?.kill && subprocess?.pid) 
          {  

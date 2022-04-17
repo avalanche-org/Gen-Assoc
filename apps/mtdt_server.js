@@ -28,7 +28,7 @@ so = process.platform == "win32" ? "\\"  : "/"
 const  [
     { log }  = console                  , 
     {summary_src  , run_analysis  , required_file_extension } = require("./config.json")["mtdt_pannel"], 
-    {virtual_workstation} =  require("./config.json")["web_server"] , 
+    {virtual_workstation  , sandbox} =  require("./config.json")["web_server"] , 
     {Server} = require("http")           ,
     path     = require("path")           ,
     {createReadStream,access , createWriteStream ,readFile  , writeFile  , writeFileSync, constants} =nm["fs"]         , 
@@ -57,6 +57,7 @@ __required_static_files__ :
 summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
 vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstation)
+sbox            =  utils.auto_insject(path.join(__dirname)  , sandbox)
 static_vn       =  null
 local_namespace =  (void function ()  { return }()) 
 vwo             =   {}  
@@ -120,7 +121,8 @@ const __wtcp__ =  {
         
         })
         ["get"]("/download/:dfile" , ( rx ,tx ) => {
-            tx.download(`${vworks}/${static_vn}/${rx.params.dfile}` , rx.params.dfiles  , err  => { 
+            log (sbox)  
+            tx.download(`${sbox}/${rx.params.dfile}` , rx.params.dfiles  , err  => { 
                 if(err)  
                 { 
                    tx.status(404).send( {  message  : `you tried to download an inexistant file `}) 
@@ -132,6 +134,7 @@ const __wtcp__ =  {
         server 
         ["listen"](gateways ,"0.0.0.0" , _void_args  => {  
             utils["_auto_build_tmp_dir"](vworks)  
+            utils["_auto_build_tmp_dir"](sbox) 
             log(`\x1b[1;32m * connected on  ${gateways}\x1b[0m`)
             basename =  process.argv[1].split(so).splice(-1) 
             const  additional_infomation_server  =  {  
@@ -296,7 +299,17 @@ const __wtcp__ =  {
 
             })
             
-     
+            //!  Trigger   download assets  
+            sock.on("download::assets" ,  userland  =>  {
+                if ( !userland )   
+                    sock.emit("NOULD" ,  null)  
+
+                //! otherwise  let compress the contains and send it
+                const payload  = [sock , userland]  
+                let compressed_location_data  = utils.compress(payload)
+                sock.emit("compress::assets::available"  ,  compressed_location_data)   
+
+            }) 
             //!  listen kill  signal 
             sock.on("kill" , _=> utils.kill_subprocess() )  
 

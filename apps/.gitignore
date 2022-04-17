@@ -17,3 +17,4 @@ weighted_res_multilocus.work
 vtmp/*
 l
 assets/js/dist/
+*.gz

@@ -32,7 +32,8 @@
         "host"   : "0.0.0.0",
         "defencode" :"utf-8",
         "Etag" : false, 
-       "virtual_workstation" :"<>/vtmp" 
+       "virtual_workstation" :"<>/vtmp",
+       "sandbox" : "<>/vtmp/sandbox" 
     },
      
     "_hint" : "if the  application does't run   please type this command bellow" ,  

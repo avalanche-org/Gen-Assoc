@@ -931,5 +931,26 @@ if  (activate_extra_elements)
                 term.style.fontSize = term_fontsize - 2 +"px"
             } 
         })
+    })
+
+    //! Downloading user assets 
+    download_assets.addEventListener("click" , evt => {  
+        
+        ipcRenderer.send_("download::assets"  , paths_collections)  
+        
+    })
+
+    ipcRenderer.on("NOULD" ,   _=>  {  term_write("No jobs defined Sorry!!" , false , true , true )})  
+    ipcRenderer.on("compress::assets::available" ,  async  assets => {  
+
+        const  item  = assets.split("/").at(-1)  
+        const  retrive_native_url  =  await fetch(`/download/${item}`) 
+        let  hidden_link  = _.createElement('a') 
+        hidden_link.href =  retrive_native_url.url   
+        hidden_link.download = item  
+        _.body.appendChild(hidden_link)
+        hidden_link.click() 
+        hidden_link.remove() 
+        
     }) 
 }

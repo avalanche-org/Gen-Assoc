@@ -1,3 +1,8 @@
+body  {
+    font-style: normal;
+    font-size: var(--font-size-lg);
+    font-family: var(--font-family-base) ; 
+}
 #myHeader {
   position: relative;
   top : 0;
@@ -184,7 +189,7 @@ textarea.terminal{
   border-radius: 3px;
   color: whitesmoke;
   font-size: 12px;
-  font-family: VT323, Consolas, Lucida Console, monospace;
+  font-family: Consolas, Lucida Console, monospace;
   transition:box-shadow 0.5s ease;
 	box-shadow:0 4px 6px rgba(0,0,0,0.1);
 	background:linear-gradient(#000000, #000000);

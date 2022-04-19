@@ -1,6 +1,9 @@
 #!/usr/bin/env node 
-//author  : Umar aka jukoo  j_umar@outlook.com   <github.com/jukoo>
-
+/** 
+ * utils  module  
+ * @module libs/utils.js   for  Gen_Assoc/m-TDT 
+ * copyright (c)  2022 , Umar  jUmarB@protonmail.com  <github.com/jukoo>
+ */  
 const   
     { 
         readFileSync 
@@ -39,17 +42,22 @@ const
     path=  require("path") 
 
 
-let subprocess =  ( void function()  {return}())  /* get current   running  subprocess  */  
+//! Hold the running  subprocess  :  run_analysys  and run_summary 
+let subprocess =  ( void function()  {return}()) 
 
-/*buffer  sandbox  it use  as filter  to  avoid  double  rendering   on terminal */
+//! handle  Buffer between  userlog file  and  the built-in terminal to  avoid  double  rendering 
 let buffer_sandbox =  ( void function () { return}())  
 
    
 module
 ["exports"]  =  {
-    /*
-     *
-     *
+
+    /** 
+     * Parse  file  like csv  or tsv  
+     * @param {  string }  file -  target file  
+     * @param {  string }  default_delimiter  -  by default  is ','  like csv  file   
+     * @param {  bool   }  readable_mode      -  show the content of the file  by default it's desabled  
+     * @return { promise}  promise  
      */   
     rsv_file :  (  file  , default_delimiter = ","  , readable_mode  = false  )  => {
         return new Promise  ( (resolve , reject )  => {
@@ -74,43 +82,46 @@ module
         
         }) 
       },  
-      rendering_process  :   () =>  {
-          /* *
-           *  trying to adapt  index  file  for desktop  env application  
-           * */ 
-          let content  = readFileSync("index.ejs"  , "utf-8" )
-          re   = /<% *.+%>/g
-          let modified_content = content.replace(re  , "")   
-          log(modified_content) 
 
-    }, 
+    /**
+     * reconstitute  relative  path to absolute  path   by  repalacing '<>'  present if  config file  
+     * @param  { string } data   - absolute path  <path.join(__dirname  , [step] ) 
+     * @param  { string } object - relative  path  decribe to  config file   <>/relative/path
+     * @param  { string } default_symbol  -  marker  that help  to make replace operation  
+     * @return { string } absolute path  
+     */
     auto_insject  : ( data   , object ,  default_symbol  = "<>" )  => {
         if (object.includes(default_symbol) ) 
             return   object.replace(default_symbol , data ) 
         
     },  
+    
+    /**
+     * retrive information  from the host   how many cpus core are available  
+     * @param  { bool }  os_abstract  -  if true retrive  more info  
+     * @return { object  |  int  }    depend on os_abstract  stat  
+     */   
     cpus_core  : (os_abstract = false  )   =>  {  
         if (os_abstract)    
         {  
             return   {
-                
-                //"version" :  os.version() , 
-                //"release" :  os.release() ,
-                //"type"    :  os.type() , 
-                //"arch"    :  os.arch() , 
                 "cpus"      :  os.cpus().length, 
-                //"cpusInfo":  os.cpus().map(cpu =>  cpu.model), 
-                //TODO :  get  username  or userspace environment
+                //!TODO :  catch  jobs name 
                // "username"  :  os.userInfo().username, 
-               // "plvl"    :  os.userInfo().uid, // plvl as permission level  
                 "shellType" :  "m-tdterm"  //os.userInfo().shell 
-                
             }
         } 
-       return  os.cpus().length 
+       return  os.cpus().length  
     },  
+
+    /**
+     *  get  full path of user  logs files 
+     *  @param  { string } virtual_directory  - where  job space are located  
+     *  @param  { bool   }  lgfile  - if  true only logfiles 's name are returned otherwise the full path  of logs 
+     *  @return { array  }  stdout and stderr 
+     */
     "#get_user_log":  (virtual_directory ,  lgfile = false  )  =>  {
-        let ulog  =  `.${virtual_directory.split("/").slice(-1)}.log`
+        let ulog  =  `.${virtual_directory.split("/").at(-1)}.log`
         let uerrlog  =  ulog.replace("log", "err")  
         let ulog_abs_path  =`${virtual_directory}/${ulog}`
         let errlog_abs_path=`${virtual_directory}/${uerrlog}`
@@ -120,10 +131,15 @@ module
         }
         return  [ulog_abs_path ,errlog_abs_path ] 
     } ,    
+
+    /**
+     * build  user logs  
+     * @param  { string }  udir -  where job  space  are located  
+     */
     "#user_log"   :   udir =>  { 
         module.exports["#get_user_log"](udir).forEach (  log => {   
 
-            open( log,   constants["O_CREAT"]  | constants["O_RDWR"],enouacc  =>  { 
+            open( log, constants["O_CREAT"]  | constants["O_RDWR"],enouacc  =>  { 
                 if (enouacc) 
                 {
                     socket.emit("fsinfo" , "Error :  cannot  build log  file  for you " ) 
@@ -131,7 +147,13 @@ module
                 }
             })
         }) 
-    }, 
+    },
+
+    /**
+     * build virtual_userspace or   virtual_directory  
+     * @param  {string} udir  - where   the job space are located 
+     * @param  {socket} socket - socket channel   to emit  event  
+     */
     make_new_userland   :  ( udir, socket  ) => {
         mkdir(udir , constants["S_IRWXU"] ,  enouacc =>  {  //! error no user access   
             if  (enouacc)
@@ -147,7 +169,12 @@ module
         
         })
     },
-     
+
+    /**
+     * build automaticly  the virtual tempory directory 
+     * that store  all jobs each  job  is an isolated  directory called virtual directory  
+     * @param  {string}  abs_tmp_dir_path  -  absolute path  where the vtmp  will be created  
+     */
     _auto_build_tmp_dir  :    abs_tmp_dir_path  =>  {
         access ( abs_tmp_dir_path ,  enoacc =>  {  
             if (enoacc) 

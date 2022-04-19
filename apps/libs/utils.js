@@ -195,9 +195,27 @@ module
            
     },   
     
-    unset_job_space  :  current_dir_job  =>  {
+    unset_job_space  :  current_dir_job  =>  { 
+        
+        const  job_name  =  current_dir_job.split("/").at(-1)  
         rm(  current_dir_job ,  { recursive  : true } , error =>  {  
             if (error) throw error  
+        }) 
+        //! check   compressed assets in sandbox  
+        let  sandbox_path  =  module.exports.auto_insject(path.join(__dirname  , '..')  , sandbox)  
+        let  compressed_assets_location  =  `${sandbox_path}/${job_name}.zip`  
+        access ( compressed_assets_location   , constants.F_OK  , err => { 
+            if  ( err.syscall == 'access' ) 
+            {
+                return (void function ()   { return } () )   
+            }
+            rm (compressed_assets_location  , err =>   {  
+                if (err) 
+                {
+                    log ( `cannot remove ${compressed_assets_location} `) 
+                    throw  err  
+                }
+            })
         })
     },
     

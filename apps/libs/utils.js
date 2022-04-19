@@ -239,6 +239,8 @@ module
    
     compress  :     (  payload_data   ,  compression_algorithm =  "zip")   =>  { 
         const [ chanel , virtual_userspace ]  = payload_data 
+        if  (virtual_userspace.length  == 0  )   return   null  ;  
+
         let  sandbox_path  =  module.exports.auto_insject(path.join(__dirname  , '..')  , sandbox)  
         let compress_name  = virtual_userspace.split("/").at(-1) +`.${compression_algorithm}` 
         sandbox_path+=  `/${compress_name}` 

@@ -301,9 +301,11 @@ const __wtcp__ =  {
             
             //!  Trigger   download assets  
             sock.on("download::assets" ,  userland  =>  {
-                if ( !userland )   
-                    sock.emit("NOULD" ,  null)  
-
+                if ( !userland || userland.length  == 0  )   
+                { 
+                    sock.emit("NOULD" ,  null)
+                    return  
+                } 
                 //! otherwise  let compress the contains and send it
                 const payload  = [sock , userland]  
                 let compressed_location_data  = utils.compress(payload)

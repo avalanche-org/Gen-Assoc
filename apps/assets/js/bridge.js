@@ -933,14 +933,14 @@ if  (activate_extra_elements)
         })
     })
 
+    DOWNLOAD:  
     //! Downloading user assets 
-    download_assets.addEventListener("click" , evt => {  
-        
-        ipcRenderer.send_("download::assets"  , paths_collections)  
-        
-    })
+    download_assets.addEventListener("click" , evt => { ipcRenderer.send_("download::assets"  , paths_collections)})
 
-    ipcRenderer.on("NOULD" ,   _=>  {  term_write("No jobs defined Sorry!!" , false , true , true )})  
+    
+    ipcRenderer.on("NOULD" ,   _=>  {term_write("No jobs defined Sorry!!" , false , true , true )}) 
+
+    //! Trigger  Dowload 
     ipcRenderer.on("compress::assets::available" ,  async  assets => {  
 
         const  item  = assets.split("/").at(-1)  

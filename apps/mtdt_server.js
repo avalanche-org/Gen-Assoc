@@ -47,7 +47,7 @@ gateways=process.env?.PORT  || 4000
 __config__ :
 xapp
 .set("view engine" ,  "ejs" )
-.set("views" , __dirname)   
+.set("views" ,`${__dirname}/view`)   
 .use(xpress.static(__dirname+"/assets"))  
 .use(xpress.json()) 
 .use(xpress.urlencoded({ extended: true } )) 

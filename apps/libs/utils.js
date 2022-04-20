@@ -316,9 +316,9 @@ module
         const wstdout     =  createWriteStream(ustdout_log)   
         const wstderr     =  createWriteStream(ustderr_log) 
         cmd.stdout.pipe(wstdout)
-        cmd.stderr.pipe(wstderr)   
-        tail_logfiles( socket ,  ustdout_log , "stdout")  
-        tail_logfiles( socket ,  ustderr_log , "stderr") 
+        cmd.stderr.pipe(wstderr)
+        tail_logfiles( socket ,  wstdout , "stdout")  
+        tail_logfiles( socket ,  wstderr , "stderr") 
         
         try  {  
             cmd.on("close" , ( exit_code ,   signal  )  =>  { 
@@ -339,13 +339,17 @@ module
 
         if  ( tailout_data  !=  buffer_sandbox  )   
         {
+            setTimeout( () =>  {  
+            log ("buffer  sandbox " ,  buffer_sandbox) 
+            log ("catched data "    ,  tailout_data)  
+            } , 200) 
+
             buffer_sandbox  =  tailout_data   
             return  buffer_sandbox  
         } 
 
         buffer_sandbox = "" 
         return buffer_sandbox 
-
 
     } ,  
     tail_logfiles :   (socket , logfile ,   where) => {
@@ -356,19 +360,25 @@ module
         if  (!Object.keys(sksf).includes(where))
             throw new Error(`no log file  name ${where} found `)  
 
-        const tailf  =  spawn ( "tail" , ["-f"   ,  logfile ] )  
- 
-
-        tailf?.[where].on("data" ,  buffer_data => {
-            let  data  =   module.exports.flush_sandbox_buffer(buffer_data.toString("utf-8")) 
-            log(data.trim()) 
-            try 
-            { 
-                socket.emit(sksf[where][2] ,  data ) 
-            }catch ( error )  {  
-                socket.emit(sksf[where][2] ,  stream_error) 
-                process.exit(1) 
-            }
-        }) 
+        const  LG_FILE = logfile.path 
+        logfile.on("close" ,  _  =>  { 
+            //! start streaming file  
+            if  (LG_FILE.endsWith('log')) 
+            {
+                const stream_tail = createReadStream(LG_FILE , { encoding:'utf-8'}) 
+                stream_tail.on('data', decode_buffer_data =>  { 
+                    try { 
+                        socket.emit(sksf[where][2] , decode_buffer_data ) 
+                    }catch(error)  { 
+                        socket.emit(sksf[where][2] , error) 
+                        process.exit(1) 
+                    }
+                }) 
+               
+                //! TODO : emmit signal  when it done  ...  
+                stream_tail.on("close" ,  _=>  log ("stream tail closed "))  
+           }
+        })
+     
     }
  }

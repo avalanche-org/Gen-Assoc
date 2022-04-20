@@ -187,6 +187,12 @@ export  const  window_keyShortcut =( shortcut_behavior_action ,  callback_handle
     }) 
 }
 
+/**
+ * parse  weird   unicode character  that's came from 
+ * exec binary  (plink)   
+ * @param   { string }  data -   buffer data  
+ * @retrun  { string }  parsed string buffer  
+ */
 export  const parse_unknow_ascii_unicode   = data =>  { 
     const unknow_unicode_pattern_regex  =/\d+%*.+%|\P{L}+/gm
     return  data.replace(unknow_unicode_pattern_regex , '') 

@@ -103,7 +103,13 @@ const __wtcp__ =  {
             tx.setHeader("Content-type" ,  "text/html")  
             tx.render("index.ejs"  ,  { socket : true })  
        
+        }) 
+        ['get']('/tuto', ( rx , tx ) => { 
+            tx.setHeader("Content-type" , 'text/html') 
+            tx.render("tuto.ejs" , {socket:true}) 
+
         })
+
         ["post"] ("/",  ( rx  ,tx  ) => {  
 
             const { files_upload_processing  }  = __wtcp__ 

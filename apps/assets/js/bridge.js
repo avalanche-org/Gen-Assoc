@@ -25,7 +25,7 @@ import  {
     ,log , error,warn
     ,random , floor  
 
-    ,window_keyShortcut,shortcup_maping  
+    ,window_keyShortcut,shortcup_maping,parse_unknow_ascii_unicode
 
 }  from  "./ops.js"   
 console.log(_) 
@@ -512,26 +512,21 @@ ipcRenderer.on("load::phenotype" ,  (evt ,  incomming_data ) =>  {
 
 //FIXES [X]  double double  buffering on Terminal   #15 
 let force_buffer_clean =   ""  
-ipcRenderer.on("term::logout" , ( evt , data ) => {
-    data = fetch_right_data ( activate_extra_elements ,  evt ,data )  
+ipcRenderer.on("term::logout" , data  => {
+    // fetch_right_data ( activate_extra_elements ,  evt ,data ) 
+    
+    data  =  parse_unknow_ascii_unicode(data)  
 
     term.focus() 
-    if (summary_already_run)  
-    {  
-        //progress_step(47 , "finishing ", 140)
-    }
-    if (analysis_on_going)
-    {  
-        //progress_step(99 , "Analysising ... ", 240)
-        //use_cpus_resources(false) 
-    }  
-    ////progress_step(45 , 10)   
-    
-    if  (data) 
+    if  (data  &&  data  != force_buffer_clean)   
     { 
+        force_buffer_clean = data  
+        log(force_buffer_clean)  
+
         term_write(data) 
        // run_summary.disabled  = summary_already_run 
         //term.value = data
+        
         follow_scrollbar()  
         run_analysis.disabled = !summary_already_run  
         phenotype.disabled    = !summary_already_run  
@@ -569,7 +564,7 @@ ipcRenderer.on("term::logerr"     , (evt , data)  => {
     data = fetch_right_data ( activate_extra_elements , evt  ,data ) 
     term.value = data 
     run_summary.disabled=false 
-    term.style.color   ="red"
+    term.style.color   ="whitesmoke"
    // status.style.color ="red"
     //status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> An error has occurred  ` 
     //bar_progress.style.backgroundColor = "firebrick"

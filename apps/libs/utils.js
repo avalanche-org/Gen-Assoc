@@ -76,7 +76,6 @@ module
                     }
                     headers.push(head)
                 }
-
                 resolve(headers.length)  
             })  
         
@@ -232,7 +231,7 @@ module
         let  sandbox_path  =  module.exports.auto_insject(path.join(__dirname  , '..')  , sandbox)  
         let  compressed_assets_location  =  `${sandbox_path}/${job_name}.zip`  
         access ( compressed_assets_location   , constants.F_OK  , err => { 
-            if  ( err.syscall == 'access' ) 
+            if  (err) 
             {
                 return (void function ()   { return } () )   
             }
@@ -319,7 +318,7 @@ module
         cmd.stdout.pipe(wstdout)
         cmd.stderr.pipe(wstderr)   
         tail_logfiles( socket ,  ustdout_log , "stdout")  
-        tail_logfiles( socket ,  ustderr_log , "stderr")  
+        tail_logfiles( socket ,  ustderr_log , "stderr") 
         
         try  {  
             cmd.on("close" , ( exit_code ,   signal  )  =>  { 
@@ -357,9 +356,12 @@ module
         if  (!Object.keys(sksf).includes(where))
             throw new Error(`no log file  name ${where} found `)  
 
-        tailf  =  spawn ( "tail" , ["-f"   ,  logfile ] )  
+        const tailf  =  spawn ( "tail" , ["-f"   ,  logfile ] )  
+ 
+
         tailf?.[where].on("data" ,  buffer_data => {
-            let  data  =   module.exports.flush_sandbox_buffer(buffer_data.toString("utf-8"))  
+            let  data  =   module.exports.flush_sandbox_buffer(buffer_data.toString("utf-8")) 
+            log(data.trim()) 
             try 
             { 
                 socket.emit(sksf[where][2] ,  data ) 
@@ -367,6 +369,6 @@ module
                 socket.emit(sksf[where][2] ,  stream_error) 
                 process.exit(1) 
             }
-        })
+        }) 
     }
  }

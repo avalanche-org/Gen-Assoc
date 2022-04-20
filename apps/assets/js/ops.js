@@ -185,4 +185,10 @@ export  const  window_keyShortcut =( shortcut_behavior_action ,  callback_handle
             
         
     }) 
-}  
+}
+
+export  const parse_unknow_ascii_unicode   = data =>  { 
+    const unknow_unicode_pattern_regex  =/\d+%*.+%|\P{L}+/gm
+    return  data.replace(unknow_unicode_pattern_regex , '') 
+
+}

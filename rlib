@@ -1,0 +1,37 @@
+#!/bin/bash 
+
+
+set -o errexit  
+
+declare  -r  Rbin="R"  
+declare  -r  local_rlib_path=/usr/lib/${Rbin}  
+declare  -r  Rzip="R.zip"
+[[  -n $(command -v ${Rbin})  ]]  ||  { 
+    echo  -e "fail :  cannot found  R bin"
+    exit $? 
+} 
+[[ -d ${local_rlib_path} ]]   ||  { 
+    echo -e  "cannot found  path"
+    exit $? 
+} 
+
+echo -e "Everything is OK  [ ready to go ]" 
+
+compress ()  {  
+    [[  -n  $(zip -r ${Rzip} ${local_rlib_path}) ]]  && {  
+        echo -e  "compressed "
+    } ||  {  
+        echo -e "fail to compress" 
+        exit $?  
+    }
+}
+
+dispatch () {  
+ 
+    [[ -f ${Rzip} ]]  ||  {   
+        echo -e "compress R zip  not found" 
+        exit $?  
+    }      
+
+
+} 

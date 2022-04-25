@@ -101,13 +101,17 @@ const __wtcp__ =  {
         ["get"] ("/" , ( rx , tx  )  =>    { 
             
             tx.setHeader("Content-type" ,  "text/html")  
-            tx.render("index.ejs"  ,  { socket : true })  
+            tx.render("home.ejs"  ,  { socket : true })  
        
         }) 
         ['get']('/tuto', ( rx , tx ) => { 
             tx.setHeader("Content-type" , 'text/html') 
             tx.render("tuto.ejs" , {socket:true ,  tuto_section :true}) 
 
+        })
+        ["get"]("/main" ,  ( rx , tx ) =>  { 
+            tx.setHeader("Content-type" , "text/html")  
+            tx.render("index.ejs" ,  {socket:true})  
         })
 
         ["post"] ("/",  ( rx  ,tx  ) => {  

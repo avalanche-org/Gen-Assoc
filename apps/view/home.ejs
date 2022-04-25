@@ -1,0 +1,66 @@
+<%- include("./header.ejs")%> 
+    <!-- ******************* Site content ******************* -->
+    <div class="wrapper">
+      
+      <!-- what is next is for managing grid position -->
+      <div>&nbsp;</div>
+      
+           <!-- ******************* END of the first fieldset ******************* --> 
+      <!-- ******************* Terminal block ******************* -->
+      <div>  
+        <div class="div_terminal" style="position: fixed; margin: 8px; margin-top: 0;" >
+          <div class="ui menu"> 
+            <div class="item">
+              <div class= "ui button" id="clear">
+                <i class="fas fa-broom" id="clear" title ="clear console"></i>
+              </div>
+            </div>
+            <div class="item">
+              <div class="ui button" id ="infosys">  
+                <i class="fas fa-info" id="infosys" title="show system info"></i>
+              </div> 
+            </div>
+            <div class="item"  title="use the terminal  interative mode">
+                <div class="ui icon button" style="background-color:#F1F7FD; color:#59698D;" id="detach_term"> 
+              <i class="fas fa-terminal" title="detach terminal"></i>
+                m-tdterm  
+                </div> 
+            </div> 
+            <div class="item"  title = "Download  Assets ">
+                <div class="ui icon button" style="background-color:#f1f7fd; color:#59698D;" id="download_assets"> 
+                    <i class="fa-solid  fa-circle-arrow-down"></i>
+                Download  Assets  
+                </div> 
+            </div> 
+            <div class="item" title ="Abort  Running Execution  or you Can hit Ctlr+C  to abort ">
+                <div class="ui icon button" style="background-color:#f56f42; color:#59698D;" id="abort_execution"> 
+              <i class="fa-solid  fa-ban" title="abort execution"></i>
+                Abort execution  
+                </div> 
+        
+            </div>
+            <div class="right menu">
+              <div class="item"  id="zoom_out">
+                  <i class="fa-solid fa-magnifying-glass-minus"></i>
+              </div>
+            </div>
+
+            <div class="right menu">
+              <div class="item" id="zoom_in">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+              </div>
+            </div>
+
+                      </div>
+          <div>
+            <!--readonly autocomplete ="off" speelcheck="false" autocapitalize="off"-->
+            <textarea name="" id="term" class="terminal"></textarea>
+          </div>
+        </div> 
+      </div>
+      <!-- ******************* END Terminal block ******************* -->
+
+    </div>
+
+    <%-  include("./footer.ejs")%> 
+    <%-  include("./scripts/index_jscript.ejs")%>  

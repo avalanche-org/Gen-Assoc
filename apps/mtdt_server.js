@@ -101,7 +101,7 @@ const __wtcp__ =  {
         ["get"] ("/" , ( rx , tx  )  =>    { 
             
             tx.setHeader("Content-type" ,  "text/html")  
-            tx.render("home.ejs"  ,  { socket : true })  
+            tx.render("index.ejs"  ,  { socket : true })  
        
         }) 
         ['get']('/tuto', ( rx , tx ) => { 
@@ -111,7 +111,7 @@ const __wtcp__ =  {
         })
         ["get"]("/main" ,  ( rx , tx ) =>  { 
             tx.setHeader("Content-type" , "text/html")  
-            tx.render("index.ejs" ,  {socket:true})  
+            tx.render("main.ejs" ,  {socket:true})  
         })
 
         ["post"] ("/",  ( rx  ,tx  ) => {  

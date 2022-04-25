@@ -1,0 +1,233 @@
+<%- include("./header.ejs")%> 
+    <!-- ******************* Site content ******************* -->
+    <div class="wrapper">
+      <!-- ******************* Job title block ******************* -->
+      <form action="" class="jobTitle_div" id="form1" >
+        <input type="text" class="jobTitle_field" placeholder="Specify Your Job Title" name="job_title" id="job_title" required/>
+        <label for="job_title" class="jobTitle_label">Job Title</label>
+        <input type="submit"  id="start_job" class="myBtn myBtn-mtd-color" value="Start">
+      </form>
+      <!-- ******************* END Job title block ******************* -->
+      
+      <!-- what is next is for managing grid position -->
+      <div>&nbsp;</div>
+      
+      <!-- ******************* Begin of the first fieldset ******************* --> 
+      <fieldset class="fieldset1">
+        <div class="ui raised segment">
+          <!--i class="big icon question circle outline"></i-->
+          <legend>
+            <a class="ui big right ribbon label" style="background-color:#F1F7FD; color:#59698D;">  
+              Summary Statistics 
+              <i id="unlocked_default" class="fas fa-unlock"></i> 
+            </a>
+          </legend>
+          <% if  ( socket )  {%> 
+            <form method="post" action="" enctype="multipart/form-data" name="file_uploader" id="form_upload" class="ui form" style="padding:20px; padding-bottom: 0;">
+              <div class="ui fluid action input">
+                <input name="fupload" type="file" accept=".ped,.map,.phen" multiple style="padding: 20px;"> 
+                <div class="ui button">
+                  <button class="ui vertical animated button" type="submit" id ="files_uploader">
+                    <div class="hidden content">Upload</div>
+                    <div class="visible content">
+                      <i class="upload icon"></i>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </form>
+          <%}%>         
+          <form name="form" style="padding:20px;" class="ui form"> 
+            <div class="ui toggle checkbox">
+                <input type="checkbox" id="sync" name="sync">
+                <label for="sync">Sync</label>
+            </div>
+            <div class="field">
+              <label for="ped">Pedigree File</label>
+              <select required id="ped" name="ped" class="ui fluid dropdown">
+                  <option   value = ""  disabled selected>Select a ped file</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="map">Map file</label>
+              <select required id="map" name="map" class="ui fluid dropdown">
+                  <option value="" disabled selected>Select a map file</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="phen">Phenotype file</label>
+              <select required id="phen" name="phen" class ="ui search dropdown">
+                <option value = "" disabled selected > Select a phen file</option>
+              </select>
+            </div>
+            <button type="submit" id ="run_summary" class="ui button">Launch Summary Statistics &nbsp;<i class="fas fa-chart-bar"></i></button>
+          </form> 
+        </div>  
+      </fieldset> 
+      <!-- ******************* END of the first fieldset ******************* --> 
+      <!-- ******************* Terminal block ******************* -->
+      <div>  
+        <div class="div_terminal" style="position: fixed; margin: 8px; margin-top: 0;" >
+          <div class="ui menu"> 
+            <div class="item">
+              <div class= "ui button" id="clear">
+                <i class="fas fa-broom" id="clear" title ="clear console"></i>
+              </div>
+            </div>
+            <div class="item">
+              <div class="ui button" id ="infosys">  
+                <i class="fas fa-info" id="infosys" title="show system info"></i>
+              </div> 
+            </div>
+            <div class="item"  title="use the terminal  interative mode">
+                <div class="ui icon button" style="background-color:#F1F7FD; color:#59698D;" id="detach_term"> 
+              <i class="fas fa-terminal" title="detach terminal"></i>
+                m-tdterm  
+                </div> 
+            </div> 
+            <div class="item"  title = "Download  Assets ">
+                <div class="ui icon button" style="background-color:#f1f7fd; color:#59698D;" id="download_assets"> 
+                    <i class="fa-solid  fa-circle-arrow-down"></i>
+                Download  Assets  
+                </div> 
+            </div> 
+            <div class="item" title ="Abort  Running Execution  or you Can hit Ctlr+C  to abort ">
+                <div class="ui icon button" style="background-color:#f56f42; color:#59698D;" id="abort_execution"> 
+              <i class="fa-solid  fa-ban" title="abort execution"></i>
+                Abort execution  
+                </div> 
+        
+            </div>
+            <div class="right menu">
+              <div class="item"  id="zoom_out">
+                  <i class="fa-solid fa-magnifying-glass-minus"></i>
+              </div>
+            </div>
+
+            <div class="right menu">
+              <div class="item" id="zoom_in">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+              </div>
+            </div>
+
+                      </div>
+          <div>
+            <!--readonly autocomplete ="off" speelcheck="false" autocapitalize="off"-->
+            <textarea name="" id="term" class="terminal"></textarea>
+          </div>
+        </div> 
+      </div>
+      <!-- ******************* END Terminal block ******************* -->
+      <!-- ******************* Begin of the second fieldset ******************* --> 
+      <fieldset class="fieldset2">
+        <div class="ui raised segment">
+          <legend>
+            <a class ="ui big ribbon label" style="background-color: #59698D; color: white;"> 
+              Genotype Inference &nbsp; 
+              <i id="lock_default" class="fas fa-lock"></i>
+            </a>
+          </legend>
+          <span></span>
+          <br>
+          <form action="" class="ui form">
+            <div class="inline fields">
+              <div class="field" style="align-content:center;">
+                <h4>Retrieve missing genotypes : &nbsp;
+                </h4>
+              </div>
+              <div class="ui large buttons">
+                <button class="ui button positive"  id="gi-yes">Yes</button>
+                <div class="or"></div>
+                <button class="ui button negative" id ="gi-no">No</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </fieldset>
+      <!-- ******************* END of the second fieldset ******************* -->
+      
+      <!-- What is next is for managing grid position -->
+      <div></div>
+      
+      <!-- ******************* Begin of the third fieldset ******************* -->
+      <fieldset class="fieldset3">  
+        <!--legend>
+          <a class ="ui ribbonlabel">
+            Analysis
+            <i id="lock_default" class="fas fa-lock"></i>
+          </a>
+        </legend--> 
+        <!--form name="form" class="ui form  default-blur-content"-->
+        <form name="form" class="ui form default-blur-content">
+          <!-- Choosing an Empirical run or a Theorical run-->
+          <h3 class="ui horizontal divider header">ANALYSIS</h3>
+          <div class="ui placeholder segment" style="background-color: whitesmoke; border:none !important;">
+            <div class="ui two column stackable center  aligned  grid" >
+              <div class="column">
+                <h4 style="margin-top:-11px; margin-left: 67px;color: orange;">EMPIRICAL RUN</h4>
+                <div class="ui form">
+                  <div class="field">
+                    <label for="nbsim"><span>Number of simulations</span></label>
+                    <div class="ui left icon input">
+                      <input id="nbsim" placeholder="10">
+                      <i class="redo icon"></i>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label for="nbcores">Number of Cores</label>
+                    <select id="nbcores" name="nbcores" class="ui search dropdown">
+                      <option value = "" disabled selected > Cpus core available</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui icon header">   
+                  <h4 style="color: #59698D;">THEORICAL RUN</h4>
+                  <i class="leaf icon"></i>
+                  <div class="ui medium  button active  t-run"  style="background-color: #59698D;color: white;">GO !</div> 
+                </div>
+              </div>
+            </div>
+            <div class="ui vertical divider">
+              Or
+            </div>
+          </div>
+          <div class="field">
+            <select id="phenotype" name="phenotype" class="ui search dropdown">
+              <option value="" disabled selected>Number of phenotype</option>
+            </select>
+          </div>
+          <div class="ui form">
+            <div class="inline fields">
+              <label>Choose markers  :</label>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input id="single_marker" type="radio" name="mradiobutton" value="single_marker" checked="checked">
+                  <label for="single_marker">Single-Marker</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input id="multi_marker" type="radio" name="mradiobutton" value="multi_marker">
+                  <label for="multi_marker">Multi-Marker</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--markerset -->
+          <!-- Hidden if single marker is chosen -->
+          <div class="field">
+            <label for="marker_set">Select markerset</label>
+            <textarea placeholder="Choose your markers. eg: 1, 3, 24" rows="1" cols="30" id="marker_set" name="marker_set" required></textarea>
+          </div>
+          <div class="field"> 
+            <button id="run_analysis" class="ui right floated button">Run Analysis &nbsp;<i class="fas fa-dna"></i></button>
+          </div>
+        </form>
+      </fieldset>
+      <!-- ******************* END of the third fieldset ******************* -->
+    </div>
+
+    <%-  include("./footer.ejs")%> 
+    <%-  include("./scripts/index_jscript.ejs")%>  

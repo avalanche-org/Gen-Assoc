@@ -48,6 +48,7 @@ let subprocess =  ( void function()  {return}())
 //! handle  Buffer between  userlog file  and  the built-in terminal to  avoid  double  rendering 
 let buffer_sandbox =  ( void function () { return}())  
 
+
    
 module
 ["exports"]  =  {
@@ -323,9 +324,15 @@ module
         try  {  
             cmd.on("close" , ( exit_code ,   signal  )  =>  { 
                 let  execute_status  =  exit_code  != 0  ? `FAILLURE : ${exit_code || signal }\n` : "SUCCESS : [ ok ]\n"
-                process.stdout.write(execute_status)
-                socket.emit("term::logout" ,  execute_status)  
-                callback(exit_code) 
+                process.stdout.write(execute_status) 
+                setTimeout(  () =>  {  
+                    if  ( process.env?.LG_CLOSE)   
+                    {
+                        callback(exit_code)  
+                        delete  process.env.LG_CLOSE 
+                        socket.emit("term::logout" ,  execute_status)  
+                    }
+                }  , 500)  
                 
             })
         }catch (err) {  
@@ -376,7 +383,9 @@ module
                 }) 
                
                 //! TODO : emmit signal  when it done  ...  
-                stream_tail.on("close" ,  _=>  log ("stream tail closed "))  
+                stream_tail.on("close" ,  _=>   { 
+                    process.env.LG_CLOSE  =true 
+                })  
            }
         })
      

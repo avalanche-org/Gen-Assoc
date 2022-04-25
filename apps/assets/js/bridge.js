@@ -493,10 +493,10 @@ sm.addEventListener("change" , evt => {
 }) 
 
 let  enable_switch_between_theorical_or_emperical   = false  
-ipcRenderer.on("load::phenotype" ,  (evt ,  incomming_data ) =>  {
+ipcRenderer.on("load::phenotype" ,  incomming_data  =>  {
     phenotype.innerHTML = ""  
     nbcores.disabled =  false 
-    incomming_data = fetch_right_data ( activate_extra_elements ,  evt , incomming_data)   
+    incomming_data =  incomming_data
     term_write (`total phenotype ${incomming_data}` )
     for  ( let phen_index  of range(incomming_data )) { 
         const phenotype_opts = _.createElement("option")  
@@ -510,22 +510,17 @@ ipcRenderer.on("load::phenotype" ,  (evt ,  incomming_data ) =>  {
 
 
 
-//FIXES [X]  double double  buffering on Terminal   #15 
-let force_buffer_clean =   ""  
 ipcRenderer.on("term::logout" , data  => {
     // fetch_right_data ( activate_extra_elements ,  evt ,data ) 
     
     data  =  parse_unknow_ascii_unicode(data)  
 
     term.focus() 
-    if  (data  &&  data  != force_buffer_clean)   
+    if  (data)    
     { 
-        force_buffer_clean = data  
-        log(force_buffer_clean)  
 
         term_write(data) 
        // run_summary.disabled  = summary_already_run 
-        //term.value = data
         
         follow_scrollbar()  
         run_analysis.disabled = !summary_already_run  
@@ -609,7 +604,7 @@ run_analysis.addEventListener("click" ,  evt => {
             ped        : ped_  
             ,map        : map_  
             ,phen       : phen_ 
-            ,phenotype_ : phenotype.options[phenotype.selectedIndex].value ?? null  
+            ,phenotype_ : phenotype.options[phenotype.selectedIndex].value ||   null  
             ,nbsim_     : nbsim.value     || 0  
             ,nbcores_   : nbcores.options[nbcores.selectedIndex].value  ||  null  
             ,mm         : mm.checked
@@ -619,7 +614,6 @@ run_analysis.addEventListener("click" ,  evt => {
     }
 
     const { selected_index } = gobject 
-
   
     const  {phenotype_, nbsim_, nbcores_}  = selected_index  
     const  require_needed   = [ phenotype_ ,  nbsim_ , nbcores_ ]  

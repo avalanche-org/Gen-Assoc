@@ -228,24 +228,28 @@ const __wtcp__ =  {
                     pedfile  :  `${paths}/${pedfile}`
                     ,mapfile  :  `${paths}/${mapfile}`
                     ,phenfile :  `${paths}/${phenfile}`
-                } 
+                }
                 utils.rsv_file(summary_arguments_flags?.phenfile ,  '\t')
-                .then(res => {
+                .then(res => { 
+                    res-=2   
                     utils.std_ofstream(paths ,  utils.scripts(summary_source, {...summary_arguments_flags})   ,sock,
-                        exit_code => {
-                            if  (exit_code == 0x00)  
-                            {   
-                                sock.emit("load::phenotype"  ,  res-2)  
-                            }else{   
-                                log("fail")   
-                            }  
+                        exit_code => { 
+                            
+                            if ( exit_code !=0) 
+                                return 
+
+                            socket.emit("load::phenotype" ,   res)  
                         })
                 }) 
             })
+             
 
             gi_state  =  0  //! by default the gi is <empty_string>   
             theorical = false 
-            sock.on("retrive::missing::genotype"   , gi => {gi_state =  gi})        
+            sock.on("retrive::missing::genotype"   , gi => {
+                gi_state =  gi
+            }) 
+
             sock.on("enable::trun" ,  is_theorical_enable => {  theorical =   is_theorical_enable } )  
           
             RUN_ANALYSYS :   sock.on("run::analysis" ,  gobject => {
@@ -254,7 +258,6 @@ const __wtcp__ =  {
                      [  pedfile , mapfile , phenfile  ] = [ `${paths}/${ped}` , `${paths}/${map}`,`${paths}/${phen}` ]  
 
                 console.table(selected_index)  
-                    log ( "phen path " , phenfile  ) 
                 let user_namespace  =  paths.split(so).slice(-1)[0] 
                 
                 let  analysis_argument_flags = {}    
@@ -294,7 +297,10 @@ const __wtcp__ =  {
 
                 }
                 log ("th" ,  theorical) 
-                utils.std_ofstream(paths ,   utils.scripts(run_analyser  , {  ...analysis_argument_flags }  )  ,  sock ,   exit_code  => {
+                utils.std_ofstream(paths ,   utils.scripts(run_analyser  , {  ...analysis_argument_flags }  )  ,  sock ,   exit_code  => {  
+                    
+                    console.table(analysis_argument_flags)  
+
                     if(exit_code ==0x00) 
                     {
                         log("exit" , exit_code )

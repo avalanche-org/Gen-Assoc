@@ -290,7 +290,7 @@ module
         let compress_name  = virtual_userspace.split("/").at(-1) +`.${compression_algorithm}` 
         sandbox_path+=  `/${compress_name}` 
         chanel.emit("fsinfo" ,  `+ Compressed as  ::  ${compress_name}`) 
-        let cmd  = `${compression_algorithm}  -r ${sandbox_path}  ${virtual_userspace}` 
+        let cmd  = `${compression_algorithm}  -r ${sandbox_path}  ${virtual_userspace} `    
         let subprocess = exec(cmd)  
         return  sandbox_path  
        

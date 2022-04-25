@@ -40,8 +40,11 @@ RUN apt install git --assume-yes && apt install r-base r-base-dev --assume-yes
 ARG  HOSTED_RLIB_LOCATION="/usr/lib/R"
  
 ADD  .  ./mTDT 
+WORKDIR ./mTDT 
+RUN ls  
+RUN chmod +x  ./rlib
+RUN ./rlib dispatch  ${HOSTED_RLIB_LOCATION}  
 WORKDIR  /mTDT/apps/
-
 
 RUN echo "bin/" >> .gitignore 
 
@@ -54,10 +57,10 @@ RUN ln -s `pwd`/bin/prettify /usr/bin/prettify
 RUN cd ../
 
 ### SETTING UP GIT 
-RUN git config --global user.email "gen@assoc.sr" 
-RUN git config --global user.name  "mtdt"
-RUN git add    --all
-RUN git commit -m "checkpoint::save"
+#RUN git config --global user.email "gen@assoc.sr" 
+#RUN git config --global user.name  "mtdt"
+#RUN git add    --all
+#RUN git commit -m "checkpoint::save"
 
 RUN npm install && npm install -g  pm2
 

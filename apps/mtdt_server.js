@@ -243,6 +243,7 @@ const __wtcp__ =  {
                                 return 
 
                             socket.emit("load::phenotype" ,   res)  
+
                         })
                 }) 
             })
@@ -308,6 +309,7 @@ const __wtcp__ =  {
                     if(exit_code ==0x00) 
                     {
                         log("exit" , exit_code )
+
                     }else {
                         log("error") 
                     }

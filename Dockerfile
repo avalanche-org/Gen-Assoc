@@ -21,13 +21,15 @@ FROM  node:$NAPL_V
 
 MAINTAINER  Umar  jUmarB@protonmail.com <github/Jukoo>  
 
-ARG  plink_build_version="20210606"             #   Default  Plink  Build Release  
-ARG  plink_filename="plink_linux_x86_64_${plink_build_version}"  # Plink File name  
+# Default  plink  Build Release  
+ARG  plink_build_version="20210606"     
+
+# Plink source Basename   
+ARG  plink_filename="plink_linux_x86_64_${plink_build_version}"  
+
 # See https://www.cog-genomics.org/plink/   on  Binary Download section 
 # To change the build, you can do -build-arg plink_build_version=<numberOfBuild> 
-
 ARG  plink_bin="https://s3.amazonaws.com/plink1-assets/${plink_filename}.zip" 
-
 
 ### UPDATE  CORE PACKAGES
 RUN apt update  --assume-yes  
@@ -39,10 +41,10 @@ RUN apt install git --assume-yes && apt install r-base r-base-dev --assume-yes
 # > .libPath()  // that tell  you the  location  Where  the package are will be installed  
 ARG  HOSTED_RLIB_LOCATION="/usr/lib"
  
-ADD  .  ./mTDT 
-WORKDIR ./mTDT 
-RUN chmod +x  ./rlib
-RUN ./rlib dispatch  ${HOSTED_RLIB_LOCATION}  
+ADD  .  ./mTDT
+#WORKDIR ./mTDT 
+#RUN chmod +x  ./rlib
+#RUN ./rlib dispatch  ${HOSTED_RLIB_LOCATION}  
 WORKDIR  /mTDT/apps/
 
 RUN echo "bin/" >> .gitignore 
@@ -64,7 +66,7 @@ RUN cd ../
 RUN npm install && npm install -g  pm2
 
 ENV PORT=4000 
- 
+
 EXPOSE $PORT 
 
 CMD  ["pm2-runtime" , "mtdt_server.js"] 

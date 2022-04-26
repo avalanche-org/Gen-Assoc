@@ -23,7 +23,7 @@ getcwd  ()  {
     echo -e "$cwd"  
 } 
 set_owner ()  {  
-    
+
     IFS="/" read -a pathsplit  <<<  $(getcwd) 
     owner=${pathsplit[2]}  
 } 
@@ -33,6 +33,20 @@ set_owner
 buildRchive ()  {  
     echo -e "+ Rchive  Build" 
     cd  ${root_parent} 
+    
+    if [[  -f  ${Rzip}  ]]  ; then 
+        read  -p "${Rzip} already exist" 
+        
+        case  ${REPLY} in 
+            "y"|"Y"|"yes"|"YES");;  
+             *) 
+                 echo -e "aborting" 
+                 exit 2 
+                 ;; 
+         esac 
+
+    fi   
+
     [[  -n  $(zip -r ${Rzip} R) ]]  && {  
         echo -e  "+[zip]  Archive  R lib packages"
         mv ${Rzip}  $cwd   

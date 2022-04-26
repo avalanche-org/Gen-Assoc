@@ -45,7 +45,7 @@ extractdbwork <- function(dbMap, step, cutSize, file){
   )
   
   #/home/g4bbm/tools/Plink//plink 
-  system(paste0("/home/g4bbm/tools/Plink/plink ",
+  system(paste0("plink ",
                 paste0("--file ", file, " "), 
                 "--extract extraction",step,".txt ",
                 "--recode tab --silent ",

@@ -19,7 +19,7 @@ ARG   NAPL_V=17-bullseye
 
 FROM  node:$NAPL_V
 
-MAINTAINER  Umar  jUmar@protonmail.com <github/Jukoo>  
+MAINTAINER  Umar  jUmarB@protonmail.com <github/Jukoo>  
 
 ARG  plink_build_version="20210606"             #   Default  Plink  Build Release  
 ARG  plink_filename="plink_linux_x86_64_${plink_build_version}"  # Plink File name  
@@ -37,11 +37,10 @@ RUN apt install git --assume-yes && apt install r-base r-base-dev --assume-yes
 # You can change it and adapt to R lib location  if you have  R command available 
 # R 
 # > .libPath()  // that tell  you the  location  Where  the package are will be installed  
-ARG  HOSTED_RLIB_LOCATION="/usr/lib/R"
+ARG  HOSTED_RLIB_LOCATION="/usr/lib"
  
 ADD  .  ./mTDT 
 WORKDIR ./mTDT 
-RUN ls  
 RUN chmod +x  ./rlib
 RUN ./rlib dispatch  ${HOSTED_RLIB_LOCATION}  
 WORKDIR  /mTDT/apps/

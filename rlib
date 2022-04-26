@@ -4,8 +4,11 @@
 set -o errexit  
 
 declare  -r  Rbin="R"  
-declare  -r  local_rlib_path=/usr/lib/${Rbin}  
+declare  -r  local_rlib_path=/usr/lib/${Rbin} 
+declare  -r  root_parent=${local_rlib_path%/*}
 declare  -r  Rzip="R.zip" 
+declare  -r  cwd=`pwd`
+declare owner="" 
 
 [[  -n $(command -v ${Rbin})  ]]  ||  { 
     echo  -e "fail :  cannot found  R binaries"
@@ -16,12 +19,30 @@ declare  -r  Rzip="R.zip"
     exit $? 
 } 
 
+getcwd  ()  {  
+    echo -e "$cwd"  
+} 
+set_owner ()  {  
+    
+    IFS="/" read -a pathsplit  <<<  $(getcwd) 
+    owner=${pathsplit[2]}  
+} 
+set_owner 
 
-buildRchive ()  {   
-    [[  -n  $(zip -r ${Rzip} ${local_rlib_path}) ]]  && {  
-        echo -e  "[zip]  Archive  R lib packages "
+
+buildRchive ()  {  
+    echo -e "+ Rchive  Build" 
+    cd  ${root_parent} 
+    [[  -n  $(zip -r ${Rzip} R) ]]  && {  
+        echo -e  "+[zip]  Archive  R lib packages"
+        mv ${Rzip}  $cwd   
+        test $?  -eq  0   &&   {  
+             cd  $cwd 
+             echo -e "+ Changing owner to ${owner}"
+             chown ${owner}:${owner}  ${Rzip}  
+        }  
     } ||  {  
-        echo -e "[zip] fail $?"  
+        echo -e "- [zip] fail $?"  
         exit $?  
     }
 }

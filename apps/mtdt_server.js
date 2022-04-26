@@ -114,7 +114,7 @@ const __wtcp__ =  {
             tx.render("main.ejs" ,  {socket:true})  
         })
 
-        ["post"] ("/",  ( rx  ,tx  ) => {  
+        ["post"] ("/main",  ( rx  ,tx  ) => {  
 
             const { files_upload_processing  }  = __wtcp__ 
             if (!rx?.files ) log ("file upload module not found ")  
@@ -125,7 +125,7 @@ const __wtcp__ =  {
             
             
             if  ( files_upload_processing (fupload  ,   __wtcp__["#fstream"]) ) 
-                tx.redirect("/") 
+                tx.redirect("/main") 
             
             else tx.status(500).send({ message  :"Upload Broken :  fail to upload  file (s) !"})
         

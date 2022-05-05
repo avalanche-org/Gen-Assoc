@@ -1,6 +1,18 @@
 #!/usr/bin/python3  
+# RpkgAutorun.py  for  m-TDT  
+# Install  requires library  that R  needed in runtime  
+# ---- 
+# The first Time you run the m-tdt  application  
+# that's install all  require lib  in background  Process
+# and the end user wait  to have back the result  but that 
+# take much time ...  
+# The IDEA is to take  a snapshot  of my current host that 
+# already have all need module  and make a snapshot 
+# and this snapshot will be used  to retrive the missing 
+# library and  build all  thing while building the Docker Image. 
+# ----
+# copyright (c) 2022, umar jUmarB@protonmail.com  <github/jukoo>  
 
-# FETCH  AND INSTALL  MISSING  R BINARY  PACKAGE 
 
 from  enum  import Enum  , unique  
 from  inspect  import  getmembers , isclass
@@ -21,21 +33,20 @@ class DEFAULT_CONFIG  (Enum) :
     RMODUMP       : str  = "Rallib.txt"
     
 
-
 """ 
-read  file  that containts a list of R package   by specifying flag  -f  
-if the file is missing  build it from  host   /usr/lib/R/library  
---- 
-DOCKER   
+DOCKER  STEP 
+-------------
+NOTE : ENSURE  YOU MAKE A SNAPSHOT  AND BUILD WITH DOCKER 
+     e.g : the Rallib.txt should be  present inside the Docker Image 
 
 1 =>  GET THE LIST OF AVAILABLE PACKAGE  PRESENT ON DOCKER IMAGE  
 2 =>  COMPARE THEM AND EXTRACTE THE MISSING  
 3 =>  BUILD  <dependencies.R> file  
-4 =>  install  all  
+4 =>  INSTALL  [all]      
 
 """  
 
-class RpkManager  :  
+class RpkgAutorun :  
 
     def __init__ (self )  :  
         self.dependencies_list  =  [] 
@@ -147,31 +158,33 @@ class RpkManager  :
 
     
     @property 
-    def install_dependencies  ( self) :  
+    def install_dependencies  ( self ,  *args) :  
         """ 
-        read file  requirement  and install   each dependenci  
-         
+        read file  requirement  and  
         """
         ...
-
-#NOTE : 
-"""
-1  ->  make snapshot  
-
-
---- 
-
-FLAGS : 
-     -s , --snapshot 
-     -i , --install-dependencies
-     
-"""
+ 
 def build ()   : 
-    Rlang  : RpkManager  = RpkManager()  
     
-     
-    Rlang.autoBuild 
-    #Rlang.install_dependencies 
+    RPAR : RpkgAutorun  = RpkgAutorun()  
+    
+    stdarg  =  agp.ArgumentParser ()  
+    stdarg.add_argument("-s" , "--snapshot" , action="store_true" ,  help ="Take  a snapshot of  R libraries  module ")  
+    stdarg.add_argument("-b" , "--build-missing" , action="store_true" , help="build  R file  script with missing libraries")  
+    stdarg.add_argument("-l" , "--list-missing"  , action="store_true"  ,help="list missing libraries  on stdout")   
+    stdarg.add_argument("-i" , "--install" , nargs='?' , help="install  missing dependencies")  
+    argv  = stdarg.parse_args() 
+   
+    if argv.snapshot      :  Rlang.snapshot   
+    if argv.build_missing :  Rlang.autoBuild  
+    if argv.list_missing  : ... 
+    if not  argv.install or   argv.install ==  "all":  
+       #TODO  : install all  libraries 
+       ...
+    if argv.install :
+       #TODO  :  install the specified library  
+       ...
+
 
 
 if __name__.__eq__("__main__")   : 

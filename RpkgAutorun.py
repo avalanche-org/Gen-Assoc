@@ -59,19 +59,20 @@ class RpkgAutorun :
 
 
     @property  
-    def load_DC  (self) : 
+    def load_DC  (self)  -> dict :  
         """ 
-        LOAD DEFAULT_CONFIG ... 
+        bind   DEFAULT_CONFIG  Enum class to  RpkgAutorun  
+        add  unique  attribute   
         """
         members ,  values  =  [ DEFAULT_CONFIG._member_names_ , list(DEFAULT_CONFIG._value2member_map_.keys()) ]  
         return dict (zip(members, values))  
 
 
     @property 
-    def retrive_Rlibmodule  (self)  :  # for docker image  
+    def retrive_Rlibmodule  (self)  ->  list : # for docker image  
         """  
-        fetch  all R  libmodule present in the host   
-
+        fetch  all R  libmodule present in the host  
+        list  all  libs module  present  in  /usr/lib/R/library  directory   
         """
         return  os.listdir(self.RLIBPATH)  
     
@@ -80,7 +81,6 @@ class RpkgAutorun :
         """
         load  Rallib.txt  that contains  required_modules  
         return  a collection of set   
-         
         """ 
         return  set(self.io_read(self.RMODUMP))   
 
@@ -120,11 +120,12 @@ class RpkgAutorun :
     @property 
     def autoBuild (self)  :  #write  mode 
         """
-        collection all library module and save  it in  file 
+        collection all library module and save  it in   R script  file  
+        
         """ 
         modules : list =  list(self.missing_lib)   
         if  modules.__len__().__eq__(0)  :  
-            sys.__stdout__.write(f"no asymetric  dependencies found  [  all requiermens done ] \n") 
+            sys.__stdout__.write(f"no asymetric  dependencies found  [All requierments are satisfied] \n") 
             sys.exit(0)  
 
         dump_modobj =  os.open (self.DEFFNAME_REQ , os.O_CREAT|os.O_EXCL|os.O_WRONLY) 
@@ -139,13 +140,24 @@ class RpkgAutorun :
     
    
     def shell_exec  ( self , shell_command) : 
+        """  
+        Execute shell  command  
+        """
         blackhole  = os.devnull  
         childprocess =  sbproc.Popen( shell_command ,  stdout=sbproc.PIPE ,  shell=True)  
         return  childprocess.wait()  
 
       
     def io_read(self , fileTarget)  : 
-        assert  os.access(fileTarget , os.F_OK) ,  f"file not found" 
+        if not  os.access(fileTarget , os.F_OK)  :  
+            sys.__stderr__.write (f"""
+            no snapshot found\n
+            try to make a build  before   
+            {sys.argv[0]}  -s | --snapshot  
+            \n""") 
+            
+            sys.exit(1)  
+             
 
         list_of_required_module   = os.open(fileTarget  , os.O_RDONLY) 
         assert  list_of_required_module.__gt__(0)   
@@ -155,14 +167,17 @@ class RpkgAutorun :
             modules = modules.split(chr(0xa))
             return modules[:-1] 
 
-
-    
     @property 
-    def install_dependencies  ( self ,  *args) :  
+    def install  ( self ) :  
         """ 
         read file  requirement  and  
         """
-        ...
+        if list(self.missing_lib).__len__().__eq__(0)  : 
+            sys.__stdout__.write(f"all dependencies are satisfied \n")  
+            sys.exit(0)  
+
+        assert  os.access(self.DEFFNAME_REQ , os.F_OK | os.R_OK )  , f"no build found\n"
+        childprocess_exec  =  self.shell_exec(f"Rscript {self.DEFFNAME_REQ}")   
  
 def build ()   : 
     
@@ -172,18 +187,23 @@ def build ()   :
     stdarg.add_argument("-s" , "--snapshot" , action="store_true" ,  help ="Take  a snapshot of  R libraries  module ")  
     stdarg.add_argument("-b" , "--build-missing" , action="store_true" , help="build  R file  script with missing libraries")  
     stdarg.add_argument("-l" , "--list-missing"  , action="store_true"  ,help="list missing libraries  on stdout")   
-    stdarg.add_argument("-i" , "--install" , nargs='?' , help="install  missing dependencies")  
+    stdarg.add_argument("-i" , "--install" , action="store_true" , help="install  missing dependencies")  
     argv  = stdarg.parse_args() 
    
-    if argv.snapshot      :  Rlang.snapshot   
-    if argv.build_missing :  Rlang.autoBuild  
-    if argv.list_missing  : ... 
-    if not  argv.install or   argv.install ==  "all":  
-       #TODO  : install all  libraries 
-       ...
-    if argv.install :
-       #TODO  :  install the specified library  
-       ...
+    if argv.snapshot      :  RPAR.snapshot   
+    if argv.build_missing :  RPAR.autoBuild  
+    if argv.list_missing  : 
+        """
+        list missing module 
+        """
+        misslib  : list  =  list ( RPAR.missing_lib)  
+        if misslib.__len__().__gt__(0)  : 
+            print(*misslib)  
+            sys.exit (0)  
+
+        sys.__stdout__.write(f"Everything  is Ok  ! \n")   
+
+    if argv.install :  RPAR.install
 
 
 

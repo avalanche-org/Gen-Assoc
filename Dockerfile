@@ -70,7 +70,7 @@ RUN ln -s `pwd`/bin/plink /usr/bin/plink
 RUN ln -s `pwd`/bin/prettify /usr/bin/prettify
 RUN cd ../
 
-RUN npm install && npm install -g  pm2 3
+RUN npm install && npm install -g  pm2 
 
 #HINT : DEFAULT PORT USED IS 4000  BY  MODIFYING  THE ENV $PORT  
 #       YOU NEED  TO SPECIFY  THE  '-e' ON DOCKER COMMAND LAUNCHER 

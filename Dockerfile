@@ -42,9 +42,20 @@ RUN apt install git --assume-yes && apt install r-base r-base-dev --assume-yes
 # You can change it and adapt to R lib location  if you have  R command available 
 # R 
 # > .libPath()  // that tell  you the  location  Where  the package are will be installed  
-ARG  HOSTED_RLIB_LOCATION="/usr/lib"
+#ARG  HOSTED_RLIB_LOCATION="/usr/lib"
  
-ADD  .  ./mTDT
+ADD  .  ./mTDT  
+WORKDIR /mTDT 
+
+#TRYING TO FIX R PACKAGE DEPENDACIES  DURING DOCKER BUILD 
+RUN  chmod +xs RpkgAutorun.py  
+
+#+ Generate file named  dependancies.R  that contains  missing libraries  
+RUN  ./RpkgAutorun.py  --build-missing  
+
+#+ Start Installing missing library  during build  
+RUN  ./RpkgAutorun.py  --install 
+
 WORKDIR  /mTDT/apps/
 
 RUN echo "bin/" >> .gitignore 
@@ -59,7 +70,7 @@ RUN ln -s `pwd`/bin/plink /usr/bin/plink
 RUN ln -s `pwd`/bin/prettify /usr/bin/prettify
 RUN cd ../
 
-RUN npm install && npm install -g  pm2
+RUN npm install && npm install -g  pm2 3
 
 #HINT : DEFAULT PORT USED IS 4000  BY  MODIFYING  THE ENV $PORT  
 #       YOU NEED  TO SPECIFY  THE  '-e' ON DOCKER COMMAND LAUNCHER 

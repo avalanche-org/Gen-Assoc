@@ -64,7 +64,7 @@ class RpkgAutorun :
         bind   DEFAULT_CONFIG  Enum class to  RpkgAutorun  
         add  unique  attribute   
         """
-        members ,  values  =  [ DEFAULT_CONFIG._member_names_ , list(DEFAULT_CONFIG._value2member_map_.keys()) ]  
+        members ,  values  =  [ DEFAULT_CONFIG._member_names_ ,list(DEFAULT_CONFIG._value2member_map_.keys()) ]  
         return dict (zip(members, values))  
 
 
@@ -196,13 +196,17 @@ def build ()   :
         """
         list missing module 
         """
-        misslib  : list  =  list ( RPAR.missing_lib)  
-        if misslib.__len__().__gt__(0)  : 
-            print(*misslib)  
+        misslibs : list  =  list ( RPAR.missing_lib)  
+        if misslibs.__len__().__gt__(0)  : 
+            for misslib  in misslibs  :
+                sys.__stdout__.write(f"{misslib}\n")  
+
             sys.exit (0)  
 
         sys.__stdout__.write(f"Everything  is Ok  ! \n")   
 
+    #NOTE :  before  installing  ensure that the dependenies.R  is available 
+    #        therefor  run  ./RpkgAutorun  -b | --build-missing  
     if argv.install :  RPAR.install
 
 

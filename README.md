@@ -143,10 +143,87 @@ _The default port of  the container is **4000**_  using  environment variable
 <u>_example_</u>: 
 >  **docker run  -d  -p 3000:4000  jukoo/m-tdt**
 
-<u>if  you  want to modify the default 
+<u>if  you  want to modify the default </u>
+>
 > **docker  run  -d  -e PORT=5000   -p 3000:5000   jukoo/m-tdt**
 
+
 Here you are  now  let's see  to get your work done :rocket: 
+
+
+
+##### COMPLETE OR INCOMPLETE BUILD PROCESS #CIBP  
+
+
+The docker image provided is a complete image that contains the whole application 
+of the application available at the following address  [docker hub]("https://hub.docker.com/repository/docker/jukoo/m-tdt"). 
+
+
+Here are the step to get full build of image  
+
+1 -> build the docker image using the current Dockerfile 
+
+```
+$> docker build .  -t <yourImageTagName> 
+```
+
+From here we have a basic image of the application  
+but you have to take into account that every time you start the application it will do an installation 
+dependencies for a first operation   
+
+To go to the complete phase of the image   
+
+you have to proceed as follows: 
+
+once the first step is over, we enter the container  
+ 
+```
+$> docker run -d --name <container_name> -p<hostPort>:<containerPort> <yourImageTagName>  
+$> docker exec -ti <container_name> bash    
+#> cd /mTDT 
+```
+
+You will find a file RpkgAutorun.py (it allows to deduct the missing libraries) 
+to install them  
+
+```
+#> ./RpkgAutorun.py --install or -i  
+```
+(It will take some time) 
+  
+
+Once it's finished, we leave the container  
+
+```
+#>exit  
+```
+
+And we go to the last step.
+
+We create a snapshot of the image 
+```
+$> docker commit -m <message> -a <outside> <container_name> <yourImageTagName>:<version> 
+```
+
+this version **<yourImageTagName>:<version>** will be the complete version of the application, which includes 
+dependencies.  
+
+complete and incomplete: 
+
+Incomplete Image: 
+
+-> because you have to build the dependencies  
+-> also count the time to build the dependencies 
+
+
+Complete Image : 
+everything is already upstream  
+
+If you want to do some manipulation more it would be better to use the incomplete image  
+otherwise if you just want to use the application on the complete image 
+
+
+**BASIC DOCKER IMAGE -> MTDT IMCOMPLETE IMAGE (APPLICATION)  ->  MTDT COMPLETE IMAGE (APPLICATION + BINARIES)**
 
 
 **Love  Pull Request** 

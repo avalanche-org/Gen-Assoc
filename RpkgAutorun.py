@@ -87,7 +87,11 @@ class RpkgAutorun :
 
     @property  
     def missing_lib  (self) : 
-        
+        """
+        Detect  missing libraries 
+        make sysmetric comparaison  between  localhost R  library 
+        and  requirement file  <Rallib.txt>  
+        """
         required_modules   =  self.load_dumped_library  
         rhost_present_modules  = set(self.retrive_Rlibmodule) 
         

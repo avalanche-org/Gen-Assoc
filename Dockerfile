@@ -54,9 +54,8 @@ RUN  chmod +xs RpkgAutorun.py
 RUN  ./RpkgAutorun.py  --build-missing  
 
 #+ Start Installing missing library  during build  
-RUN  ./RpkgAutorun.py  --install 
 
-WORKDIR  /mTDT/apps/
+#RUN  ./RpkgAutorun.py  --install 
 
 RUN echo "bin/" >> .gitignore 
 
@@ -70,7 +69,8 @@ RUN ln -s `pwd`/bin/plink /usr/bin/plink
 RUN ln -s `pwd`/bin/prettify /usr/bin/prettify
 RUN cd ../
 
-RUN npm install && npm install -g  pm2 
+RUN npm install && npm install -g  pm2
+RUN npm audit  fix --force   
 
 #HINT : DEFAULT PORT USED IS 4000  BY  MODIFYING  THE ENV $PORT  
 #       YOU NEED  TO SPECIFY  THE  '-e' ON DOCKER COMMAND LAUNCHER 

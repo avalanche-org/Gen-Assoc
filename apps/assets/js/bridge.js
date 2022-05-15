@@ -18,14 +18,14 @@ import  {
     ,ped, map , phen,sm,mm ,yes,no,phenotype,nbsim,nbcores,markerset, term 
     ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
     ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort
-    ,download_assets ,zoom_out , zoom_in 
+    ,download_assets ,zoom_out , zoom_in , carousels   
     
     ,i_lock ,i_unlock ,blur_area, status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
     ,log , error,warn
     ,random , floor  
 
-    ,window_keyShortcut,shortcup_maping,parse_unknow_ascii_unicode
+    ,window_keyShortcut,shortcup_maping,parse_unknow_ascii_unicode ,  carousel_navigation  
 
 }  from  "./ops.js"   
 console.log(_) 
@@ -942,4 +942,6 @@ if  (activate_extra_elements)
         hidden_link.remove() 
         
     }) 
+
+    carousel_navigation()      
 }

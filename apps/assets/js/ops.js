@@ -68,7 +68,8 @@ export const  [
     markerset,term  , 
     run_summary,run_analysis, 
     sync , files_uploaders/*element node  |  undefined */ , files_browser/* element node | undefined*/ ,
-    form_upload ,  job_title ,  job_init  ,  disconnect , p_menu, interm , giyes , gino , download , abort , download_assets, zoom_in, zoom_out     
+    form_upload ,  job_title ,  job_init  ,  disconnect , p_menu, interm , giyes , gino , download , abort , download_assets, zoom_in, zoom_out ,
+    carousels, carousel_prev , carousel_next 
   ]=[ 
         _.querySelector("#ped"),   
         _.querySelector("#map"), 
@@ -99,8 +100,10 @@ export const  [
         activate_extra_elements  ?  _.querySelector("#abort_execution")     : (void function ()  { return  }() )  ,  
         activate_extra_elements  ?  _.querySelector("#download_assets")     : (void function ()  { return  }() )  ,  
         activate_extra_elements  ?  _.querySelector("#zoom_out")            : (void function ()  { return  }() )  ,  
-        activate_extra_elements  ?  _.querySelector("#zoom_in")             : (void function ()  { return  }() )   
-
+        activate_extra_elements  ?  _.querySelector("#zoom_in")             : (void function ()  { return  }() )  , 
+        activate_extra_elements  ?  _.querySelectorAll(".carousel-item")    : (void function ()  { return  }() )  , 
+        activate_extra_elements  ?  _.querySelector(".carousel-control-prev"):(void function ()  { return  }() )  , 
+        activate_extra_elements  ?  _.querySelector(".carousel-control-next"):(void function ()  { return  }() )   
     ] ,
     [  
      i_lock  , i_unlock,
@@ -198,3 +201,57 @@ export  const parse_unknow_ascii_unicode   = data =>  {
     return  data.replace(unknow_unicode_pattern_regex , '') 
 
 }
+
+/*  carousel handler */ 
+
+
+export const  carousel_navigation  =  () =>  { 
+    
+
+    const  carousels_block  = [ ...carousels]  
+    const  carousels_block_size =  carousels_block.length -1   
+    
+    const  navigation  = [  carousel_prev , carousel_next ]  
+    
+    navigation.forEach ((carousel_navbtn , index) =>  { 
+
+        carousel_navbtn.addEventListener("click" , evt =>  {
+
+            let  active_carousel =  carousels_block.filter(  carousel =>  carousel.classList.contains("active")).at(0)   
+            let  active_carousel_position  = carousels_block.indexOf(active_carousel) 
+            let  next_carousel    =  0   
+            let  preview_carousel =  0   
+            
+            next_carousel    = index == 1 ? active_carousel_position    +1  : null  
+            preview_carousel = index == 0 ? active_carousel_position    -1  : null  
+
+            if (next_carousel && next_carousel > carousels_block_size  ) 
+            {
+                //NOTE:  get back to first slide 
+                active_carousel.classList.remove("active")
+                next_carousel   = 0  
+                active_carousel = carousels_block.at(next_carousel) 
+
+            } 
+             
+            if  ( preview_carousel && preview_carousel < (~carousels_block_size+1) )    
+            {
+                //!NOTE : get back to  the last slide  
+                active_carousel.classLit.remove("active")   
+                preview_carousel  =  carousels_block_size 
+                active_carousel = carousels_block.at(preview_carousel)   
+            }
+        
+            if (active_carousel.classList.contains("active"))
+                active_carousel.classList.remove("active") 
+           
+            let  active_index  =  next_carousel   ?  next_carousel  :  preview_carousel  
+
+            carousels_block.at(active_index).classList.add("active") 
+        
+        })
+    })  
+   
+   
+
+}  

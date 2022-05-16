@@ -10,14 +10,17 @@
     <br> 
   </div>
   <div class="carousel-inner">
-    <div class="carousel-item  active">  <!--style="background-color:gray"-->
+    <div class="carousel-item  active" data-tooltip="Add users to your feed" data-inverted="">  <!--style="background-color:gray"-->
+
   
-       <div class="container col-8">  
-        <div class="d-block w-100"> 
+          <h3 class="ui horizontal divider header">Job Title</h3>
+       <div class="container col-8" >   
+        <div class="d-block w-100" >  
               <form action="" class="jobTitle_div" id="form1" >
-            <input type="text" class="jobTitle_field" placeholder="Specify Your Job Title" name="job_title" id="job_title" required/>
+            <input type="text" class="jobTitle_field" placeholder="Specify Your Job Title" name="job_title" id="job_title" required />
             <label for="job_title" class="jobTitle_label">Job Title</label>
             <input type="submit"  id="start_job" class="myBtn myBtn-mtd-color" value="Start">
+
         </form> 
     <div  class="container  col-10"> 
  <h5>Start Your Job Title</h5>
@@ -31,7 +34,9 @@
     </div>
     
     <div  class="container col-8">  
-    <div class="carousel-item ">
+    <div class="carousel-item "> 
+
+          <h3 class="ui horizontal divider header">Upload Sheets</h3>
  <% if  ( socket )  {%> 
             <form method="post" action="" enctype="multipart/form-data" name="file_uploader" id="form_upload" class="ui form" style="padding:20px; padding-bottom: 0;">
               <div class="ui fluid action input">
@@ -54,7 +59,9 @@
 
     <div class="container col-8">  
     <div class="carousel-item ">
+    
 
+          <h3 class="ui horizontal divider header">Summary  Statistics </h3>
 <form name="form" style="padding:20px;" class="ui form"> 
             <div class="ui toggle checkbox">
                 <input type="checkbox" id="sync" name="sync">
@@ -88,16 +95,18 @@
      
     <div  class = "container col-8"> 
     <div class="carousel-item">  
+
+          <h3 class="ui horizontal divider header">Genotype Inference</h3>
 <form action="" class="ui form">
             <div class="inline fields">
               <div class="field" style="align-content:center;">
-                <h4>Retrieve missing genotypes : &nbsp;
-                </h4>
+                <!--h4>Retrieve missing genotypes : &nbsp;
+                </h4-->
               </div>
               <div class="ui large buttons">
-                <button class="ui button positive"  id="gi-yes">Yes</button>
+                <button class="ui blue button"  id="gi-yes">Genotype Inference</button>
                 <div class="or"></div>
-                <button class="ui button negative" id ="gi-no">No</button>
+                <button class="ui button negative" id ="gi-no">Pass</button>
               </div>
             </div>
           </form>
@@ -106,10 +115,32 @@
   </div> 
 
 
-    <div  class="container col-8"> 
-    <div  class="carousel-item"> 
 
-    <form name="form" class="ui form default-blur-content">
+
+
+<div  class = "container col-8"> 
+    <div class="carousel-item">  
+ 
+      <h3 class="ui horizontal divider header">Run Type</h3>
+      <form action="" class="ui form"> 
+            <div class="inline fields">
+              <div class="field" style="align-content:center;">
+                <!--h4>Retrieve missing genotypes : &nbsp;
+                </h4-->
+              </div>
+              <div class="ui large buttons">
+                <button class="ui blue button"  id="single_marker">Single Marker</button>
+                <div class="or"></div>
+                <button class="ui button negative" id ="multi_marker">Multi Marker</button>
+              </div>
+            </div>
+          </form>
+
+    </div> 
+  </div>
+
+    <div  class= "container col-8"> 
+        <div class="carousel-item" >  
           <!-- Choosing an Empirical run or a Theorical run-->
           <h3 class="ui horizontal divider header">ANALYSIS</h3>
           <div class="ui placeholder segment" style="background-color: whitesmoke; border:none !important;">
@@ -139,17 +170,36 @@
                   <div class="ui medium  button active  t-run"  style="background-color: #59698D;color: white;">GO !</div> 
                 </div>
               </div>
-            </div>
+            </div> 
+
             <div class="ui vertical divider">
               Or
             </div>
-          </div>
+    </div>
+
+
+        </div> 
+
+    </div>  
+
+
+
+
+
+
+
+    <div  class="container col-8"> 
+    <div  class="carousel-item"> 
+    
+        <h3 class="ui horizontal divider header">Run Analysis</h3>  
+ 
+<form name="form" style="padding:20px;" class="ui form"> 
           <div class="field">
             <select id="phenotype" name="phenotype" class="ui search dropdown">
               <option value="" disabled selected>Number of phenotype</option>
             </select>
           </div>
-          <div class="ui form">
+          <!--div class="ui form">
             <div class="inline fields">
               <label>Choose markers  :</label>
               <div class="field">
@@ -165,19 +215,19 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div-->
           <!--markerset -->
           <!-- Hidden if single marker is chosen -->
           <div class="field">
             <label for="marker_set">Select markerset</label>
-            <textarea placeholder="Choose your markers. eg: 1, 3, 24" rows="1" cols="30" id="marker_set" name="marker_set" required></textarea>
+            <input  placeholder="Choose your markers. eg: 1, 3, 24" rows="1" cols="30" id="marker_set" name="marker_set" required>  
           </div>
           <div class="field"> 
             <button id="run_analysis" class="ui right floated button">Run Analysis &nbsp;<i class="fas fa-dna"></i></button>
           </div>
-        </form>
     </div>  
 
+    </form> 
 
 
     </div> 

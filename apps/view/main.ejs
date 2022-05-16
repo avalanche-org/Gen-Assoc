@@ -3,28 +3,36 @@
 <div class="container-fluid">
   <div class="row">
     
+
     <div class="col-md-6">
 
-<div id="carouselExampleIndicators" style="top:60px" class="carousel carousel-dark slide" data-bs-ride="carousel"> <!-- slide -> fade--> 
+<div id="carouselExampleIndicators" style="top:60px" class="carousel-dark  carousel slide carousel-fade" data-bs-ride="carousel" data-bs-keyboard="true"> 
   <div class="carousel-indicators">
     <br> 
   </div>
   <div class="carousel-inner">
-    <div class="carousel-item  active" data-tooltip="Add users to your feed" data-inverted="">  <!--style="background-color:gray"-->
+    <div class="carousel-item  active" >  <!--style="background-color:gray"-->
 
   
           <h3 class="ui horizontal divider header">Job Title</h3>
        <div class="container col-8" >   
         <div class="d-block w-100" >  
-              <form action="" class="jobTitle_div" id="form1" >
+              <form action="" class="jobTitle_div" id="form1" data-tooltip="Set up new virtual job space" data-inverted=""  data-position="bottom right"> 
             <input type="text" class="jobTitle_field" placeholder="Specify Your Job Title" name="job_title" id="job_title" required />
             <label for="job_title" class="jobTitle_label">Job Title</label>
             <input type="submit"  id="start_job" class="myBtn myBtn-mtd-color" value="Start">
 
         </form> 
+<br>
+<br>
+<br>
     <div  class="container  col-10"> 
- <h5>Start Your Job Title</h5>
-        <p>Some representative placeholder content for the third slide.</p>
+ <h3>Job Space Setting </h3>
+    <hr>  
+        <small> Create new virtual job space that handle all manipulation  you'll do 
+                it act like a sanbox  that save your run  and all output that came from the run  
+                is stored into you virtual job space 
+        </small>
 </div> 
 
         </div>
@@ -34,7 +42,7 @@
     </div>
     
     <div  class="container col-8">  
-    <div class="carousel-item "> 
+    <div class="carousel-item" data-bs-interval="1000"> 
 
           <h3 class="ui horizontal divider header">Upload Sheets</h3>
  <% if  ( socket )  {%> 
@@ -52,7 +60,17 @@
               </div>
             </form>
           <%}%>     
-
+<br> 
+<br> 
+<br> 
+    <div  class="container  col-10"> 
+ <h3>Upload Sheets </h3>
+    <hr>  
+        <small> Create new virtual job space that handle all manipulation  you'll do 
+                it act like a sanbox  that save your run  and all output that came from the run  
+                is stored into you virtual job space 
+        </small>
+</div> 
     </div>
     </div>
 
@@ -87,6 +105,16 @@
             </div>
             <button type="submit" id ="run_summary" class="ui button">Launch Summary Statistics &nbsp;<i class="fas fa-chart-bar"></i></button>
           </form> 
+<br> 
+<br> 
+    <div  class="container  col-10"> 
+ <h3>Summary Stats</h3>
+    <hr>  
+        <small> Create new virtual job space that handle all manipulation  you'll do 
+                it act like a sanbox  that save your run  and all output that came from the run  
+                is stored into you virtual job space 
+        </small>
+</div> 
     </div>
 
 </div>
@@ -109,8 +137,20 @@
                 <button class="ui button negative" id ="gi-no">Pass</button>
               </div>
             </div>
-          </form>
+          </form> 
 
+
+<br> 
+<br> 
+<br> 
+    <div  class="container  col-10"> 
+ <h3>Genotype Inference aka G.I </h3>
+    <hr>  
+        <small> Create new virtual job space that handle all manipulation  you'll do 
+                it act like a sanbox  that save your run  and all output that came from the run  
+                is stored into you virtual job space 
+        </small>
+</div> 
     </div> 
   </div> 
 
@@ -136,6 +176,16 @@
             </div>
           </form>
 
+<br> 
+<br> 
+    <div  class="container  col-10"> 
+ <h3>Type of Run  SM or MM  </h3>
+    <hr>  
+        <small> Create new virtual job space that handle all manipulation  you'll do 
+                it act like a sanbox  that save your run  and all output that came from the run  
+                is stored into you virtual job space 
+        </small>
+</div> 
     </div> 
   </div>
 
@@ -174,12 +224,23 @@
 
             <div class="ui vertical divider">
               Or
-            </div>
+            </div> 
+  
+
     </div>
 
-
+    <br>
+    <br>
+         <div  class="container  col-10"> 
+ <h3>Theorical or Empirical </h3>
+    <hr>  
+        <small> Create new virtual job space that handle all manipulation  you'll do 
+                it act like a sanbox  that save your run  and all output that came from the run  
+                is stored into you virtual job space 
+        </small>
+</div>  
         </div> 
-
+   
     </div>  
 
 
@@ -193,31 +254,13 @@
     
         <h3 class="ui horizontal divider header">Run Analysis</h3>  
  
-<form name="form" style="padding:20px;" class="ui form"> 
+<form class="ui form"> 
           <div class="field">
             <select id="phenotype" name="phenotype" class="ui search dropdown">
               <option value="" disabled selected>Number of phenotype</option>
             </select>
           </div>
-          <!--div class="ui form">
-            <div class="inline fields">
-              <label>Choose markers  :</label>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input id="single_marker" type="radio" name="mradiobutton" value="single_marker" checked="checked">
-                  <label for="single_marker">Single-Marker</label>
-                </div>
-              </div>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input id="multi_marker" type="radio" name="mradiobutton" value="multi_marker">
-                  <label for="multi_marker">Multi-Marker</label>
-                </div>
-              </div>
-            </div>
-          </div-->
-          <!--markerset -->
-          <!-- Hidden if single marker is chosen -->
+     
           <div class="field">
             <label for="marker_set">Select markerset</label>
             <input  placeholder="Choose your markers. eg: 1, 3, 24" rows="1" cols="30" id="marker_set" name="marker_set" required>  
@@ -225,12 +268,26 @@
           <div class="field"> 
             <button id="run_analysis" class="ui right floated button">Run Analysis &nbsp;<i class="fas fa-dna"></i></button>
           </div>
-    </div>  
-
-    </form> 
+    <br>
+    <br>
+    <br>
+    <br>
+         <div  class="container  col-10"> 
+ <h3>Analysis Runtime</h3>
+    <hr>  
+        <small> Create new virtual job space that handle all manipulation  you'll do 
+                it act like a sanbox  that save your run  and all output that came from the run  
+                is stored into you virtual job space 
+        </small>
+</div>  
 
 
     </div> 
+    </form> 
+
+    </div>
+
+ 
 
 </div>
 
@@ -244,7 +301,7 @@
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
   </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">  
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>

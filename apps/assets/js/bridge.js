@@ -19,8 +19,8 @@ import  {
     ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
     ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort
     ,download_assets ,zoom_out , zoom_in , carousels   
-    
-    ,i_lock ,i_unlock ,blur_area, status, microchip , bar_progress
+    //blur_area
+    ,i_lock ,i_unlock , status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
     ,log , error,warn
     ,random , floor  
@@ -96,13 +96,13 @@ let display_= (void function ( ) { return  } ())   //  undefine
 let terminal ,  writeSpeed 
 
 ( ()=> {
-    run_analysis.disabled =  true  
+    run_analysis.disabled =  false 
     term.innerText        =  "▮ "
     term.setEditable      =  false
     term.disabled         =  true 
-    phenotype.disabled    =  true 
-    nbsim.disabled        =  true 
-    nbcores.disabled      =  true 
+    phenotype.disabled    =  false 
+    nbsim.disabled        =  false  
+    nbcores.disabled      =  false
     mm.disabled           =  false 
     markerset.disabled    =  true
     markerset.style.backgroundColor="grey"
@@ -545,7 +545,7 @@ ipcRenderer.on("term::logout" , data  => {
         i_lock.classList.remove("fa-lock") 
         i_lock.classList.add("fa-unlock") 
         mm.disabled            =  false 
-        blur_area.style.filter = "blur(0px)"
+        //blur_area.style.filter = "blur(0px)"
     }
 })
 //! TODO :  [ optional]  style  output error  with red or orange color  ...
@@ -959,5 +959,5 @@ if  (activate_extra_elements)
         
     }) 
 
-    carousel_navigation()      
+    carousel_navigation(term_write)
 }

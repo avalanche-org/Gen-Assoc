@@ -107,12 +107,13 @@ export const  [
     ] ,
     [  
      i_lock  , i_unlock,
-     blur_area, status, 
+     //blur_area, 
+     status, 
      microchip  , bar_progress 
   ] = [ 
     _.querySelector("#lock_default"), 
     _.querySelector("#unlocked_default"), 
-    _.querySelector(".default-blur-content"),
+    //_.querySelector(".default-blur-content"),
     _.querySelector("#status"), 
     _.querySelector("#microchip"), 
     _.querySelector("#bar")  
@@ -205,7 +206,7 @@ export  const parse_unknow_ascii_unicode   = data =>  {
 /*  carousel handler */ 
 
 
-export const  carousel_navigation  =  () =>  { 
+export const  carousel_navigation  =  webui_stdterm =>  { 
     
 
     const  carousels_block  = [ ...carousels]  
@@ -246,8 +247,13 @@ export const  carousel_navigation  =  () =>  {
                 active_carousel.classList.remove("active") 
            
             let  active_index  =  next_carousel   ?  next_carousel  :  preview_carousel  
-
-            carousels_block.at(active_index).classList.add("active") 
+             
+            let  activated_carousel  =  carousels_block.at(active_index)   
+            activated_carousel.classList.add("active") 
+            
+            const cctitle  = activated_carousel.childNodes[1].textContent 
+            webui_stdterm(cctitle , false , false ,false ) 
+             
         
         })
     })  

@@ -11,28 +11,28 @@
     <br> 
   </div>
   <div class="carousel-inner">
-    <div class="carousel-item  active" >  <!--style="background-color:gray"-->
-
+    <div class="carousel-item  active" >
   
-          <h3 class="ui horizontal divider header">Job Title</h3>
+          <h3 class="ui horizontal divider header">Job Title</h3> 
        <div class="container col-8" >   
         <div class="d-block w-100" >  
               <form action="" class="jobTitle_div" id="form1" data-tooltip="Set up new virtual job space" data-inverted=""  data-position="bottom right"> 
             <input type="text" class="jobTitle_field" placeholder="Specify Your Job Title" name="job_title" id="job_title" required />
-            <label for="job_title" class="jobTitle_label">Job Title</label>
-            <input type="submit"  id="start_job" class="myBtn myBtn-mtd-color" value="Start">
-
-        </form> 
+            <label for="job_title" class="jobTitle_label">Job Title</label> 
+            <input type="submit"  id="start_job" class="myBtn myBtn-mtd-color ui small  teal fluid button " value="GO">
+        </form>  
 <br>
 <br>
 <br>
     <div  class="container  col-10"> 
- <h3>Job Space Setting </h3>
+<div class="inline field">   
+ <h3>Job Space Setting </h3> </div> 
     <hr>  
-        <small> Create new virtual job space that handle all manipulation  you'll do 
+        <small> <i class="rocket icon"> </i> 
+ <strong>C</strong>reate new virtual job space that handle all manipulation  you'll do 
                 it act like a sanbox  that save your run  and all output that came from the run  
                 is stored into you virtual job space 
-        </small>
+    </small>
 </div> 
 
         </div>
@@ -44,19 +44,18 @@
     <div  class="container col-8">  
     <div class="carousel-item" data-bs-interval="1000"> 
 
-          <h3 class="ui horizontal divider header">Upload Sheets</h3>
+          <h3 class="ui horizontal divider header">Upload Sheets</h3> 
+
  <% if  ( socket )  {%> 
             <form method="post" action="" enctype="multipart/form-data" name="file_uploader" id="form_upload" class="ui form" style="padding:20px; padding-bottom: 0;">
               <div class="ui fluid action input">
                 <input name="fupload" type="file" accept=".ped,.map,.phen" multiple style="padding: 20px;"> 
-                <div class="ui button">
-                  <button class="ui vertical animated button" type="submit" id ="files_uploader">
+                  <button class="ui button" type="submit" id ="files_uploader">
                     <div class="hidden content">Upload</div>
                     <div class="visible content">
                       <i class="upload icon"></i>
                     </div>
                   </button>
-                </div>
               </div>
             </form>
           <%}%>     
@@ -66,7 +65,7 @@
     <div  class="container  col-10"> 
  <h3>Upload Sheets </h3>
     <hr>  
-        <small> Create new virtual job space that handle all manipulation  you'll do 
+        <small> <i class="upload icon"></i> <strong>C</strong>reate new virtual job space that handle all manipulation  you'll do 
                 it act like a sanbox  that save your run  and all output that came from the run  
                 is stored into you virtual job space 
         </small>
@@ -183,9 +182,10 @@
 <br> 
 <br> 
     <div  class="container  col-10"> 
- <h3>Type of Run  SM or MM  </h3>
-    <hr>  
-        <small> Create new virtual job space that handle all manipulation  you'll do 
+ <h3>Type of Run  SM or MM  </h3> 
+<hr> 
+    <hr class="ui teal label">  
+        <small> <strong>C</strong>reate new virtual job space that handle all manipulation  you'll do 
                 it act like a sanbox  that save your run  and all output that came from the run  
                 is stored into you virtual job space 
         </small>
@@ -193,14 +193,15 @@
     </div> 
   </div>
 
+
+          <!-- EMPERICAL  ||  THEORICAL --> 
     <div  class= "container col-8"> 
         <div class="carousel-item" >  
-          <!-- Choosing an Empirical run or a Theorical run-->
           <h3 class="ui horizontal divider header">ANALYSIS</h3>
-          <div class="ui placeholder segment" style="background-color: whitesmoke; border:none !important;">
-            <div class="ui two column stackable center  aligned  grid" >
-              <div class="column">
-                <h4 style="margin-top:-11px; margin-left: 67px;color: orange;">EMPIRICAL RUN</h4>
+          <div class="ui  teal segment ">
+            <div class="ui two column very relaxed stackable grid" >
+              <div class="column ">
+                <h4 style="margin-top:-11px; margin-left: 67px;color: orange;">EMPIRICAL</h4>
                 <div class="ui form">
                   <div class="field">
                     <label for="nbsim"><span>Number of simulations</span></label>
@@ -217,11 +218,12 @@
                   </div>
                 </div>
               </div>
-              <div class="field">
-                <div class="ui icon header">   
-                  <h4 style="color: #59698D;">THEORICAL RUN</h4>
-                  <i class="leaf icon"></i>
-                  <div class="ui medium  button active  t-run"  style="background-color: #59698D;color: white;">GO !</div> 
+              <div class="middle aligned column"> 
+    <br> 
+                <div class="ui medium teal button t-run">   
+                  <i class="magic icon"></i>
+                  THEORICAL  
+                <!--div class="ui medium  button active  t-run"  style="background-color: #59698D;color: white;">THEORICAL</div--> 
                 </div>
               </div>
             </div> 
@@ -373,7 +375,7 @@
                       </div>
           <div>
             <!--readonly autocomplete ="off" speelcheck="false" autocapitalize="off"-->
-            <textarea name="" id="term" class="terminal"></textarea>
+            <textarea name="" id="term" class="terminal"  style="overflow:auto ; height:65%"></textarea>
           </div>
         </div> 
       </div>

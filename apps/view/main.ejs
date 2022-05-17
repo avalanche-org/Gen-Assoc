@@ -125,7 +125,7 @@
     <div class="carousel-item">  
 
           <h3 class="ui horizontal divider header">Genotype Inference</h3>
-<form action="" class="ui form">
+<form  class="ui form">
             <div class="inline fields">
               <div class="field" style="align-content:center;">
                 <!--h4>Retrieve missing genotypes : &nbsp;
@@ -157,24 +157,28 @@
 
 
 
-
+<!---  SINGLE MARKER AND MULTIMAKER  SETTINGS --->  
 <div  class = "container col-8"> 
     <div class="carousel-item">  
  
       <h3 class="ui horizontal divider header">Run Type</h3>
-      <form action="" class="ui form"> 
+      <form class="ui form"> 
             <div class="inline fields">
               <div class="field" style="align-content:center;">
-                <!--h4>Retrieve missing genotypes : &nbsp;
-                </h4-->
               </div>
               <div class="ui large buttons">
                 <button class="ui blue button"  id="single_marker">Single Marker</button>
                 <div class="or"></div>
-                <button class="ui button negative" id ="multi_marker">Multi Marker</button>
-              </div>
+                <button  class="ui button negative" id ="multi_marker">Multi Marker</button>
+              </div> 
             </div>
-          </form>
+
+            <div class="field">
+                <label for="marker_set">Select markerset</label>
+                <input  placeholder="Choose your markers. eg: 1, 3, 24" rows="1" cols="30" id="marker_set" name="marker_set" required>  
+            </div>
+         
+     </form>
 
 <br> 
 <br> 
@@ -260,14 +264,11 @@
               <option value="" disabled selected>Number of phenotype</option>
             </select>
           </div>
-     
-          <div class="field">
-            <label for="marker_set">Select markerset</label>
-            <input  placeholder="Choose your markers. eg: 1, 3, 24" rows="1" cols="30" id="marker_set" name="marker_set" required>  
-          </div>
-          <div class="field"> 
+ <div class="field"> 
             <button id="run_analysis" class="ui right floated button">Run Analysis &nbsp;<i class="fas fa-dna"></i></button>
           </div>
+     
+     
     <br>
     <br>
     <br>

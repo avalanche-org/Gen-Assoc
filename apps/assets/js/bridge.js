@@ -103,7 +103,7 @@ let terminal ,  writeSpeed
     phenotype.disabled    =  true 
     nbsim.disabled        =  true 
     nbcores.disabled      =  true 
-    mm.disabled           =  true 
+    mm.disabled           =  false 
     markerset.disabled    =  true
     markerset.style.backgroundColor="grey"
     markerset.style.color="whitesmoke"
@@ -385,8 +385,20 @@ sync.addEventListener("change" , evt =>  {
         sync_select_action(ped , phen)/*<--*/;/*-->*/sync_select_action(map,phen) 
     }   
 })  
-//!--end sync
-mm.addEventListener("change" , evt => {
+//!--end sync 
+const markersetting  = [  sm  , mm ]  
+
+markersetting.forEach (  ( marker_runType , code_index  ) =>  {
+    //! the code index  take  index array as code  like  -->  sm : 0  and mm  :1  
+    marker_runType.addEventListener("click" ,  evt =>  { 
+        evt.preventDefault()   
+        markerset.disabled =  code_index^1  
+    })
+
+}) 
+/*
+mm.addEventListener("click" , evt => { 
+    evt.preventDefault()  
     if (evt.target.checked) { 
         markerset.disabled = false 
         markerset.style.backgroundColor="whitesmoke"
@@ -403,6 +415,10 @@ sm.addEventListener("change" , evt => {
         //nbsim.disabled     = true 
     } 
 })
+
+*/
+
+
 /*  Abort Execution Event send kill signal 
  *  through socker  
  **/  

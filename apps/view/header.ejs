@@ -10,6 +10,8 @@
 		<!-- Bootstrap CSS --> 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
+<link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="styles/style.css"/>
     <link rel="stylesheet" href="styles/semantic/semantic.min.css"/>
     <link rel="stylesheet" href="styles/fa/css/all.min.css">
@@ -17,7 +19,7 @@
 <style>  
 
 .carousel-item {  
-    transition: all 0.5s ease-in-out; 
+    transition: all 1s ease-in-out; 
     } 
 
 body { 
@@ -25,38 +27,45 @@ background-image: linear-gradient(rgba(245,255,255, 0.88),rgba(245,255,255, 0.9)
                   url("https://us.123rf.com/450wm/1000pixels/1000pixels1803/1000pixels180300238/98203904-blackboard-inscribed-with-scientific-formulas-and-calculations-in-physics-and-mathematics-can-illust.jpg?ver=6"),
                   url("https://jeminformetv.files.wordpress.com/2021/06/52498664-collection-des-elements-des-symboles-et-des-systemes-de-la-physique-la-chimie-et-la-geometrie-sacree-le-theme-de.jpg"),
                   url("https://i.pinimg.com/originals/4a/31/1c/4a311c15b976aed1813e6e0066708542.jpg"); 
-              background-blend-mode: luminosity;
+              background-blend-mode: luminosity; 
+              background-repeat:no-repeat center center  fixed ;
 
+font-family:Maven Pro ; 
 } 
 
 </style> 
   <body>
-
     <!-- ******************* Header ******************* -->
     <div class="col-lg-12 col-md-12 col-xs-12">
       <div class="row">
         <div class="col-lg-4 col-md-4 col-xs-4">
           <div class="row">
             <div class="col-lg-7 col-md-7 col-xs-7"> 
-                <a href = "/" > 
-              <p style="font-size: 58px; border-right: 2px solid #c2c8ce; color: #59698D ; margin-top: 8px;"><b>m-TDT</b></p>
+                <a href = "/" class ="ui teal image label" style ="padding-top:5px;padding-left:5px;"> 
+
+                    <p style="font-size: 43px; padding-top:20px ; padding-bottom:20px ; margin-left:5px;border-right: 2px solid whitesmoke; color: #ffffff ; margin-top:10px;" class="detail"><b style="font-family:Maven Pro">m-TDT</b></p> <!--color =#c2c8ce #59698D--> 
+                  <small class="ui orange ribbon label">v2.0 Beta</small>
                 </a>
             </div>
-            <div class="col-lg-5 col-md-5 col-xs-5" style="margin-left: -15px; margin-top: 8px;">
+            <div class="col-lg-5 col-md-5 col-xs-5" style="margin-left:-90px; margin-top: 8px;"> 
+
               <span style="font-size: 14px;">
                 <pre>
-Multi-locus 
-Transmission 
-Disequilibrium 
-Test
+[M]ulti-locus 
+[T]ransmission 
+[D]isequilibrium 
+[T]est
+
                 </pre>
               </span>
             </div>
           </div>
         </div>
         <div class="col-lg-7 col-md-7 col-xs-7" style="float: right; padding: 20px; margin-top: 12px;">
-          <div class="ui secondary pointing menu" style="font-size: 20px;">
-            <a href="/main" class="active item">m-TDT</a>
+          <div class="ui secondary pointing menu " style="font-size: 20px;"> 
+              <a href ="/main" class="item active"> m-TDT
+              </a>
+
             <a href="/tuto" class="item">Tutorial</a>
           </div>
         </div>

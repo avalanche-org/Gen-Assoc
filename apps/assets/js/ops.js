@@ -252,7 +252,8 @@ export const  carousel_navigation  =  webui_stdterm =>  {
             activated_carousel.classList.add("active") 
             
             const cctitle  = activated_carousel.childNodes[1].textContent 
-            webui_stdterm(cctitle , false , false ,false ) 
+            //! disable  webui_stdterm  -> term_write  callback 
+            //webui_stdterm(cctitle , false , false ,false ) 
              
         
         })

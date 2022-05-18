@@ -18,7 +18,7 @@ import  {
     ,ped, map , phen,sm,mm ,yes,no,phenotype,nbsim,nbcores,markerset, term 
     ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
     ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort
-    ,download_assets ,zoom_out , zoom_in , carousels   
+    ,download_assets ,zoom_out , zoom_in , carousels , carousel_next , carousel_prev    
     //blur_area
     ,i_lock ,i_unlock , status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
@@ -888,19 +888,19 @@ if  (activate_extra_elements)
         "yes": 1  
     } ;  
 
-    [giyes , gino]["forEach"] (gi_btn =>   { 
+    [giyes,gino]["forEach"] ((gi_btn, gi_code_index )   =>   { 
         gi_btn.addEventListener("click" , evt => {
             evt.preventDefault()  
-            const  gi_value  =  gi_btn.textContent.toLowerCase()  
-            if (gi_status[gi_value]) 
+            let gi_status = gi_code_index^1  
+            if  (gi_status >  0 )  
             {
-                gino.classList.remove("negative") 
-                evt.target.classList.add("positive")
-            }else {  
-                giyes.classList.remove("positive")  
-                evt.target.classList.add("negative") 
+                //!TODO : SEND  CODE TO RUN GI  ... 
+                ipcRenderer.send_("retrive::missing::genotype" , gi_status)  
+                return  
             }
-            ipcRenderer.send_("retrive::missing::genotype" ,   gi_status[gi_value])  
+            //!NOTE  : go directly to the next carousel 
+            carousel_next.click()   
+             
         })
     })
     //  Theorical run 

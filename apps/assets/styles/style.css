@@ -1,8 +1,7 @@
 body  {
     font-style: normal;
     font-size: var(--font-size-lg);
-    font-family: var(--font-family-base) ; 
-    background-image:url("https://i.pinimg.com/originals/4a/31/1c/4a311c15b976aed1813e6e0066708542.jpg"); 
+    font-family:Maven Pro ,var(--font-family-base) ; 
 }
 #myHeader {
   position: relative;

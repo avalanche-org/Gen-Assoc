@@ -1,66 +1,68 @@
 <%- include("./header.ejs")%> 
-    <!-- ******************* Site content ******************* -->
-    <div class="wrapper" , >
-      
-      <!-- what is next is for managing grid position -->
-      <div>&nbsp;</div>
-      
-           <!-- ******************* END of the first fieldset ******************* --> 
-      <!-- ******************* Terminal block ******************* -->
-      <div>  
-        <div class="div_terminal" style="position: fixed; margin: 8px; margin-top: 0;" >
-          <div class="ui menu"> 
-            <div class="item">
-              <div class= "ui button" id="clear">
-                <i class="fas fa-broom" id="clear" title ="clear console"></i>
-              </div>
-            </div>
-            <div class="item">
-              <div class="ui button" id ="infosys">  
-                <i class="fas fa-info" id="infosys" title="show system info"></i>
-              </div> 
-            </div>
-            <div class="item"  title="use the terminal  interative mode">
-                <div class="ui icon button" style="background-color:#F1F7FD; color:#59698D;" id="detach_term"> 
-              <i class="fas fa-terminal" title="detach terminal"></i>
-                m-tdterm  
-                </div> 
-            </div> 
-            <div class="item"  title = "Download  Assets ">
-                <div class="ui icon button" style="background-color:#f1f7fd; color:#59698D;" id="download_assets"> 
-                    <i class="fa-solid  fa-circle-arrow-down"></i>
-                Download  Assets  
-                </div> 
-            </div> 
-            <div class="item" title ="Abort  Running Execution  or you Can hit Ctlr+C  to abort ">
-                <div class="ui icon button" style="background-color:#f56f42; color:#59698D;" id="abort_execution"> 
-              <i class="fa-solid  fa-ban" title="abort execution"></i>
-                Abort execution  
-                </div> 
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-6"> 
+    <div class="container  col-9">  
+<a class="ui orange ribbon label" style="font-family:Maven Pro; font-size:24px ;box-shadow: 5px 5px 10px 2px rgba(0,0,0,.3);">m-TDT Overview  
+</a> 
+<br>
+<br>
+<div> 
+<p style="font-family:Maven Pro; font-size:16px">
+We present a webservice version of the M-TDT (the multi-locus transmission 
+						disequilibrium test) tool. A tool developed to detect family-based multi-locus
+						multi-allelic effects for qualitative or quantitative traits, extended from the 
+						original transmission disequilibrium test (TDT).<div class="cmath"> `f(x) = (x+2)/(2x+1)`          `x in RR,\ x !=-1/2`</div>
+
+
+</p>  
+</div> 
+
+<h4> Powered By  </h4> 
+
+<div  class="ui medium image "> 
+<img class="ui medium right floated image" src="/images/H3ABioNet_high_res.png"> 
+<img class="ui medium left  floated image" style="right:0px;"src="/images/institupasteurdk.png"> 
+</div> 
+    </div> 
+    </div>      
+
+
+    <div class="col-6">
+     <div class="container  col-8"> 
+     <h3 class="ui horizontal divider header" style="font-family:Maven Pro">About m-TDT</h3> 
+        </hr>  
         
-            </div>
-            <div class="right menu">
-              <div class="item"  id="zoom_out">
-                  <i class="fa-solid fa-magnifying-glass-minus"></i>
-              </div>
-            </div>
+    <div class="ui " style="font-family:Maven Pro; font-size:16px;" >
+  <p>Te eum doming eirmod, nominati pertinacia argumentum ad his. Ex eam alia facete scriptorem, est autem aliquip detraxit at. Usu ocurreret referrentur at, cu epicurei appellantur vix. Cum ea laoreet recteque electram, eos choro alterum definiebas in. Vim dolorum definiebas an. Mei ex natum rebum iisque.</p>
+  <img class="ui small right floated image" src="/images/Logo_mtdt_transparency.png">
+  <p>Audiam quaerendum eu sea, pro omittam definiebas ex. Te est latine definitiones. Quot wisi nulla ex duo. Vis sint solet expetenda ne, his te phaedrum referrentur consectetuer. Id vix fabulas oporteat, ei quo vide phaedrum, vim vivendum maiestatis in.</p>
+   <p>Eu quo homero blandit intellegebat. Incorrupte consequuntur mei id. Mei ut facer dolores adolescens, no illum aperiri quo, usu odio brute at. Qui te porro electram, ea dico facete utroque quo. Populo quodsi te eam, wisi everti eos ex, eum elitr altera utamur at. Quodsi convenire mnesarchum eu per, quas minimum postulant per id.</p>
+</div>
 
-            <div class="right menu">
-              <div class="item" id="zoom_in">
-                  <i class="fa-solid fa-magnifying-glass-plus"></i>
-              </div>
-            </div>
+<hr> 
+<button class="ui  left  teal   labeled icon button" onclick="window.location.href='/main'">
+  <i class="right arrow icon"></i>
+  Get Started
+</button> 
 
-                      </div>
-          <div>
-            <!--readonly autocomplete ="off" speelcheck="false" autocapitalize="off"-->
-            <textarea name="" id="term" class="terminal"></textarea>
-          </div>
-        </div> 
-      </div>
-      <!-- ******************* END Terminal block ******************* -->
+
+</div> 
 
     </div>
+  
+    </div>  <!--row--> 
 
-    <%-  include("./footer.ejs")%> 
-    <%-  include("./scripts/index_jscript.ejs")%>  
+
+
+
+
+</div>    <!--container--> 
+
+
+
+
+<%-  include("./footer.ejs")%> 
+<%-  include("./scripts/index_jscript.ejs")%>  

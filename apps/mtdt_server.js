@@ -63,9 +63,6 @@ sbox            =  utils.auto_insject(path.join(__dirname)  , sandbox)
 static_vn       =  null
 local_namespace =  (void function ()  { return }()) 
 vwo             =   {}  
-
-log ( run_genotype_inference)  
-log ( gi_D) 
 download_item_status_fail =  false 
 /** @namespace __wtcp__ **/
 const __wtcp__ =  {  
@@ -279,6 +276,7 @@ const __wtcp__ =  {
                     if(exit_code ==0x00) 
                     {
                         log("exit" , exit_code )
+                        sock.emit("gi::done" , exit_code )  
 
                     }else {
                         log("error") 

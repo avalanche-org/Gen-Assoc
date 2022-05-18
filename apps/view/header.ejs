@@ -31,7 +31,51 @@ background-image: linear-gradient(rgba(245,255,255, 0.88),rgba(245,255,255, 0.9)
               background-repeat:no-repeat center center  fixed ;
 
 font-family:Maven Pro ; 
-} 
+
+}
+
+.modal { 
+    top :30%; 
+    right : 0px ; 
+    left : 500px !important ;
+    padding-left  : 10px ;
+    display: inline-block;
+    vertical-align: middle; 
+    width:10px;
+    height:100px; 
+
+     justify-content: center;
+      align-items: center;
+}
+.modal{
+    padding: 20px 20px 20px 20px;
+    -webkit-animation-name: modal-animation;
+    -webkit-animation-duration: 2s;
+    animation-name: modal-animation;
+    animation-duration: 1.6s;
+    transition: "ease-in-out" ;
+}
+@-webkit-keyframes modal-animation {
+    from {
+        top: -100px;
+        opacity: 0;
+    }
+    to {
+        top: 0px;
+        opacity: 1;
+    }
+}
+@keyframes modal-animation {
+    from {
+        left: -100px;
+        opacity: 0;
+
+    }
+    to {
+        right: 0px;
+        opacity: 1;
+    }
+}
 
 </style> 
   <body>

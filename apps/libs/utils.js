@@ -208,7 +208,6 @@ module
                 throw new Error( enouacc) 
             } 
             module.exports["#user_log"](udir)  
-            //! TODO  :  DUMP ESSENTIAL SCRIPT HERE !! 
             module.exports.dump_essentialScripts(udir)   
             socket.emit ("fsinfo" ,    `your  virtual repertory  is ready`) 
             socket.emit("ok" ,   200  ) 

@@ -912,7 +912,11 @@ if  (activate_extra_elements)
             
              
         })
-    })
+    }) 
+    ipcRenderer.on("gi::done" ,  ec =>  {  
+        
+    }) 
+
     //  Theorical run 
     let trunbtn = _.querySelector(".t-run") 
     

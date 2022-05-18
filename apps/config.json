@@ -17,9 +17,18 @@
         "limite_nbsims": 10 ,
         "summary_src" : "<>/scripts/summary.R", 
         "run_analysis": "<>/scripts/run_analysis.R",
+        "run_gi"      : "<>/scripts/run_genotype_inference.R",
+        "dep_gi"      : "<>/scripts/genoInference.R",
         "logpath"     : "/Users/marieme/Desktop/Gen_Assoc/Gaui/.logout",
         "mtdt_src": "/Users/marieme/Desktop/Gen_Assoc/scripts/mtdt.R"
-    } , 
+    } ,
+    "mtdt_essential"  : {
+        "mtdt" : "<>/scripts/mtdt.R", 
+         "ginoInference": "<>/scripts/genoInference.R",
+         "__MACOSX"     : "<>/scripts/__MACOSX",
+         "libs"         : "<>/scripts/libs",
+         "mendelTable"  : "<>/scripts/mendel_table.tsv"
+    },  
     "io_fstream" :  { 
         "fstdout" : ".logout",
         "fstderr" : ".logerr",

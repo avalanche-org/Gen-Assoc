@@ -1,22 +1,17 @@
 #!/usr/bin/env Rscript
+
 args = commandArgs(trailingOnly = TRUE) 
 
 # --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---  
-#   Marieme Top
-#   @ : topmaryem@gmail.com
-#   IPD/ ECRDS/ BHI: avalanche-org: Gen_Assoc Project (H3ABioNet)
-
 #         This is code to generate summary statistics of your data   
-#         Advice for Running Genotype Inference | Doing an empirical analysis or not (dev) 
+#         Advice for Running Genotype Inference 
 
 # --- Requirements 
 # Input     : ped, map and phen files given as arguments
 #           : User must provide clean dataset without Mendelian errors
 #           : All files in working directory
-# Dependency: Plink
 
-# --- Points for improvement: Ctrl+f : /!\ 
-# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+# Dependency: Plink
 
 # --- --- ---  Packages
 
@@ -35,33 +30,27 @@ if(("dplyr" %in% rownames(installed.packages())) == F){
 
 # --- --- ---  Functions
 
+
 # -- [count the total number of nuclear families]
-Numb_trios <- function(dataset){
-  parents= tibble()
+
+Numb_trios<- function(dataset){
+  trios= tibble()
   for (i in dataset$V2){
-    parents= rbind(parents,dataset[dataset$V2 == i, c(3,4)])
+    trios= rbind(trios,dataset[dataset$V2 == i, c(2,3,4)])
   }
-  parents = parents[-c(which(parents$V3 == 0)), ]  #remove founders
-  return(nrow(unique(parents)))
+  trios = trios[-c(which(trios$V3 == 0)), ]  #remove founders
+  return(nrow(unique(trios)))
 }
 
-# -- [return all alleles for a marker in a dataset]
-get_alleles <- function(marker_position,dataset){   
-  total_allele=tibble()
-  for(ind in 1:nrow(dataset)){
-    marker = gsub(" ", "", dataset[ind,marker_position])      # get alleles
-    alleles=tibble()
-    allele1=substr(marker, start = 1, stop = 1)
-    allele2 = substr(marker, start = 2, stop = 2)
-    
-    if (isTRUE(allele1 != "0" | allele2 != "0")){             # exclude missing genotypes
-      alleles=rbind(allele1,allele2) #  (allele1 | allele 2)  
-    }
-    total_allele= rbind(total_allele,alleles)                 
+Numb_nuclear_fam <- function(dataset){
+  fam= tibble()
+  for (i in dataset$V2){
+    fam= rbind(fam,dataset[dataset$V2 == i, c(2,3,4)])
   }
-  return(total_allele$V1)
+  fam = fam[-c(which(fam$V3 == 0)), ]  #remove founders
+  
+  return(length(unique(paste0(fam$V3,fam$V4))))
 }
-
 
 # --- --- ---  Libraries
 
@@ -106,23 +95,21 @@ phen = read.delim(paste0(path_to_file, opt$phenfile), header = F , stringsAsFact
 if(ncol(phen)==1){phen = read.delim(paste0(path_to_file, opt$phenfile), header = F , stringsAsFactors = F, sep = " ")}
 
 # ---   SUMMARY STATISTICS  ---
-# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+# --- --- --- --- --- --- --- -
 
-cat("\nGenerating Summary Statistics..\n")
-
-cat("\n   ---  Data loaded \n")
+cat("\n   ---  Files \n")
 cat("\t", opt$pedfile,"\n\t", opt$mapfile,"\n\t", opt$phenfile,"\n")
 
-cat("\n   ---  Data description \n")   
+cat("\n   ---  Description \n")   
 cat("\tFamilies :", length(unique(ped$V1)),"\n")
 cat("\tFounders :", length(which(ped$V3 == 0)),"\n")
-cat("\tNonfounders :", nrow(ped)-length(which(ped$V3 == 0)),"\n")
-cat("\tNuclear Families :", Numb_trios(ped),"\n\n")
+cat("\tNuclear Families :", Numb_nuclear_fam(ped),"\n")
+cat("\tNumber of Trios :", Numb_trios(ped),"\n\n")
 
 cat("\tSex description \n")
-cat("\t",nrow(ped), "individuals","\t",length(which(ped$V5== "1")), "males", length(which(ped$V5== "2")), "females \n\n")
-cat("\tVariants\n")
-cat("\t",nrow(map)," variants \n")
+cat("\t",nrow(ped), "individuals:","\t",length(which(ped$V5== "1")), "males", length(which(ped$V5== "2")), "females \n\n")
+cat("\tMarkers\n")
+cat("\t",nrow(map)," markers \n\n")
 cat("\tPhenotype \n")
 cat("\tin" ,opt$phenfile,"\t:" ,(ncol(phen)-2)," phenotype(s) detected\n\n")
 
@@ -139,13 +126,13 @@ for (i in 1:length(phenotypes)){  # parcourir les phenotypes
   if(isFALSE(pheno_value%%1==0) && isTRUE(pheno_value!=0)){count = count + 1}
   
   # Display
-  cat("-- ","Phenotype ",phenotypes[i], " : ")
+  cat("\tPhenotype ",phenotypes[i], " : ")
   if(count>=1){
-    cat(" quantitative -------------\n\n")
-    cat( descr(phen[,phenotypes[i]]))
+    cat(" quantitative      ------\n\n")
+    cat(descr(phen[,phenotypes[i]]))
   }
   if (count==0){
-    cat(" categorial   -------------\n\n")
+    cat(" categorial      ------\n\n")
     cat(" Levels:\t", sort(unique(phen[,phenotypes[i]])),"\n Counts:\t", table(phen[,phenotypes[i]]),"\n")
   }
   
@@ -155,15 +142,17 @@ for (i in 1:length(phenotypes)){  # parcourir les phenotypes
 suppressMessages(rm(phenotypes,i))
 
 cat("   -  Missing genotypes \n")
-cat("\tmissing values at \t: ", length(ped[ped == '0 0']), "positions /",nrow(ped)* (ncol(ped)-6),"total\n")
-cat("\tPercentage missing values\t:  ", (length(ped[ped == '0 0'])/(nrow(ped)* (ncol(ped)-6))) * 100,"%\n\n")
+cat("\tAlert on missing values !!! \n")
+cat("\tThere is", length(ped[ped == '0 0']), "missing genotypes for a total of",nrow(ped)* (ncol(ped)-6),"markers\n")
 
-# --- Advice: Genotype Inference
-cat("\tMethod sensitive to missing data, you are strongly recommended to use the genotype inference tool. \n\n\n")
+cat("\tPercentage of missing values :\t", (length(ped[ped == '0 0'])/(nrow(ped)* (ncol(ped)-6))) * 100,"%\n\n")
+cat("\tMethod sensitive to missing data, you are strongly recommended to use the genotype inference option. \n\n\n")
 
 # --- Check for Mendelian errors  --- --- --- --- --- --- --- --- --- --- --- 
-  
-plink_ = "plink"   #/!\ : option?
+
+#plink_ = "/home/g4bbm/tools/Plink/plink"   #/!\ : option?
+plink_ = "plink"
+
 cat("--- Check Mendelian errors")
 cmd = paste0("cp ",paste0(path_to_file, opt$pedfile)," check_mendel.ped ; cp ",paste0(path_to_file, opt$mapfile)," check_mendel.map")
 system(cmd)
@@ -175,5 +164,5 @@ system("grep genotyping file.log")
 system("rm *check* file.log")
 
 # --------------------------------
-cat("\n\n--- Choose options to start analysis.. \n\n")
+#cat("\n\n--- Choose options to start analysis.. \n\n")
 

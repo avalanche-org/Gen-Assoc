@@ -20,7 +20,7 @@ import  {
     ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort
     ,download_assets ,zoom_out , zoom_in , carousels , carousel_next , carousel_prev    
     //blur_area
-    ,i_lock ,i_unlock , status, microchip , bar_progress
+    //,i_lock ,i_unlock , status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
     ,log , error,warn
     ,random , floor  
@@ -387,12 +387,18 @@ sync.addEventListener("change" , evt =>  {
 })  
 //!--end sync 
 const markersetting  = [  sm  , mm ]  
-
+let   [_sm  , _mm ]  = [ false , false ]  
 markersetting.forEach (  ( marker_runType , code_index  ) =>  {
     //! the code index  take  index array as code  like  -->  sm : 0  and mm  :1  
     marker_runType.addEventListener("click" ,  evt =>  { 
         evt.preventDefault()   
         markerset.disabled =  code_index^1  
+        if  ( markerset.disabled)  
+        {
+            [_sm  , _mm ]  =[true ,  false] 
+            return  
+        }
+        [_sm,_mm]  = [false , true ] 
     })
 
 }) 
@@ -442,7 +448,7 @@ let ped_  = null ,
 
 let summary_already_run =  false , 
     analysis_on_going   =  false   
-
+let  gobject ={}  
 run_summary.addEventListener("click" , evt => {
     evt.preventDefault()
     let  annoucement  = "▮ Generating Summary Statistics ... please wait\n" 
@@ -454,7 +460,7 @@ run_summary.addEventListener("click" , evt => {
     //bar_progress.style.backgroundColor = "limegreen"   
     run_analysis.disabled = true 
     run_summary.disabled  = false   
-    let gobject ={ 
+    gobject ={ 
          paths  : paths_collections ??  null ,  
          selected_files: [ 
               ped.options[ped.selectedIndex]?.value  ??  null ,   
@@ -542,8 +548,8 @@ ipcRenderer.on("term::logout" , data  => {
         run_analysis.disabled = !summary_already_run  
         phenotype.disabled    = !summary_already_run  
         nbsim.disabled        = !summary_already_run
-        i_lock.classList.remove("fa-lock") 
-        i_lock.classList.add("fa-unlock") 
+        //i_lock.classList.remove("fa-lock") 
+        //i_lock.classList.add("fa-unlock") 
         mm.disabled            =  false 
         //blur_area.style.filter = "blur(0px)"
     }
@@ -623,8 +629,8 @@ run_analysis.addEventListener("click" ,  evt => {
             ,phenotype_ : phenotype.options[phenotype.selectedIndex].value ||   null  
             ,nbsim_     : nbsim.value     || 0  
             ,nbcores_   : nbcores.options[nbcores.selectedIndex].value  ||  null  
-            ,mm         : mm.checked
-            ,sm         : sm.checked
+            ,mm         : _mm 
+            ,sm         : _sm 
             ,markerset  : mm.checked ? markerset.value : null 
         }  
     }
@@ -881,25 +887,29 @@ if  (activate_extra_elements)
         
     }) 
 
-    //! Genotype inference  
     
     let gi_status  =   { 
         "no" : 0 , 
         "yes": 1  
     } ;  
 
+    //!  GENOTYPE  INFERENCE   
     [giyes,gino]["forEach"] ((gi_btn, gi_code_index )   =>   { 
         gi_btn.addEventListener("click" , evt => {
             evt.preventDefault()  
             let gi_status = gi_code_index^1  
             if  (gi_status >  0 )  
             {
-                //!TODO : SEND  CODE TO RUN GI  ... 
-                ipcRenderer.send_("retrive::missing::genotype" , gi_status)  
+                //!TODO : SEND  CODE TO RUN GI  ...  
+                
+                term_write("GENOTYPE INFERENCE" ,false , false)  
+                ipcRenderer.send_("gi::run" , [gi_status ,  gobject])  
                 return  
             }
             //!NOTE  : go directly to the next carousel 
-            carousel_next.click()   
+            log(gobject)  
+            carousel_next.click()  
+            
              
         })
     })

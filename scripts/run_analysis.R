@@ -28,7 +28,7 @@
 args= commandArgs(trailingOnly = TRUE) 
 
 #   --- Path to plink
-plink_ = "plink" 
+plink_ = "/home/g4bbm/tools/Plink/plink" 
 
 #   --- Install Required Packages
 
@@ -153,10 +153,6 @@ opt = parse_args(opt_parser)
 
 # Move to user's temporary directory tmp
 
-virtual_path = paste0(getwd() , "/vtmp/") 
- 
-path_to_wd = paste0(virtual_path,opt$jobtitle)
-setwd(path_to_wd)
 
 cmd= paste0("--pedfile ", opt$pedfile, " --mapfile ", opt$mapfile, " --phenfile ", opt$phenfile, " --phen ",opt$phen, 
             " --markerset ", opt$markerset, " --nbsim ", opt$nbsim,  " --nbcores ", opt$nbcores," --gi ", opt$gi)
@@ -180,6 +176,7 @@ cat("      [ M - T D T ] ~  A tool for Multi-Locus Transimission Disequilibrium 
 cat(" --------------------------------------------------------------------------------------\n\n")
 x= Sys.time()
 cat(paste0("\t __ Execution started at : ",as.character(Sys.time())))
+cat(paste0("\t __ Working directory : ", getwd()))
 cat("\n\t __ Run name :",opt$jobtitle, "\n")
 
 cat("\n\t __ Options in effect:\n\n")
@@ -252,6 +249,9 @@ phen_basename = unlist(str_split(unlist(str_split(opt$phenfile,"/"))[length(unli
 
 # -- Read Files
 
+chemin = str_remove(opt$pedfile,paste0(ped_basename,".ped"))
+setwd(chemin)
+
 cat("\n [] Reading ped, map, phen files...\t")
 
 # A commenter pour serveur. 
@@ -279,94 +279,16 @@ cat("\nResults in plink_report")
 cat("\n\n ____________________________________________________\n")
 cat(" [✓] Check Mendelian errors: Done.\n")
 
-system("cp ../../../scripts/mendel_table.tsv .")      # path issues: scripts and dependencies must be copied in wd
-system("cp ../../../scripts/genoInference.R .")
-system("cp ../../../scripts/mtdt.R .")  
-system("cp -r ../../../scripts/__MACOSX .")
-system("cp -r ../../../scripts/libs .")
+# system("cp ../../../scripts/mendel_table.tsv .")      # path issues: scripts and dependencies must be copied in wd
+# system("cp ../../../scripts/genoInference.R .")
+# system("cp ../../../scripts/mtdt.R .")  
+# system("cp -r ../../../scripts/__MACOSX .")
+# system("cp -r ../../../scripts/libs .")
 
-
-# --- Genotype Inference  ------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------------------------------
-
-# -- /!\ Cutsize value depends on the sample size, out flag default value = out, Valeurs attribuées discutable
-# -- /!\ Dependency : Plink
-# -- Les chemins sont à gerer avec J. basé sur la nouvelle architecture
-#-------------------------------------------------------------------------------------------------------------
-
-if (opt$gi == 1){
-  date_gi_start = Sys.time()
-  cat("\n\t ✓ GENOTYPE INFERENCE OPTION ACTIVATED \n")
-  
-  if(is.null(opt$nbcores)){opt$nbcores=1}
-  cat("\n * Inferring genotypes...\n\n")
-  
-  if (isTRUE(ncol(ped) > 1000)){
-    cmd = paste0("nohup Rscript genoInference.R --file ", ped_basename," --cutsize 100" ," --cores ", opt$nbcores ," --out out &")
-  }else if (isTRUE(ncol(ped) < 50)) {
-    cmd = paste0("nohup Rscript genoInference.R --file ", ped_basename," --cutsize 10" ," --cores ", opt$nbcores ," --out out &")
-  }else {
-    cmd = paste0("nohup Rscript genoInference.R --file ", ped_basename," --cutsize 50" ," --cores ", opt$nbcores ," --out out &")
-  }
-  
-  system(cmd)
-  system("mv nohup.out geno.out")
-  
-  # output: out files - merging
-  inferred_ped = merge_genoInference_out_files()
-  system("rm out*")
-  
-  cat(" ✓ Genotypes inferred. \n  Mendelian errors check... \n\n")
-  
-  # --- mendelian errors check after
-  cat(" __________________________________________\n\n")
-  plink_check(plink_, paste0(ped_basename,'_inferred'))
-  cat("\nResults in plink_report")
-  cat("\n\n__________________________________________________________\n\n")
-  # --------- /!\ tester sur server & replace with function------------------------
-  write.table(inferred_ped, "inferred.ped", sep = "\t", quote = F, col.names = F, row.names = F)
-  system(paste0("cp ", map_basename,".map inferred.map"))
-  
-  cat(" 🧪   inferred.ped + inferred.map written. [✓]  \n")
-  date_gi_finish = Sys.time()
-  
-  execution_time = as.integer(difftime(date_gi_finish, date_gi_start, units = "secs"))
-  
-  #--------------------------------------------------------------------------------
-  
-  # -- total inferred 
-  
-  cat("\n\n---  GENOTYPE INFERENCE SUMMARY: \n")
-  n_miss_before = length(ped[ped == '0 0'])
-  n_miss_after  = length(inferred_ped[inferred_ped == '0 0'])
-  
-  #   Display on terminal
-  cat("\nMissing Values in -",ped_basename,"- :", n_miss_before,
-      "markers \nMissing Values in new pedigree file :", n_miss_after,
-      "markers \nNumber of inferred genotypes : ", n_miss_before - n_miss_after,"\n",
-      "\n✓ genoInference_report.txt written.")
-  cat(paste0("\n⏱️ \tExecution time : ", execution_time, " secs"))
-  
-  #   Report Generation. 
-  cat("Genotype Inference Report: \n\nSample name: ", ped_basename,
-      "\nTotal execution time: ±",execution_time," secs",
-      "\n\nMissing Values in -",ped_basename,"- :", n_miss_before,
-      "markers \nMissing Values in new inferred pedigree file :", n_miss_after,
-      "markers \nNumber of inferred genotypes : ", n_miss_before - n_miss_after,"\n", file = "genoInference_report.txt")
-  #system("rm genoInference.R mendel_table.tsv"). - Ajouter lorsque Web stable
-}
 
 
 # ---   M -  T D T    A N A L Y S I S  -----------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------
-
-
-# --- If GI option activated, use inferred.ped
-
-if (isTRUE(opt$gi == 1)){
-  colnames(inferred_ped) <- colnames(ped)
-  ped = inferred_ped
-}
 
 # --- C O M P L E T E   P E D I G R E E 
 
@@ -378,22 +300,29 @@ mtdt_map = paste0("M", (7:ncol(mtdt_ped)-6))
 # --- Write CP files
 
 cat(" [✓] Writing processed files ")
-
-write.table(mtdt_ped, paste0(unlist(str_split(ped_basename,".ped"))[1],"_CompletePedigree.ped"),
-            sep = "\t", quote = F, col.names = F, row.names = F)
-write.table(mtdt_map, paste0(unlist(str_split(map_basename,".map"))[1],"_CompletePedigree.map"),
-            sep = "\t", quote = F, col.names = F, row.names = F)
+name_= NULL
+if (is.null(opt$markerset)){
+  write.table(mtdt_ped, paste0(unlist(str_split(ped_basename,".ped"))[1],"_CompletePedigree.ped"),
+              sep = "\t", quote = F, col.names = F, row.names = F)
+  write.table(mtdt_map, paste0(unlist(str_split(map_basename,".map"))[1],"_CompletePedigree.map"),
+              sep = "\t", quote = F, col.names = F, row.names = F)
+} else{
+  markers= unlist(str_split(string = opt$markerset, pattern = ","))
+  for(marker in markers){
+    name_ = paste0(name_, marker, "_")
+  }
+  write.table(mtdt_ped, paste0(name_,"CompletePedigree.ped"),sep = "\t", quote = F, col.names = F, row.names = F)
+  write.table(mtdt_map, paste0(name_,"CompletePedigree.map"),sep = "\t", quote = F, col.names = F, row.names = F)
+}
 
 # ---  Create command to call script
 
-# - remove non m-tdt flags here
-opt$gi="" 
 
 # - update command
 cmd= paste0("--pedfile ", opt$pedfile, " --mapfile ", opt$mapfile, 
             " --phenfile ",opt$phenfile, " --phen ",opt$phen,
             " --markerset ", opt$markerset, " --nbsim ", opt$nbsim,
-            " --nbcores ", opt$nbcores," --gi ", opt$gi)
+            " --nbcores ", opt$nbcores)
 
 flag <- unlist(str_split(c(cmd),"--"))[-1]
 positions= NULL
@@ -402,10 +331,17 @@ if (length(positions)>0){flag = flag[-positions]}
 
 f=NULL
 
-cmd = paste0("Rscript ../../../scripts/mtdt.R --pedfile ", 
-             unlist(str_split(ped_basename,".ped"))[1],"_CompletePedigree.ped --mapfile ",
-             unlist(str_split(ped_basename,".ped"))[1],"_CompletePedigree.map --phenfile ", 
-             phen_basename,".phen ")
+if(is.null(opt$markerset)){
+  cmd = paste0("Rscript mtdt.R --pedfile ", 
+               unlist(str_split(ped_basename,".ped"))[1],"_CompletePedigree.ped --mapfile ",
+               unlist(str_split(ped_basename,".ped"))[1],"_CompletePedigree.map --phenfile ", 
+               phen_basename,".phen ")
+}else {
+ cmd =  paste0("Rscript mtdt.R --pedfile ", 
+         paste0(name_,"CompletePedigree.ped --mapfile "),name_,"CompletePedigree.map --phenfile ", 
+         phen_basename,".phen ")
+}
+
 
 for (i in 4:length(flag)){
   f= paste0(f," --",flag[i])
@@ -548,7 +484,8 @@ if (is.null(opt$markerset) == TRUE ){
   name_ = paste0(unlist(str_split(ped_basename,".ped"))[1],"_SM_results")
 }
 if (is.null(opt$markerset) == FALSE){
-  name_ = paste0(unlist(str_split(ped_basename,".ped"))[1],"_MM_results")
+  
+  name_ = paste0( "MultiMarker_",name_,"results")
 }
 
 # create output directory and move file

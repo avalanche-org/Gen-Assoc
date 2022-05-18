@@ -27,7 +27,7 @@ so = process.platform == "win32" ? "\\"  : "/"
 
 const  [
     { log }  = console                  , 
-    {summary_src  , run_analysis  , required_file_extension } = require("./config.json")["mtdt_pannel"], 
+    {summary_src  , run_analysis , run_gi, dep_gi, required_file_extension } = require("./config.json")["mtdt_pannel"], 
     {virtual_workstation  , sandbox} =  require("./config.json")["web_server"] , 
     {Server} = require("http")           ,
     path     = require("path")           ,
@@ -56,12 +56,16 @@ xapp
 __required_static_files__ : 
 summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
+run_genotype_inference  =  utils.auto_insject(path.join(__dirname,  ".." )  ,run_gi )
+gi_D  =  utils.auto_insject(path.join(__dirname,  ".." )  ,dep_gi )
 vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstation)
 sbox            =  utils.auto_insject(path.join(__dirname)  , sandbox)
 static_vn       =  null
 local_namespace =  (void function ()  { return }()) 
 vwo             =   {}  
 
+log ( run_genotype_inference)  
+log ( gi_D) 
 download_item_status_fail =  false 
 /** @namespace __wtcp__ **/
 const __wtcp__ =  {  
@@ -250,9 +254,37 @@ const __wtcp__ =  {
              
 
             gi_state  =  0  //! by default the gi is <empty_string>   
-            theorical = false 
-            sock.on("retrive::missing::genotype"   , gi => {
-                gi_state =  gi
+            let gi_run_argument_flags 
+            theorical = false  
+            GENOTYPE_INFERENCE : 
+            sock.on("gi::run"   ,gi_metadata=> {
+                const [gi_status  , gobject]  = gi_metadata   
+
+                const { paths  , selected_files }  = gobject,
+                    [ped , map , phen ]  = selected_files, 
+                    [  pedfile , mapfile , phenfile  ] = [ `${paths}/${ped}` , `${paths}/${map}`,`${paths}/${phen}` ]  
+
+                log ("recieve ->" , gi_status) 
+                gi_state=gi_status   
+                gi_run_argument_flags  =   {   
+                    "pedfile" : pedfile , 
+                    "mapfile" : mapfile ,
+                    "cores"   : utils.cpus_core()-1//,    //!  take the maximum core -1  
+                }
+
+                log(gi_run_argument_flags)  
+                
+                utils.std_ofstream(paths ,   utils.scripts(run_genotype_inference  , {  ...gi_run_argument_flags }  )  ,  sock ,   exit_code  => { 
+                    
+                    if(exit_code ==0x00) 
+                    {
+                        log("exit" , exit_code )
+
+                    }else {
+                        log("error") 
+                    }
+                }) 
+                
             }) 
 
             sock.on("enable::trun" ,  is_theorical_enable => {  theorical =   is_theorical_enable } )  
@@ -301,10 +333,11 @@ const __wtcp__ =  {
                          delete  analysis_argument_flags?.nbcores_  
 
                 }
-                log ("th" ,  theorical) 
-                utils.std_ofstream(paths ,   utils.scripts(run_analyser  , {  ...analysis_argument_flags }  )  ,  sock ,   exit_code  => {  
+                log ("th" ,  theorical)  
+                log("A" , analysis_argument_flags)  
+                utils.std_ofstream(paths ,   utils.scripts(run_analyser  , {  ...analysis_argument_flags }  )  ,  sock ,   exit_code  => {
                     
-                    console.table(analysis_argument_flags)  
+                    console.log( "exr", analysis_argument_flags)  
 
                     if(exit_code ==0x00) 
                     {

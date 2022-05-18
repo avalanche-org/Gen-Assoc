@@ -104,8 +104,9 @@ export const  [
         activate_extra_elements  ?  _.querySelectorAll(".carousel-item")    : (void function ()  { return  }() )  , 
         activate_extra_elements  ?  _.querySelector(".carousel-control-prev"):(void function ()  { return  }() )  , 
         activate_extra_elements  ?  _.querySelector(".carousel-control-next"):(void function ()  { return  }() )   
-    ] ,
-    [  
+    ] 
+/*
+[  
      i_lock  , i_unlock,
      //blur_area, 
      status, 
@@ -118,7 +119,7 @@ export const  [
     _.querySelector("#microchip"), 
     _.querySelector("#bar")  
 ]
-
+*/
 export  const   __lock_web_ui_file_operation  =  () => { 
     files_uploaders.disabled= true 
     files_browser.value= "" 

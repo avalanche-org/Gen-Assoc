@@ -17,7 +17,9 @@ const
         , mkdir
         , open 
         , stat
-        , copyFile
+        , stats
+        , copyFile 
+        , cp , symlink 
     }   = require("fs") , 
     
     os =  require("os") ,  
@@ -39,6 +41,9 @@ const
         virtual_workstation ,  
         sandbox  
     }   =  require ("./../config")["web_server"] , 
+    { 
+        mtdt ,ginoInference, __MACOSX,libs,mendelTable   
+    }   = require ("./../config")["mtdt_essential"] , 
     path=  require("path") 
 
 
@@ -114,6 +119,7 @@ module
        return  os.cpus().length  
     },  
 
+     
     /**
      *  get  full path of user  logs files 
      *  @param  { string } virtual_directory  - where  job space are located  
@@ -150,6 +156,46 @@ module
     },
 
     /**
+     * Dump essential  scripts to  job space  
+     */
+
+    dump_essentialScripts  :  job_namespace  =>  {
+        log(job_namespace) 
+        const   { auto_insject }  = module.exports  
+        let  runtime_requiered_script =  [ mtdt , ginoInference , __MACOSX ,libs,mendelTable]  
+        runtime_requiered_script= runtime_requiered_script.map( essentialfile =>  {  
+          
+            let  datatype  =  auto_insject(path.join(__dirname ,"../.."), essentialfile)
+      
+            stat(datatype  , (err , stats )=>  { 
+                
+                let  basename =  datatype.split("/") 
+                basename=basename.at(-1) 
+                if  ( stats.isDirectory()) 
+                {
+                    symlink(`${datatype}/`, `${job_namespace}/${basename}`,(err , data)  => { 
+                        if(err) 
+                        {
+                            log(err)  
+                        }
+                    })  
+                }
+                if  (stats.isFile()) 
+                {
+                    copyFile(datatype ,`${job_namespace}/${basename}` ,  err=> { 
+                        if (err) log(err)  
+                    }) 
+
+                }
+            })
+        
+
+        }) 
+
+
+    }, 
+
+    /**
      * build virtual_userspace or   virtual_directory  
      * @param  {string} udir  - where   the job space are located 
      * @param  {socket} socket - socket channel   to emit  event  
@@ -161,7 +207,9 @@ module
                 socket.emit ("fsinfo" ,  "ERROR : no privileges to create userlang access")  
                 throw new Error( enouacc) 
             } 
-            module.exports["#user_log"](udir)   
+            module.exports["#user_log"](udir)  
+            //! TODO  :  DUMP ESSENTIAL SCRIPT HERE !! 
+            module.exports.dump_essentialScripts(udir)   
             socket.emit ("fsinfo" ,    `your  virtual repertory  is ready`) 
             socket.emit("ok" ,   200  ) 
            
@@ -267,7 +315,7 @@ module
         access (script_source  ,  constants["F_OK"]  ,  err  =>  err ?? err  ) 
         const allowed_keys_args  =   [ 
             "pedfile" , "mapfile" ,  "phenfile" , "phen", 
-            "nbcores","nbsim", "markerset", "gi","jobtitle"
+            "nbcores","nbsim", "markerset", "gi","jobtitle" ,"cores"
         ]  
         const  kwargs = Object.keys(arguments)  
         

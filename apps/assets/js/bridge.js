@@ -18,7 +18,7 @@ import  {
     ,ped, map , phen,sm,mm ,yes,no,phenotype,nbsim,nbcores,markerset, term 
     ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
     ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort
-    ,download_assets ,zoom_out , zoom_in , carousels , carousel_next , carousel_prev    
+    ,download_assets ,zoom_out , zoom_in , carousels , carousel_next , carousel_prev , gi_modal_no,gi_modal_yes  
     //blur_area
     //,i_lock ,i_unlock , status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
@@ -28,6 +28,8 @@ import  {
     ,window_keyShortcut,shortcup_maping,parse_unknow_ascii_unicode ,  carousel_navigation  
 
 }  from  "./ops.js"   
+log(gi_modal_no) 
+log(gi_modal_yes) 
 console.log(_) 
 console.log(activate_extra_elements) 
 console.log(notify) 
@@ -913,9 +915,24 @@ if  (activate_extra_elements)
              
         })
     }) 
+    
+    let modal  = _.querySelector(".modal") 
     ipcRenderer.on("gi::done" ,  ec =>  {  
-        
+         if (!modal.classList.contains("active"))  
+            modal.classList.add("active") 
     }) 
+     
+    [gi_modal_no, gi_modal_yes].map( ( response_action , index_code ) => {
+        response_action.addEventListener("click"  , evt =>  {
+            let allowed_ans = ["yes", "no"]
+            let response = index_code^1 ;
+            if  (modal.classList.contains("active")) 
+                modal.classList.remove("active")  
+            //! send the responce to the server 
+            ipcRenderer.send_("trigger::select_pedfile" ,allowed_ans.at(response))  
+
+        })
+    })
 
     //  Theorical run 
     let trunbtn = _.querySelector(".t-run") 

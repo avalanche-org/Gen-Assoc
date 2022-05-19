@@ -31,7 +31,7 @@ class DEFAULT_CONFIG  (Enum) :
     RLIBPATH      : str  = "/usr/lib/R/library/" 
     DEFFNAME_REQ  : str  = "dependenies.R"
     RMODUMP       : str  = "Rallib.txt"
-    
+    RBASE_REPOS   : str  = "http://cran.us.r-project.org"
 
 """ 
 DOCKER  STEP 
@@ -137,7 +137,7 @@ class RpkgAutorun :
             sig.raise_signal(sig.SIGIO) 
 
         for module  in modules  :  
-            module_name  :str = f"install.packages('{module}')\n"
+            module_name  :str = f"install.packages('{module}' ,repos='{self.RBASE_REPOS}')\n"
             os.write ( dump_modobj ,module_name.encode() ) 
         os.close(dump_modobj)  
             

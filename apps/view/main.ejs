@@ -32,7 +32,7 @@
               <form action="" class="jobTitle_div" id="form1" data-tooltip="Set up new virtual job space" data-inverted=""  data-position="bottom right"> 
             <input type="text" class="jobTitle_field" placeholder="Specify Your Job Title" name="job_title" id="job_title" required />
             <label for="job_title" class="jobTitle_label">Job Title</label> 
-            <input type="submit"  id="start_job" class="myBtn myBtn-mtd-color ui small  teal fluid button " value="GO">
+            <input type="submit"  id="start_job" class="myBtn myBtn-mtd-color ui small basic teal fluid button " value="GO">
         </form>  
 <br>
 <br>
@@ -62,8 +62,8 @@
  <% if  ( socket )  {%> 
             <form method="post" action="" enctype="multipart/form-data" name="file_uploader" id="form_upload" class="ui form" style="padding:20px; padding-bottom: 0;">
               <div class="ui fluid action input">
-                <input name="fupload" type="file" accept=".ped,.map,.phen" multiple style="padding: 20px;"> 
-                  <button class="ui button" type="submit" id ="files_uploader">
+                <input name="fupload" type="file" accept=".ped,.map,.phen" multiple style="padding: 20px;" class="ui input  focus"> 
+                  <button class="ui brown inverted button" type="submit" id ="files_uploader">
                     <div class="hidden content">Upload</div>
                     <div class="visible content">
                       <i class="upload icon"></i>
@@ -115,7 +115,7 @@
                 <option value = "" disabled selected > Select a phen file</option>
               </select>
             </div>
-            <button type="submit" id ="run_summary" class="ui button">Launch Summary Statistics &nbsp;<i class="fas fa-chart-bar"></i></button>
+            <button type="submit" id ="run_summary" class="ui right  basic teal floated button">Launch Summary Statistics &nbsp;<i class="fas fa-chart-bar"></i></button>
           </form> 
 <br> 
     <div  class="container  col-10"> 
@@ -143,9 +143,9 @@
                 </h4-->
               </div>
               <div class="ui large buttons">
-                <button class="ui blue button"  id="gi-yes">Genotype Inference</button>
+                <button class="ui blue inverted button"  id="gi-yes">Genotype Inference</button>
                 <div class="or"></div>
-                <button class="ui button negative" id ="gi-no">Pass</button>
+                <button class="ui button inverted gray " id ="gi-no">Skip GI</button>
               </div>
             </div>
           </form> 
@@ -178,9 +178,9 @@
               <div class="field" style="align-content:center;">
               </div>
               <div class="ui large buttons">
-                <button class="ui blue button"  id="single_marker">Single Marker</button>
+                <button class="ui blue inverted button"  id="single_marker">Single Marker</button>
                 <div class="or"></div>
-                <button  class="ui button negative" id ="multi_marker">Multi Marker</button>
+                <button  class="ui button inverted  orange button" id ="multi_marker">Multi Marker</button>
               </div> 
             </div>
 
@@ -210,7 +210,7 @@
     <div  class= "container col-8"> 
         <div class="carousel-item" >  
           <h3 class="ui horizontal divider header">ANALYSIS</h3>
-          <div class="ui  teal segment ">
+          <div class="ui  segment basic  ">
             <div class="ui two column very relaxed stackable grid" >
               <div class="column ">
                 <h4 style="margin-top:-11px; margin-left: 67px;color: orange;">EMPIRICAL</h4>
@@ -232,9 +232,9 @@
               </div>
               <div class="middle aligned column"> 
     <br> 
-                <div class="ui medium teal button t-run">   
+                <div class="ui medium inverted blue  button t-run">   
                   <i class="magic icon"></i>
-                  THEORICAL  
+                  THEORITICAL  
                 <!--div class="ui medium  button active  t-run"  style="background-color: #59698D;color: white;">THEORICAL</div--> 
                 </div>
               </div>
@@ -249,7 +249,7 @@
 
     <br>
          <div  class="container  col-10"> 
- <h3>Theorical or Empirical </h3>
+ <h3>Theoritical or Empirical </h3>
     <hr>  
         <small> Create new virtual job space that handle all manipulation  you'll do 
                 it act like a sanbox  that save your run  and all output that came from the run  
@@ -272,13 +272,14 @@
         <h3 class="ui horizontal divider header">Run Analysis</h3>  
  
 <form class="ui form"> 
-          <div class="field">
-            <select id="phenotype" name="phenotype" class="ui search dropdown">
-              <option value="" disabled selected>Number of phenotype</option>
+          <div class="field inline" > 
+            <small  style="font-family:Maven Pro;font-size:16px;" class="ui" >  Choose Your Number of Phenotype</small> 
+            <select id="phenotype" name="phenotype" class="ui selection dropdown">
+              <option value="" disabled selected></option>
             </select>
           </div>
  <div class="field"> 
-            <button id="run_analysis" class="ui right floated button">Run Analysis &nbsp;<i class="fas fa-dna"></i></button>
+            <button id="run_analysis" class="ui left teal basic floated button">Run Analysis &nbsp;<i class="fas fa-dna"></i></button>
           </div>
      
      
@@ -343,29 +344,29 @@
         <div class="div_terminal" style="position: fixed; margin: 8px; margin-top: 0;" >
           <div class="ui inverted menu"> 
             <div class="item">
-              <div class= "ui button" id="clear">
+              <div class= "ui basic standar  inverted button" id="clear">
                 <i class="fas fa-broom" id="clear" title ="clear console"></i>
               </div>
             </div>
             <div class="item">
-              <div class="ui button" id ="infosys">  
+              <div class="ui basic blue inverted button" id ="infosys">  
                 <i class="fas fa-info" id="infosys" title="show system info"></i>
               </div> 
             </div>
             <div class="item"  title="use the terminal  interative mode">
-                <div class="ui icon button" style="background-color:#F1F7FD; color:#59698D;" id="detach_term"> 
+                <div class="ui basic teal inverted button" id="detach_term"> 
               <i class="fas fa-terminal" title="detach terminal"></i>
                 m-tdterm  
                 </div> 
             </div> 
             <div class="item"  title = "Download  Assets ">
-                <div class="ui icon button" style="background-color:#f1f7fd; color:#59698D;" id="download_assets"> 
+                <div class="ui  basic orange inverted button"  id="download_assets"> 
                     <i class="fa-solid  fa-circle-arrow-down"></i>
                 Download  Assets  
                 </div> 
             </div> 
             <div class="item" title ="Abort  Running Execution  or you Can hit Ctlr+C  to abort ">
-                <div class="ui icon button" style="background-color:#f56f42; color:#59698D;" id="abort_execution"> 
+                <div class="ui red basic inverted button" style="background-color:#f56f42; color:#59698D;" id="abort_execution"> 
               <i class="fa-solid  fa-ban" title="abort execution"></i>
                 Abort execution  
                 </div> 

@@ -69,6 +69,8 @@ RUN ln -s `pwd`/bin/plink /usr/bin/plink
 RUN ln -s `pwd`/bin/prettify /usr/bin/prettify
 RUN cd ../
 
+WORKDIR  /mTDT/apps/
+
 RUN npm install && npm install -g  pm2
 RUN npm audit  fix --force   
 

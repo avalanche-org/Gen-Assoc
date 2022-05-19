@@ -51,12 +51,18 @@ if (!localStorage["task"] )
     job_init.addEventListener("click" , evt  => {
         evt.preventDefault()  
         if (!job_title.value) files_browser.disabled = true  
-        if (job_title.value)  
+        if (job_title.value)   
+        { 
             ipcRenderer.send_("create::job"  ,  job_title.value )  
+            carousel_next.click()
+        }
     })
 }  
 if  ( localStorage["task"] )
-{
+{   
+    carousel_next.click() 
+    carousel_next.click() 
+
     job_init.value="pending"
     job_title.value= localStorage["task"].split("/").slice(-1) 
     job_title.disabled = true 
@@ -633,7 +639,7 @@ run_analysis.addEventListener("click" ,  evt => {
             ,nbcores_   : nbcores.options[nbcores.selectedIndex].value  ||  null  
             ,mm         : _mm 
             ,sm         : _sm 
-            ,markerset  : mm.checked ? markerset.value : null 
+            ,markerset  : _mm? markerset.value : null 
         }  
     }
 
@@ -724,6 +730,11 @@ if  (activate_extra_elements)
         }
         formating_received_information+="----------\n" 
         term_write(formating_received_information , false , false , false  ) 
+        term_write(`
+        All outputs are displayed in the terminal.\n
+        Some basic commands are available like “ls” or “clear” click on >_m-tdterm and type help for more detail.\n
+            More commands will be added so the user can have access to their directory.`
+            , false, false )
         return  sysinfo.cpus   
     } 
     
@@ -905,6 +916,12 @@ if  (activate_extra_elements)
                 //!TODO : SEND  CODE TO RUN GI  ...  
                 
                 term_write("GENOTYPE INFERENCE" ,false , false)  
+                if ( Object.keys(gobject).length ==0 )  
+                { 
+                    term_write("WARNING : are you trying to run GI without  summary static !!") 
+                    carousel_prev.click() 
+                    return  
+                }
                 ipcRenderer.send_("gi::run" , [gi_status ,  gobject])  
                 return  
             }
@@ -915,22 +932,32 @@ if  (activate_extra_elements)
              
         })
     }) 
-    
+   
+    //!NOTE :  go next carrousel  if  succes  
+    ipcRenderer.on("next" , _ =>  {  
+        carousel_next.click()  
+    })
     let modal  = _.querySelector(".modal") 
-    ipcRenderer.on("gi::done" ,  ec =>  {  
+    
+    log ( modal )   
+
+    
+    ipcRenderer.on("gi::done" ,  ec =>  { 
+         log ("gi run  done " ) 
          if (!modal.classList.contains("active"))  
             modal.classList.add("active") 
     }) 
-     
-    [gi_modal_no, gi_modal_yes].map( ( response_action , index_code ) => {
+    
+    let modal_response  = [ gi_modal_yes ,gi_modal_no]    
+    modal_response.forEach( ( response_action , index_code ) => {
         response_action.addEventListener("click"  , evt =>  {
-            let allowed_ans = ["yes", "no"]
+            let allowed_ans = ["no", "yes"]
             let response = index_code^1 ;
+            log (response  , "-> " ,  allowed_ans.at(response))    
             if  (modal.classList.contains("active")) 
                 modal.classList.remove("active")  
             //! send the responce to the server 
-            ipcRenderer.send_("trigger::select_pedfile" ,allowed_ans.at(response))  
-
+                ipcRenderer.send_("trigger::select_pedfile" ,allowed_ans.at(response))  
         })
     })
 

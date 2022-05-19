@@ -18,7 +18,8 @@
         "summary_src" : "<>/scripts/summary.R", 
         "run_analysis": "<>/scripts/run_analysis.R",
         "run_gi"      : "<>/scripts/run_genotype_inference.R",
-        "dep_gi"      : "<>/scripts/genoInference.R",
+        "dep_gi"      : "<>/scripts/genoInference.R", 
+        "select_ped"  : "<>/scripts/select_ped.R", 
         "logpath"     : "/Users/marieme/Desktop/Gen_Assoc/Gaui/.logout",
         "mtdt_src": "/Users/marieme/Desktop/Gen_Assoc/scripts/mtdt.R"
     } ,

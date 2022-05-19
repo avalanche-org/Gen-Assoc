@@ -42,9 +42,12 @@
  <h3>Job Space Setting </h3> </div> 
     <hr>  
         <small> <i class="rocket icon"> </i> 
- <strong>C</strong>reate new virtual job space that handle all manipulation  you'll do 
-                it act like a sanbox  that save your run  and all output that came from the run  
-                is stored into you virtual job space 
+ <strong>T</strong>his section allows you to create a virtual workspace in which the analysis will take place. 
+    The uploaded files as well as the output files will be located in this virtual directory on the server. 
+You can choose the name of this space in Job Title and submit to validate the creation of your space.
+
+
+
     </small>
 </div> 
 
@@ -74,13 +77,29 @@
           <%}%>     
 <br> 
 <br> 
-<br> 
-    <div  class="container  col-10"> 
+    <div  class="container  col-12"> 
  <h3>Upload Sheets </h3>
     <hr>  
-        <small> <i class="upload icon"></i> <strong>C</strong>reate new virtual job space that handle all manipulation  you'll do 
-                it act like a sanbox  that save your run  and all output that came from the run  
-                is stored into you virtual job space 
+        <small> <i class="upload icon"></i> <strong>I</strong>t is in this section that the user loads the files to be analyzed.
+
+The button opens a window with a view of your local files. You can select the files whose formats must meet the following specifications:
+INPUT FILE FORMAT
+
+    * No headers in any of the 3 input files.
+    * The columns of all input files are separated by tabs.
+
+    (i) PED file: starts with 6 columns followed by genotype columns, in the following order
+        - Family ID
+        - Individual ID
+        - Father ID
+        - mother's ID
+        - sex
+        - condition (this column will not be taken into account, but its presence is required)
+
+        - genotype columns (...)
+
+    ! !! TIP: The 'ped' file can contain multiple markers, but we advise at the runtime stage to include a limited number of markers, e.g. 3 to 5, 
+
         </small>
 </div> 
     </div>
@@ -121,9 +140,14 @@
     <div  class="container  col-10"> 
  <h3>Summary Stats</h3>
     <hr>  
-        <small> Create new virtual job space that handle all manipulation  you'll do 
-                it act like a sanbox  that save your run  and all output that came from the run  
-                is stored into you virtual job space 
+        <small> 
+<strong> T</strong>hen you select from the files you have just uploaded the one you need, respectively, for the Pedigree File, Map file and Phenotype File fields. These three files must have the same file name with the same difference in format. 
+   <div class="ui toggle checkbox">
+                <input type="checkbox">
+                <label for="sync">Sync</label>
+            </div> 
+This is the only way to make sure that when you select an A file for a dedicated field, the other fields are pre-filled with the files corresponding to the same base name 
+
         </small>
 </div> 
     </div>
@@ -143,9 +167,9 @@
                 </h4-->
               </div>
               <div class="ui large buttons">
-                <button class="ui blue inverted button"  id="gi-yes">Genotype Inference</button>
+                <button class="ui blue inverted  button"  id="gi-yes">Genotype Inference</button>
                 <div class="or"></div>
-                <button class="ui button inverted gray " id ="gi-no">Skip GI</button>
+                <button class="ui button  dark  basic" id ="gi-no">Skip GI</button>
               </div>
             </div>
           </form> 
@@ -155,11 +179,14 @@
 <br> 
 <br> 
     <div  class="container  col-10"> 
- <h3>Genotype Inference aka G.I </h3>
+ <h3>Genotype Inference</h3>
     <hr>  
-        <small> Create new virtual job space that handle all manipulation  you'll do 
-                it act like a sanbox  that save your run  and all output that came from the run  
-                is stored into you virtual job space 
+        <small> 
+Depending on your number of missing data, you can choose to use the genotype inference option or not. 
+
+This is where the options to run the mtdt script are selected.
+
+
         </small>
 </div> 
     </div> 
@@ -197,9 +224,11 @@
  <h3>Type of Run  SM or MM  </h3> 
 <hr> 
     <hr class="ui teal label">  
-        <small> <strong>C</strong>reate new virtual job space that handle all manipulation  you'll do 
-                it act like a sanbox  that save your run  and all output that came from the run  
-                is stored into you virtual job space 
+        <small> 
+<b>Markers Setting </b> list indicating positions of the set of markers to analyze jointly (separated by "," without SPACE); position from the 'ped' file without counting the 6 first columns. 
+If <b> MULTI MARKER </b> option is not selected, the software will run like <b>SINGLE MARKER</b> GWAS, screen all markers in the 'ped' file one-by-one in family-based association. A limited number of top SNPs from a GWAS screening can be subsequently used for multilocus analysis.
+
+
         </small>
 </div> 
     </div> 
@@ -247,13 +276,21 @@
 
     </div>
 
-    <br>
          <div  class="container  col-10"> 
  <h3>Theoritical or Empirical </h3>
     <hr>  
-        <small> Create new virtual job space that handle all manipulation  you'll do 
-                it act like a sanbox  that save your run  and all output that came from the run  
-                is stored into you virtual job space 
+        <small> <b>Number of simulations </b> for the calculation of the empirical P-values. 
+The default value is 0 and corresponds to the case where only asymptotic P-values are provided. If the sample size is limited or if there is a linkage disequilibrium (LD) between the analyzed markers, the asymptotic theory is no longer valid and the empirical P-values have to be calculated using simulations.
+<b >Number of cores</b> to be used for execution, if the user wants to speed up the execution by using multiple cores, as the program can run in parallel at the simulation stage if it is included to obtain empirical P-values. Thus, this option is only useful if the -nbsim option is used.
+<b>Note</b>: The distinction between empirical run and theoretical run is made at this level. By clicking on 
+ <div class="ui mini inverted blue  button" >   
+                  <i class="magic icon"></i>
+                  THEORITICAL  
+</div>
+on the parameters for an empirical run (number of simulations and number of cores) are disabled. To deactivate it, click on it again.
+
+
+
         </small>
 </div>  
         </div> 
@@ -290,9 +327,10 @@
          <div  class="container  col-10"> 
  <h3>Analysis Runtime</h3>
     <hr>  
-        <small> Create new virtual job space that handle all manipulation  you'll do 
-                it act like a sanbox  that save your run  and all output that came from the run  
-                is stored into you virtual job space 
+        <small> 
+
+<b> T</b>he position of the phenotype (only one) to analyze from the 'phenotype' file without counting the 2 first columns.
+
         </small>
 </div>  
 
@@ -383,7 +421,13 @@
                   <i class="fa-solid fa-magnifying-glass-plus"></i>
               </div>
             </div>
-
+  <div class="right menu">
+              <div class="item ui segment">
+                  <span class="ui dimmer">
+               <div class="ui mini text loader">...</div> 
+                </span>
+              </div>
+            </div>
                       </div>
           <div>
             <!--readonly autocomplete ="off" speelcheck="false" autocapitalize="off"-->
@@ -391,7 +435,6 @@
           </div>
         </div> 
       </div>
-
     </div>
   
     </div>  <!--row--> 

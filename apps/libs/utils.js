@@ -314,7 +314,7 @@ module
         access (script_source  ,  constants["F_OK"]  ,  err  =>  err ?? err  ) 
         const allowed_keys_args  =   [ 
             "pedfile" , "mapfile" ,  "phenfile" , "phen", 
-            "nbcores","nbsim", "markerset", "gi","jobtitle" ,"cores"
+            "nbcores","nbsim", "markerset", "gi","jobtitle" ,"cores" ,"genoinference"
         ]  
         const  kwargs = Object.keys(arguments)  
         

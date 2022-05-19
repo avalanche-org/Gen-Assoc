@@ -23,7 +23,7 @@ mtdtart = `
  ██║╚██╔╝██║   ██║   ██║  ██║   ██║   
  ██║ ╚═╝ ██║   ██║   ██████╔╝   ██║   
  ╚═╝     ╚═╝   ╚═╝   ╚═════╝    ╚═╝ 
-\t\t\t\t* version  beta 4.5.2 
+\t\t\t\t* version  Beta v2.0 
 `
 /** @module libs/command **/  
 module.exports =   {  

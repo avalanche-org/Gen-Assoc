@@ -499,7 +499,7 @@ if (file.exists("genoInference_report.txt")){
   system(paste0("mv *inferred.* ",name_,"/generated_files/"))
   }
 
-system("rm -r mtdt.R libs __MACOSX genoInference.R mendel_table.tsv")
+#system("rm -r mtdt.R libs __MACOSX genoInference.R mendel_table.tsv")
 #------------
 
 x_= Sys.time()

@@ -12,7 +12,7 @@ mtdtart = `
  ██║╚██╔╝██║   ██║   ██║  ██║   ██║   
  ██║ ╚═╝ ██║   ██║   ██████╔╝   ██║   
  ╚═╝     ╚═╝   ╚═╝   ╚═════╝    ╚═╝ 
-\t\t\t\t* version  beta 4.5.2 
+\t\t\t\t* version  beta 2.0 
 `
 
 __kernel_file__          : { core  = require("./kernel")  }  
@@ -27,7 +27,7 @@ so = process.platform == "win32" ? "\\"  : "/"
 
 const  [
     { log }  = console                  , 
-    {summary_src  , run_analysis , run_gi, dep_gi, required_file_extension } = require("./config.json")["mtdt_pannel"], 
+    {summary_src  , run_analysis , run_gi, dep_gi , select_ped, required_file_extension } = require("./config.json")["mtdt_pannel"], 
     {virtual_workstation  , sandbox} =  require("./config.json")["web_server"] , 
     {Server} = require("http")           ,
     path     = require("path")           ,
@@ -58,12 +58,15 @@ summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src
 run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
 run_genotype_inference  =  utils.auto_insject(path.join(__dirname,  ".." )  ,run_gi )
 gi_D  =  utils.auto_insject(path.join(__dirname,  ".." )  ,dep_gi )
+selectPed  =  utils.auto_insject(path.join(__dirname,  ".." )  ,select_ped) 
 vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstation)
 sbox            =  utils.auto_insject(path.join(__dirname)  , sandbox)
 static_vn       =  null
 local_namespace =  (void function ()  { return }()) 
 vwo             =   {}  
-download_item_status_fail =  false 
+download_item_status_fail =  false  
+
+log(selectPed) 
 /** @namespace __wtcp__ **/
 const __wtcp__ =  {  
 
@@ -243,7 +246,8 @@ const __wtcp__ =  {
                             if ( exit_code !=0) 
                                 return 
 
-                            socket.emit("load::phenotype" ,   res)  
+                            socket.emit("load::phenotype" ,   res) 
+                            sock.emit("next" , exit_code )  
 
                         })
                 }) 
@@ -251,8 +255,9 @@ const __wtcp__ =  {
              
 
             gi_state  =  0  //! by default the gi is <empty_string>   
-            let gi_run_argument_flags 
-            theorical = false  
+            let gi_run_argument_flags  
+            let path_ref 
+            theorical = false    
             GENOTYPE_INFERENCE : 
             sock.on("gi::run"   ,gi_metadata=> {
                 const [gi_status  , gobject]  = gi_metadata   
@@ -260,7 +265,7 @@ const __wtcp__ =  {
                 const { paths  , selected_files }  = gobject,
                     [ped , map , phen ]  = selected_files, 
                     [  pedfile , mapfile , phenfile  ] = [ `${paths}/${ped}` , `${paths}/${map}`,`${paths}/${phen}` ]  
-
+                path_ref = paths 
                 log ("recieve ->" , gi_status) 
                 gi_state=gi_status   
                 gi_run_argument_flags  =   {   
@@ -284,6 +289,31 @@ const __wtcp__ =  {
                 }) 
                 
             }) 
+
+
+
+            SELECT_PED:  
+            sock.on("trigger::select_pedfile"  ,  response =>  { 
+                //Rscript select_ped.R --genoinference “yes” --pedfile sample.ped --mapfile sample.map 
+                delete gi_run_argument_flags.cores 
+                log(gi_run_argument_flags)  
+                gi_run_argument_flags["genoinference"]=response  
+                log(gi_run_argument_flags) 
+                
+                utils.std_ofstream(path_ref ,  utils.scripts(selectPed ,  { ...gi_run_argument_flags} )  , sock , exit_code =>  { 
+                
+                    if(exit_code ==0x00) 
+                    {
+                        log("exit" , exit_code )  
+                        sock.emit("next" , exit_code )  
+
+                    }else {
+                        log("error") 
+                    }
+
+                })
+                 
+            })
 
             sock.on("enable::trun" ,  is_theorical_enable => {  theorical =   is_theorical_enable } )  
           

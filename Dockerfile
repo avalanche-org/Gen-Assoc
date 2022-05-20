@@ -37,6 +37,7 @@ ARG  plink_bin="https://s3.amazonaws.com/plink1-assets/${plink_filename}.zip"
 ### UPDATE  CORE PACKAGES
 RUN apt update  --assume-yes  
 RUN apt install git --assume-yes && apt install r-base r-base-dev --assume-yes 
+RUN apt install bsdmainutils 
 
 # R LIB LOCATION IN HOST
 # You can change it and adapt to R lib location  if you have  R command available 

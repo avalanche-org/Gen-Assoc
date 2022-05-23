@@ -104,10 +104,11 @@ cat("\n   ---  Description \n")
 cat("\tFamilies :", length(unique(ped$V1)),"\n")
 cat("\tFounders :", length(which(ped$V3 == 0)),"\n")
 cat("\tNuclear Families :", Numb_nuclear_fam(ped),"\n")
-cat("\tNumber of Trios :", Numb_trios(ped),"\n\n")
+cat("\tNumber of Trios :", Numb_trios(ped),"\n")
+cat("\tNumber of Individuals :",nrow(ped),"\n\n")
 
 cat("\tSex description \n")
-cat("\t",nrow(ped), "individuals:","\t",length(which(ped$V5== "1")), "males", length(which(ped$V5== "2")), "females \n\n")
+cat("\t",length(which(ped$V5== "1")), "males", length(which(ped$V5== "2")), "females \n\n")
 cat("\tMarkers\n")
 cat("\t",nrow(map)," markers \n\n")
 cat("\tPhenotype \n")
@@ -142,18 +143,19 @@ for (i in 1:length(phenotypes)){  # parcourir les phenotypes
 suppressMessages(rm(phenotypes,i))
 
 cat("   -  Missing genotypes \n")
-cat("\tAlert on missing values !!! \n")
-cat("\tThere is", length(ped[ped == '0 0']), "missing genotypes for a total of",nrow(ped)* (ncol(ped)-6),"markers\n")
+cat("\tAlert on missing values !!! \n") 
+cat("\tThere is", length(ped[ped == '0 0']), "missing genotypes for a total of",nrow(ped)* (ncol(ped)-6),"genotypes\n")
 
-cat("\tPercentage of missing values :\t", (length(ped[ped == '0 0'])/(nrow(ped)* (ncol(ped)-6))) * 100,"%\n\n")
-cat("\tMethod sensitive to missing data, you are strongly recommended to use the genotype inference option. \n\n\n")
+cat("\tPercentage of missing values (%):", round(100* (length(ped[ped == '0 0']))/(nrow(ped))*(ncol(ped)-6),2),"\n\n")  #/(nrow(ped)* (ncol(ped)-6))) * 100,"%\n\n")
+#cat("\tPercentage of missing values :", (length(ped[ped == '0 0'])/(nrow(ped)* (ncol(ped)-6))) * 100,"%\n\n")
+cat("\tMethod sensitive to missing data, you are recommended to use the genotype inference option. \n\n\n")
 
 # --- Check for Mendelian errors  --- --- --- --- --- --- --- --- --- --- --- 
 
 #plink_ = "/home/g4bbm/tools/Plink/plink"   #/!\ : option?
 plink_ = "plink"
 
-cat("--- Check Mendelian errors")
+cat("--- Checking Mendelian errors")
 cmd = paste0("cp ",paste0(path_to_file, opt$pedfile)," check_mendel.ped ; cp ",paste0(path_to_file, opt$mapfile)," check_mendel.map")
 system(cmd)
 system(paste0(plink_ ," --file check_mendel --mendel --out sample_check > file.log"))

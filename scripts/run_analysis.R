@@ -179,7 +179,7 @@ cat(paste0("\t __ Execution started at : ",as.character(Sys.time())))
 cat(paste0("\t __ Working directory : ", getwd()))
 cat("\n\t __ Run name :",opt$jobtitle, "\n")
 
-cat("\n\t __ Options in effect:\n\n")
+cat("\n\t __ Running options :\n\n")
 
 
 for (i in 1:length(flag)){

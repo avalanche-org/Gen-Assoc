@@ -771,17 +771,29 @@ if  (activate_extra_elements)
     
     ipcRenderer.on("info" ,   server_information => dispatch_server_info(server_information) )  
      
+    let  files_buffer =  null   
     let  fileslist  =  null  
     files_browser.addEventListener("change" , evt =>  {  
         
         const choosed_files  =  [...files_browser.files]  ,
             total_size_bytes  =  choosed_files.reduce( ( file_a , file_v  ) => file_a?.size  + file_v?.size ) 
             
-        log(choosed_files )  
+        log("choosed", choosed_files )  
+
         files_uploaders.disabled =  !choosed_files.length  ??   true    
         log(files_uploaders.disabled )  
         fileslist  = choosed_files.map (  file  =>  file?.name) 
         log (fileslist) 
+        if (fileslist.length < 3  && files_buffer.length < 3   )  
+        {
+            carousel_next.disabled=true
+            form_upload.disabled =  true 
+            
+        }else {
+            carousel_next.disabled=false 
+            form_upload.disabled = false  
+
+        }
     
     }  , false ) 
  
@@ -832,7 +844,8 @@ if  (activate_extra_elements)
 
     ipcRenderer.on("update::fileviewer" ,   fileslist  =>  {
         //! TODO :  update file views  rendering 
-        log (fileslist ) 
+        log ("filebuffer" , fileslist ) 
+        files_buffer =  fileslist 
     } ) 
 
     disconnect.addEventListener("click"  ,  evt =>   { 

@@ -1,6 +1,6 @@
 {
   "name": "Mtdt",
-  "version": "3.3.6_beta",
+  "version": "2.0-Beta-rc",
   "description": "Gen Assoc  Graphical User Interface",
   "main": "main.js",
   "scripts": {

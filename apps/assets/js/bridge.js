@@ -18,7 +18,8 @@ import  {
     ,ped, map , phen,sm,mm ,yes,no,phenotype,nbsim,nbcores,markerset, term 
     ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
     ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort
-    ,download_assets ,zoom_out , zoom_in , carousels , carousel_next , carousel_prev , gi_modal_no,gi_modal_yes  
+    ,download_assets ,zoom_out , zoom_in , carousels , carousel_next , carousel_prev , gi_modal_no,gi_modal_yes
+    ,cancel_analysis , proceed_analysis , validate_ms 
     //blur_area
     //,i_lock ,i_unlock , status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
@@ -27,7 +28,9 @@ import  {
 
     ,window_keyShortcut,shortcup_maping,parse_unknow_ascii_unicode ,  carousel_navigation  
 
-}  from  "./ops.js"   
+}  from  "./ops.js"  
+
+log(validate_ms) 
 log(gi_modal_no) 
 log(gi_modal_yes) 
 console.log(_) 
@@ -112,7 +115,8 @@ let terminal ,  writeSpeed
     nbsim.disabled        =  false  
     nbcores.disabled      =  false
     mm.disabled           =  false 
-    markerset.disabled    =  true
+    markerset.disabled    =  true 
+    validate_ms.disabled  =  true 
     markerset.style.backgroundColor="grey"
     markerset.style.color="whitesmoke"
     ipcRenderer.send("init",1)
@@ -162,11 +166,13 @@ markerset.addEventListener("keyup" ,  evt =>  {
     if (require_patern.test(evt.target.value) || just_on_digit.test(evt.target.value)) {
         markerset.style.backgroundColor = "green"
         markerset.style.color = "whitesmoke"
-        is_it_correct         = true
+        is_it_correct         = true 
+        validate_ms.disabled  = false 
     }else {
         markerset.style.backgroundColor ="firebrick"
         markerset.style.color = "black"
-        is_it_correct         = false
+        is_it_correct         = false 
+        validate_ms.disabled  = true 
     }
 
 })
@@ -404,11 +410,19 @@ markersetting.forEach (  ( marker_runType , code_index  ) =>  {
         if  ( markerset.disabled)  
         {
             [_sm  , _mm ]  =[true ,  false] 
+            carousel_next.click()  
             return  
         }
-        [_sm,_mm]  = [false , true ] 
+        [_sm,_mm]  = [false , true ]  
     })
 
+}) 
+
+//! MARKER SET VALIDATION  
+
+validate_ms.addEventListener("click" , evt =>  { 
+    evt.preventDefault() 
+    carousel_next.click()  
 }) 
 /*
 mm.addEventListener("click" , evt => { 
@@ -636,7 +650,7 @@ run_analysis.addEventListener("click" ,  evt => {
             ,phen       : phen_ 
             ,phenotype_ : phenotype.options[phenotype.selectedIndex].value ||   null  
             ,nbsim_     : nbsim.value     || 0  
-            ,nbcores_   : nbcores.options[nbcores.selectedIndex].value  ||  null  
+            ,nbcores_   : nbcores.options[nbcores.selectedIndex].value  ||  0 
             ,mm         : _mm 
             ,sm         : _sm 
             ,markerset  : _mm? markerset.value : null 
@@ -937,33 +951,84 @@ if  (activate_extra_elements)
     ipcRenderer.on("next" , _ =>  {  
         carousel_next.click()  
     })
-    let modal  = _.querySelector(".modal") 
+    let modals   = [..._.querySelectorAll(".modal")]  
     
-    log ( modal )   
-
+    let [ modal , modal2 ] =  modals 
     
     ipcRenderer.on("gi::done" ,  ec =>  { 
          log ("gi run  done " ) 
          if (!modal.classList.contains("active"))  
+          { 
             modal.classList.add("active") 
+            carousel_next.disabled=true 
+            carousel_prev.disabled=true
+          } 
     }) 
     
     let modal_response  = [ gi_modal_yes ,gi_modal_no]    
     modal_response.forEach( ( response_action , index_code ) => {
-        response_action.addEventListener("click"  , evt =>  {
+        response_action.addEventListener("click"  , evt =>  { 
             let allowed_ans = ["no", "yes"]
             let response = index_code^1 ;
             log (response  , "-> " ,  allowed_ans.at(response))    
-            if  (modal.classList.contains("active")) 
+            
+            if  (modal.classList.contains("active"))  
+            { 
                 modal.classList.remove("active")  
+                carousel_next.disabled = false 
+                carousel_prev.disabled = false 
+                
+            }  
             //! send the responce to the server 
-                ipcRenderer.send_("trigger::select_pedfile" ,allowed_ans.at(response))  
+            ipcRenderer.send_("trigger::select_pedfile" ,allowed_ans.at(response)) 
+            
         })
     })
 
-    //  Theorical run 
-    let trunbtn = _.querySelector(".t-run") 
+    //! ANALYSIS HANDLER   ... 
+    let trunbtn = _.querySelector(".t-run")   //!  therical button  
+    let erunbtn = _.querySelector(".e-run")   //!  emperical button  
     
+    let analysis_btns =[erunbtn ,  trunbtn] 
+
+    analysis_btns.map((Abtns ,  index_code) =>  {
+        Abtns.addEventListener("click" , evt => {  
+            if  ( index_code   > 0 )   //!  Theorical    
+            {
+                ipcRenderer.send_ ("enable:trun", true )  
+                return  
+            }  
+            
+
+            //!activate model for settings if  is emperical  
+            if  (  !modal2.classList.contains("active") )
+            {
+                modal2.classList.add("active")  
+                carousel_next.disabled = true  
+                carousel_prev.disabled = true  
+            }
+            
+        }) 
+    })   
+
+    //! ANALYSIS MODAL   ... 
+    let  analysis_modal2_action  =  [cancel_analysis , proceed_analysis ] 
+    analysis_modal2_action.map((whichbtn ,  index_code ) => { 
+        
+        whichbtn.addEventListener("click"  , evt  => { 
+            if  (  index_code == 1  )   
+            {   
+                carousel_next.disabled=false 
+                carousel_next.click()   
+            }  
+            modal2.classList.toggle("active") 
+            carousel_next.disabled  = false 
+            carousel_prev.disabled  = false 
+
+        }) 
+    })
+
+
     trunbtn.addEventListener("click"  , evt => { 
         if  (trunbtn.classList.contains("toggle") && enable_switch_between_theorical_or_emperical )
         {
@@ -976,7 +1041,9 @@ if  (activate_extra_elements)
             nbcores.disabled = true  
             nbsim.disabled   = true  
             ipcRenderer.send_("enable::trun" ,  true )  
-        }  
+        } 
+        
+        carousel_next.click()  
     })
 
     //! zoomin and zoom out  

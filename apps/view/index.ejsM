@@ -57,7 +57,7 @@
 				</div>
 			</div>
 			<!-- begin div shapes -->
-			<div class="dna" style="--total:30">
+			<div class="dna" style="--total:30 ; ">
 				<div class="strand_one" style="--i:1">
 					<div class="left">
 						<div class="dot"></div>

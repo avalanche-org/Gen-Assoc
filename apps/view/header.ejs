@@ -74,8 +74,55 @@ font-family:Maven Pro ;
     to {
         right: 0px;
         opacity: 1;
+    }  
+
+
+.run_analysis { 
+    top :30%; 
+    right : 0px ; 
+    left : 500px !important ;
+    padding-left  : 10px ;
+    display: inline-block;
+    vertical-align: middle; 
+    width:1000px;
+    height:100px; 
+
+     justify-content: center;
+      align-items: center;
+}
+.run_analysis {
+    padding: 20px 20px 20px 20px;
+    -webkit-animation-name: modal-animation;
+    -webkit-animation-duration: 2s;
+    animation-name: modal-animation;
+    animation-duration: 1.6s;
+    transition: "ease-in-out" ;
+}
+@-webkit-keyframes modal-animation {
+    from {
+        top: -100px;
+        opacity: 0;
+    }
+    to {
+        top: 0px;
+        opacity: 1;
     }
 }
+@keyframes modal-animation {
+    from {
+        left: -100px;
+        opacity: 0;
+
+    }
+    to {
+        right: 0px;
+        opacity: 1;
+    }  
+
+
+
+
+} 
 
 </style> 
   <body>
@@ -95,11 +142,10 @@ font-family:Maven Pro ;
 
               <span style="font-size: 14px;">
                 <pre>
-[M]ulti-locus 
-[T]ransmission 
-[D]isequilibrium 
-[T]est
-
+ <b class="ui teal mini label">M</b></small><small>ulti-locus</small> 
+ <b class="ui orange mini label">T</b><small>ransmission</small>  
+ <b class="ui blue mini label">D</b><small>isequilibrium </small> 
+ <b class="ui yellow mini label">T</b><small>est</small>
                 </pre>
               </span>
             </div>
@@ -107,20 +153,10 @@ font-family:Maven Pro ;
         </div>
         <div class="col-lg-7 col-md-7 col-xs-7" style="float: right; padding: 20px; margin-top: 12px;">
           <div class="ui secondary pointing menu " style="font-size: 20px;"> 
-              <a href ="/main" class="item active"> m-TDT
+              <a href ="/main" class="item active ui  teal segment  "> m-TDT
               </a>
 
             <!--a href="/tuto" class="item">Tutorial</a-->
           </div>
         </div>
-        <div class="col-lg-1 col-md-1 col-xs-1">
-          <div class="ui secondary animated button" id="disconnect" tabindex="0" style="margin-top: 40px;">
-            <div class="visible content">Exit</div>
-            <div class="hidden content">
-              <i class="sign-out icon"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+        

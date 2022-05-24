@@ -115,7 +115,7 @@ module.exports =   {
         
         const  version = require("./../package.json")?.version 
         return { 
-            data : version +"\n", 
+            data : `m-TDT ${version}\n` , 
             description  : "show version number  of application\n"
         } 
     },

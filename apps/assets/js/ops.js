@@ -69,7 +69,7 @@ export const  [
     run_summary,run_analysis, 
     sync , files_uploaders/*element node  |  undefined */ , files_browser/* element node | undefined*/ ,
     form_upload ,  job_title ,  job_init  ,  disconnect , p_menu, interm , giyes , gino , download , abort , download_assets, zoom_in, zoom_out ,
-    carousels, carousel_prev , carousel_next,gi_modal_no,gi_modal_yes 
+    carousels, carousel_prev , carousel_next,gi_modal_no,gi_modal_yes ,  cancel_analysis ,  proceed_analysis , validate_ms  
   ]=[ 
         _.querySelector("#ped"),   
         _.querySelector("#map"), 
@@ -105,7 +105,10 @@ export const  [
         activate_extra_elements  ?  _.querySelector(".carousel-control-prev"):(void function ()  { return  }() )  , 
         activate_extra_elements  ?  _.querySelector(".carousel-control-next"):(void function ()  { return  }() )  , 
         activate_extra_elements  ?  _.querySelector("#gi-modal-no")          :(void function ()  { return  }() )  , 
-        activate_extra_elements  ?  _.querySelector("#gi-modal-yes")         :(void function ()  { return  }() )   
+        activate_extra_elements  ?  _.querySelector("#gi-modal-yes")         :(void function ()  { return  }() )  , 
+        activate_extra_elements  ?  _.querySelector("#cancel_analysis")     :(void function ()  { return  }() )   ,
+        activate_extra_elements  ?  _.querySelector("#proceed_analysis")    :(void function ()  { return  }() )   , 
+        activate_extra_elements  ?  _.querySelector("#validate_markerset")   :(void function ()  { return  }() )  
     ] 
 /*
 [  

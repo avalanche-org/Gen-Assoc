@@ -1,5 +1,15 @@
 <%- include("./header.ejs")%> 
 
+<div class="col-lg-1 col-md-1 col-xs-1">
+          <div class="ui secondary animated button" id="disconnect" tabindex="0" style="margin-top: 40px;">
+            <div class="visible content">Exit</div>
+            <div class="hidden content">
+              <i class="sign-out icon"></i>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
 <div class="container-fluid">
   <div class="row">
     <div class="ui  mini modal segment">
@@ -16,6 +26,29 @@
 </button>
 
     </div>
+
+
+<div class="ui  mini modal   segment" >
+<div class="ui action input">  
+<input type="text" id="nbsim"  placeholder=" Number of simulation  e.g 10">
+<select id="nbcores" name="nbcores" class="ui compact selection  dropdown">
+                      <option value = "" disabled selected >  Number of Cores</option>
+                    </select> 
+</div>
+<div> 
+<br>
+
+<b style="font-family:Maven Pro; font-size:11px;">Run Analysis Setting  </b> 
+ <button id="cancel_analysis" class="mini red  inverted ui right floated button">
+  Cancel 
+</button>
+<button id="proceed_analysis" class="mini  teal inverted ui right floated  button">
+  Proceed
+</button>
+</div> 
+
+    </div>
+
 
     <div class="col-md-6">
 
@@ -63,16 +96,17 @@ You can choose the name of this space in Job Title and submit to validate the cr
           <h3 class="ui horizontal divider header">Upload Sheets</h3> 
 
  <% if  ( socket )  {%> 
-            <form method="post" action="" enctype="multipart/form-data" name="file_uploader" id="form_upload" class="ui form" style="padding:20px; padding-bottom: 0;">
+            <form method="post" action="" enctype="multipart/form-data" name="file_uploader" id="form_upload" class="ui form" style="padding:20px; padding-bottom:0;">
               <div class="ui fluid action input">
-                <input name="fupload" type="file" accept=".ped,.map,.phen" multiple style="padding: 20px;" class="ui input  focus"> 
-                  <button class="ui brown inverted button" type="submit" id ="files_uploader">
+                <input name="fupload" type="file" accept=".ped,.map,.phen" multiple style="padding: 20px;border-radius:50px" class="ui input focus"> 
+                  <button class="ui brown inverted button" type="submit" id ="files_uploader"  style="border-radius:0px 50px 50px 0px">
                     <div class="hidden content">Upload</div>
                     <div class="visible content">
                       <i class="upload icon"></i>
                     </div>
                   </button>
-              </div>
+              </div> 
+    <small> *[ Select 3 files  or more  .ped .map .phen ] </small>
             </form>
           <%}%>     
 <br> 
@@ -105,7 +139,6 @@ INPUT FILE FORMAT
     </div>
     </div>
 
-
     <div class="container col-8">  
     <div class="carousel-item ">
     
@@ -114,7 +147,7 @@ INPUT FILE FORMAT
 <form name="form" style="padding:20px;" class="ui form"> 
             <div class="ui toggle checkbox">
                 <input type="checkbox" id="sync" name="sync">
-                <label for="sync">Sync</label>
+                <label for="sync"><b>Sync</b></label>
             </div>
             <div class="field">
               <label for="ped">Pedigree File</label>
@@ -169,7 +202,7 @@ This is the only way to make sure that when you select an A file for a dedicated
               <div class="ui large buttons">
                 <button class="ui blue inverted  button"  id="gi-yes">Genotype Inference</button>
                 <div class="or"></div>
-                <button class="ui button  dark  basic" id ="gi-no">Skip GI</button>
+                <button class="ui button   white inverted"  style="color:#000000" id ="gi-no">Skip Genotype Inference</button>
               </div>
             </div>
           </form> 
@@ -211,9 +244,13 @@ This is where the options to run the mtdt script are selected.
               </div> 
             </div>
 
-            <div class="field">
-                <label for="marker_set">Select markerset</label>
-                <input  placeholder="Choose your markers. eg: 1, 3, 24" rows="1" cols="30" id="marker_set" name="marker_set" required>  
+ 
+            <div class="field">  
+<div class="ui action input">
+  <input type="text" id="marker_set" placeholder="Choose markers. ex 1,2,3,...,">
+  <button class="ui primary button" id="validate_markerset" >Validate Selected Markers</button> 
+</div>
+  <small> *Choose Markers. ex : 1,2,3...</small>
             </div>
          
      </form>
@@ -242,29 +279,22 @@ If <b> MULTI MARKER </b> option is not selected, the software will run like <b>S
           <div class="ui  segment basic  ">
             <div class="ui two column very relaxed stackable grid" >
               <div class="column ">
-                <h4 style="margin-top:-11px; margin-left: 67px;color: orange;">EMPIRICAL</h4>
-                <div class="ui form">
-                  <div class="field">
-                    <label for="nbsim"><span>Number of simulations</span></label>
-                    <div class="ui left icon input">
-                      <input id="nbsim" placeholder="10">
-                      <i class="redo icon"></i>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label for="nbcores">Number of Cores</label>
-                    <select id="nbcores" name="nbcores" class="ui search dropdown">
-                      <option value = "" disabled selected > Cpus core available</option>
-                    </select>
-                  </div>
+<div class="aligned column"> 
+    <br> 
+                <div class="ui medium right floated inverted orange  button  e-run">   
+                  <i class=" braille icon"></i>
+                  EMPERICAL  
                 </div>
               </div>
-              <div class="middle aligned column"> 
+
+                
+
+              </div>
+              <div class="aligned column"> 
     <br> 
                 <div class="ui medium inverted blue  button t-run">   
                   <i class="magic icon"></i>
                   THEORITICAL  
-                <!--div class="ui medium  button active  t-run"  style="background-color: #59698D;color: white;">THEORICAL</div--> 
                 </div>
               </div>
             </div> 
@@ -307,19 +337,15 @@ on the parameters for an empirical run (number of simulations and number of core
     <div  class="carousel-item"> 
     
         <h3 class="ui horizontal divider header">Run Analysis</h3>  
- 
-<form class="ui form"> 
-          <div class="field inline" > 
             <small  style="font-family:Maven Pro;font-size:16px;" class="ui" >  Choose Your Number of Phenotype</small> 
-            <select id="phenotype" name="phenotype" class="ui selection dropdown">
+<div class="ui  action input right floated "> 
+            <select id="phenotype" name="phenotype" class="ui compact  selection dropdown">
               <option value="" disabled selected></option>
             </select>
-          </div>
- <div class="field"> 
-            <button id="run_analysis" class="ui left teal basic floated button">Run Analysis &nbsp;<i class="fas fa-dna"></i></button>
-          </div>
-     
-     
+            <div id="run_analysis" class="ui right  teal  basic  floated button">Run Analysis &nbsp;<i class="fas fa-dna"></i></div>
+    
+
+</div>  
     <br>
     <br>
     <br>

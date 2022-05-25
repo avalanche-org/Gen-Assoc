@@ -146,7 +146,7 @@ cat("   -  Missing genotypes \n")
 cat("\tAlert on missing values !!! \n") 
 cat("\tThere is", length(ped[ped == '0 0']), "missing genotypes for a total of",nrow(ped)* (ncol(ped)-6),"genotypes\n")
 
-cat("\tPercentage of missing values (%):", round(100* (length(ped[ped == '0 0']))/(nrow(ped))*(ncol(ped)-6),2),"\n\n")  #/(nrow(ped)* (ncol(ped)-6))) * 100,"%\n\n")
+cat("\tPercentage of missing values (%):", round(100* (length(ped[ped == '0 0']))/(nrow(ped)*(ncol(ped)-6)),2),"\n\n")  #/(nrow(ped)* (ncol(ped)-6))) * 100,"%\n\n")
 #cat("\tPercentage of missing values :", (length(ped[ped == '0 0'])/(nrow(ped)* (ncol(ped)-6))) * 100,"%\n\n")
 cat("\tMethod sensitive to missing data, you are recommended to use the genotype inference option. \n\n\n")
 

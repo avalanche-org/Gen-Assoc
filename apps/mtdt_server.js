@@ -76,12 +76,13 @@ const __wtcp__ =  {
         let  location_path  = static_vn != null  ?  `${virtual_space}/${static_vn}/${file.name}` : `${virtual_space}/${file.name}`  
 
         writeFile( location_path  ,  file.data  , ( err , data) => { 
-            if  (err ) throw err  
+            if  (err ) throw err   
+             
         }) 
     
     } , 
     "@parser"   :   ( data  , sep ="." ) => {
-        const  explode = data.split(sep) 
+        const  explode = data.split(sep)  
         return  required_file_extension.includes(explode[explode.length -1 ] )  
     },
 
@@ -125,6 +126,7 @@ const __wtcp__ =  {
             let  { fupload  }  = rx.files
 
             fupload  =  fupload.length ? fupload.filter( file  => __wtcp__["@parser"](file.name)):
+            log ("uploaded file"  , fupload) 
             [fupload].filter(file  => __wtcp__["@parser"](fupload.name))
             
             

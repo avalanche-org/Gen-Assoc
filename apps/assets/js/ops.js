@@ -137,12 +137,14 @@ export const uploader  =   async   form_ =>  {
     {
         error(`${ form_} is not an node element `)
         return  
-    }
+    } 
+    
     const  payload = {  
         method:"POST" , 
-        body  : new FormData(form_ ) 
-    }
-    const  state  = await window.fetch ("/" ,  { ...payload }  )
+        body  : new FormData(form_) 
+    } 
+    
+    const  state  = await window.fetch("/main" ,  { ...payload }  )
 
     return  state 
 }
@@ -220,13 +222,18 @@ export const  carousel_navigation  =  webui_stdterm =>  {
     const  carousels_block_size =  carousels_block.length -1   
     
     const  navigation  = [  carousel_prev , carousel_next ]  
-    
+   
+    log("ccc" , carousels_block) 
     navigation.forEach ((carousel_navbtn , index) =>  { 
 
         carousel_navbtn.addEventListener("click" , evt =>  {
 
-            let  active_carousel =  carousels_block.filter(  carousel =>  carousel.classList.contains("active")).at(0)   
+            let  active_carousel =  carousels_block.filter(  carousel =>  carousel.classList.contains("active")).at(0) 
+            
             let  active_carousel_position  = carousels_block.indexOf(active_carousel) 
+            //!  save  active carousel  in cache to remember  navigation 
+            log ( "acp" , active_carousel_position)  
+
             let  next_carousel    =  0   
             let  preview_carousel =  0   
             
@@ -257,6 +264,8 @@ export const  carousel_navigation  =  webui_stdterm =>  {
              
             let  activated_carousel  =  carousels_block.at(active_index)   
             activated_carousel.classList.add("active") 
+
+            localStorage["cnav"] =  active_index 
             
             const cctitle  = activated_carousel.childNodes[1].textContent 
             //! disable  webui_stdterm  -> term_write  callback 
@@ -268,4 +277,36 @@ export const  carousel_navigation  =  webui_stdterm =>  {
    
    
 
-}  
+} 
+
+export  const  cnav_cache  =  ()=>  { 
+    
+    if ( localStorage["cnav"]) 
+    {  
+        log ( "cnav" , localStorage["cnav"]) 
+        let  cblock  =  [ ...carousels] 
+        let last_active_position = localStorage["cnav"]   
+         
+        
+        log( "ap " ,last_active_position)  
+        let  current_active_position  =  cblock  
+            .filter(active_carousel  => active_carousel.classList.contains("active")).at(0)  
+    
+        current_active_position  = cblock.indexOf(current_active_position)  
+       
+        log("cap_" ,  current_active_position) 
+        if  (current_active_position !=  last_active_position) {  
+            //! update  carousel  navigation  after reload or leave   
+            //! retaining  the actual carousel  frame  
+            let  active_element =  cblock.at(current_active_position) 
+            log(active_element)
+
+            let  last_active_element = cblock.at(last_active_position) 
+            log(last_active_element) 
+            
+            active_element.classList.remove("active") 
+            last_active_element.classList.add("active") 
+        } 
+        
+    }
+} 

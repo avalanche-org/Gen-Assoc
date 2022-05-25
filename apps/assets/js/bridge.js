@@ -26,7 +26,8 @@ import  {
     ,log , error,warn
     ,random , floor  
 
-    ,window_keyShortcut,shortcup_maping,parse_unknow_ascii_unicode ,  carousel_navigation  
+    ,window_keyShortcut,shortcup_maping,parse_unknow_ascii_unicode ,  carousel_navigation
+    ,cnav_cache  
 
 }  from  "./ops.js"  
 
@@ -47,6 +48,7 @@ __lock_web_ui_file_operation()
 ipcRenderer.send_("clifp" ,   { user_agent : client_nav_fingerprint(navigator) , ls_session : localStorage["task"]?? null})
 
 
+cnav_cache() 
 if (!localStorage["task"] )   
 {
     files_browser.disabled  = true
@@ -358,19 +360,7 @@ ipcRenderer.on("Browse::single"   , (evt ,  global_object ) =>   {
     files_collections =  files
     optsfeed(files) 
 
-    //!NOTE : NEED TO BE FIX   ... 
-     
-    if  (localStorage["task"]   && files.length==7 )  
-    {
-        carousel_next.click()  
-    }
-    if  (  files.length > 0   && files.length <  7 ) 
-    {  
-        //!  navigate direct to run summary   ... 
-        carousel_next.click() 
-        setTimeout( _=> {   carousel_next.click() } , 500)
-
-    } 
+   
     ////progress_step(15 , `loading  files ` ,  rand(400)) 
 }) 
 ipcRenderer.on("Browse::multiple" , (evt , mbrowse_data )  =>{
@@ -801,26 +791,26 @@ if  (activate_extra_elements)
 
         files_uploaders.disabled =  !choosed_files.length  ??   true    
         fileslist  = choosed_files.map (  file  =>  file?.name) 
-        log (fileslist) 
+        log ("files  will be sended " , fileslist) 
      
     
     }  , false ) 
  
-    if  ( localStorage["task"]  ) 
-    {
         form_upload.addEventListener("submit" , async  evt =>  {    
+            log("submiting") 
             evt.preventDefault()  
+            setTimeout( _=> {  log("...")} , 60000) 
             let responce_status = await   uploader(form_upload)
             log("responce_status" , responce_status ) 
             files_browser.value = ""
             if   (responce_status?.status  ==  200    && fileslist != null) 
-            { 
+            {   
+                
                 optsfeed(fileslist)  
-                // update  file visualization  
                 ipcRenderer.send_("update::fileviewer" ,   paths_collections )  
+                carousel_next.click() 
             }
         }) 
-    }
     
     ipcRenderer.on("jobusy" ,   vn => {
          localStorage.clear()
@@ -1060,7 +1050,7 @@ if  (activate_extra_elements)
         }) 
     })
 
-
+    /*
     trunbtn.addEventListener("click"  , evt => { 
         if  (trunbtn.classList.contains("toggle") && enable_switch_between_theorical_or_emperical )
         {
@@ -1078,6 +1068,7 @@ if  (activate_extra_elements)
         carousel_next.click()  
     })
 
+ */
     //! zoomin and zoom out  
     const  zooms  =  [ zoom_out ,  zoom_in ] 
     const LIMTE_FSIZE  = [ 6, 24]  

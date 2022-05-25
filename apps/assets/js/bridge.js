@@ -19,7 +19,7 @@ import  {
     ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
     ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort
     ,download_assets ,zoom_out , zoom_in , carousels , carousel_next , carousel_prev , gi_modal_no,gi_modal_yes
-    ,cancel_analysis , proceed_analysis , validate_ms 
+    ,cancel_analysis , proceed_analysis , validate_ms, processing 
     //blur_area
     //,i_lock ,i_unlock , status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
@@ -350,13 +350,27 @@ ipcRenderer.on("Browse::single"   , (evt ,  global_object ) =>   {
     
     global_object = fetch_right_data ( activate_extra_elements   , evt, global_object )   
     
-    const  { main_root  , files  } = global_object  
+    const  { main_root  , files} = global_object  
     log (main_root) 
     
     paths_collections =  main_root
     localStorage["task"] =  main_root  
     files_collections =  files
-    optsfeed(files)
+    optsfeed(files) 
+
+    //!NOTE : NEED TO BE FIX   ... 
+     
+    if  (localStorage["task"]   && files.length==7 )  
+    {
+        carousel_next.click()  
+    }
+    if  (  files.length > 0   && files.length <  7 ) 
+    {  
+        //!  navigate direct to run summary   ... 
+        carousel_next.click() 
+        setTimeout( _=> {   carousel_next.click() } , 500)
+
+    } 
     ////progress_step(15 , `loading  files ` ,  rand(400)) 
 }) 
 ipcRenderer.on("Browse::multiple" , (evt , mbrowse_data )  =>{
@@ -473,6 +487,7 @@ let summary_already_run =  false ,
 let  gobject ={}  
 run_summary.addEventListener("click" , evt => {
     evt.preventDefault()
+    processing.classList.toggle("active") 
     let  annoucement  = "▮ Generating Summary Statistics ... please wait\n" 
     let  warning_alert = false  
     //plugonlog() 
@@ -538,6 +553,7 @@ sm.addEventListener("change" , evt => {
 
 let  enable_switch_between_theorical_or_emperical   = false  
 ipcRenderer.on("load::phenotype" ,  incomming_data  =>  {
+    processing.classList.toggle("active")  
     phenotype.innerHTML = ""  
     nbcores.disabled =  false 
     incomming_data =  incomming_data
@@ -676,11 +692,14 @@ run_analysis.addEventListener("click" ,  evt => {
             //use_cpus_resources(true) 
         } 
 
+        processing.classList.toggle("active") 
         ipcRenderer.send_("annoucement" , annoucement) 
+        
         ipcRenderer.send_("run::analysis" ,  gobject )
     }
 })
 
+ipcRenderer.on("run::analysis::done"  , ec =>  { processing.classList.toggle("active")}) 
 
 //--------------- TERMINAL  -----------------------------
 let detach_term = _.querySelector("#detach_term")  ,  
@@ -781,19 +800,9 @@ if  (activate_extra_elements)
         log("choosed", choosed_files )  
 
         files_uploaders.disabled =  !choosed_files.length  ??   true    
-        log(files_uploaders.disabled )  
         fileslist  = choosed_files.map (  file  =>  file?.name) 
         log (fileslist) 
-        if (fileslist.length < 3  && files_buffer.length < 3   )  
-        {
-            carousel_next.disabled=true
-            form_upload.disabled =  true 
-            
-        }else {
-            carousel_next.disabled=false 
-            form_upload.disabled = false  
-
-        }
+     
     
     }  , false ) 
  
@@ -801,7 +810,8 @@ if  (activate_extra_elements)
     {
         form_upload.addEventListener("submit" , async  evt =>  {    
             evt.preventDefault()  
-            let responce_status = await   uploader(form_upload) 
+            let responce_status = await   uploader(form_upload)
+            log("responce_status" , responce_status ) 
             files_browser.value = ""
             if   (responce_status?.status  ==  200    && fileslist != null) 
             { 
@@ -844,8 +854,11 @@ if  (activate_extra_elements)
 
     ipcRenderer.on("update::fileviewer" ,   fileslist  =>  {
         //! TODO :  update file views  rendering 
-        log ("filebuffer" , fileslist ) 
-        files_buffer =  fileslist 
+        if  ( fileslist  && localStorage["task"])  
+        {
+            log ("filebuffer" , fileslist ) 
+            files_buffer  = fileslist  
+        }
     } ) 
 
     disconnect.addEventListener("click"  ,  evt =>   { 
@@ -948,7 +961,8 @@ if  (activate_extra_elements)
                     term_write("WARNING : are you trying to run GI without  summary static !!") 
                     carousel_prev.click() 
                     return  
-                }
+                } 
+                processing.classList.toggle("active")  
                 ipcRenderer.send_("gi::run" , [gi_status ,  gobject])  
                 return  
             }
@@ -961,7 +975,10 @@ if  (activate_extra_elements)
     }) 
    
     //!NOTE :  go next carrousel  if  succes  
-    ipcRenderer.on("next" , _ =>  {  
+    ipcRenderer.on("next" , _ =>  { 
+        if  ( processing.classList.contains("active"))  
+            processing.classList.remove("active")  
+
         carousel_next.click()  
     })
     let modals   = [..._.querySelectorAll(".modal")]  
@@ -969,6 +986,7 @@ if  (activate_extra_elements)
     let [ modal , modal2 ] =  modals 
     
     ipcRenderer.on("gi::done" ,  ec =>  { 
+        processing.classList.toggle("active")  
          log ("gi run  done " ) 
          if (!modal.classList.contains("active"))  
           { 
@@ -993,6 +1011,7 @@ if  (activate_extra_elements)
                 
             }  
             //! send the responce to the server 
+            processing.classList.toggle("active")  
             ipcRenderer.send_("trigger::select_pedfile" ,allowed_ans.at(response)) 
             
         })

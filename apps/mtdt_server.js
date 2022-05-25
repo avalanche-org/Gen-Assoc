@@ -369,7 +369,8 @@ const __wtcp__ =  {
 
                     if(exit_code ==0x00) 
                     {
-                        log("exit" , exit_code )
+                        log("exit" , exit_code ) 
+                        socket.emit("run::analysis::done", exit_code) 
 
                     }else {
                         log("error") 

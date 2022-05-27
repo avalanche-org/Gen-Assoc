@@ -647,7 +647,7 @@ run_analysis.addEventListener("click" ,  evt => {
     analysis_on_going = true 
     //setInterval(plugonlog , term_display_speed)   
      
-    
+    log("number simulation" ,   nbsim.value)  
     let gobject  =  { 
         paths           :paths_collections ?? null ,
         selected_index  :  { 
@@ -1018,6 +1018,8 @@ if  (activate_extra_elements)
             if  ( index_code   > 0 )   //!  Theorical    
             {
                 ipcRenderer.send_ ("enable:trun", true ) 
+                nbcores.value  = 1 
+                nbsim.value    = 0 
                 carousel_next.click() 
                 return  
             }  

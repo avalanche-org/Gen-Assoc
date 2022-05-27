@@ -106,7 +106,7 @@ const __wtcp__ =  {
         ["get"] ("/" , ( rx , tx  )  =>    { 
             
             tx.setHeader("Content-type" ,  "text/html")  
-            tx.render("index.ejs"  ,  { socket : true })  
+            tx.render("index.ejs"  ,  { socket : false })  
        
         }) 
         ['get']('/tuto', ( rx , tx ) => { 
@@ -138,7 +138,8 @@ const __wtcp__ =  {
         })
         ["get"]("/download/:dfile" , ( rx ,tx ) => {
             log (sbox)  
-            tx.download(`${sbox}/${rx.params.dfile}` , rx.params.dfiles  , err  => { 
+            log("sample") 
+            tx.download(`${rx.params.dfile}` , rx.params.dfiles  , err  => { 
                 if(err)  
                 { 
                    tx.status(404).send( {  message  : `you tried to download an inexistant file `}) 

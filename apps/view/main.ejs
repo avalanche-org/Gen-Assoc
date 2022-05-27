@@ -15,8 +15,8 @@
     <div class="ui  mini modal segment">
           <h5 class="ui teal ribbon floated   label">Genotype Inference</h5>  
 
- <small style="font-family:Maven Pro; font-size:11px;">Do you want to use the new pedfile ? </small> 
 <br> 
+ <small style="font-family:Maven Pro; font-size:11px;">Do you want to use the new pedfile including inferred Genotypes ? </small> 
 <br> 
  <button id="gi-modal-no" class="mini red  inverted ui right floated button">
   No
@@ -202,7 +202,7 @@ This is the only way to make sure that when you select an A file for a dedicated
               <div class="ui large buttons">
                 <button class="ui blue inverted  button"  id="gi-yes">Genotype Inference</button>
                 <div class="or"></div>
-                <button class="ui button   white inverted"  style="color:#000000" id ="gi-no">Skip Genotype Inference</button>
+                <button class="ui button  secondary  inverted "  style="" id ="gi-no">Skip Genotype Inference</button>
               </div>
             </div>
           </form> 
@@ -222,7 +222,7 @@ This is where the options to run the mtdt script are selected.
 
         </small>
 </div> 
-    </div> 
+    </div>
   </div> 
 
 
@@ -283,7 +283,7 @@ If <b> MULTI MARKER </b> option is not selected, the software will run like <b>S
     <br> 
                 <div class="ui medium right floated inverted orange  button  e-run">   
                   <i class=" braille icon"></i>
-                  EMPERICAL  
+                  EMPERICAL  ANALYSIS 
                 </div>
               </div>
 
@@ -292,9 +292,9 @@ If <b> MULTI MARKER </b> option is not selected, the software will run like <b>S
               </div>
               <div class="aligned column"> 
     <br> 
-                <div class="ui medium inverted blue  button t-run">   
+                <div class="ui medium left floated inverted blue  button t-run">   
                   <i class="magic icon"></i>
-                  THEORITICAL  
+                  THEORITICAL ANALYSIS 
                 </div>
               </div>
             </div> 
@@ -337,7 +337,7 @@ on the parameters for an empirical run (number of simulations and number of core
     <div  class="carousel-item"> 
     
         <h3 class="ui horizontal divider header">Run Analysis</h3>  
-            <small  style="font-family:Maven Pro;font-size:16px;" class="ui" >  Choose Your Number of Phenotype</small> 
+            <small  style="font-family:Maven Pro;font-size:16px;" class="ui" >  Choose The Phenotype Number</small> 
 <div class="ui  action input right floated "> 
             <select id="phenotype" name="phenotype" class="ui compact  selection dropdown">
               <option value="" disabled selected></option>

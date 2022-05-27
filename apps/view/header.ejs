@@ -156,7 +156,13 @@ font-family:Maven Pro ;
               <a href ="/main" class="item active ui  teal segment  "> m-TDT
               </a>
 
-            <!--a href="/tuto" class="item">Tutorial</a-->
+              <% if (socket) {%>  
+              <a href="/download/sample.zip" class=" item  ui orange  active segment   ">
+                  Download Sample
+
+                  <div class="floating ui yellow label"></div>
+              </a>
+              <%}%>
           </div>
         </div>
         

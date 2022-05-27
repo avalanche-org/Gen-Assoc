@@ -1017,7 +1017,8 @@ if  (activate_extra_elements)
         Abtns.addEventListener("click" , evt => {  
             if  ( index_code   > 0 )   //!  Theorical    
             {
-                ipcRenderer.send_ ("enable:trun", true )  
+                ipcRenderer.send_ ("enable:trun", true ) 
+                carousel_next.click() 
                 return  
             }  
             

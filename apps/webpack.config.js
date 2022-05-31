@@ -7,25 +7,27 @@ __kernel_file__ :  {  core = require("./kernel") }
 const  { resolve } =  core["@node_module"]["path"]  
 
 const  [  
-    source_app  =  "./assets/js/bridge.js",
+    source_app  =  "./assets/js/bridge.js", 
+    tuto_sec    =  "./assets/js/tuto_sec.js", 
     bundle_dir  =  "./assets/js/dist" 
-] =  process.argv.slice(3)  
+] =  process.argv.slice(4)  
 
-const  bundle_output_filename =   () =>  {  
-    let   file_entry  = source_app.split("/")  
-    file_entry =  file_entry[file_entry.length - 1 ]  
+const  bundle_output_filename = sourcefile_path  =>  {  
+    let   file_entry  = sourcefile_path.split("/")  
+    file_entry =  file_entry.at(-1)   
     return `build_${file_entry}` 
 } 
     
 
 module.exports  = {
     mode   : "development", 
-    ["entry"] :   {  
-        app   :  source_app 
-    } , 
+    ["entry"] :   [ 
+        source_app ,  
+          tuto_sec 
+    ], 
 
     ["output"]:{
-        filename  : bundle_output_filename()  ,
+        filename  : bundle_output_filename(source_app)  ,
         path      : resolve(__dirname , bundle_dir) 
     }, 
     

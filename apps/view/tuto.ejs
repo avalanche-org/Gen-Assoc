@@ -1,7 +1,187 @@
 <%- include("./header.ejs")%> 
 
 
+<div class="ui  container fluid">  
 
+
+<div class="ui three column grid">
+  <div class="column">
+    <div class="ui raised segment green">
+    <h3 class="ui horizontal divider  top attached   inverted header">Get Ready </h3> 
+<br> 
+      <a class="ui red tag label"  href="/index">1 :Landing Page </a>
+      <div class="ui segment red ">
+<a href="/images/appscreenshot/Selection_015.png">
+  <img  src="/images/appscreenshot/Selection_015.png"  class="ui  small rouded image">  
+</a>
+  <p> <b>B</b>asic  Landing  Page that show some information  about m-TDT ... </p> 
+</div> 
+      <a class="ui blue tag label">2 Job Space Creation </a>
+ <div class="ui segment blue"> 
+<a href="/images/appscreenshot/Selection_016.png">
+  <img  src="/images/appscreenshot/Selection_016.png"  class="ui  small rouded image">  
+</a> 
+  <small> <i class="rocket icon"> </i> 
+ <strong>T</strong>his section allows you to create a virtual workspace in which the analysis will take place. 
+    The uploaded files as well as the output files will be located in this virtual directory on the server. 
+You can choose the name of this space in Job Title and submit to validate the creation of your space.
+
+
+
+    </small>
+</div> 
+<a class="ui olive tag label"  href="/main" >3  Send your files</a>  
+
+ <div class="ui segment olive">   
+<a href="/images/appscreenshot/Selection_017.png">
+  <img  src="/images/appscreenshot/Selection_017.png"  class="ui  small rouded image"> 
+</a> 
+
+ <small> <i class="upload icon"></i> <strong>I</strong>t is in this section that the user loads the files to be analyzed.
+
+The button opens a window with a view of your local files. You can select the files whose formats must meet the following specifications:
+INPUT FILE FORMAT
+
+    * No headers in any of the 3 input files.
+    * The columns of all input files are separated by tabs.
+
+    (i) PED file: starts with 6 columns followed by genotype columns, in the following order
+        - Family ID
+        - Individual ID
+        - Father ID
+        - mother's ID
+        - sex
+        - condition (this column will not be taken into account, but its presence is required)
+
+        - genotype columns (...)
+
+    ! !! TIP: The 'ped' file can contain multiple markers, but we advise at the runtime stage to include a limited number of markers, e.g. 3 to 5, 
+
+        </small>
+
+</div> 
+
+
+    </div>
+  </div>
+  <div class="column">
+
+    <div class="ui segment yellow">
+          <h3 class="ui horizontal  top  attached inverted  divider header">Run Settings </h3> 
+<br> 
+      <a class="ui orange right ribbon label">4 Summary Statistics </a>
+ <div class="ui segment orange">
+<a href="/images/appscreenshot/Selection_018.png">
+  <img  src="/images/appscreenshot/Selection_018.png"  class="ui  small rouded image"> 
+</a>
+     <small> 
+<strong> T</strong>hen you select from the files you have just uploaded the one you need, respectively, for the Pedigree File, Map file and Phenotype File fields. These three files must have the same file name with the same difference in format. 
+   <div class="ui toggle checkbox">
+                <input type="checkbox">
+                <label for="sync">Sync</label>
+            </div> 
+This is the only way to make sure that when you select an A file for a dedicated field, the other fields are pre-filled with the files corresponding to the same base name 
+
+        </small>
+</div> 
+
+      <a class="ui black right ribbon label">5 Genotype Inference </a>
+ <div class="ui segment black ">
+<a href="images/appscreenshot/Selection_019.png"> 
+  <img  src="/images/appscreenshot/Selection_019.png"  class="ui  small rouded image">  
+</a>  
+
+        <small> 
+Depending on your number of missing data, you can choose to use the genotype inference option or not. 
+
+This is where the options to run the mtdt script are selected.
+
+
+        </small>
+</div> 
+<a class="ui  gray  right ribbon label">4 Run Type</a>  
+ <div class="ui segment gray">
+<a href="/images/appscreenshot/Selection_020.png"> 
+  <img  src="/images/appscreenshot/Selection_020.png"  class="ui  small rouded image">  
+</a> 
+  
+     <small> 
+<b>Markers Setting </b> list indicating positions of the set of markers to analyze jointly (separated by "," without SPACE); position from the 'ped' file without counting the 6 first columns. 
+If <b> MULTI MARKER </b> option is not selected, the software will run like <b>SINGLE MARKER</b> GWAS, screen all markers in the 'ped' file one-by-one in family-based association. A limited number of top SNPs from a GWAS screening can be subsequently used for multilocus analysis.
+
+
+        </small>
+</div> 
+
+  </div>  
+</div> 
+
+
+
+  <div class="column">
+
+    <div class="ui segment pink ">
+          <h3 class="ui horizontal top  right attached  red  inverted   divider header">Finalize</h3> 
+<br> 
+ <div class="ui segment brown ">
+      <a class="ui brown  right  top attached   label">Analysis </a> 
+ <a href="/images/appscreenshot/Selection_021.png"> "
+  <img  src="/images/appscreenshot/Selection_021.png"  class="ui  small rouded image"> 
+</a>  
+         <small> <b>Number of simulations </b> for the calculation of the empirical P-values. 
+The default value is 0 and corresponds to the case where only asymptotic P-values are provided. If the sample size is limited or if there is a linkage disequilibrium (LD) between the analyzed markers, the asymptotic theory is no longer valid and the empirical P-values have to be calculated using simulations.
+<b >Number of cores</b> to be used for execution, if the user wants to speed up the execution by using multiple cores, as the program can run in parallel at the simulation stage if it is included to obtain empirical P-values. Thus, this option is only useful if the -nbsim option is used.
+<b>Note</b>: The distinction between empirical run and theoretical run is made at this level. By clicking on 
+ <div class="ui mini inverted blue  button" >   
+                  <i class="magic icon"></i>
+                  THEORITICAL  
+</div>
+on the parameters for an empirical run (number of simulations and number of cores) are disabled. To deactivate it, click on it again.
+
+
+
+        </small>
+
+</div> 
+
+      <p></p>
+ <div class="ui segment purple"> 
+      <a class="ui purple  top right  attached  label">8 Run Analysis </a> 
+<br> 
+<a href ="/images/appscreenshot/Selection_022.png"> 
+  <img  src="/images/appscreenshot/Selection_022.png"  class="ui  small rouded image"> 
+</a>  
+
+
+    <small> 
+
+<b> T</b>he position of the phenotype (only one) to analyze from the 'phenotype' file without counting the 2 first columns.
+
+        </small>
+
+
+</div> 
+
+      <p></p>
+  <!--a class="ui teal right ribbon label">9</a>
+ <div class="ui segment">
+  <img  src="/images/appscreenshot/Selection_023.png"  class="ui  small rouded image">  
+  <p>Te eum doming eirmod, nominati pertinacia argumentum ad his. Ex eam alia facete scriptorem, est autem aliquip detraxit at. Usu ocurreret referrentur at, cu epicurei appellantur vix. Cum ea laoreet recteque electram, eos choro alterum definiebas in. Vim dolorum definiebas an. Mei ex natum rebum iisque.</p> 
+</div> 
+
+    </div>
+  </div-->
+
+
+</div>
+
+
+
+</div> <!--end Grid --> 
+
+ 
 
 <%- include("./footer.ejs")%>  
+
+<%-  include("./scripts/index_jscript.ejs")%>  
 </html>  

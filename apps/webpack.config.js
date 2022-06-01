@@ -21,13 +21,13 @@ const  bundle_output_filename = sourcefile_path  =>  {
 
 module.exports  = {
     mode   : "development", 
-    ["entry"] :   [ 
-        source_app ,  
-          tuto_sec 
-    ], 
+    ["entry"] :   {   
+        main  : source_app ,  
+        tuto  : tuto_sec 
+    } , 
 
     ["output"]:{
-        filename  : bundle_output_filename(source_app)  ,
+        filename  : `build_[name].js` , 
         path      : resolve(__dirname , bundle_dir) 
     }, 
     

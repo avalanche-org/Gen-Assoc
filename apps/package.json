@@ -1,6 +1,6 @@
 {
   "name": "Mtdt",
-  "version": "2.1.4-Beta-rc",
+  "version": "2.1.5-Beta-rc",
   "description": "Gen Assoc  Graphical User Interface",
   "main": "main.js",
   "scripts": {
@@ -12,12 +12,12 @@
     "package::linux": "electron-packager . mTdt --overwrite --asar  --platform=linux --arch=x64 --icon=assets/icons/linux/icon.png --prune=true --out=mtdt_release-builds_V3.3.6_beta",
     "watch": "nodemon mtdt_server.js",
     "hotreload": "pm2 start mtdt_server.js --watch",
-    "compile" : "webpack",
-    "build"   : "webpack ; npm run watch",
+    "compile": "webpack",
+    "build": "webpack ; npm run watch",
     "wpserve": "webpack serve",
-    "pm2"   : "pm2 start mtdt_server.js",
-    "logs"  : "pm2 logs",
-    "monit" : "pm2 monit"
+    "pm2": "pm2 start mtdt_server.js",
+    "logs": "pm2 logs",
+    "monit": "pm2 monit"
   },
   "repository": {
     "type": "git",
@@ -36,10 +36,6 @@
     "url": "https://github.com/avalanche-org/Gen_Assoc/issues"
   },
   "homepage": "https://github.com/avalanche-org/Gen_Assoc#readme",
-  "devDependencies": {
-    "electron": "~11.2.3",
-    "electron-packager": "~15.2.0"
-  },
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.1",

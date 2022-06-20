@@ -11,23 +11,23 @@
 # copyright(c) 2022, Umar <jUmarB@protonmail.com> 
 
 
-ARG  BASE_NODE_VERSION=17 
-ARG  CODENAME=bullseye
-ARG  DIST=${BASE_NODE_VERSION}-${CODENAME}  
+ARG  TAG_VERSION=3.15
+ARG  NODE_DIST=18-alpine${TAG_VERSION}    
+
+FROM node:${NODE_DIST}  
+
+MAINTAINER  Umar  <jUmarB@protonmail.com> 
+
+RUN apk  upgrade   
+
+RUN apk add --no-cache R R-dev &&\
+    apk add --no-cache util-linux &&\
+    apk add --no-cache python3 
+
+COPY  Rallib.txt /    
+COPY  RpkgAutorun.py  /usr/local/bin 
+RUN   RpkgAutorun.py  --build-missing   
+RUN   RpkgAutorun.py  --install  
 
 
-From node:${DIST}  
-
-MAINTAINER Umar <jUmarB@protonmail.com> <github/Jukoo> 
-
-
-RUN apt update --assume-yes && \
-    apt install r-base r-base-dev bsdmainutils git --assume-yes 
-
-COPY Rallib.txt    / 
-COPY RpkgAutorun.py /  
-
-RUN  chmod +xs  RpkgAutorun.py  
-RUN  ./RpkgAutorun.py --build-missing
-
-ENTRYPOINT ["./RpkgAutorun.py" , "--install"]   
+CMD [ "ash" ]  

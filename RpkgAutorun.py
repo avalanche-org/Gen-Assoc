@@ -130,13 +130,16 @@ class RpkgAutorun :
         modules : list =  list(self.missing_lib)   
         if  modules.__len__().__eq__(0)  :  
             sys.__stdout__.write(f"no asymetric  dependencies found  [All requierments are satisfied] \n") 
-            sys.exit(0)  
+            sys.exit(0) 
+
 
         dump_modobj =  os.open (self.DEFFNAME_REQ , os.O_CREAT|os.O_EXCL|os.O_WRONLY) 
         if  dump_modobj.__eq__(0):   
             sig.raise_signal(sig.SIGIO) 
 
-        for module  in modules  :  
+        sys.__stdout__.write("Retriving missing  module\n")
+        for module  in modules  :
+            sys.__stdout__.write(f" +-> {module} \n") 
             module_name  :str = f"install.packages('{module}' ,repos='{self.RBASE_REPOS}')\n"
             os.write ( dump_modobj ,module_name.encode() ) 
         os.close(dump_modobj)  

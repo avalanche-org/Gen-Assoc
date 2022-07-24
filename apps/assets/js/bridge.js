@@ -31,15 +31,7 @@ import  {
 
 }  from  "./ops.js"  
 
-log(validate_ms) 
-log(gi_modal_no) 
-log(gi_modal_yes) 
-console.log(_) 
-console.log(activate_extra_elements) 
-console.log(notify) 
-console.log(ipcRenderer) 
-console.log(ped) 
-console.log(zoom_out) 
+
 
 
 __setup_ipcRenderer(ipcRenderer)  
@@ -403,31 +395,8 @@ sync.addEventListener("change" , evt =>  {
         sync_select_action(ped , phen)/*<--*/;/*-->*/sync_select_action(map,phen) 
     }   
 })  
-//!--end sync 
-const markersetting  = [  sm  , mm ]  
-let   [_sm  , _mm ]  = [ false , false ]  
-markersetting.forEach (  ( marker_runType , code_index  ) =>  {
-    //! the code index  take  index array as code  like  -->  sm : 0  and mm  :1  
-    marker_runType.addEventListener("click" ,  evt =>  { 
-        evt.preventDefault()   
-        markerset.disabled =  code_index^1  
-        if  ( markerset.disabled)  
-        {
-            [_sm  , _mm ]  =[true ,  false] 
-            carousel_next.click()  
-            return  
-        }
-        [_sm,_mm]  = [false , true ]  
-    })
+//!--end sync  
 
-}) 
-
-//! MARKER SET VALIDATION  
-
-validate_ms.addEventListener("click" , evt =>  { 
-    evt.preventDefault() 
-    carousel_next.click()  
-}) 
 /*
 mm.addEventListener("click" , evt => { 
     evt.preventDefault()  
@@ -473,8 +442,12 @@ let ped_  = null ,
     phen_ = null   
 
 let summary_already_run =  false , 
-    analysis_on_going   =  false   
-let  gobject ={}  
+    analysis_on_going   =  false 
+
+let  gobject = {}  
+gobject["paths"]  = paths_collections  ||  null 
+gobject["selected_files"]  =  localStorage["summary_dump"]  
+
 run_summary.addEventListener("click" , evt => {
     evt.preventDefault()
     processing.classList.toggle("active") 
@@ -518,9 +491,45 @@ run_summary.addEventListener("click" , evt => {
     if (done) {
         [ped_  , map_ , phen_ ]  =  selected_files 
         summary_already_run = true  
+        localStorage["summary_dump"]  = selected_files  
         ipcRenderer.send_("run::summary",  gobject ) 
     } 
 })
+
+
+const markersetting  = [  sm  , mm ]  
+let   [_sm  , _mm ]  = [ false , false ]  
+markersetting.forEach (  ( marker_runType , code_index  ) =>  {
+    //! the code index  take  index array as code  like  -->  sm : 0  and mm  :1  
+    marker_runType.addEventListener("click" ,  evt =>  { 
+        evt.preventDefault()   
+        markerset.disabled =  code_index^1  
+        if  ( markerset.disabled)  
+        {
+            [_sm  , _mm ]  =[true ,  false] 
+            
+            const  data =   [ +_mm ,  gobject ]  
+            // TODO : send event to run  validity threshold  
+            ipcRenderer.send_("validitythreshold" ,   data)
+            carousel_next.click()  
+            return  
+        }
+        [_sm,_mm]  = [false , true ]  
+    })
+
+}) 
+
+//! MARKER SET VALIDATION  
+
+validate_ms.addEventListener("click" , evt =>  { 
+    evt.preventDefault() 
+    const  data  = [  markerset.value  ,  gobject ] 
+    ipcRenderer.send_("validitythreshold" , data) 
+    carousel_next.click()  
+}) 
+
+
+
 mm.addEventListener("change" , evt => {
     if (evt.target.checked) { 
         markerset.disabled = false 
@@ -744,19 +753,23 @@ if  (activate_extra_elements)
         const   { ascii_logo ,  sysinfo }  = server_information_packet
        
         term_write(ascii_logo ,  false ,false)
+        if  ( paths_collections )  
+        {
+            sysinfo["session"]  = paths_collections.split("/").at(-1)  
+            sysinfo["Recent files"]  =  gobject.selected_files 
+        }
         let formating_received_information=  "---------\n" 
         for  ( let type  in sysinfo )  {
-            log(sysinfo)  
-            log(type) 
+            
             if  ( type != "range") 
-                formating_received_information +=`+ ${type}\t:\t${sysinfo[type]}\n` 
+                formating_received_information +=`+ ${type}\t: ${sysinfo[type]}\n` 
         }
         formating_received_information+="----------\n" 
         term_write(formating_received_information , false , false , false  ) 
         term_write(`
         All outputs are displayed in the terminal.\n
         Some basic commands are available like “ls” or “clear” click on >_m-tdterm and type help for more detail.\n
-            More commands will be added so the user can have access to their directory.`
+            More commands will be added so the user can have access to their directory`
             , false, false )
         return  sysinfo.cpus   
     } 
@@ -786,22 +799,17 @@ if  (activate_extra_elements)
         
         const choosed_files  =  [...files_browser.files]  ,
             total_size_bytes  =  choosed_files.reduce( ( file_a , file_v  ) => file_a?.size  + file_v?.size ) 
-            
-        log("choosed", choosed_files )  
 
         files_uploaders.disabled =  !choosed_files.length  ??   true    
         fileslist  = choosed_files.map (  file  =>  file?.name) 
-        log ("files  will be sended " , fileslist) 
      
     
     }  , false ) 
  
         form_upload.addEventListener("submit" , async  evt =>  {    
-            log("submiting") 
             evt.preventDefault()  
             setTimeout( _=> {  log("...")} , 60000) 
             let responce_status = await   uploader(form_upload)
-            log("responce_status" , responce_status ) 
             files_browser.value = ""
             if   (responce_status?.status  ==  200    && fileslist != null) 
             {   

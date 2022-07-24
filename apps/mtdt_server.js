@@ -27,7 +27,7 @@ so = process.platform == "win32" ? "\\"  : "/"
 
 const  [
     { log }  = console                  , 
-    {summary_src  , run_analysis , run_gi, dep_gi , select_ped, required_file_extension } = require("./config.json")["mtdt_pannel"], 
+    {summary_src  , run_analysis , run_gi, dep_gi , select_ped, required_file_extension , vtasympt } = require("./config.json")["mtdt_pannel"], 
     {virtual_workstation  , sandbox} =  require("./config.json")["web_server"] , 
     {Server} = require("http")           ,
     path     = require("path")           ,
@@ -59,6 +59,7 @@ run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysi
 run_genotype_inference  =  utils.auto_insject(path.join(__dirname,  ".." )  ,run_gi )
 gi_D  =  utils.auto_insject(path.join(__dirname,  ".." )  ,dep_gi )
 selectPed  =  utils.auto_insject(path.join(__dirname,  ".." )  ,select_ped) 
+_vtasympt   =  utils.auto_insject(path.join(__dirname, ".." )  , vtasympt)  
 vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstation)
 sbox            =  utils.auto_insject(path.join(__dirname)  , sandbox)
 static_vn       =  null
@@ -322,6 +323,25 @@ const __wtcp__ =  {
                 })
                  
             })
+            
+            VALIDITYTHRESHOLD : 
+            sock.on("validitythreshold" , data => {
+                const   [ markert_set ,  { paths , selected_files} ] =  data 
+                const   [  pedfile ,  mapfile , _  ]  = selected_files  
+                const vt_arguments =   {  "pedfile" :  pedfile  , "mapfile" : mapfile  ,"markerset" : markert_set}   
+
+                log (data) 
+                utils.std_ofstream(paths ,   utils.scripts(_vtasympt,  { ...vt_arguments} )  , sock  , exit_code  =>  {
+                    if  (exit_code == 0x00)  
+                    {
+                        log("exit"  ,  exit_code )  
+                        sock.emit("vt" , exit_code )  
+                    }else  
+                        log("error -> " , exit_code)  
+                }) 
+
+            })
+            
 
             sock.on("enable::trun" ,  is_theorical_enable => {  theorical =   is_theorical_enable } )  
           

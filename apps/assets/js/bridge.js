@@ -491,14 +491,15 @@ run_summary.addEventListener("click" , evt => {
     if (done) {
         [ped_  , map_ , phen_ ]  =  selected_files 
         summary_already_run = true  
-        localStorage["summary_dump"]  = selected_files  
+        localStorage["summary_dump"]  =  [ ... selected_files ] 
         ipcRenderer.send_("run::summary",  gobject ) 
     } 
 })
 
 
 const markersetting  = [  sm  , mm ]  
-let   [_sm  , _mm ]  = [ false , false ]  
+let   [_sm  , _mm ]  = [ false , false ] 
+const msruntitle  =`/!\\ Validity Treshold  on Selected files ${gobject.selected_files}`
 markersetting.forEach (  ( marker_runType , code_index  ) =>  {
     //! the code index  take  index array as code  like  -->  sm : 0  and mm  :1  
     marker_runType.addEventListener("click" ,  evt =>  { 
@@ -507,25 +508,28 @@ markersetting.forEach (  ( marker_runType , code_index  ) =>  {
         if  ( markerset.disabled)  
         {
             [_sm  , _mm ]  =[true ,  false] 
-            
+           
+            term_write(msruntitle , true ) 
             const  data =   [ +_mm ,  gobject ]  
             // TODO : send event to run  validity threshold  
             ipcRenderer.send_("validitythreshold" ,   data)
-            carousel_next.click()  
+            
+            //carousel_next.click()  
             return  
         }
         [_sm,_mm]  = [false , true ]  
     })
 
 }) 
-
+ipcRenderer.on("vt::exitsuccess" , ec =>  carousel_next.click())   
 //! MARKER SET VALIDATION  
 
 validate_ms.addEventListener("click" , evt =>  { 
     evt.preventDefault() 
     const  data  = [  markerset.value  ,  gobject ] 
+    term_write(msruntitle  , true  ) 
     ipcRenderer.send_("validitythreshold" , data) 
-    carousel_next.click()  
+    //carousel_next.click()  
 }) 
 
 
@@ -755,8 +759,11 @@ if  (activate_extra_elements)
         term_write(ascii_logo ,  false ,false)
         if  ( paths_collections )  
         {
-            sysinfo["session"]  = paths_collections.split("/").at(-1)  
-            sysinfo["Recent files"]  =  gobject.selected_files 
+            sysinfo["session"]  = paths_collections.split("/").at(-1) 
+            if ( gobject.selected_files !=  (void function ()  { return  }() ))  
+            { 
+                sysinfo["Recent files"]  =  gobject.selected_files  
+            }
         }
         let formating_received_information=  "---------\n" 
         for  ( let type  in sysinfo )  {

@@ -271,8 +271,9 @@ const __wtcp__ =  {
             sock.on("gi::run"   ,gi_metadata=> {
                 const [gi_status  , gobject]  = gi_metadata   
 
-                const { paths  , selected_files }  = gobject,
-                    [ped , map , phen ]  = selected_files, 
+                let  { paths  , selected_files }  = gobject 
+                if  ( typeof(selected_files)  ==  "string" )  selected_files =  selected_files.split(",")  
+                let  [ped , map , phen ]  = selected_files, 
                     [  pedfile , mapfile , phenfile  ] = [ `${paths}/${ped}` , `${paths}/${map}`,`${paths}/${phen}` ]  
                 path_ref = paths 
                 log ("recieve ->" , gi_status) 
@@ -326,16 +327,25 @@ const __wtcp__ =  {
             
             VALIDITYTHRESHOLD : 
             sock.on("validitythreshold" , data => {
-                const   [ markert_set ,  { paths , selected_files} ] =  data 
-                const   [  pedfile ,  mapfile , _  ]  = selected_files  
-                const vt_arguments =   {  "pedfile" :  pedfile  , "mapfile" : mapfile  ,"markerset" : markert_set}   
+                let    [ markert_set ,  { paths , selected_files} ] =  data  
+                //!force convertion type of  value stored in localstorage   
+                if  ( typeof(selected_files)  ==  "string" )  selected_files =  selected_files.split(",")  
+                 
+                const   [  pedfile ,  mapfile , _  ]  = selected_files 
+                
+                const vt_arguments =   {  
+                    "pedfile" :  `${paths}/${pedfile}`  , 
+                    "mapfile" : `${paths}/${mapfile}`  ,
+                    "markerset" : markert_set
+                }   
 
-                log (data) 
+                log (vt_arguments) 
                 utils.std_ofstream(paths ,   utils.scripts(_vtasympt,  { ...vt_arguments} )  , sock  , exit_code  =>  {
                     if  (exit_code == 0x00)  
                     {
-                        log("exit"  ,  exit_code )  
-                        sock.emit("vt" , exit_code )  
+                        log("exit"  ,  exit_code ) 
+                        
+                        sock.emit("vt::exitsuccess" , exit_code )  
                     }else  
                         log("error -> " , exit_code)  
                 }) 
@@ -390,7 +400,6 @@ const __wtcp__ =  {
 
                 }
                 log ("th" ,  theorical)  
-                log("A" , analysis_argument_flags)  
                 utils.std_ofstream(paths ,   utils.scripts(run_analyser  , {  ...analysis_argument_flags }  )  ,  sock ,   exit_code  => {
                     
                     console.log( "exr", analysis_argument_flags)  

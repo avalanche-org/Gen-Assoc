@@ -39,8 +39,10 @@ __lock_web_ui_file_operation()
 
 ipcRenderer.send_("clifp" ,   { user_agent : client_nav_fingerprint(navigator) , ls_session : localStorage["task"]?? null})
 
+cnav_cache()  ;  
 
-cnav_cache() 
+
+
 if (!localStorage["task"] )   
 {
     files_browser.disabled  = true
@@ -437,14 +439,12 @@ window_keyShortcut(shortcup_maping["ctrl_c"] , "" ,  action =>  {
  * navigation control  using arrow 
  */ 
 
-window_keyShortcut(shortcup_maping["lr_arrows"] , [ carousel_prev , carousel_next] ,   arrow_direction  => {
-   
-    if (arrow_direction?.left_arrow_preview) 
-    {
-        carousel_prev.click() 
-    } 
-  
-}) 
+window_keyShortcut(shortcup_maping["lr_arrows"] , [ carousel_prev , carousel_next]  ,   _ => log(""))  
+ 
+window_keyShortcut(shortcup_maping["jump_step"]  ,  "" ,   index  =>  {  
+
+    carousel_navigation(index) 
+})  
 
 
 
@@ -1142,5 +1142,6 @@ if  (activate_extra_elements)
         
     }) 
 
-    carousel_navigation(term_write)
+
+   carousel_navigation(false)    
 }

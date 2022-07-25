@@ -191,8 +191,17 @@ export  const  shortcup_maping  =  {
         }
         if (keysdirection == arrows._preview )  actions.at(0).click() 
         if (keysdirection == arrows._next )   actions.at(1).click() 
+    } , 
+    
+    "jump_step" :  digit_number =>   {
+        
+        const step =  range(48 , 56)
+        if  ( step.includes(digit_number))  
+        {
+            return  step.indexOf(digit_number) 
+        }
 
-    }  
+     } 
 
 } 
 export  const  window_keyShortcut =( shortcut_behavior_action  , actions_list,  callback_handler)  =>  {  
@@ -231,11 +240,22 @@ export  const parse_unknow_ascii_unicode   = data =>  {
 /*  carousel handler */ 
 
 
-export const  carousel_navigation  =  webui_stdterm =>  { 
+export const  carousel_navigation  =   (carousel_index_jump)    =>  { 
     
-
+    
     const  carousels_block  = [ ...carousels]  
-    const  carousels_block_size =  carousels_block.length -1   
+    const  carousels_block_size =  carousels_block.length -1  
+    
+     
+    let  active_carousel =  carousels_block.filter(  carousel =>  carousel.classList.contains("active")).at(0) 
+    let  active_carousel_position  = carousels_block.indexOf(active_carousel) 
+    
+    if  (carousel_index_jump && ( carousel_index_jump  != active_carousel_position  && carousel_index_jump >= 0  &&  carousel_index_jump  <=carousels_block_size  ))  
+    { 
+        carousels_block[active_carousel_position].classList.remove("active") 
+        carousels_block[carousel_index_jump].classList.add("active")  
+    }
+     
     
     const  navigation  = [  carousel_prev , carousel_next ]  
    
@@ -244,9 +264,9 @@ export const  carousel_navigation  =  webui_stdterm =>  {
 
         carousel_navbtn.addEventListener("click" , evt =>  {
 
-            let  active_carousel =  carousels_block.filter(  carousel =>  carousel.classList.contains("active")).at(0) 
+            active_carousel =  carousels_block.filter(  carousel =>  carousel.classList.contains("active")).at(0) 
             
-            let  active_carousel_position  = carousels_block.indexOf(active_carousel) 
+            active_carousel_position  = carousels_block.indexOf(active_carousel) 
             //!  save  active carousel  in cache to remember  navigation 
             log ( "acp" , active_carousel_position)  
 
@@ -295,7 +315,7 @@ export const  carousel_navigation  =  webui_stdterm =>  {
 
 } 
 
-export  const  cnav_cache  =  ()=>  { 
+export  const  cnav_cache  =  active_element  =>  { 
     
     if ( localStorage["cnav"]) 
     {  
@@ -311,6 +331,8 @@ export  const  cnav_cache  =  ()=>  {
         current_active_position  = cblock.indexOf(current_active_position)  
        
         log("cap_" ,  current_active_position) 
+        active_element =  current_active_position  
+
         if  (current_active_position !=  last_active_position) {  
             //! update  carousel  navigation  after reload or leave   
             //! retaining  the actual carousel  frame  
@@ -323,6 +345,6 @@ export  const  cnav_cache  =  ()=>  {
             active_element.classList.remove("active") 
             last_active_element.classList.add("active") 
         } 
-        
+       
     }
 } 

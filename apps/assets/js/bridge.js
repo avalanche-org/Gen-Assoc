@@ -443,7 +443,7 @@ window_keyShortcut(shortcup_maping["lr_arrows"] , [ carousel_prev , carousel_nex
  
 window_keyShortcut(shortcup_maping["jump_step"]  ,  "" ,   index  =>  {  
 
-    carousel_navigation(index) 
+    //carousel_navigation(index) 
 })  
 
 
@@ -769,15 +769,16 @@ if  (activate_extra_elements)
     const dispatch_server_info  =  server_information_packet => { 
         const   { ascii_logo ,  sysinfo }  = server_information_packet
        
-        term_write(ascii_logo ,  false ,false)
-        if  ( paths_collections )  
+        term_write(ascii_logo ,  false ,false) 
+        if  ( paths_collections?.split)  
         {
-            sysinfo["session"]  = paths_collections.split("/").at(-1) 
+            sysinfo["session"]  =paths_collections.split("/").at(-1)   
             if ( gobject.selected_files !=  (void function ()  { return  }() ))  
             { 
                 sysinfo["Recent files"]  =  gobject.selected_files  
             }
-        }
+        }else  
+            sysinfo["session"]  = "no job"
         let formating_received_information=  "---------\n" 
         for  ( let type  in sysinfo )  {
             
@@ -789,7 +790,7 @@ if  (activate_extra_elements)
         term_write(`
         All outputs are displayed in the terminal.\n
         Some basic commands are available like “ls” or “clear” click on >_m-tdterm and type help for more detail.\n
-            More commands will be added so the user can have access to their directory`
+            More commands will be added so the user can have access to their directory\n`
             , false, false )
         return  sysinfo.cpus   
     } 

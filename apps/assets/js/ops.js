@@ -181,20 +181,36 @@ export  const  shortcup_maping  =  {
             return  true  
         }
         kb_combinaison= []  
+    }  , 
+    
+    "lr_arrows":  (  keysdirection , actions)   =>   {  
+        
+        const  arrows =  { 
+            _preview :   37, 
+            _next    :  39 
+        }
+        if (keysdirection == arrows._preview )  actions.at(0).click() 
+        if (keysdirection == arrows._next )   actions.at(1).click() 
+
     }  
 
 } 
-export  const  window_keyShortcut =( shortcut_behavior_action ,  callback_handler)  =>  {  
+export  const  window_keyShortcut =( shortcut_behavior_action  , actions_list,  callback_handler)  =>  {  
     let  kb_combinaison  =[] 
     document.addEventListener("keyup" , evt => {  
+        
+        log(evt.which)  
         kb_combinaison.push(evt.which) 
         if  (evt.which == 27  ) kb_combinaison= [] 
-        
+         
+         
         if ( kb_combinaison.length  == 2  )  
         {
             callback_handler(shortcut_behavior_action(kb_combinaison))  
             kb_combinaison=[] 
-        }
+        } 
+        
+        callback_handler(shortcut_behavior_action(evt.which , actions_list))  
             
         
     }) 

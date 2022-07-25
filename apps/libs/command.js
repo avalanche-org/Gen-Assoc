@@ -178,8 +178,26 @@ module.exports =   {
         
         return  { 
             data : (void function(){ return} ()) , 
-            description :  "Open file  dialog  and upload  files"
+            description :  "Open file  dialog  and upload  files\n"
         } 
-    } 
+    } , 
 
+    ["summary"]  : ()  =>  { 
+       
+        return  { 
+            data  :  (void function ()  { return } () )  ,  
+            description: "goto  summary statistic  section\n"  
+        }  
+    } ,   
+
+    ["run"]   :   stage => { 
+        
+        return  { 
+            data :   ( void function () {  return  } () ) , 
+            description:  "run the stage passed  as argument\n" 
+        }  
+    } 
+    
 }  
+
+

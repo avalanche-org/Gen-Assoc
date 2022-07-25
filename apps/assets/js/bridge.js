@@ -429,8 +429,21 @@ abort.addEventListener("click"  , evt=>  {
 /**
  * bind Ctrl^C  key to   window  for easy aborting  execution 
  */
-window_keyShortcut(shortcup_maping["ctrl_c"] ,  action =>  {
+window_keyShortcut(shortcup_maping["ctrl_c"] , "" ,  action =>  {
     ipcRenderer.send_("kill" , null )  
+})  
+
+/* 
+ * navigation control  using arrow 
+ */ 
+
+window_keyShortcut(shortcup_maping["lr_arrows"] , [ carousel_prev , carousel_next] ,   arrow_direction  => {
+   
+    if (arrow_direction?.left_arrow_preview) 
+    {
+        carousel_prev.click() 
+    } 
+  
 }) 
 
 

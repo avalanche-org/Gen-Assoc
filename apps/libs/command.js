@@ -14,7 +14,7 @@ const  {
     { list_allocated_job_space } = require("./utils"), 
     http = require("http") 
 
-
+const  version = require("./../package.json")?.version 
 mtdtart = `
 ---
  ███╗   ███╗████████╗██████╗ ████████╗
@@ -23,7 +23,7 @@ mtdtart = `
  ██║╚██╔╝██║   ██║   ██║  ██║   ██║   
  ██║ ╚═╝ ██║   ██║   ██████╔╝   ██║   
  ╚═╝     ╚═╝   ╚═╝   ╚═════╝    ╚═╝ 
-\t\t\t\t* version  Beta v2.0 
+\t\t\t\t* version ${version}
 `
 /** @module libs/command **/  
 module.exports =   {  
@@ -113,9 +113,8 @@ module.exports =   {
      */ 
     ["version"]  : ( ...no_Args) => {
         
-        const  version = require("./../package.json")?.version 
         return { 
-            data : `m-TDT ${version}\n` , 
+            data : `${mtdtart} ` , 
             description  : "show version number  of application\n"
         } 
     },
@@ -131,7 +130,7 @@ module.exports =   {
        try {  
 
            file_content = readFileSync(  static_path , "utf-8")
-           file_content +="\n" 
+           file_content +="\n " 
         }catch   (Error) {  
             file_content = `Error : ${Error.name } -> ${Error.code}`
         }
@@ -173,5 +172,14 @@ module.exports =   {
             data  : `GET ${file}` || (void function () { return } () ) , 
             description :  "Download files\n"
         } 
+    } , 
+
+    ["upload"] : () => { 
+        
+        return  { 
+            data : (void function(){ return} ()) , 
+            description :  "Open file  dialog  and upload  files"
+        } 
     } 
+
 }  

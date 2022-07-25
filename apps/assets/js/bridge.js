@@ -190,7 +190,7 @@ const  term_write  =  ( incomming_data  , warning = false ,  wspeed = false , __
     let  c  =  0 ;     
     if (__brutal_splash )  
     {
-        term.value +=`${incomming_data}\n`
+        term.value +=`${incomming_data}`
         follow_scrollbar() 
         return 
     }
@@ -902,6 +902,10 @@ if  (activate_extra_elements)
                     const  user_cmd  = mtdterm_rowline_handlers(evt.which)
                     if ( user_cmd.length )  
                         ipcRenderer.send_("user::interaction" ,  user_cmd  )  
+                    else{  
+                        //!  add   prompter 
+                        setTimeout( ()  =>  term.value +="> "  , 10 )  
+                    }
                 }
             })
         }else { 
@@ -928,7 +932,7 @@ if  (activate_extra_elements)
         }
         if   (result == " ")  
         {   
-            term.value= "> "
+            term.value= "\n> "
              return  
         }
         if   ( Array.isArray(result)  ) 
@@ -938,10 +942,10 @@ if  (activate_extra_elements)
             {
                   d +=cmd_describ    
             }
-            d+="> " 
+            d+="\n> " 
             term_write(d , false , false ,  false)  
         }else 
-            term_write(`${result??''}> `,false  , false , true)
+            term_write(`${result??''}\n> `,false  , false , true)
         
     }) 
 

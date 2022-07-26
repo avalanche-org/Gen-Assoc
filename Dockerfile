@@ -20,7 +20,9 @@ ARG   CODENAME=bullseye
 
 ARG   DIST=${BASE_NODE_VERSION}-${CODENAME}  
 
-FROM  node:$DIST
+ARG   REPOSITORY=node 
+
+FROM  $REPOSITORY:$DIST
 
 MAINTAINER  Umar  jUmarB@protonmail.com <github/Jukoo>  
 

@@ -1,33 +1,60 @@
-# Rcovery for m-TDT 
-# ----------------------------------------------------------------------
-# * Most  of  the programme running behind m-TDT  is base 
-# on R lang . therefor that requires many dependancies to run 
-# correctly .  This Dockerfile <Rcovery> it's a build of  all 
-# requiered dependancies ... 
-# The application of m-TDT is based on nodejs  
-# that's why  this image  use  it as default. 
-# Perhaps  only the script that's install  the dependancies is available. 
-# -----------------------------------------------------------------------
-# copyright(c) 2022, Umar <jUmarB@protonmail.com> 
+# Dockerfile  for GEN ASSOC 
+# copyright  (c) 2022 , Umar <jUmarB@protonmail.com>  
+# -----------------------------------------------------------------
+# GEN ASSOC 
+#  ---------
+# A generic docker image to run the Gen Assoc application 
+# this docker image is based on node: container   
+# see on https://hub.docker.com/_/node  
+# however the application requires <plink> and the <R language>
+# to run the scripts. 
+# Parameters have been defined to facilitate the build by the user  
+# to modify the parameters we do it during the build of the image   
+# example  
+# -> docker build .   --build-arg port=<numPort> 
+# all lines with <ARG> in front can be modified during the build 
+#-------------------------------------------------------------------
 
+ARG   BASE_NODE_VERSION=17
+ARG   CODENAME=bullseye 
 
-ARG  TAG_VERSION=3.15
-ARG  NODE_DIST=18-alpine${TAG_VERSION}    
+ARG   DIST=${BASE_NODE_VERSION}-${CODENAME}  
 
-FROM node:${NODE_DIST}  
+ARG   REPOSITORY=node 
 
-MAINTAINER  Umar  <jUmarB@protonmail.com> 
+FROM  $REPOSITORY:$DIST
 
-RUN apk  upgrade   
+MAINTAINER  Umar  jUmarB@protonmail.com <github/Jukoo>  
 
-RUN apk add --no-cache R R-dev &&\
-    apk add --no-cache util-linux &&\
-    apk add --no-cache python3 
+# Default  plink  Build Release  
+ARG  plink_build_version="20210606"     
 
-COPY  Rallib.txt /    
-COPY  RpkgAutorun.py  /usr/local/bin 
-RUN   RpkgAutorun.py  --build-missing   
-RUN   RpkgAutorun.py  --install  
+# Plink source Basename   
+ARG  plink_filename="plink_linux_x86_64_${plink_build_version}"  
 
+# See https://www.cog-genomics.org/plink/   on  Binary Download section 
+# To change the build, you can do -build-arg plink_build_version=<numberOfBuild> 
+ARG  plink_bin="https://s3.amazonaws.com/plink1-assets/${plink_filename}.zip" 
 
-CMD [ "ash" ]  
+### UPDATE  CORE PACKAGES
+RUN apt update  --assume-yes  
+RUN apt install git --assume-yes && apt install r-base r-base-dev --assume-yes 
+RUN apt install bsdmainutils  --assume-yes
+
+COPY RpkgAutorun  /usr/bin/  
+
+COPY Rallib.txt   / 
+#+ Generate file named  dependancies.R  that contains  missing libraries  
+RUN RpkgAutorun  --build-missing  
+
+###  EXTRACT  PLINK EXEC  TO CURRENT BIN FOLDER  
+RUN wget $plink_bin  
+RUN unzip $plink_filename.zip && rm $plink_filename.zip
+
+###  MAKE  SYMBOLIC LINK  TO USR/BIN 
+RUN mv   plink  /usr/bin/plink 
+RUN mv   prettify /usr/bin/prettify
+
+WORKDIR  /  
+
+CMD [ "bash" ]

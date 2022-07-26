@@ -107,13 +107,13 @@ class RpkgAutorun :
         
         modules =  self.retrive_Rlibmodule  
         try  : 
-            dump_modobj =  os.open(self.RMODUMP ,  os.O_CREAT | os.O_EXCL | os.O_WRONLY)  
+            dump_modobj =  os.open(self.RMODUMP ,  os.O_CREAT | os.O_RDONLY | os.O_WRONLY)    
         except  FileExistsError : 
             #NOTE :  if  you  want to take new change  delete the Rallib.txt file  
             sys.__stdout__.write(f"{self.RMODUMP}  already exists\n remove file if  you want to take  new changes\n")
             return  
 
-        assert  dump_modobj.__gt__(0) 
+        assert  dump_modobj.__gt__(0) , "Cannot open  file" 
         
         for module in modules :  
             module_name : str = f"{module}{chr(0xa)}" 
@@ -133,7 +133,7 @@ class RpkgAutorun :
             sys.exit(0) 
 
 
-        dump_modobj =  os.open (self.DEFFNAME_REQ , os.O_CREAT|os.O_EXCL|os.O_WRONLY) 
+        dump_modobj =  os.open (self.DEFFNAME_REQ , os.O_CREAT |os.O_WRONLY) 
         if  dump_modobj.__eq__(0):   
             sig.raise_signal(sig.SIGIO) 
 
@@ -143,6 +143,7 @@ class RpkgAutorun :
             module_name  :str = f"install.packages('{module}' ,repos='{self.RBASE_REPOS}')\n"
             os.write ( dump_modobj ,module_name.encode() ) 
         os.close(dump_modobj)  
+        sys.__stdout__.write(f"Dump into {self.DEFFNAME_REQ} file\n ready for  install !\n")
             
     
    

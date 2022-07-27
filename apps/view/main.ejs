@@ -11,8 +11,28 @@
       </div> 
     </div>
 <div class="container-fluid">
-  <div class="row">
-    <div class="ui  mini modal segment">
+  <div class="row"> 
+
+<div class="ui basic modal segment inverted" style="height:40%; background-color:rgba(244,255,255,0.9) ; border-radius:10px;color:black;">
+  <div class="ui icon header inverted"  style="color:black">
+    <i class="archive icon "></i>
+    Genotype Inference 
+  </div>
+  <div class="content">
+    <p>Do you want to use the new pedfile including inferred Genotypes ? </p>
+  </div>
+  <div class="actions">
+    <div class="ui red  cancel inverted button "  id="gi-modal-no">
+      <i class="remove icon"></i>
+      No
+    </div>
+    <div class="ui green ok inverted button" id="gi-modal-yes">
+      <i class="checkmark icon"></i>
+      Yes
+    </div>
+  </div>
+</div>
+    <!--div class="ui  mini modal segment">
           <h5 class="ui teal ribbon floated   label">Genotype Inference</h5>  
 
 <br> 
@@ -25,29 +45,56 @@
   Yes 
 </button>
 
+    </div-->
+
+
+
+<div class="ui basic modal segment inverted" style="height:35%; background-color:rgba(244,255,255,0.9) ; border-radius:10px;color:black;">
+  <div class="ui icon header inverted"  style="color:black">
+    <i class="chess board icon"></i>
+    Analysis  <br>  
+  </div>
+  <div class="ui content input container"> 
+<label >  Number  of Simulation  : </label> 
+<input type="text" id="nbsim"  placeholder="Number of simulation  exemple 10"  style="font-size:14px;">
+<select id="nbcores" name="nbcores"  style="font-size:12px"  class="ui compact selection  dropdown">
+                      <option value = "" disabled selected  >  Number of Cores</option>
+        </select> 
+  </div>
+  <div class="actions">
+ <div class="ui green ok inverted button" id="proceed_analysis">
+      <i class="checkmark icon"></i>
+      Proceed 
     </div>
+    <div class="ui red  cancel inverted button"  id="cancel_analysis">
+      <i class="remove icon"></i>
+      Cancel
+    </div>
+   
+  </div>
+</div>
+<!--div class="ui  mini modal   segment container-fluid"  style="width:30%;height:15%" > 
 
-
-<div class="ui  mini modal   segment" >
-<div class="ui action input">  
-<input type="text" id="nbsim"  placeholder=" Number of simulation  e.g 10">
-<select id="nbcores" name="nbcores" class="ui compact selection  dropdown">
-                      <option value = "" disabled selected >  Number of Cores</option>
+<div class="ui input container "> 
+<input type="text" id="nbsim"  placeholder="Number of simulation  exemple 10"  style="font-size:14px;width:10%">
+<br> 
+<select id="nbcores" name="nbcores"  style="font-size:12px"  class="ui compact selection  dropdown">
+                      <option value = "" disabled selected  >  Number of Cores</option>
                     </select> 
 </div>
 <div> 
 <br>
 
-<b style="font-family:Maven Pro; font-size:11px;">Run Analysis Setting  </b> 
+<b style="font-family:Maven Pro; font-size:14px;">Run Analysis Setting  </b> 
  <button id="cancel_analysis" class="mini red  inverted ui right floated button">
   Cancel 
-</button>
+</button>  
 <button id="proceed_analysis" class="mini  teal inverted ui right floated  button">
   Proceed
 </button>
 </div> 
 
-    </div>
+    </div-->
 
 
     <div class="col-md-6">

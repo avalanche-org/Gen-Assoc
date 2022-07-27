@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image CI for gen-assoc m-TDT
 
 on:
   push:
@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Gen Assoc m-tdt image
-      run: docker build . -t  mtdt:$(date +%s)
+      run: docker build . -t  mtdt:v2.3.1-beta.rc1

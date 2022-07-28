@@ -67,7 +67,6 @@ local_namespace =  (void function ()  { return }())
 vwo             =   {}  
 download_item_status_fail =  false  
 
-log(selectPed) 
 /** @namespace __wtcp__ **/
 const __wtcp__ =  {  
 
@@ -143,9 +142,7 @@ const __wtcp__ =  {
         
         })
         ["get"]("/download/:dfile" , ( rx ,tx ) => {
-            log (sbox)  
-            log("sample") 
-            tx.download(`${rx.params.dfile}` , rx.params.dfiles  , err  => { 
+            tx.download(`${sbox}/${rx.params.dfile}` , rx.params.dfile, err  => {
                 if(err)  
                 { 
                    tx.status(404).send( {  message  : `you tried to download an inexistant file `}) 
@@ -419,7 +416,8 @@ const __wtcp__ =  {
             //!  Trigger   download assets  
             sock.on("download::assets" ,  userland  =>  {
                 if ( !userland || userland.length  == 0  )   
-                { 
+                {  
+                    
                     sock.emit("NOULD" ,  null)
                     return  
                 } 

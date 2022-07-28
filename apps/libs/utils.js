@@ -53,7 +53,6 @@ let subprocess =  ( void function()  {return}())
 //! handle  Buffer between  userlog file  and  the built-in terminal to  avoid  double  rendering 
 let buffer_sandbox =  ( void function () { return}())  
 
-
    
 module
 ["exports"]  =  {
@@ -162,7 +161,8 @@ module
     dump_essentialScripts  :  job_namespace  =>  {
         log(job_namespace) 
         const   { auto_insject }  = module.exports  
-        let  runtime_requiered_script =  [ mtdt , ginoInference , __MACOSX ,libs,mendelTable]  
+        let  runtime_requiered_script =  [ mtdt , ginoInference , __MACOSX ,libs,mendelTable] 
+        
         runtime_requiered_script= runtime_requiered_script.map( essentialfile =>  {  
           
             let  datatype  =  auto_insject(path.join(__dirname ,"../.."), essentialfile)
@@ -173,11 +173,9 @@ module
                 basename=basename.at(-1) 
                 if  ( stats.isDirectory()) 
                 {
+                    
                     symlink(`${datatype}/`, `${job_namespace}/${basename}`,(err , data)  => { 
-                        if(err) 
-                        {
-                            log(err)  
-                        }
+                        if(err) throw  err    
                     })  
                 }
                 if  (stats.isFile()) 
@@ -327,18 +325,40 @@ module
        
         return  interpreter     
         
-    },  
+    }, 
+    
    
     compress  :     (  payload_data   ,  compression_algorithm =  "zip")   =>  { 
         const [ chanel , virtual_userspace ]  = payload_data 
-        if  (virtual_userspace.length  == 0  )   return   null  ;  
+        if  (virtual_userspace.length  == 0  ) 
+        {
+            return  null 
+        }
 
-        let  sandbox_path  =  module.exports.auto_insject(path.join(__dirname  , '..')  , sandbox)  
-        let compress_name  = virtual_userspace.split("/").at(-1) +`.${compression_algorithm}` 
+        let  xtarget ; 
+        let _ =  [ mendelTable , mtdt, ginoInference  ,  libs ,__MACOSX  ].map(x_file  => {  
+            xtarget +=`-x ${virtual_userspace}/${x_file.split("/").at(-1)} `
+        })  
+        
+        let sandbox_path  =  module.exports.auto_insject(path.join(__dirname  , '..')  , sandbox)  
+        const compress_name  = virtual_userspace.split("/").at(-1) +`.${compression_algorithm}` 
         sandbox_path+=  `/${compress_name}` 
-        chanel.emit("fsinfo" ,  `+ Compressed as  ::  ${compress_name}`) 
-        let cmd  = `${compression_algorithm}  -r ${sandbox_path}  ${virtual_userspace} `    
-        let subprocess = exec(cmd)  
+
+        const udir  =  virtual_userspace.split("/").splice(-2).join("/")  
+        let cmd  = `${compression_algorithm}   -r ${sandbox_path}  ./${udir}` 
+        const subprocess =  spawn(compression_algorithm  , ['-r' , `${sandbox_path}`, `./${udir}`] ,  { 
+            detached :true , stdio : 'ignore'
+        }) 
+        subprocess.unref() 
+        subprocess.ref() 
+        subprocess.on("exit" ,  exit_code =>  { 
+            if  (exit_code == 0  ) 
+            {
+                chanel.emit("fsinfo" ,  `+ Compressed as  ::  ${compress_name}`)
+                return  
+            }
+            chanel.emit("fsinfo" ,  `x Compression  Problem  ::  ${compress_name}`)
+        }) 
         return  sandbox_path  
        
     } , 

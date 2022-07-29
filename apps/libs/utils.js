@@ -327,26 +327,67 @@ module
         
     }, 
     
-   
-    compress  :     (  payload_data   ,  compression_algorithm =  "zip")   =>  { 
+    dispatcher :  buffer  =>  { 
+        return  new Promise(( res , rej )  => { 
+            readFile(buffer   ,  (err_open  , fd ) => { 
+                if (err_open) 
+                {
+                    switch (err_open.code)  
+                    {
+                        case 'EISDIR' : 
+                            res(` -x ${buffer}/* `)
+                            break 
+                    }
+                }
+                res(` -x ${buffer} `)  
+            })
+        }) 
+    },  
+    compress  :    async  (  payload_data   ,  compression_algorithm =  "zip")   =>  { 
         const [ chanel , virtual_userspace ]  = payload_data 
         if  (virtual_userspace.length  == 0  ) 
         {
             return  null 
         }
 
-        let  xtarget ; 
-        let _ =  [ mendelTable , mtdt, ginoInference  ,  libs ,__MACOSX  ].map(x_file  => {  
-            xtarget +=`-x ${virtual_userspace}/${x_file.split("/").at(-1)} `
-        })  
         
         let sandbox_path  =  module.exports.auto_insject(path.join(__dirname  , '..')  , sandbox)  
-        const compress_name  = virtual_userspace.split("/").at(-1) +`.${compression_algorithm}` 
-        sandbox_path+=  `/${compress_name}` 
-
         const udir  =  virtual_userspace.split("/").splice(-2).join("/")  
-        let cmd  = `${compression_algorithm}   -r ${sandbox_path}  ./${udir}` 
-        const subprocess =  spawn(compression_algorithm  , ['-r' , `${sandbox_path}`, `./${udir}`] ,  { 
+        
+        let  xtarget  =  [ mendelTable , mtdt, ginoInference  ,  libs ,__MACOSX  ].map( async x_file  => {  
+            let  fd_target  = `${udir}/${x_file.split("/").at(-1)}` 
+
+            return await module.exports.dispatcher(fd_target)  
+        })   
+        xtarget  = await  Promise.all([...xtarget])  
+        
+        const compress_name  = virtual_userspace.split("/").at(-1) +`.${compression_algorithm}` 
+        sandbox_path+=  `/${compress_name}`
+        let fullpathcomp  = sandbox_path   
+        sandbox_path =  sandbox_path.split("/").splice(-3).join("/")  
+
+        let cmd  = `${compression_algorithm}   -r ${sandbox_path}  ${udir}  ${xtarget.join("")} ` 
+        exec(cmd  , ( exec_err , exec_stdout , exec_stderr ) =>  { 
+            if (!exec_err)  
+            {
+                chanel.emit("fsinfo" ,  `+ Compressed as  ::  ${compress_name}`) 
+                return   
+            }
+
+            chanel.emit("fsinfo" ,  `x Compression  Problem  ::  ${compress_name}`)
+
+        }) 
+         
+        /*
+         * TODO  :  fix securty  issue  ... for exec  call  
+         *
+        let xtra_flags = `${udir} ${xtarget.join("")}` 
+        let argopt  = ['-r' , sandbox_path ]  
+        for ( let xflags  of  xtarget ) 
+            argopt.push(xflags)  
+
+
+        const subprocess =  spawn(compression_algorithm  , argopt,  { 
             detached :true , stdio : 'ignore'
         }) 
         subprocess.unref() 
@@ -359,7 +400,8 @@ module
             }
             chanel.emit("fsinfo" ,  `x Compression  Problem  ::  ${compress_name}`)
         }) 
-        return  sandbox_path  
+        */
+        return  fullpathcomp
        
     } , 
 

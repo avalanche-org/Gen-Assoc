@@ -1132,8 +1132,7 @@ if  (activate_extra_elements)
     //! Trigger  Dowload 
     ipcRenderer.on("compress::assets::available" ,  async  assets => {  
 
-        const  item  = assets.split("/").at(-1) 
-        log ("item -> " , item )  
+        const  item  = assets.split("/").at(-1)
         const  retrive_native_url  =  await fetch(`/download/${item}`) 
         let  hidden_link  = _.createElement('a') 
         hidden_link.href =  retrive_native_url.url   

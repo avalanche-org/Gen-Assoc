@@ -142,7 +142,9 @@ const __wtcp__ =  {
         
         })
         ["get"]("/download/:dfile" , ( rx ,tx ) => {
-            tx.download(`${sbox}/${rx.params.dfile}` , rx.params.dfile, err  => {
+             
+            let  download_path = `${sbox}/${rx.params.dfile}` 
+            tx.download(download_path  , rx.params.dfile, err  => {
                 if(err)  
                 { 
                    tx.status(404).send( {  message  : `you tried to download an inexistant file `}) 
@@ -414,7 +416,7 @@ const __wtcp__ =  {
             })
             
             //!  Trigger   download assets  
-            sock.on("download::assets" ,  userland  =>  {
+            sock.on("download::assets" , async   userland  =>  {
                 if ( !userland || userland.length  == 0  )   
                 {  
                     
@@ -423,7 +425,7 @@ const __wtcp__ =  {
                 } 
                 //! otherwise  let compress the contains and send it
                 const payload  = [sock , userland]  
-                let compressed_location_data  = utils.compress(payload)
+                let compressed_location_data  = await utils.compress(payload)
                 sock.emit("compress::assets::available"  ,  compressed_location_data)   
 
             }) 

@@ -430,8 +430,11 @@ const __wtcp__ =  {
 
             }) 
             //!  listen kill  signal 
-            sock.on("kill" , _=> utils.kill_subprocess() )  
+            sock.on("kill" , _=>   {   
 
+                utils.kill_subprocess(sock)    
+            
+            })  
             __server_side_evt__  :  
             
              server_static_info = {  

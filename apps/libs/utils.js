@@ -407,11 +407,29 @@ module
 
 
      /* kill  the running subprocess  */ 
-     kill_subprocess:() =>  {
+     kill_subprocess: socket_channel   =>  {
          if (subprocess?.kill && subprocess?.pid) 
          {  
-             process.stdout.write(`killing  <${subprocess.pid} \n`)  
-             subprocess.kill("SIGHUP")  
+             process.stdout.write(`trying  to kill  pid :   ${subprocess.pid} \n`)  
+             subprocess.kill("SIGKILL") 
+         
+            
+             if  ( !subprocess.killed) 
+             {
+                const  ekillmsg = `Fail to  kill running  process ` 
+                process.stderr.write(ekillmsg) 
+                return  
+             }  
+             //!  SIGKILL BRUTE  FORCE  
+             let sb_bruteforcekill  = spawn("kill" ,  [ '-9' ,  subprocess.pid ] ,   {   
+                 detached  : true  , stdio:'ignore'  
+             })  
+             sb_bruteforcekill.on("exit" ,  successfully_killed   =>   { 
+                 if  (successfully_killed ==  0 )  
+                     socket_channel.emit("fsinfo" , "killed")
+                 else  
+                     log("fail to  kill running process")  
+             }) 
          }  
          
     } , 
@@ -420,18 +438,17 @@ module
         const {  tail_logfiles   ,    kill_subprocess } =  module.exports  
         
         const [ustdout_log , ustderr_log  ]    =  module.exports["#get_user_log"](user_virtual_ws)  
-        const cmd         =  exec(command) 
-        subprocess  = cmd    
+        subprocess  =  exec(command) 
 
         const wstdout     =  createWriteStream(ustdout_log)   
         const wstderr     =  createWriteStream(ustderr_log) 
-        cmd.stdout.pipe(wstdout)
-        cmd.stderr.pipe(wstderr)
+        subprocess.stdout.pipe(wstdout)
+        subprocess.stderr.pipe(wstderr)
         tail_logfiles( socket ,  wstdout , "stdout")  
         tail_logfiles( socket ,  wstderr , "stderr") 
         
         try  {  
-            cmd.on("close" , ( exit_code ,   signal  )  =>  { 
+            subprocess.on("close" , ( exit_code ,   signal  )  =>  { 
                 let  execute_status  =  exit_code  != 0  ? `FAILLURE : ${exit_code || signal }\n` : "SUCCESS : [ ok ]\n"
                 process.stdout.write(execute_status) 
                 setTimeout(  () =>  {  

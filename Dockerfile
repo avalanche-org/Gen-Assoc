@@ -15,18 +15,21 @@
 # all lines with <ARG> in front can be modified during the build 
 #-------------------------------------------------------------------
 
-
+ARG  DEBUGMOD=FALSE 
 
 FROM  jukoo/m-tdt:headessentials 
 
 MAINTAINER  Umar  jUmarB@protonmail.com <github/Jukoo>  
- 
+
+RUN  if [  -z $DEBUGMOD  ] ;then \
+apt install  rsync  sshfs vim --assume-yes ;\
+fi
 
 WORKDIR   / 
 
 ADD  . /mTDT
 
-WORKDIR /mTDT/apps 
+WORKDIR /mTDT/apps
 
 RUN npm install && npm install -g  pm2
 RUN npm audit  fix --force   

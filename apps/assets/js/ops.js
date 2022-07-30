@@ -168,6 +168,7 @@ export const mtdterm_rowline_handlers   =  which_keycode   =>   {
 
 export  const  shortcup_maping  =  { 
 
+    //!  use to kill  running  subprocess  
     "ctrl_c" : (kb_combinaison)  =>   {  
         const  ctrl_c_charCodes =  [17,67]  
         const  ctrl_c_hold      =  [67,67]  

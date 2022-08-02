@@ -22,7 +22,8 @@
 
 # --- Points for improvement: Ctrl+f : /!\ 
 # command to test in terminal:
-# Rscript ~/Gen_Assoc/scripts/run_analysis.R --pedfile 25markers.ped  --mapfile 25markers.map --phenfile  25markers.phen --phen 1 --markerset  1,2,24 --nbsim  100 --nbcores 4 --gi 1 --jobtitle My_first_analysis
+# Rscript run_analysis.R --pedfile 25markers.ped  --mapfile 25markers.map --phenfile  25markers.phen --phen 1 --markerset  1,2,24 --nbsim  100 --nbcores 4 --gi 1 --jobtitle My_first_analysis
+#Rscript run_analysis.R --pedfile MTDT.ped  --mapfile MTDT.map --phenfile  MTDT.phen --phen 1 --markerset  1,2,24 --nbsim  100 --nbcores 4 --gi 1 --jobtitle My_first_analysis
 #-------------------
 
 args= commandArgs(trailingOnly = TRUE) 
@@ -121,10 +122,13 @@ plink_check <- function(path_to_plink, ped_basename){
     suppressMessages(system(paste0(plink_ ," --file ", strsplit(opt$pedfile, ".ped") ," --mendel --out ", ped_basename,"_check")))
     
     # Check number of mendelian errors using log file
-    cat("\nNumber of Mendelian errors : ")
-    err = system(paste0("grep 'Mendel errors detected' ",ped_basename,"_check.log |cut -c15-17")) 
+    err = system(paste0("grep 'Mendel errors detected' ",ped_basename,"_check.log ")) #cut -c15-17
     
+    cat(paste0("\nNumber of Mendelian errors : ",err))
     system(paste0("mv *check* plink_report"))
+    
+    if (err!=0){cat("\nMendelian errors, please correct them before analyzing the data\n")}
+    
   } 
   else (cat("-- Alert: Plink tool must be installed to check for Mendelian errors"))
 }
@@ -250,7 +254,11 @@ phen_basename = unlist(str_split(unlist(str_split(opt$phenfile,"/"))[length(unli
 # -- Read Files
 
 chemin = str_remove(opt$pedfile,paste0(ped_basename,".ped"))
-setwd(chemin)
+
+# if (is.null(chemin)==FALSE){
+#   setwd(chemin)
+# }
+
 
 cat("\n [] Reading ped, map, phen files...\t")
 
@@ -271,13 +279,13 @@ cat("\n [✓] Done. \n\n")
 # --- This part will need to be reviewed. Use plink (which shouldn't be a dependency) for Mendelian errors
 # --- For now : path_to_plink = cste cuz tool present in the server : not a problem for Web Service version 
 
-cat(" [] Check Mendelian errors with Plink.. \n\n")
-cat(" ____________________________________________________\n\n")
-system(paste0("mkdir plink_report"))
-plink_check(plink_, ped_basename)
-cat("\nResults in plink_report")
-cat("\n\n ____________________________________________________\n")
-cat(" [✓] Check Mendelian errors: Done.\n")
+# cat(" [] Check Mendelian errors with Plink.. \n\n")
+# cat(" ____________________________________________________\n\n")
+# system(paste0("mkdir plink_report"))
+# plink_check(plink_, ped_basename)
+# cat("\nResults in plink_report")
+# cat("\n\n ____________________________________________________\n")
+# cat(" [✓] Check Mendelian errors: Done.\n")
 
 # system("cp ../../../scripts/mendel_table.tsv .")      # path issues: scripts and dependencies must be copied in wd
 # system("cp ../../../scripts/genoInference.R .")

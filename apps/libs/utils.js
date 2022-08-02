@@ -207,7 +207,9 @@ module
             } 
             module.exports["#user_log"](udir)  
             module.exports.dump_essentialScripts(udir)   
-            socket.emit ("fsinfo" ,    `your  virtual repertory  is ready`) 
+            let  jobspace_basename  =  udir.split("/").at(-1)  
+            socket.emit ("fsinfo" ,    `Creating Job Space : ${jobspace_basename}`) 
+            
             socket.emit("ok" ,   200  ) 
            
             socket.emit ("trunc::baseroot" ,  udir ) 

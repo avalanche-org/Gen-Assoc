@@ -348,4 +348,16 @@ export  const  cnav_cache  =  active_element  =>  {
         } 
        
     }
+}
+
+export const  vthreshold_modal_splascreen   = incomming_output_term   =>  { 
+
+
+    let content = incomming_output_term.replaceAll("\n","<br>")
+
+    const target_modal  = _.querySelector(".longer")  
+    const output_elmt   = _.querySelector("#vt_output") 
+    target_modal.classList.toggle("active")
+
+    output_elmt.innerHTML = content  
 } 

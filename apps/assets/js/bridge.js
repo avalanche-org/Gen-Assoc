@@ -19,7 +19,7 @@ import  {
     ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
     ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort
     ,download_assets ,zoom_out , zoom_in , carousels , carousel_next , carousel_prev , gi_modal_no,gi_modal_yes
-    ,cancel_analysis , proceed_analysis , validate_ms, processing 
+    ,cancel_analysis , proceed_analysis , validate_ms, processing ,  vthreshold_modal_splascreen  
     //blur_area
     //,i_lock ,i_unlock , status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
@@ -40,6 +40,7 @@ __lock_web_ui_file_operation()
 ipcRenderer.send_("clifp" ,   { user_agent : client_nav_fingerprint(navigator) , ls_session : localStorage["task"]?? null})
 
 cnav_cache()  ;  
+
 
 
 
@@ -533,7 +534,22 @@ markersetting.forEach (  ( marker_runType , code_index  ) =>  {
     })
 
 }) 
-ipcRenderer.on("vt::exitsuccess" , ec =>  carousel_next.click())   
+ipcRenderer.on("vt::exitsuccess" , ec => {  
+    share_output_to_modal = true  
+    carousel_next.click() 
+    setTimeout(() =>  share_output_to_modal =  false , 2000)  
+})   
+//! quit modal  
+const process_quit_vt_modal = _.querySelector("#vt_proceed")  
+const target_modal  = _.querySelector(".longer")  
+process_quit_vt_modal.addEventListener("click" , evt => { 
+    if  ( target_modal.classList.contains("active"))  
+    {
+        target_modal.classList.remove("active")  
+    }
+}) 
+
+
 //! MARKER SET VALIDATION  
 
 validate_ms.addEventListener("click" , evt =>  { 
@@ -584,17 +600,25 @@ ipcRenderer.on("load::phenotype" ,  incomming_data  =>  {
 })
 
 
+let  share_output_to_modal =  false  
 
+let  vt_holdoutput = " " 
 ipcRenderer.on("term::logout" , data  => {
     // fetch_right_data ( activate_extra_elements ,  evt ,data ) 
     
     data  =  parse_unknow_ascii_unicode(data)  
 
     term.focus() 
-    if  (data)    
-    { 
 
-        term_write(data) 
+        term_write(data)
+        log ("state"  , share_output_to_modal) 
+        
+        if (share_output_to_modal)  
+        { 
+            vthreshold_modal_splascreen(vt_holdoutput)  
+        }else{
+            vt_holdoutput= data   
+        }
        // run_summary.disabled  = summary_already_run 
         
         follow_scrollbar()  
@@ -605,7 +629,6 @@ ipcRenderer.on("term::logout" , data  => {
         //i_lock.classList.add("fa-unlock") 
         mm.disabled            =  false 
         //blur_area.style.filter = "blur(0px)"
-    }
 })
 //! TODO :  [ optional]  style  output error  with red or orange color  ...
 let tigger  = false
@@ -615,6 +638,7 @@ ipcRenderer.on("log::fail", (evt , data)  => {
     mm.disable = true  
     run_summary.disabled=false  
     term.style.color ="red"
+    log ("--->>>>>>>>") 
    // status.style.color ="red"
     //status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> failure ` 
     //bar_progress.style.backgroundColor = "firebrick"
@@ -850,7 +874,7 @@ if  (activate_extra_elements)
          job_title.style.color = "firebrick"
     })  
 
-    ipcRenderer.on("fsinfo" ,  dmesg => term_write(dmesg  ,  true  ,false , false)  )  
+    ipcRenderer.on("fsinfo" ,  dmesg => term_write(dmesg  ,  false,false , true)  )  
 
     ipcRenderer.on("ok", protocol => { 
         disconnect.disabled = false 

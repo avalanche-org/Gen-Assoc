@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
 /** DNA ANIMATION **/
+body { 
+    background-image: linear-gradient(rgba(245,255,255, 0.4),rgba(245,255,255, 0.5),rgba(255, 255, 255,0.6)), 
+    url("images/backgroundMath5.png")  ; 
+    background-blend-mode: luminosity; 
+    background-repeat:no-repeat center center  fixed ;
+    font-size: 45px; 
+}
 
 .dna {
   grid-area: dna;
@@ -7,6 +14,7 @@
   margin-top: 149px;
   transform: rotateZ(30deg);
   padding: 20px;
+
 }
 .strand {
   display: flex;
@@ -58,7 +66,7 @@
   gap: 0.5em;
   margin: 0.35em auto;
   --d: calc(var(--i) / var(--total));
-  --color: #1E90FF;
+  --color: #20b2aa;
   /*--color: linear-gradient(to right, rgb(119,119,119), #C8C8C8);*/
   --duration: 1.5s;
   --delay: calc((var(--duration) * -1) + 0.1s * var(--i));
@@ -211,7 +219,9 @@ box-shadow: -1px 3px 23px -8px rgba(0,0,0,0.84);
   height: 4px;
   width: 30%;
   transform: scaleX(0);
-  background: rgb(70,148,195);
+  background: rgb(32,178,170); 
+
+  background:linear-gradient(to right, #22b2aa, #58D3F1);
   align-self: center;
   transform-origin: left;
   animation: bar 1s 0.4s forwards;
@@ -268,7 +278,8 @@ box-shadow: -1px 3px 23px -8px rgba(0,0,0,0.84);
   display: grid;
   grid-template-areas: " lfb words dna";
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: hidden; 
+
 
 }
 
@@ -282,7 +293,7 @@ box-shadow: -1px 3px 23px -8px rgba(0,0,0,0.84);
   margin-bottom: 10px;
   font-size: 6.5em;
   animation: title 1s 0.9s forwards;
-  color: rgb(70,148,195);
+  color: rgb(32,178,170);
   font-weight: 600 !important;
   text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
              0px 8px 13px rgba(0,0,0,0.1),
@@ -388,7 +399,7 @@ box-shadow: -1px 3px 23px -8px rgba(0,0,0,0.84);
 */
 
 .startOne{
-  background-image: linear-gradient(to right, #0084FF, #58D3FF);
+  background-image: linear-gradient(to right, #22b2aa, #58D3F1);
   color: white;
   width: 150px;
   height: 66px;
@@ -433,7 +444,7 @@ box-shadow: -1px 3px 23px -8px rgba(0,0,0,0.84);
   padding: 9px 25px;
 }
 .ref_article:hover{
-  background-color: rgb(224,108,62) !important;
+  background-color: #22b2aa !important;
   opacity: 0.8;
   border: none;
   color: white;

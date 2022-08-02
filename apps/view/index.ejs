@@ -1,83 +1,448 @@
-<%- include("./header.ejs")%> 
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<link rel="stylesheet" href="styles/indexStyle.css"/>
+		<link rel="stylesheet" href="styles/semantic/semantic.min.css"/>
+		<title>m-TDT tool</title>
+		<link rel="icon" href="images/mtdt-logo-removebg-preview.png">
+<link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500&display=swap" rel="stylesheet">
+	</head> 
+	<body>
+		<!-- NAV -->
+		<nav class="nav">
+			<div class="nav-menu nleft ">
+			</div>
+			<div></div>
+			<div></div>
+			<div class="bar"></div>
+			<div class="nav-menu nright">
+				<a href="/main" class="nav-item toolButton">m-TDTool</a>
+				<a href="/tuto" class="nav-item">Tutorial</a>
+			</div>
+		</nav>
+		<!-- MAIN CONTENT -->
+		<div class="content">
+			<!-- LEFT SIDE BAR  -->
+			<div class="left-side">
+				<h2>Latest</h2>
+				<div class="left-bar"></div>
+			</div>
+			<div class="words">
 
-      </div> 
-    </div>
-<div class="container-fluid">
-  <div class="row">
+  <a href = "/" class ="ui teal image label title " style ="padding-top:5px;padding-left:5px;"> 
 
-    <div class="col-6"> 
-    <div class="container  col-9"  style="background-color:whitesmoke;opacity:0.9;background: linear-gradient(to bottom, rgba(128, 128, 128 ,0.2), rgba(220, 220, 89,0)) 
-; border-radius:10px;">
-     <a href ="/main" >
-<h2 class="ui horizontal divider header" style="font-family:Maven Pro ; color:rgba(0,0,128,0.)">m-TDT  OverView</h2>
-</a> 
-<br>
-<br>
-<div> 
-<p style="font-family:Maven Pro; font-size:16px">
-We present a webservice version of the M-TDT (the multi-locus transmission 
-						disequilibrium test) tool. A tool developed to detect family-based multi-locus
-						multi-allelic effects for qualitative or quantitative traits, extended from the 
-						original transmission disequilibrium test (TDT).<div class="cmath"> `f(x) = (x+2)/(2x+1)`          `x in RR,\ x !=-1/2`</div>
+                    <p style="font-size: 43px; padding-top:20px ; padding-bottom:20px ; margin-left:5px;border-right: 2px solid whitesmoke; color: #ffffff ; margin-top:10px;" class="detail"><b style="font-family:Maven Pro">m-TDT</b></p> <!--color =#c2c8ce #59698D--> 
+                  <small class="ui orange ribbon label">v2.0 Beta</small>
+                </a>
+                <div class="article">
+					<h2 class="subtitle  ui black ribbon label large "  style="font-size:18px">What is it?</h2>
+                    <div  class="ui item list  tall stacked segment  " >  
+                    <p style="font-size:18px"> 
+M-TDT (Multi-locus Transmission Disequilibrium Test) is an open source program computing a family-based statistic testing for association between a phenotype and a set of multi-allelic markers.
+The program is for family-based genome-wide screening of single and joint effects of genetic mutations on infectious disease traits, either qualitative or quantitative traits, regardless of phenotype distribution.
 
-
-</p>  
-</div> 
-
-<h4> Powered By  </h4> 
-
-<div  class="ui medium image "> 
-<img class="ui medium right floated image" src="/images/H3ABioNet_high_res.png"> 
-<img class="ui medium left  floated image" style="right:0px;"src="/images/institupasteurdk.png"> 
-</div> 
-    </div> 
-    </div>      
+					</p>
+                    </div> 
+				</div>
+				<div class="article">
+					<h2 class="subtitle  ui  orange ribbon label " style="font-size:18px">Strengths</h2>
+                    <div class ="ui piled segment "> 
+					<p style="font-size:18px">
 
 
-    <div class="col-6"  sytle="background:url('https://i.gifer.com/LFYM.gif') center ; background-size:cover">
-     <div class="container  col-8" > 
-     <h3 class="ui horizontal divider header" style="font-family:Maven Pro">About m-TDT</h3> 
-        </hr>  
-    
 
+<ul class="ui list" style="font-size:18px" >
+  <li>Ability to find joint effects of several markers impacting phenotypes in a context of small sample size</li>
+  <li>Retrieve markers that would be missed by classical approaches</li>
+  <li> Handles of main statistical issues like: </li>  
+   <ul class="ui list" style="font-size:14px">  
+        <li><u>non-specified distribution of traits</u></li> 
+        <li><u>related individuals</u></li> 
+        <li><u>population admixture</u></li> 
+        <li><u>linkage disequilibrium among markers</u></li> 
+    </ul> 
+
+  </li>
+</ul>
  
-    <div class="ui " style="font-family:Maven Pro; font-size:16px" >
-  <img class="ui small left circular floated image" src="https://i.pinimg.com/originals/fc/24/44/fc2444b08922df34e0f14b9977fa5291.gif"  style="opacity:0.3; background-blen-mode:luminosity">
-  <p>Te eum doming eirmod, nominati pertinacia argumentum ad his. Ex eam alia facete scriptorem, est autem aliquip detraxit at. Usu ocurreret referrentur at, cu epicurei appellantur vix. Cum ea laoreet recteque electram, eos choro alterum definiebas in. Vim dolorum definiebas an. Mei ex natum rebum iisque.</p>
-				
- <a  href="/main"> 
-<button class="ui  left  teal   floated labeled icon button">
-  <i class="right arrow icon"></i>
-  Get Started 
-</button> 
-</a> 
-<hr> 
-<p> 
-<a target="_blank" class ="ref_article ui blue  right ribbon  label" href="https://academic.oup.com/bib/article/18/3/394/2453295?login=false">Read the Paper</a> 
-</p>
-<img class="ui small right floated image" src="/images/article.png">
-<p> 
+                    </p>
+                    </div> 
+				</div>
+				<div class="article">
+					<h2 class="subtitle  ui teal ribbon label "   style="font-size:18px">University of XXXXXXXX XXXXXXXX</h2> 
+                    <div class ="ui raised segment">
+                        <br> 
+					<p style="font-size:18px">Lorem ipsum dolor sit amet, consectetur adipnibh, auctor eget suscipit at, euismod in erat. Integer id imperdiet turpis, sed porttitor ipsum. Pellentesque sed lacus volutpat, scelerisque mi eget, pharetra massa.Lorem ipsum dolor sit amet,
+					</p> 
+                    </div> 
+				</div>
+				<div  class="startOne_div">
+					<button class="startOne" id="startOne" onclick="window.location.href='/main'"> Get started </button> 
+				</div>
+			</div>
+			<!-- begin div shapes -->
+			<div class="dna" style="--total:30; height:80%">
+				<div class="strand_one" style="--i:1">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_one" style="--i:2">
+					<div class="left">
+						<div class="dot">
 
-<h3> Read the paper about the approaches to characterize the complexity arising from multi-locus effects in the family-based study design </h3>
-<h5> See how scientists, research engineers, biostatisticians, bioinformaticians and physicians from the Infectious Disease Epidemiology Unit at the Institut Pasteur in Dakar worked to identify an epistatic effect between three variants of malaria resistance</h5> 
+ <b class="ui teal mini label">M</b></small><small>ulti-locus</small> 
+                        </div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_one" style="--i:3">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_one" style="--i:4">
+					<div class="left">
+						<div class="dot">
 
-</p>
+                        </div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_one" style="--i:5">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_one" style="--i:6">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_one" style="--i:7">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_one" style="--i:8">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_one" style="--i:9">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_one" style="--i:10">
+					<div class="left">
+						<div class="dot">
+ <b class="ui orange mini label placeholder fluild ">T</b><small>ransmission</small>  
+                        </div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_two" style="--i:11">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_two" style="--i:12">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_two" style="--i:13">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_two" style="--i:14">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_two" style="--i:15">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_two" style="--i:16">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_two" style="--i:17">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_two" style="--i:18">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_two" style="--i:19">
+					<div class="left">
+						<div class="dot">
 
 
-</div> 
+ <b class="ui blue mini label">D</b><small>isequilibrium </small> 
+                        </div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_two" style="--i:20">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_three" style="--i:21">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_three" style="--i:22">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_three" style="--i:23">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_three" style="--i:24">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_three" style="--i:25">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_three" style="--i:26">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_three" style="--i:27">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_three" style="--i:28">
+					<div class="left">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_three " style="--i:29">
+					<div class="left">
+						<div class="dot">
 
-    </div>
-  
-    </div>  <!--row--> 
+ <b class="ui yellow mini label">T</b><small>test</small>
+                        </div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot">
 
+                        </div>
+						<div class="line"></div>
+					</div>
+				</div>
+				<div class="strand_three" style="--i:30">
+					<div class="left">
+						<div class="dot">
+                        </div>
+						<div class="line"></div>
+					</div>
+					<div class="right">
+						<div class="dot"></div>
+						<div class="line"></div>
+					</div>
+				</div>
 
-</div> 
+			</div>
+			<!-- end div dna -->
 
+		</div>
 
-</div>    <!--container--> 
+		<section class="mtdt_article_ref ">
+			<div class="row">
+			<div class="bar"></div>
+				<div class="column">
+					<a target="_blank" href="https://academic.oup.com/bib/article/18/3/394/2453295?login=false">
+						<img  class="centered ui tall piled blue  segment" src="images/article.png" width="39%" alt="">
+					</a>
+				</div>
+				<div class="column  ui tall piled orange  segment" style="padding-top: 20px;">
+					<h2 style="color: black;">Read the paper about the approaches to characterize the complexity arising from multi-locus effects in the family-based study design </h2>
+					<br>
+					<p style="font-size:15px">
+						See how scientists, research engineers, biostatisticians, bioinformaticians and physicians from the Infectious Disease Epidemiology Unit at 
+					the Institut Pasteur in Dakar worked to identify an epistatic effect between three variants of malaria resistance.
+					</p>
+					<br><br>
+					<a class="ref_article" target="_blank" href="https://academic.oup.com/bib/article/18/3/394/2453295?login=false">Read the Paper</a>
+				</div>
+			</div>
+		</section>
+				<footer style="position:relative ; clear:both; bottom:0" >
+			<div class="row">
+				<div class="column" style="margin: 10px auto; ">
+					<a target="_blank" href="https://www.pasteur.sn/fr">
+						<img src="images/institupasteurdk.png" width="40%" alt="">
+					</a>
+				</div>
+				<div class="column" style="margin: auto auto; flex: 60% !important;">
+					© 2022 | Epidemiogy, Clinical Research, Data Science Department
+				</div>
+				<div class="column" align="right" style="margin: auto auto;">
+					<!--span style="color: black;"> Gen_Assoc Project |</span--> 
+					<img  src="images/h3abionetafrica.png" width="50%" alt="">
+				</div>
+			</div>
+		</footer>
+	</body>
 
-
-
-
-<%-  include("./footer.ejs")%> 
-<%-  include("./scripts/index_jscript.ejs")%>  

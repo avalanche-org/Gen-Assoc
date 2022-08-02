@@ -141,15 +141,24 @@ const __wtcp__ =  {
             else tx.status(500).send({ message  :"Upload Broken :  fail to upload  file (s) !"})
         
         })
+        
         ["get"]("/download/:dfile" , ( rx ,tx ) => {
              
-            let  download_path = `${sbox}/${rx.params.dfile}` 
-            tx.download(download_path  , rx.params.dfile, err  => {
-                if(err)  
+            let  download_path = `${sbox}/${rx.params.dfile}`    
+            access(download_path, constants["F_OK"]  ,  err  =>   { 
+                if  (err)  
                 { 
-                   tx.status(404).send( {  message  : `you tried to download an inexistant file `}) 
+                    download_path  =  rx.params.dfile  
                 }
-            })
+                 
+                tx.download(download_path  , rx.params.dfile, err  => {
+                    if(err)  
+                    { 
+                        tx.status(404).send( {  message  : `you tried to download an inexistant file `}) 
+                    }
+                })
+            }) 
+            
         })
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))
        

@@ -142,22 +142,21 @@ const __wtcp__ =  {
         
         })
         
-        ["get"]("/download/:dfile" , ( rx ,tx ) => {
-             
-            let  download_path = `${sbox}/${rx.params.dfile}`    
-            access(download_path, constants["F_OK"]  ,  err  =>   { 
-                if  (err)  
+        ["get"]("/download/:dfile" , async ( rx ,tx  ) => {
+            
+            const  vwork_register =  `${vworks}/${static_vn.at(0)}/${rx.params.dfile}` 
+            const  sandbox_register  = `${sbox}/${rx.params.dfile}` 
+            const  local_dirname  =  rx.params.dfile 
+            const  dload_lookup_paths  =  [ local_dirname, sandbox_register ,  vwork_register ] 
+            const  target_location  = await  utils.download_manager (dload_lookup_paths) 
+            tx.download(target_location,  rx.params.dfile  , download_error  => { 
+                if (download_error) 
                 { 
-                    download_path  =  rx.params.dfile  
-                }
-                 
-                tx.download(download_path  , rx.params.dfile, err  => {
-                    if(err)  
-                    { 
-                        tx.status(404).send( {  message  : `you tried to download an inexistant file `}) 
-                    }
-                })
+                    tx.status(404).send( {  message  : `you tried to download an inexistant file `}) 
+                } 
+                
             }) 
+            
             
         })
         ["use"]((rx , tx  , next )   =>  tx.redirect("/"))

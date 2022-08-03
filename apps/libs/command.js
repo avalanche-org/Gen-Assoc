@@ -167,7 +167,8 @@ module.exports =   {
         file  = (  void function () { return } ()) 
         if  (filetarget[0]) 
             [ ,file]  =  filetarget[0]
-     
+    
+        log ( "file  -> " , file  ) 
         return  {  
             data  : `GET ${file}` || (void function () { return } () ) , 
             description :  "Download files\n"

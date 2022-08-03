@@ -361,3 +361,16 @@ export const  vthreshold_modal_splascreen   = incomming_output_term   =>  {
 
     output_elmt.innerHTML = content  
 } 
+
+export const trigger_download  =  async  link  =>   {
+    const  request = await  fetch(link)
+    const  endpoint_request  =   link.split("/").at(-1)  
+    
+    let  virtual_link  = _.createElement("a") 
+    virtual_link.href  = request.url      
+    virtual_link.download = endpoint_request  
+    _.body.appendChild(virtual_link)  
+    virtual_link.click() 
+    virtual_link.remove() 
+
+} 

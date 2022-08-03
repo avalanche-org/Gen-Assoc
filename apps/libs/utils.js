@@ -234,6 +234,19 @@ module
         })
     },
 
+    download_manager   :  ([ ...multiple_path_register ] ) => { 
+
+        log ("dm  entry " ,multiple_path_register) 
+        return  new Promise( ( resolve ,reject )  => { 
+            
+            multiple_path_register.map (dfile  =>  { 
+                access(dfile ,  constants["F_OK"] , err_lookup_fail => {  
+                    if  (!err_lookup_fail) resolve(dfile) 
+                }) 
+            } )
+        }) 
+    } , 
+
     access_userland   :  ( vworks , userland  ,  socket )  => { 
         const   { make_new_userland }  = module.exports 
         const udir        = `${vworks}/${userland}`

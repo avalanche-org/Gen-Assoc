@@ -19,7 +19,7 @@ import  {
     ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
     ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort
     ,download_assets ,zoom_out , zoom_in , carousels , carousel_next , carousel_prev , gi_modal_no,gi_modal_yes
-    ,cancel_analysis , proceed_analysis , validate_ms, processing ,  vthreshold_modal_splascreen  
+    ,cancel_analysis , proceed_analysis , validate_ms, processing ,  vthreshold_modal_splascreen ,  trigger_download  
     //blur_area
     //,i_lock ,i_unlock , status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
@@ -957,15 +957,24 @@ if  (activate_extra_elements)
         term.value+="> "
     })
 
-    ipcRenderer.on("tcmd::response" ,  result   => {
+    ipcRenderer.on("tcmd::response" ,  async result   => {
         if (result.includes("GET")) 
         {  
             result+='\n'
-            const  [,file]  = result.split(" ")
-            download.href=`/download/${file}` 
-            setTimeout  ( () =>  { 
-            download.click()
-            } , 1000) 
+            const  [,file]  = result.split(" ")  
+            
+            const linkref=`/download/${file}` 
+            trigger_download(linkref)  
+            /*
+            const  request_download  = await  fetch(linkref)  
+            let  hidden_link  = _.createElement('a') 
+            hidden_link.href =  linkref.url   
+            hidden_link.download = file 
+            _.body.appendChild(hidden_link)
+            hidden_link.click() 
+             hidden_link.remove() 
+             */
+             
         }
         if   (result == " ")  
         {   
@@ -1156,16 +1165,27 @@ if  (activate_extra_elements)
     ipcRenderer.on("compress::assets::available" ,  async  assets => {  
 
         const  item  = assets.split("/").at(-1)
-        const  retrive_native_url  =  await fetch(`/download/${item}`) 
+        trigger_download(`/download/${item}`) 
+        /*
+        const  retrive_native_url  =  await fetch(`/download/${item}`)  
         let  hidden_link  = _.createElement('a') 
         hidden_link.href =  retrive_native_url.url   
         hidden_link.download = item  
         _.body.appendChild(hidden_link)
         hidden_link.click() 
         hidden_link.remove() 
-        
+        */
     }) 
 
+     //! dowload sample 
+    const  dsample =  _.querySelector("#dsample") 
+    log ("--> ", dsample) 
+    dsample.addEventListener("click"  , evt  => { 
+        evt.preventDefault() 
+        const location_= "/download/sample.zip"  
+        trigger_download(location_) 
+    }) 
 
+   
    carousel_navigation(false)    
 }

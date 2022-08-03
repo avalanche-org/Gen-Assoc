@@ -22,8 +22,7 @@
 
 # --- Points for improvement: Ctrl+f : /!\ 
 # command to test in terminal:
-# Rscript run_analysis.R --pedfile 25markers.ped  --mapfile 25markers.map --phenfile  25markers.phen --phen 1 --markerset  1,2,24 --nbsim  100 --nbcores 4 --gi 1 --jobtitle My_first_analysis
-#Rscript run_analysis.R --pedfile MTDT.ped  --mapfile MTDT.map --phenfile  MTDT.phen --phen 1 --markerset  1,2,24 --nbsim  100 --nbcores 4 --gi 1 --jobtitle My_first_analysis
+# Rscript ~/Gen_Assoc/scripts/run_analysis.R --pedfile 25markers.ped  --mapfile 25markers.map --phenfile  25markers.phen --phen 1 --markerset  1,2,24 --nbsim  100 --nbcores 4 --gi 1 --jobtitle My_first_analysis
 #-------------------
 
 args= commandArgs(trailingOnly = TRUE) 
@@ -122,13 +121,10 @@ plink_check <- function(path_to_plink, ped_basename){
     suppressMessages(system(paste0(plink_ ," --file ", strsplit(opt$pedfile, ".ped") ," --mendel --out ", ped_basename,"_check")))
     
     # Check number of mendelian errors using log file
-    err = system(paste0("grep 'Mendel errors detected' ",ped_basename,"_check.log ")) #cut -c15-17
+    cat("\nNumber of Mendelian errors : ")
+    err = system(paste0("grep 'Mendel errors detected' ",ped_basename,"_check.log |cut -c15-17")) 
     
-    cat(paste0("\nNumber of Mendelian errors : ",err))
     system(paste0("mv *check* plink_report"))
-    
-    if (err!=0){cat("\nMendelian errors, please correct them before analyzing the data\n")}
-    
   } 
   else (cat("-- Alert: Plink tool must be installed to check for Mendelian errors"))
 }
@@ -254,11 +250,7 @@ phen_basename = unlist(str_split(unlist(str_split(opt$phenfile,"/"))[length(unli
 # -- Read Files
 
 chemin = str_remove(opt$pedfile,paste0(ped_basename,".ped"))
-
-# if (is.null(chemin)==FALSE){
-#   setwd(chemin)
-# }
-
+setwd(chemin)
 
 cat("\n [] Reading ped, map, phen files...\t")
 
@@ -279,13 +271,13 @@ cat("\n [✓] Done. \n\n")
 # --- This part will need to be reviewed. Use plink (which shouldn't be a dependency) for Mendelian errors
 # --- For now : path_to_plink = cste cuz tool present in the server : not a problem for Web Service version 
 
-# cat(" [] Check Mendelian errors with Plink.. \n\n")
-# cat(" ____________________________________________________\n\n")
-# system(paste0("mkdir plink_report"))
-# plink_check(plink_, ped_basename)
-# cat("\nResults in plink_report")
-# cat("\n\n ____________________________________________________\n")
-# cat(" [✓] Check Mendelian errors: Done.\n")
+cat(" [] Check Mendelian errors with Plink.. \n\n")
+cat(" ____________________________________________________\n\n")
+system(paste0("mkdir plink_report"))
+plink_check(plink_, ped_basename)
+cat("\nResults in plink_report")
+cat("\n\n ____________________________________________________\n")
+cat(" [✓] Check Mendelian errors: Done.\n")
 
 # system("cp ../../../scripts/mendel_table.tsv .")      # path issues: scripts and dependencies must be copied in wd
 # system("cp ../../../scripts/genoInference.R .")
@@ -345,9 +337,9 @@ if(is.null(opt$markerset)){
                unlist(str_split(ped_basename,".ped"))[1],"_CompletePedigree.map --phenfile ", 
                phen_basename,".phen ")
 }else {
- cmd =  paste0("Rscript mtdt.R --pedfile ", 
-         paste0(name_,"CompletePedigree.ped --mapfile "),name_,"CompletePedigree.map --phenfile ", 
-         phen_basename,".phen ")
+  cmd =  paste0("Rscript mtdt.R --pedfile ", 
+                paste0(name_,"CompletePedigree.ped --mapfile "),name_,"CompletePedigree.map --phenfile ", 
+                phen_basename,".phen ")
 }
 
 
@@ -447,7 +439,7 @@ if (isTRUE(opt$nbsim  > 0)){        # Number of simulations selected
     
     cat("\n\n\n_____________________________________________________________________ \n\n")
     system("cat weighted_res_multilocus_sci.csv  | column -t -s ';' > x; awk '{print $1,$2,$3,$4,$5,$6,$7,$9}' x | column -t -s ' '; rm x")
-
+    
     cat("\n\n--- 10 most significant markers --------------------\n\n")
     
     t <- output[order(output$mTDT_empirical_Pval_FDR),]
@@ -460,7 +452,7 @@ if (isTRUE(opt$nbsim  > 0)){        # Number of simulations selected
   
   #-- M-M range by corrected p-values  
   if (is.null(opt$markerset) == FALSE){
-
+    
     cat(" --  Multi-Marker  \n")
     
     cat("\n_____________________________________________________________________  \n\n")
@@ -505,7 +497,7 @@ system(paste0("mkdir -p ", name_,"/generated_files; mv *CompletePedigree* ", nam
 if (file.exists("genoInference_report.txt")){ 
   system(paste0("mv genoInference_report.txt ",name_))
   system(paste0("mv *inferred.* ",name_,"/generated_files/"))
-  }
+}
 
 #system("rm -r mtdt.R libs __MACOSX genoInference.R mendel_table.tsv")
 #------------

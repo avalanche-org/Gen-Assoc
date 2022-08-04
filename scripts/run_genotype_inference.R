@@ -176,8 +176,6 @@ cat(" [✓] Check Mendelian errors: Done.\n")
 # system("cp ../../../scripts/genoInference.R .")
 # system("cp -r ../../../scripts/libs .")
 
-
-
 date_gi_start = Sys.time()
 
 cat("\n\t ✓ GENOTYPE INFERENCE OPTION ACTIVATED \n")
@@ -190,8 +188,10 @@ cat("\n * Inferring genotypes...\n\n")
 
 if (isTRUE((ncol(ped)-6) > 1000)){                                                                                            # /!\
   cmd = paste0("Rscript genoInference.R --file ", ped_basename," --cutsize 100" ," --cores ", opt$cores ," --out out ")
-}else if (isTRUE((ncol(ped)-6) < 50)) {
-  cmd = paste0("Rscript genoInference.R --file ", ped_basename," --cutsize 10" ," --cores ", opt$cores ," --out out ")
+}else if (isTRUE( ((ncol(ped)-6) > 10) && ((ncol(ped)-6) < 500))) {
+  cmd = paste0("Rscript genoInference.R --file ", ped_basename," --cutsize 1" ," --cores ", opt$cores ," --out out ")
+}else if (isTRUE((ncol(ped)-6) < 10)) {
+  cmd = paste0("Rscript genoInference.R --file ", ped_basename," --cutsize 1" ," --cores ", opt$cores ," --out out ")
 }
 
 system(cmd)

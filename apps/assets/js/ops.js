@@ -68,7 +68,7 @@ export const  [
     markerset,term  , 
     run_summary,run_analysis, 
     sync , files_uploaders/*element node  |  undefined */ , files_browser/* element node | undefined*/ ,
-    form_upload ,  job_title ,  job_init  ,  disconnect , p_menu, interm , giyes , gino , download , abort , download_assets, zoom_in, zoom_out ,
+    form_upload ,  job_title ,  job_init  ,  disconnect , p_menu, interm , giyes , gino , download , download_assets, zoom_in, zoom_out ,
     carousels, carousel_prev , carousel_next,gi_modal_no,gi_modal_yes ,  cancel_analysis ,  proceed_analysis , validate_ms ,processing 
   ]=[ 
         _.querySelector("#ped"),   
@@ -97,7 +97,6 @@ export const  [
         activate_extra_elements  ?  _.querySelector("#gi-yes")              : (void function ()  { return  }() )  , 
         activate_extra_elements  ?  _.querySelector("#gi-no")               : (void function ()  { return  }() )  ,  
         activate_extra_elements  ?  _.querySelector("#download")            : (void function ()  { return  }() )  ,  
-        activate_extra_elements  ?  _.querySelector("#abort_execution")     : (void function ()  { return  }() )  ,  
         activate_extra_elements  ?  _.querySelector("#download_assets")     : (void function ()  { return  }() )  ,  
         activate_extra_elements  ?  _.querySelector("#zoom_out")            : (void function ()  { return  }() )  ,  
         activate_extra_elements  ?  _.querySelector("#zoom_in")             : (void function ()  { return  }() )  , 

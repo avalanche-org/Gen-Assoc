@@ -17,7 +17,7 @@ import  {
     ,mtdterm_rowline_handlers
     ,ped, map , phen,sm,mm ,yes,no,phenotype,nbsim,nbcores,markerset, term 
     ,run_summary, run_analysis ,sync ,files_uploaders, files_browser ,disconnect
-    ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init,abort
+    ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init
     ,download_assets ,zoom_out , zoom_in , carousels , carousel_next , carousel_prev , gi_modal_no,gi_modal_yes
     ,cancel_analysis , proceed_analysis , validate_ms, processing ,  vthreshold_modal_splascreen ,  trigger_download  
     //blur_area
@@ -422,18 +422,9 @@ sm.addEventListener("change" , evt => {
 
 */
 
-/*  Abort Execution Event send kill signal 
- *  through socker  
- **/  
-abort.addEventListener("click"  , evt=>  { 
-    ipcRenderer.send_("kill"  ,   null)
-}) 
 /**
  * bind Ctrl^C  key to   window  for easy aborting  execution 
  */
-window_keyShortcut(shortcup_maping["ctrl_c"] , "" ,  action =>  {
-    ipcRenderer.send_("kill" , null )  
-})  
 
 /* 
  * navigation control  using arrow 

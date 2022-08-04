@@ -116,7 +116,7 @@ const __wtcp__ =  {
         }) 
         ["get"]("/main" ,  ( rx , tx ) =>  { 
             tx.setHeader("Content-type" , "text/html")  
-            tx.render("main.ejs" ,  {socket:true})  
+            tx.render("main.ejs" ,  {socket:true , tuto_section:false})  
         })
         ["get"]("/tuto" ,  ( rx , tx ) =>  { 
             tx.setHeader("Content-type" , "text/html")

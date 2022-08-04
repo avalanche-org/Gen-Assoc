@@ -21,10 +21,10 @@
 <a href="/images/appscreenshot/Selection_016.png">
   <img  src="/images/appscreenshot/Selection_016.png"  class="ui  small rouded image">  
 </a> 
-  <small> <i class="rocket icon"> </i> 
- <strong>T</strong>his section allows you to create a virtual workspace in which the analysis will take place. 
-    The uploaded files as well as the output files will be located in this virtual directory on the server. 
-You can choose the name of this space in Job Title and submit to validate the creation of your space.
+
+   <small> <i class="rocket icon"> </i> 
+ <strong>C</strong>reate your virtual workspace in which the analysis will take place. 
+The uploaded files as well as the output files will be located in this virtual directory on the server.
 
 
 
@@ -37,27 +37,19 @@ You can choose the name of this space in Job Title and submit to validate the cr
   <img  src="/images/appscreenshot/Selection_017.png"  class="ui  small rouded image"> 
 </a> 
 
- <small> <i class="upload icon"></i> <strong>I</strong>t is in this section that the user loads the files to be analyzed.
+<small> <i class="upload icon"></i> <strong>U</strong>pload ped, map, phen files. Make sure your files meets the following requirements:
+ 
+<h4> INPUT FILES FORMAT  </h4>
+<ul class="ui list" style="font-size:14px">  
+        <li><u> No header in any of the 3 input files </u></li> 
+        <li><u> Columns in all input files are tab separated</u></li> 
+        <li><u> Three files must have the same basename </u></li> 
+    </ul> 
 
-The button opens a window with a view of your local files. You can select the files whose formats must meet the following specifications:
-INPUT FILE FORMAT
 
-    * No headers in any of the 3 input files.
-    * The columns of all input files are separated by tabs.
-
-    (i) PED file: starts with 6 columns followed by genotype columns, in the following order
-        - Family ID
-        - Individual ID
-        - Father ID
-        - mother's ID
-        - sex
-        - condition (this column will not be taken into account, but its presence is required)
-
-        - genotype columns (...)
-
-    ! !! TIP: The 'ped' file can contain multiple markers, but we advise at the runtime stage to include a limited number of markers, e.g. 3 to 5, 
 
         </small>
+
 
 </div> 
 
@@ -74,15 +66,19 @@ INPUT FILE FORMAT
 <a href="/images/appscreenshot/Selection_018.png">
   <img  src="/images/appscreenshot/Selection_018.png"  class="ui  small rouded image"> 
 </a>
-     <small> 
-<strong> T</strong>hen you select from the files you have just uploaded the one you need, respectively, for the Pedigree File, Map file and Phenotype File fields. These three files must have the same file name with the same difference in format. 
-   <div class="ui toggle checkbox">
+
+        <small> 
+<strong> S</strong>elect the files to analyze.
+
+   <br>Enable <div class="ui toggle checkbox">
                 <input type="checkbox">
                 <label for="sync">Sync</label>
-            </div> 
-This is the only way to make sure that when you select an A file for a dedicated field, the other fields are pre-filled with the files corresponding to the same base name 
+            </div> button, select a file and files with the same basename will automatically complete in the dedicated fields.<br>
+Launch Summary Statistics : to view basic information about your data.
+
 
         </small>
+
 </div> 
 
       <a class="ui black right ribbon label" href="/main" alt="3">5 Genotype Inference </a>
@@ -91,13 +87,13 @@ This is the only way to make sure that when you select an A file for a dedicated
   <img  src="/images/appscreenshot/Selection_019.png"  class="ui  small rouded image">  
 </a>  
 
-        <small> 
-Depending on your number of missing data, you can choose to use the genotype inference option or not. 
 
-This is where the options to run the mtdt script are selected.
+      <small>
+M-TDT method is sensitive to missing data. Reduce missingness of your data with genotype inference option which uses mendelian laws to infer genotypes.  
 
 
         </small>
+
 </div> 
 <a class="ui  gray  right ribbon label" href="/main"  alt="4" >6 Run Type</a>  
  <div class="ui segment gray">
@@ -105,9 +101,14 @@ This is where the options to run the mtdt script are selected.
   <img  src="/images/appscreenshot/Selection_020.png"  class="ui  small rouded image">  
 </a> 
   
-     <small> 
-<b>Markers Setting </b> list indicating positions of the set of markers to analyze jointly (separated by "," without SPACE); position from the 'ped' file without counting the 6 first columns. 
-If <b> MULTI MARKER </b> option is not selected, the software will run like <b>SINGLE MARKER</b> GWAS, screen all markers in the 'ped' file one-by-one in family-based association. A limited number of top SNPs from a GWAS screening can be subsequently used for multilocus analysis.
+        <small>
+
+The 'ped' file can contain several markers, but we advise at the running step to include a limited number of markers, e.g. 3 to 5 in validate selected markers section, to avoid both:
+ <ul class="ui list" style="font-size:14px">  
+        <li>facing a huge number of alternative hypotheses to test and </li> 
+        <li>having sparse count tables for transmitted versus non transmitted alleles combinations across markers.</li> 
+    </ul>As discussed in the method paper, MTDT has not been optimized for screen multiple markers effect within a large number of markers, but within a set predefined subgroup of markers of interest, e.g. markers with intermediate marginal effect.
+<p class="ui orange label"> Based on the type you selected and your data, you will be advised whether to choose an empirical or theoretical run (next step) </p> 
 
 
         </small>
@@ -128,16 +129,13 @@ If <b> MULTI MARKER </b> option is not selected, the software will run like <b>S
  <a href="/images/appscreenshot/Selection_021.png">
   <img  src="/images/appscreenshot/Selection_021.png"  class="ui  small rouded image"> 
 </a>  
-         <small> <b>Number of simulations </b> for the calculation of the empirical P-values. 
-The default value is 0 and corresponds to the case where only asymptotic P-values are provided. If the sample size is limited or if there is a linkage disequilibrium (LD) between the analyzed markers, the asymptotic theory is no longer valid and the empirical P-values have to be calculated using simulations.
-<b >Number of cores</b> to be used for execution, if the user wants to speed up the execution by using multiple cores, as the program can run in parallel at the simulation stage if it is included to obtain empirical P-values. Thus, this option is only useful if the -nbsim option is used.
-<b>Note</b>: The distinction between empirical run and theoretical run is made at this level. By clicking on 
- <div class="ui mini inverted blue  button" >   
-                  <i class="magic icon"></i>
-                  THEORITICAL  
-</div>
-on the parameters for an empirical run (number of simulations and number of cores) are disabled. To deactivate it, click on it again.
+      <small> 
 
+The distinction between empirical run and theoretical run is made at this level.<br>
+<b> For Empirical test</b> <br><u>Select number of simulations: </u><br>
+By default the value of the number of simulations for the calculation of the empirical P-values is 0 and corresponds to the case where only asymptotic P-values are provided. If the sample size is limited or if there is a linkage disequilibrium (LD) between the analyzed markers, the asymptotic theory is no longer valid and the empirical P-values have to be calculated using simulations
+
+<br> <u>Select the number of cores:</u></br>   Only available for simulations. Used to speed up the execution by using multiple cores, as the program can run in parallel at the simulation stage if it is included to obtain empirical P-values.
 
 
         </small>
@@ -155,7 +153,7 @@ on the parameters for an empirical run (number of simulations and number of core
 
     <small> 
 
-<b> T</b>he position of the phenotype (only one) to analyze from the 'phenotype' file without counting the 2 first columns.
+<b>C</b>hoose your phenotype corresponding to the phenotype column you want to use.
 
         </small>
 

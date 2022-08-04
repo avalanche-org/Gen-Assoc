@@ -159,17 +159,18 @@ font-size  :18px;
               </a>
 
               <% if (socket) {%>  
-
               <a href="/tuto"  class="item ui active teal segment"> Tutorial </a> 
-              <a id="dsample"  class=" item  ui orange  active segment">
+             
+              <%if (!tuto_section){ %> 
+               <a id="dsample"  class=" item  ui orange  active segment">
                   Download Sample 
-                  
-
                   <div class="floating ui yellow label"></div>
-              </a> 
-
+              </a>  
               <a   class="item ui active teal basic segment"  id="advice"> Tips </a> 
-              <%}%>
+                <%}%> 
+              <%}else{%> 
+
+              <%}%> 
           </div>
         </div>
         

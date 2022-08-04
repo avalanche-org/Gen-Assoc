@@ -532,7 +532,7 @@ ipcRenderer.on("vt::exitsuccess" , ec => {
 })   
 //! quit modal  
 const process_quit_vt_modal = _.querySelector("#vt_proceed")  
-const target_modal  = _.querySelector(".longer")  
+const target_modal  = _.querySelector("#vtmodal")  
 process_quit_vt_modal.addEventListener("click" , evt => { 
     if  ( target_modal.classList.contains("active"))  
     {
@@ -1177,6 +1177,12 @@ if  (activate_extra_elements)
         trigger_download(location_) 
     }) 
 
-   
+    //! VALIDATE TRESHOLD  ADVICE 
+    const  advicetab =  _.querySelector("#advice") 
+    const  gotitbtn  =  _.querySelector("#got_it") 
+    const  vt_advice_modal =  _.querySelector("#vt_advice") 
+    
+    advicetab.addEventListener("click",  evt => vt_advice_modal.classList.toggle("active"))  
+    gotitbtn.addEventListener("click" ,  evt => vt_advice_modal.classList.remove("active")) 
    carousel_navigation(false)    
 }

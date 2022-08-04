@@ -123,11 +123,7 @@ const __wtcp__ =  {
             tx.render("tuto.ejs" ,  {socket :false } ) 
 
         }) 
-        ["get"]("/interpret" , (rx,tx)  => {
-            tx.setHeader("Content-type", "text/html") 
-            tx.render("interpret.ejs" , {socket :false}) 
-        })
-
+      
         ["post"] ("/main",  ( rx  ,tx  ) => {  
 
             const { files_upload_processing  }  = __wtcp__ 

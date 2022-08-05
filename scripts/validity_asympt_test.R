@@ -100,8 +100,6 @@ map = read.delim(opt$mapfile, header = F , stringsAsFactors = F)
 
 # --- Determine validity of asymptotic test --- --- --- --- --- --- --- --- ---  
 
-cat("\n--- Suggestion for run")
-
 # --- Variables
 
 # Sample size
@@ -109,11 +107,17 @@ sample_size = nrow(ped)
 ajusted_sample_size = (ceiling(sample_size/100) * 100)-100  
 if(ajusted_sample_size==0){ajusted_sample_size=100}
 
+cat("\n--- Parameters\n")
+
+cat("\n-- Sample size:",sample_size)
+cat("\n-- Ajusted sample size:",ajusted_sample_size ,"\n")
+
 # -- Minor allele frequency calculation (use function)
+
 cat("\n--- Minor Allele Frequency Calculation : \n")
 #Pour SM : calculer maf de chaque marqueur
 
-if (is.null(opt$markerset)== TRUE){
+if (opt$markerset== "0"){ # system return 0 if single-marker option is selected
   maf = 0
   markers= 1:(ncol(ped)-6)
   for (pos in markers){
@@ -125,11 +129,9 @@ if (is.null(opt$markerset)== TRUE){
   maf=maf/length(markers)
 }
 
-
-
 # -- MM : boucler sur markers
 
-if (is.null(opt$markerset)== FALSE){
+if (opt$markerset!= "0"){ # system return selected markerset 
   maf = 0
   markers= unlist(str_split(opt$markerset,pattern = ","))
   for (pos in 1:length(markers)){
@@ -145,9 +147,6 @@ if (is.null(opt$markerset)== FALSE){
 # Ajust maf
 
 ajusted_maf= round(maf, digits = 1)
-
-
-
 
 # -- Cases where empirical = asymptotic (brute-force)
 
@@ -179,17 +178,13 @@ if (isTRUE(ajusted_sample_size>=400) & isTRUE(ajusted_sample_size<=900)){
 
 # -- Display
 
-cat("\n-- Sample size:",sample_size ,"\n")
-cat("-- Minor Allele Frequency:",maf,"\n\n")
+cat("-- Minor Allele Frequency:",maf,"\n")
+cat("-- Adjusted Minor Allele Frequency:",ajusted_maf,"\n\n")
+
 
 cat("--- For your data configuration, it is suggested to choose:\n")
-cat("--- Depending on your model complexity:\n")
 
 Complexity= c("Single-Marker","Additive Model with 2 markers","Additive Model with 3 markers","Epistasis Model")
 Advice = c(single_marker,add_2,add_3,epistasis)
 out = knitr::kable(data.frame(Complexity,Advice), align = "c", "rst")
 print(out)
-
-
-
-

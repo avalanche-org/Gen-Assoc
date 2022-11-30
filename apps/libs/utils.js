@@ -448,7 +448,15 @@ module
          }  
          
     } , 
+    mtdt_failure   : ( socket , bad_code_exit   , show_on_console=false )   =>  {
+        //!  usefull  for debugging  ... 
+        if  (show_on_console)  
+        {  
+            process.stdout.write(`mtdt failure  :  ${bad_code_exit}`) 
+        }
+        socket.emit ( "mtdt::failure" ,bad_code_exit)   
 
+    }, 
     std_ofstream   : (user_virtual_ws, command , socket  , callback )=> {
         const {  tail_logfiles   ,    kill_subprocess } =  module.exports  
         
@@ -464,15 +472,16 @@ module
         
         try  {  
             subprocess.on("close" , ( exit_code ,   signal  )  =>  { 
-                let  execute_status  =  exit_code  != 0  ? `FAILLURE : ${exit_code || signal }\n` : "SUCCESS : [ ok ]\n"
-                process.stdout.write(execute_status) 
-                setTimeout(  () =>  {  
+                let  execute_status  =  exit_code  != 0  ? `\nFAILLURE : ${exit_code || signal }\n` : "\nSUCCESS : [ ok ]\n"
+                setTimeout(() =>  {  
                     if  ( process.env?.LG_CLOSE)   
                     {
                         callback(exit_code)  
                         delete  process.env.LG_CLOSE 
                         socket.emit("term::logout" ,  execute_status)  
-                    }
+                    }else  
+                        callback(execute_status)   
+
                 }  , 500)  
                 
             })

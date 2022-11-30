@@ -450,7 +450,7 @@ let summary_already_run =  false ,
 
 let  gobject = {}  
 gobject["paths"]  = paths_collections  ||  null 
-gobject["selected_files"]  =  localStorage["summary_dump"]  
+gobject["selected_files"]  =  localStorage["summary_dump"]  ||  null  
 
 run_summary.addEventListener("click" , evt => {
     evt.preventDefault()
@@ -503,19 +503,21 @@ run_summary.addEventListener("click" , evt => {
 
 const markersetting  = [  sm  , mm ]  
 let   [_sm  , _mm ]  = [ false , false ] 
-const msruntitle  =`/!\\ Validity Treshold  on Selected files ${gobject.selected_files}`
+
+
 markersetting.forEach (  ( marker_runType , code_index  ) =>  {
     //! the code index  take  index array as code  like  -->  sm : 0  and mm  :1  
     marker_runType.addEventListener("click" ,  evt =>  { 
-        evt.preventDefault()   
-        markerset.disabled =  code_index^1  
+        evt.preventDefault()
+
+        markerset.disabled =  code_index^1   
+        const msruntitle  =`/!\\ Validity Treshold  on Selected files ${gobject.selected_files}\n` 
         if  ( markerset.disabled)  
         {
             [_sm  , _mm ]  =[true ,  false] 
            
             term_write(msruntitle , true ) 
             const  data =   [ +_mm ,  gobject ]  
-            // TODO : send event to run  validity threshold  
             ipcRenderer.send_("validitythreshold" ,   data)
             
             //carousel_next.click()  
@@ -529,7 +531,16 @@ ipcRenderer.on("vt::exitsuccess" , ec => {
     share_output_to_modal = true  
     carousel_next.click() 
     setTimeout(() =>  share_output_to_modal =  false , 2000)  
-})   
+}) 
+
+ipcRenderer.on("mtdt::failure" , ec=> {   
+    if (processing.classList.contains("active") ) 
+        processing.classList.remove("active")  
+    
+    term_write(`Failure with ${ec}`)  
+    
+})  
+
 //! quit modal  
 const process_quit_vt_modal = _.querySelector("#vt_proceed")  
 const target_modal  = _.querySelector("#vtmodal")  
@@ -786,7 +797,11 @@ if  (activate_extra_elements)
         term_write(ascii_logo ,  false ,false) 
         if  ( paths_collections?.split)  
         {
+
             sysinfo["session"]  =paths_collections.split("/").at(-1)   
+            /**  
+             * reach  last  selected file  
+             */
             if ( gobject.selected_files !=  (void function ()  { return  }() ))  
             { 
                 sysinfo["Recent files"]  =  gobject.selected_files  

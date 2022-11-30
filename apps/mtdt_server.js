@@ -54,17 +54,17 @@ xapp
 .use(xpressfu({})) 
 
 __required_static_files__ : 
-summary_source  =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
-run_analyser    =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
+summary_source          =  utils.auto_insject(path.join(__dirname,  ".." ) , summary_src)  
+run_analyser            =  utils.auto_insject(path.join(__dirname,  ".." ) , run_analysis) 
 run_genotype_inference  =  utils.auto_insject(path.join(__dirname,  ".." )  ,run_gi )
-gi_D  =  utils.auto_insject(path.join(__dirname,  ".." )  ,dep_gi )
-selectPed  =  utils.auto_insject(path.join(__dirname,  ".." )  ,select_ped) 
-_vtasympt   =  utils.auto_insject(path.join(__dirname, ".." )  , vtasympt)  
-vworks          =  utils.auto_insject(path.join(__dirname)  , virtual_workstation)
-sbox            =  utils.auto_insject(path.join(__dirname)  , sandbox)
-static_vn       =  null
-local_namespace =  (void function ()  { return }()) 
-vwo             =   {}  
+gi_D                    =  utils.auto_insject(path.join(__dirname,  ".." )  ,dep_gi )
+selectPed               =  utils.auto_insject(path.join(__dirname,  ".." )  ,select_ped) 
+_vtasympt               =  utils.auto_insject(path.join(__dirname, ".." )  , vtasympt)  
+vworks                  =  utils.auto_insject(path.join(__dirname)  , virtual_workstation)
+sbox                    =  utils.auto_insject(path.join(__dirname)  , sandbox)
+static_vn               =  null
+local_namespace         =  (void function ()  { return }()) 
+vwo                     =   {}  
 download_item_status_fail =  false  
 
 /** @namespace __wtcp__ **/
@@ -302,6 +302,7 @@ const __wtcp__ =  {
 
                     }else {
                         log("error") 
+                        utils.mtdt_failure(sock ,  exit_code)  ;  
                     }
                 }) 
                 
@@ -325,7 +326,7 @@ const __wtcp__ =  {
                         sock.emit("next" , exit_code )  
 
                     }else {
-                        log("error") 
+                        utils.mtdt_failure(sock ,  exit_code)  ;  
                     }
 
                 })
@@ -346,15 +347,15 @@ const __wtcp__ =  {
                     "markerset" : markert_set
                 }   
 
-                log (vt_arguments) 
+                console.table(vt_arguments) 
+
                 utils.std_ofstream(paths ,   utils.scripts(_vtasympt,  { ...vt_arguments} )  , sock  , exit_code  =>  {
                     if  (exit_code == 0x00)  
                     {
                         log("exit"  ,  exit_code ) 
-                        
                         sock.emit("vt::exitsuccess" , exit_code )  
                     }else  
-                        log("error -> " , exit_code)  
+                        utils.mtdt_failure(sock ,  exit_code ,  true)  ;  
                 }) 
 
             })
@@ -418,6 +419,7 @@ const __wtcp__ =  {
 
                     }else {
                         log("error") 
+                        utils.mtdt_failure(sock ,  exit_code)  ;  
                     }
                 })
 

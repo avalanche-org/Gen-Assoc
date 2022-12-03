@@ -254,7 +254,7 @@ const __wtcp__ =  {
                     ,phenfile :  `${paths}/${phenfile}`
                 }
                 utils.rsv_file(summary_arguments_flags?.phenfile ,  '\t')
-                .then(res => { 
+                .then(res => {
                     res-=2   
                     utils.std_ofstream(paths ,  utils.scripts(summary_source, {...summary_arguments_flags})   ,sock,
                         exit_code => { 

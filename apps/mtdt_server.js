@@ -71,10 +71,12 @@ download_item_status_fail =  false
 const __wtcp__ =  {  
 
     "#fstream"   :   file  => {
-        const virtual_space =  vworks.split("/").splice(-1)[0]  
-
+        const virtual_space =  vworks.split("/").splice(-1)[0] 
+        log ("current virtual work space " , virtual_space )    
+        log ("user space " , static_vn) 
         let  location_path  = static_vn != null  ?  `${virtual_space}/${static_vn}/${file.name}` : `${virtual_space}/${file.name}`  
 
+        log ( "#fstream  location path "  ,location_path) 
         writeFile( location_path  ,  file.data  , ( err , data) => { 
             if  (err ) throw err   
              
@@ -82,7 +84,7 @@ const __wtcp__ =  {
     
     } , 
     "@parser"   :   ( data  , sep ="." ) => {
-        const  explode = data.split(sep)  
+        const  explode = data.split(sep)
         return  required_file_extension.includes(explode[explode.length -1 ] )  
     },
 
@@ -130,10 +132,14 @@ const __wtcp__ =  {
             if (!rx?.files ) log ("file upload module not found ")  
             let  { fupload  }  = rx.files
 
-            fupload  =  fupload.length ? fupload.filter( file  => __wtcp__["@parser"](file.name)):
-            log ("uploaded file"  , fupload) 
-            [fupload].filter(file  => __wtcp__["@parser"](fupload.name))
-            
+            log ("uploaded file"  , fupload)
+            if ( fupload.length > 1  ) 
+            { 
+                fupload  =  fupload.filter( file  => __wtcp__["@parser"](file.name)) 
+                [fupload].filter(file  => __wtcp__["@parser"](fupload.name))
+            }else  
+                __wtcp__["@parser"](fupload.name)  
+                
             
             if  ( files_upload_processing (fupload  ,   __wtcp__["#fstream"]) ) 
                 tx.redirect("/main") 
@@ -291,7 +297,8 @@ const __wtcp__ =  {
                     "cores"   : utils.cpus_core()-1//,    //!  take the maximum core -1  
                 }
 
-                log(gi_run_argument_flags)  
+                log ("GI Run !") 
+                console.table(gi_run_argument_flags)  
                 
                 utils.std_ofstream(paths ,   utils.scripts(run_genotype_inference  , {  ...gi_run_argument_flags }  )  ,  sock ,   exit_code  => { 
                     

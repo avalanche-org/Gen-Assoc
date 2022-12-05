@@ -141,7 +141,9 @@ export const uploader  =   async   form_ =>  {
     const  payload = {  
         method:"POST" , 
         body  : new FormData(form_) 
-    } 
+    }
+
+    log  ( "uploader payload " , payload ) 
     
     const  state  = await window.fetch("/main" ,  { ...payload }  )
 

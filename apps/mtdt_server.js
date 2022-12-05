@@ -36,7 +36,7 @@ const  [
     {utils , tcmd }  = libs              , 
     xpress   = xtra["xpress"]            ,
     xpressfu = xtra["xpressfu"]          ,  
-    ios      = xtra["io_socket"].Server    
+    ios      = xtra["io_socket"].Server  
 ] = process.argv.slice(0xa) 
 
 __setup__  :  
@@ -77,16 +77,20 @@ const __wtcp__ =  {
         const virtual_space =  vworks.split("/").splice(-1)[0] 
         log ("current virtual work space " , virtual_space )    
         log ("user space " , static_vn) 
-        let  location_path  = static_vn != null  ?  `${virtual_space}/${static_vn}/${file.name}` : `${virtual_space}/${file.name}`  
-
-        log ( "#fstream  location path "  ,location_path) 
+        let  location_path  = static_vn != null  ?  `${virtual_space}/${static_vn}/${file.name}` : `${virtual_space}/${file.name}`
+        
+        //! restructure the file  first  
+        let  reformat =  utils.restructure(auto_restructure ,  location_path )  
+        
         writeFile( location_path  ,  file.data  , ( err , data) => { 
-            if  (err ) throw err   
+            if  (err ) throw err 
+            
              
         }) 
     
     } , 
     "@parser"   :   ( data  , sep ="." ) => {
+        log("@parser" , data ) 
         const  explode = data.split(sep)
         return  required_file_extension.includes(explode[explode.length -1 ] )  
     },
@@ -135,11 +139,9 @@ const __wtcp__ =  {
             if (!rx?.files ) log ("file upload module not found ")  
             let  { fupload  }  = rx.files
 
-            log ("uploaded file"  , fupload)
             if ( fupload.length > 1  ) 
             { 
-                fupload  =  fupload.filter( file  => __wtcp__["@parser"](file.name)) 
-                [fupload].filter(file  => __wtcp__["@parser"](fupload.name))
+                fupload.filter(file  =>  __wtcp__["@parser"](file.name))
             }else  
                 __wtcp__["@parser"](fupload.name)  
                 
@@ -255,13 +257,16 @@ const __wtcp__ =  {
             RUN_SUMMARY : sock.on("run::summary" ,  gobject   => { 
                 log ( "summary  run  - > " ,  gobject) 
                 let   { paths ,  selected_files  } = gobject  ,   
-                      [pedfile,mapfile,phenfile]  = selected_files
+                      [pedfile,mapfile,phenfile]  = selected_files  
+                 
                 
                 const  summary_arguments_flags  =  { 
                     pedfile  :  `${paths}/${pedfile}`
                     ,mapfile  :  `${paths}/${mapfile}`
                     ,phenfile :  `${paths}/${phenfile}`
                 }
+               
+
                 utils.rsv_file(summary_arguments_flags?.phenfile ,  '\t')
                 .then(res => {
                     res-=2   

@@ -21,14 +21,20 @@ def  __restructure_file  (  file : str )  :
     
     detect_separten =  {  s for s in pattern_sep if contents.decode().__contains__(s) } 
     
-    if  detect_separten & pattern_sep : 
-        contents =  contents.decode().replace(" " ,  "\t")  
+    if (detect_separten & pattern_sep).__len__().__gt__(0) : 
+        # get the fisrt founded separator 
+        detect_separten = list(detect_separten).__getitem__(0)  
+        contents =  contents.decode().replace(detect_separten,  pattern_norm)
+   
+    else:
+         sys.exit(1)
     
     os.close(fd)
 
     fdw = os.open (file , os.O_WRONLY | os.O_CREAT) 
     os.write(fdw , contents.encode()) 
-    os.close(fdw) 
+    os.close(fdw)
+    sys.exit(0) 
 
 
 

@@ -321,7 +321,16 @@ module
                resolve(files.length ?  files : dir_contents) 
            })
        })
-    },
+    }, 
+    restructure  : ( script_source  , file  ) =>  { 
+        access (script_source  ,  constants["F_OK"]  ,  err  =>  err ?? err  )  
+        
+        let interpreter = `python  ${script_source} ${file}` 
+        
+        return exec(interpreter)  
+         
+        
+    } , 
     scripts  :  ( script_source   ,   { ...arguments }  )  =>  { 
 
         access (script_source  ,  constants["F_OK"]  ,  err  =>  err ?? err  ) 

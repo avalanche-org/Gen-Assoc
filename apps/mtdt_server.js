@@ -80,11 +80,11 @@ const __wtcp__ =  {
         let  location_path  = static_vn != null  ?  `${virtual_space}/${static_vn}/${file.name}` : `${virtual_space}/${file.name}`
         
         //! restructure the file  first  
-        let  reformat =  utils.restructure(auto_restructure ,  location_path )  
         
         writeFile( location_path  ,  file.data  , ( err , data) => { 
             if  (err ) throw err 
-            
+
+            let  reformat =  utils.restructure(auto_restructure ,  location_path )  
              
         }) 
     

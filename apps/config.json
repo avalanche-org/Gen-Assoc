@@ -21,6 +21,7 @@
         "dep_gi"      : "<>/scripts/genoInference.R", 
         "select_ped"  : "<>/scripts/select_ped.R",
         "vtasympt"    : "<>/scripts/validity_asympt_test.R",
+        "restructure" : "<>/scripts/restructure.py", 
         "logpath"     : "/Users/marieme/Desktop/Gen_Assoc/Gaui/.logout",
         "mtdt_src": "/Users/marieme/Desktop/Gen_Assoc/scripts/mtdt.R"
     } ,

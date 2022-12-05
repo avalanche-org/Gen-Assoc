@@ -27,7 +27,8 @@ so = process.platform == "win32" ? "\\"  : "/"
 
 const  [
     { log }  = console                  , 
-    {summary_src  , run_analysis , run_gi, dep_gi , select_ped, required_file_extension , vtasympt } = require("./config.json")["mtdt_pannel"], 
+    {summary_src  , run_analysis , run_gi, dep_gi , select_ped, required_file_extension , vtasympt
+    ,restructure } = require("./config.json")["mtdt_pannel"], 
     {virtual_workstation  , sandbox} =  require("./config.json")["web_server"] , 
     {Server} = require("http")           ,
     path     = require("path")           ,
@@ -60,6 +61,8 @@ run_genotype_inference  =  utils.auto_insject(path.join(__dirname,  ".." )  ,run
 gi_D                    =  utils.auto_insject(path.join(__dirname,  ".." )  ,dep_gi )
 selectPed               =  utils.auto_insject(path.join(__dirname,  ".." )  ,select_ped) 
 _vtasympt               =  utils.auto_insject(path.join(__dirname, ".." )  , vtasympt)  
+auto_restructure        =  utils.auto_insject(path.join(__dirname ,".." )  , restructure) 
+
 vworks                  =  utils.auto_insject(path.join(__dirname)  , virtual_workstation)
 sbox                    =  utils.auto_insject(path.join(__dirname)  , sandbox)
 static_vn               =  null

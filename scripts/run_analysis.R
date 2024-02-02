@@ -279,7 +279,7 @@ cat("\n [✓] Analysis completed.  \n ")
 
 if (file.exists("weighted_res_multilocus.csv")){              # if run worked 
   
-  cat("\n [•]  R E S U L T S :   \n\t --- Run Characteristics :")
+  cat("\n [•]  R E S U L T S :   \n\t --- Run Characteristics :\n")
   make_scientific()
   output <- read.csv("weighted_res_multilocus_sci.csv", sep = ";")
   
@@ -289,7 +289,7 @@ if (file.exists("weighted_res_multilocus.csv")){              # if run worked
   
   if (isTRUE(opt$nbsim  ==  0) | is.null(opt$nbsim) == TRUE) {   # check if it was an empirical run 
     
-    cat(paste0("\t› Theoretical run performed on ", ped_basename, " data "))
+    cat(paste0("\n\t› Theoretical run performed on ", ped_basename, " data \n"))
     
     #-- S-M : no need corrected p-values
     
@@ -338,7 +338,7 @@ if (file.exists("weighted_res_multilocus.csv")){              # if run worked
   
   if (isTRUE(opt$nbsim  > 0)){               # If nb of simulations renseigné  
     
-    cat(paste0("\t› Empirical run performed on ", ped_basename, " data with ", opt$nbsim, " simulations"))
+    cat(paste0("\n\t› Empirical run performed on ", ped_basename, " data with ", opt$nbsim, " simulations \n"))
     
     #-- S-M no need corrected p-values
     if (is.null(opt$markerset) == TRUE){
@@ -408,12 +408,14 @@ if (file.exists("weighted_res_multilocus.csv")){              # if run worked
   
   x_= Sys.time()
   execution_time= as.numeric(difftime(x_,x))
-  cat("\n Run finished [✓] \n---  Finished at: ",as.character(x_),
-      "\n--- ⏱️\tExecution time : ", execution_time, " secs.\n--- 📂\tResults  in : ", name_, "\n\n\n")
-  
+  cat("\n Run finished [✓] \n--- ✅ \t Finished at: ",as.character(x_),
+      "\n--- ⏱️\t Execution time : ", execution_time, " secs.\n--- 📂\t Results  in : ", name_, "\n\n\n")
+
   rm(list=ls())
   
   
 }else{
   cat("There was a problem during the execution.")
 }
+
+

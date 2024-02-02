@@ -1,36 +1,21 @@
 #!/usr/bin/env Rscript
-
-#-------------------
 #-------------------
 #   Marieme Top |             @ : topmaryem@gmail.com 
 
-#   Institut Pasteur Dakar:   Epidemiology Clinical Research & Data Science Unit
-#                             Bioinformatics team 
-#   H3ABioNet             :   Tools & Web Services Work Package 
-#                             Gen_Assoc Project
+#   Institut Pasteur Dakar:   Epidemiology Clinical Research & Data Science Unit Bioinformatics team 
+#   H3ABioNet             :   Tools & Web Services Work Package - Gen_Assoc Project
 
 # This is code to run m-TDT analysis   
-
 #                             * prepare files for mTDT run
-#                             * Genotype inference option: integrated 
-#                             * output file : folder containing 
+#                             * Genotype inference option: not integrated 
 
-# --- Requirements 
-# Input     : ped, map, phen files must be in working directory
-#           : Data with no Mendelian errors
-# Dependency: Plink
-
-# --- Points for improvement: Ctrl+f : /!\ 
-# command to test in terminal:
-# Rscript ~/Gen_Assoc/scripts/run_analysis.R --pedfile 25markers.ped  --mapfile 25markers.map --phenfile  25markers.phen --phen 1 --markerset  1,2,24 --nbsim  100 --nbcores 4 --gi 1 --jobtitle My_first_analysis
-#-------------------
-
+ls()
+rm(list=ls())
+  
 args= commandArgs(trailingOnly = TRUE) 
 
-#   --- Path to plink
-plink_ = "/home/g4bbm/tools/Plink/plink" 
 
-#   --- Install Required Packages
+#   --- Install and load Required Packages
 
 if(("optparse" %in% rownames(installed.packages())) == F){
   install.packages("optparse", dependencies=TRUE, repos="http://cran.r-project.org")
@@ -48,8 +33,6 @@ if(("nycflights13" %in% rownames(installed.packages())) == F){
   install.packages("nycflights13", dependencies=TRUE, repos="http://cran.r-project.org")
 }
 
-
-# --- load requiered packages
 library(optparse)
 library(stringr)
 #library(tidyverse)
@@ -81,7 +64,6 @@ completePedigree <- function(dbwork){
   return(dataset)
 }
 
-
 merge_genoInference_out_files <-function(dataset){
   
   # --- This function merges the output files of the genotype inference script to generate the new ped file
@@ -110,25 +92,6 @@ make_scientific <- function(){
   write.csv2(results,file = "weighted_res_multilocus_sci.csv", quote=F, row.names=F)
 }
 
-plink_check <- function(path_to_plink, ped_basename){
-  
-  # --- This function checks if Mendelian errors are present
-  # --- Dependency: Plink
-  
-  plink_ = path_to_plink
-  
-  if (plink_!=""){
-    suppressMessages(system(paste0(plink_ ," --file ", strsplit(opt$pedfile, ".ped") ," --mendel --out ", ped_basename,"_check")))
-    
-    # Check number of mendelian errors using log file
-    cat("\nNumber of Mendelian errors : ")
-    err = system(paste0("grep 'Mendel errors detected' ",ped_basename,"_check.log |cut -c15-17")) 
-    
-    system(paste0("mv *check* plink_report"))
-  } 
-  else (cat("-- Alert: Plink tool must be installed to check for Mendelian errors"))
-}
-
 #   --- Arguments
 
 option_list = list(
@@ -148,45 +111,43 @@ opt = parse_args(opt_parser)
 
 
 #-----------------------------------------------------------------------------------------------
-#                                         START OF ANALYSIS                     
+#                                         START                     
 #-----------------------------------------------------------------------------------------------
 
-# Move to user's temporary directory tmp
+# --- Create a variable flag that will store the flags used to run this script. Only provided information will be stored. 
 
-
-cmd= paste0("--pedfile ", opt$pedfile, " --mapfile ", opt$mapfile, " --phenfile ", opt$phenfile, " --phen ",opt$phen, 
+# Command skeleton
+skeleton_cmd= paste0("--pedfile ", opt$pedfile, " --mapfile ", opt$mapfile, " --phenfile ", opt$phenfile, " --phen ",opt$phen, 
             " --markerset ", opt$markerset, " --nbsim ", opt$nbsim,  " --nbcores ", opt$nbcores," --gi ", opt$gi)
 
-# --- Detect selected options 
-
-flag <- unlist(str_split(c(cmd),"--"))[-1]
+flag <- unlist(str_split(c(skeleton_cmd),"--"))[-1]
 
 positions= NULL
-
 for (i in 1:length(flag)){if (unlist(str_split(flag[i]," "))[2] == ""){positions = c(positions, i)}}
-
 if (length(positions)>0){flag = flag[-positions]}
 
 
 # --- D I S P L A Y   I N   T E R M I N A L 
 
-cat("\n\n ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░\n\n")
+cat("\n\n░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░\n         ___ __ ___ 
+   _  __  | |  ' |  
+  |||     | |__/ | : 𝘼 𝙩𝙤𝙤𝙡 𝙛𝙤𝙧 𝙈𝙪𝙡𝙩𝙞-𝙇𝙤𝙘𝙪𝙨 𝙏𝙧𝙖𝙣𝙨𝙞𝙢𝙞𝙨𝙨𝙞𝙤𝙣 𝘿𝙞𝙨𝙚𝙦𝙪𝙞𝙡𝙞𝙗𝙧𝙞𝙪𝙢 𝙏𝙚𝙨𝙩 
+--------------------------------------------------------------------\n\n")
 
-cat("      [ M - T D T ] ~  A tool for Multi-Locus Transimission Disequilibrium Test     \n\n")
-cat(" --------------------------------------------------------------------------------------\n\n")
-x= Sys.time()
-cat(paste0("\t __ Execution started at : ",as.character(Sys.time())))
-cat(paste0("\t __ Working directory : ", getwd()))
-cat("\n\t __ Run name :",opt$jobtitle, "\n")
+# get start time
+x= Sys.time() 
 
-cat("\n\t __ Running options :\n\n")
-
+cat(paste0("\t[•] Execution started at : ",as.character(Sys.time())))
+cat(paste0("\n\t[•] Working directory : ", getwd()))  # is it relevant for the user?
+cat("\n\t[•] Run name :",opt$jobtitle, "\n")
+cat("\n\t[•] Run options :\n\n")
 
 for (i in 1:length(flag)){
   
-  # Affichage des options
+  # Selected flags
   
-  # --  FILES
+  # --  Files
+  
   if (isTRUE(str_split(flag[i],pattern = " ", simplify = TRUE)[1,1] == "pedfile")){
     cat(paste0(" -- Pedigree file : ",str_split(flag[i],pattern = " ", simplify = TRUE)[1,2] ,"\n"))
     flag = flag[-i]
@@ -200,25 +161,29 @@ for (i in 1:length(flag)){
     flag = flag[-i]
   }
   
-  # --  Selected phenotype column
+  # --  Phenotype column
+  
   if (isTRUE(str_split(flag[i],pattern = " ", simplify = TRUE)[1,1] == "phen")){
     cat(paste0(" -- Selected phenotype : column ",str_split(flag[i],pattern = " ", simplify = TRUE)[1,2] ,"\n"))
     flag = flag[-i]
   }
   
-  # --  Selected markers
+  # --  Markers
+  
   if (isTRUE(str_split(flag[i],pattern = " ", simplify = TRUE)[1,1] == "markerset")){
     cat(paste0(" -- Selected markers : ",str_split(flag[i],pattern = " ", simplify = TRUE)[1,2] ,"\n"))
     flag = flag[-i]
   }
   
   # --  Number of simulations
+  
   if (isTRUE(str_split(flag[i],pattern = " ", simplify = TRUE)[1,1] == "nbsim")){
     cat(paste0(" -- Number of simulations : ",str_split(flag[i],pattern = " ", simplify = TRUE)[1,2] ,"\n"))
     flag = flag[-i]
   }
   
   # --  Number of cores 
+  
   if (isTRUE(str_split(flag[i],pattern = " ", simplify = TRUE)[1,1] == "nbcores")){
     cat(paste0(" -- Number of cores for analysis : ",str_split(flag[i],pattern = " ", simplify = TRUE)[1,2] ,"\n"))
     flag = flag[-i]
@@ -230,6 +195,7 @@ for (i in 1:length(flag)){
     cat(paste0(" -- Genotype Inference option selected \n"))
     flag = flag[-i]
   }
+  
   if (isTRUE(flag[i]=="gi 0")){
     cat(paste0(" -- Genotype Inference option not selected \n"))
     flag = flag[-i]
@@ -239,7 +205,6 @@ for (i in 1:length(flag)){
   }
 }
 
-
 # ---  Pre-processing  -----------------------------------------------
 
 # -- File names
@@ -247,264 +212,208 @@ ped_basename = unlist(str_split(unlist(str_split(opt$pedfile,"/"))[length(unlist
 map_basename = unlist(str_split(unlist(str_split(opt$mapfile,"/"))[length(unlist(str_split(opt$mapfile,"/")))], ".map"))[1]
 phen_basename = unlist(str_split(unlist(str_split(opt$phenfile,"/"))[length(unlist(str_split(opt$phenfile,"/")))], ".phen"))[1]
 
+chemin = str_remove(opt$pedfile,paste0(ped_basename,".ped"))
+
 # -- Read Files
 
-chemin = str_remove(opt$pedfile,paste0(ped_basename,".ped"))
-setwd(chemin)
+cat("\n [ ] Reading ped, map, phen files...\t")
 
-cat("\n [] Reading ped, map, phen files...\t")
-
-# A commenter pour serveur. 
-#system(paste0("cp ../../", ped_basename,".* ."))   # /!\ tmp
-
-ped = read.delim(paste0(ped_basename,".ped"), header = F , stringsAsFactors = F)
-map = read.delim(paste0(map_basename,".map"), header = F , stringsAsFactors = F)
-phen = read.delim(paste0(phen_basename,".phen"), header = F , stringsAsFactors = F)
+ped = read.delim(paste0(chemin,ped_basename,".ped"), header = F , stringsAsFactors = F)
+map = read.delim(paste0(chemin,map_basename,".map"), header = F , stringsAsFactors = F)
+phen = read.delim(paste0(chemin,phen_basename,".phen"), header = F , stringsAsFactors = F)
 
 cat("\n [✓] Done. \n\n")
 
 
-# --- Check Mendel errors ------------------------------------------------------------------------------------
+# ---   R U N    G E N O T Y P E   I N F E R E N C E  --------------------------------------------------
+# ------------------------------------------------------------------------------------------------------
 
-# --- /!\ Plink based ------------------------------------------------------------------------------------
+# Part to run genotype inference if it was selected in the GUI (gi = 1)
 
-# --- This part will need to be reviewed. Use plink (which shouldn't be a dependency) for Mendelian errors
-# --- For now : path_to_plink = cste cuz tool present in the server : not a problem for Web Service version 
 
-cat(" [] Check Mendelian errors with Plink.. \n\n")
-cat(" ____________________________________________________\n\n")
-system(paste0("mkdir plink_report"))
-plink_check(plink_, ped_basename)
-cat("\nResults in plink_report")
-cat("\n\n ____________________________________________________\n")
-cat(" [✓] Check Mendelian errors: Done.\n")
-
-# system("cp ../../../scripts/mendel_table.tsv .")      # path issues: scripts and dependencies must be copied in wd
-# system("cp ../../../scripts/genoInference.R .")
-# system("cp ../../../scripts/mtdt.R .")  
-# system("cp -r ../../../scripts/__MACOSX .")
-# system("cp -r ../../../scripts/libs .")
 
 
 
 # ---   M -  T D T    A N A L Y S I S  -----------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------
 
-# --- C O M P L E T E   P E D I G R E E 
-
-cat("\n\n------------------------- \n\n [✓] Preparing files for mTDT run... \n ")
-
-mtdt_ped = suppressWarnings(rbind(ped, completePedigree(ped))) ## Warning: number of columns [or rows] of result is not a multiple of vector length
-mtdt_map = paste0("M", (7:ncol(mtdt_ped)-6))
-
-# --- Write CP files
-
-cat(" [✓] Writing processed files ")
-name_= NULL
-if (is.null(opt$markerset)){
-  write.table(mtdt_ped, paste0(unlist(str_split(ped_basename,".ped"))[1],"_CompletePedigree.ped"),
-              sep = "\t", quote = F, col.names = F, row.names = F)
-  write.table(mtdt_map, paste0(unlist(str_split(map_basename,".map"))[1],"_CompletePedigree.map"),
-              sep = "\t", quote = F, col.names = F, row.names = F)
-} else{
-  markers= unlist(str_split(string = opt$markerset, pattern = ","))
-  for(marker in markers){
-    name_ = paste0(name_, marker, "_")
-  }
-  write.table(mtdt_ped, paste0(name_,"CompletePedigree.ped"),sep = "\t", quote = F, col.names = F, row.names = F)
-  write.table(mtdt_map, paste0(name_,"CompletePedigree.map"),sep = "\t", quote = F, col.names = F, row.names = F)
-}
-
 # ---  Create command to call script
 
+skeleton_cmd = paste0(" --pedfile ", ped_basename, ".ped --mapfile ", map_basename, ".map --phenfile ", phen_basename, ".phen --phen ",opt$phen, 
+                                    " --markerset ", opt$markerset, " --nbsim ", opt$nbsim,  " --nbcores ", opt$nbcores)
 
-# - update command
-cmd= paste0("--pedfile ", opt$pedfile, " --mapfile ", opt$mapfile, 
-            " --phenfile ",opt$phenfile, " --phen ",opt$phen,
-            " --markerset ", opt$markerset, " --nbsim ", opt$nbsim,
-            " --nbcores ", opt$nbcores)
+# - from command skeleton - get flags used
+flag <- unlist(str_split(c(skeleton_cmd)," --"))[-1]
 
-flag <- unlist(str_split(c(cmd),"--"))[-1]
+# - get rid of empty flags
 positions= NULL
 for (i in 1:length(flag)){if (unlist(str_split(flag[i]," "))[2] == ""){positions = c(positions, i)}}
 if (length(positions)>0){flag = flag[-positions]}
 
-f=NULL
+setwd(paste0("vtmp/",opt$jobtitle))
+mtdt_command = paste0("Rscript mtdt.R")
 
-if(is.null(opt$markerset)){
-  cmd = paste0("Rscript mtdt.R --pedfile ", 
-               unlist(str_split(ped_basename,".ped"))[1],"_CompletePedigree.ped --mapfile ",
-               unlist(str_split(ped_basename,".ped"))[1],"_CompletePedigree.map --phenfile ", 
-               phen_basename,".phen ")
-}else {
-  cmd =  paste0("Rscript mtdt.R --pedfile ", 
-                paste0(name_,"CompletePedigree.ped --mapfile "),name_,"CompletePedigree.map --phenfile ", 
-                phen_basename,".phen ")
+for (i in 1:length(flag)){
+  mtdt_command = paste0(mtdt_command," --" , flag[i])
 }
 
+# Issue with mTDT using a one column map (remove when you get the new version of m-TDT)
 
-for (i in 4:length(flag)){
-  f= paste0(f," --",flag[i])
+if(ncol(map)>2){
+  # Creating a new map file 
+  write.table(map$V2, paste0(map_basename,"_rscol.map"),sep = "\t", quote = F, col.names = F, row.names = F)
+  # Replace map file by map new map
+  mtdt_command = str_replace(mtdt_command, paste0(map_basename,".map"), paste0(map_basename,"_rscol.map"))
 }
-cmd = paste0(cmd,f)
 
 # -- 
-cat("\n   [ ] Starting run.. \n\n ")
-system(cmd)
+cat("\n [ ] Starting run.. \n\n ")
+system(mtdt_command)
 
 # -- remove intermediate files
+cat("\n [✓] Analysis completed.  \n ")
+ 
 
-cat("\n   [✓] Analysis completed.  \n ")
+# ------------   D I S P L A Y     O U T P U T  -----------------
+# ---------------------------------------------------------------
 
-#-----------------------------------------------------------------------------------------------
-#                                         OUTPUT DISPLAY                     
-#-----------------------------------------------------------------------------------------------
-
-#   Affichage de la sortie dépendamment de l'option choisie entre run asymptotique et empirique
-#   Ranking 10 most significant markers
-
-# ------------------------------------------------------------------------------------------------------
-
-cat("\n [•]  R E S U L T S :   \n\t --- Run Characteristics :")
-
-#output <- read.csv("weighted_res_multilocus.csv", sep = ";")
-make_scientific()
-output <- read.csv("weighted_res_multilocus_sci.csv", sep = ";")
-
-
-# --- Asymptotic -------------------------------------------------------------
-# -------------------------------------------------------------------------
-
-if (isTRUE(opt$nbsim  ==  0) | is.null(opt$nbsim) == TRUE) {
+if (file.exists("weighted_res_multilocus.csv")){              # if run worked 
   
-  cat(" Theoritical run ")
-  
-  #-- S-M : no need corrected p-values
-  
-  if (is.null(opt$markerset) == TRUE){
-    
-    cat(" --  Single-Marker  \n\n")
-    cat("\n_____________________________________________________________________\n\n")
-    system("cat weighted_res_multilocus_sci.csv  | column -t -s ';' > x; awk '{print $1,$2,$3,$4,$5,$6,$7}' x | column -t -s ' '; rm x")
-    
-    #    Rank 10 most significant markers
-    
-    cat("\n\n--- 10 most significant markers --------------------\n\n")   
-    
-    t <- output[order(output$mTDT_asympt_Pval),]
-    write.table(t[1:10,], "10_significants_markers",sep = "\t", quote = F, col.names = T, row.names = F)
-    system("cat 10_significants_markers | column -t  > x; awk '{print $1,$2,$3,$4,$5,$6,$7}' x | column -t  ; rm  x 10_significants_markers")
-    
-    cat("\n______________________________________________________________________________________________________________\n\n") 
-  }
+  cat("\n [•]  R E S U L T S :   \n\t --- Run Characteristics :")
+  make_scientific()
+  output <- read.csv("weighted_res_multilocus_sci.csv", sep = ";")
   
   
-  #-- M-M : range by corrected p-values  
+  # ***************** T H E O R E T I C A L *****************
+  # *********************************************************
   
-  if (is.null(opt$markerset) == FALSE){  
+  if (isTRUE(opt$nbsim  ==  0) | is.null(opt$nbsim) == TRUE) {   # check if it was an empirical run 
     
-    cat(" --  Multi-Marker  \n\n")
-    cat("_____________________________________________________________________\n\n")
-    system("cat weighted_res_multilocus_sci.csv  | column -t -s ';' > x; awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' x | column -t -s ' '; rm x")
+    cat(paste0("\t› Theoretical run performed on ", ped_basename, " data "))
     
-    #    Ranking : 10 most significant markers
+    #-- S-M : no need corrected p-values
     
-    cat("\n\n--- Most significant markers --------------------\n\n")
-    
-    t <- output[order(output$mTDT_asympt_Pval_FDR),]
-    if(nrow(t)>10){
+    if (is.null(opt$markerset) == TRUE){
+      
+      cat(" --  Single-Marker results \n")
+      
+      #    Rank 10 most significant markers
+      cat("\n\n-------------------- 10 most significant markers --------------------\n\n")   
+      
+      t <- output[order(output$mTDT_asympt_Pval),]
       write.table(t[1:10,], "10_significants_markers",sep = "\t", quote = F, col.names = T, row.names = F)
+      system("cat 10_significants_markers | column -t  > x; awk '{print $1,$2,$3,$4,$5,$6,$7}' x | column -t  ; rm  x 10_significants_markers")
+      
+      cat("\n_____________________________________________________________________\n\n")
+      system("cat weighted_res_multilocus_sci.csv  | column -t -s ';' > x; awk '{print $1,$2,$3,$4,$5,$6,$7}' x | column -t -s ' '; rm x")
+      cat("______________________________________________________________________________________________________________\n") 
     }
-    else{
-      write.table(t[1:nrow(t),], "10_significants_markers", sep = "\t", quote = F, col.names = T, row.names = F)
+    
+    
+    #-- M-M : range by corrected p-values  
+    
+    if (is.null(opt$markerset) == FALSE){ 
+      
+      cat(" --  Multi-Marker results \n")
+      
+      cat("\n\n-------------------- Most significant markers --------------------\n\n")   
+      
+      t <- output[order(output$mTDT_asympt_Pval_FDR),]
+      if(nrow(t)>10){
+        write.table(t[1:10,], "10_significants_markers",sep = "\t", quote = F, col.names = T, row.names = F)
+      }else{
+        write.table(t[1:nrow(t),], "10_significants_markers", sep = "\t", quote = F, col.names = T, row.names = F)
+      }
+      
+      system("cat 10_significants_markers | column -t  > x; awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' x | column -t  ; rm  x 10_significants_markers")
+      
+      cat("\n_____________________________________________________________________\n\n") 
+      system("cat weighted_res_multilocus_sci.csv  | column -t -s ';' > x; awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' x | column -t -s ' '; rm x")
+      cat("_____________________________________________________________________\n\n")
     }
-    system("cat 10_significants_markers | column -t  > x; awk '{print $1,$2,$3,$4,$5,$6,$7,$8}' x | column -t  ; rm  x 10_significants_markers")
-    
-    cat("\n_____________________________________________________________________\n\n") 
-    
   }
   
-}
-
-# --- Empiric -------------------------------------------------------------
-# -------------------------------------------------------------------------
-
-if (isTRUE(opt$nbsim  > 0)){        # Number of simulations selected
-  cat(" Empirical run ")
+  # ***************** E M P I R I C A L ********************
+  # ********************************************************
   
-  #-- S-M no need corrected p-values
-  if (is.null(opt$markerset) == TRUE){
+  if (isTRUE(opt$nbsim  > 0)){               # If nb of simulations renseigné  
     
-    cat(" --  Single-Marker  \n")
+    cat(paste0("\t› Empirical run performed on ", ped_basename, " data with ", opt$nbsim, " simulations"))
     
-    cat("\n\n\n_____________________________________________________________________ \n\n")
-    system("cat weighted_res_multilocus_sci.csv  | column -t -s ';' > x; awk '{print $1,$2,$3,$4,$5,$6,$7,$9}' x | column -t -s ' '; rm x")
+    #-- S-M no need corrected p-values
+    if (is.null(opt$markerset) == TRUE){
+      
+      cat(" --  Single-Marker results \n")
+      cat("\n--- 10 most significant markers --------------------\n\n")
+      
+      t <- output[order(output$mTDT_empirical_Pval_FDR),]
+      write.table(t[1:10,], "10_significants_markers",sep = "\t", quote = F, col.names = T, row.names = F)
+      system("cat 10_significants_markers | column -t  > x; awk '{print $1,$2,$3,$4,$5,$6,$7,$9}' x | column -t  ; rm  x 10_significants_markers")
+      
+      cat("\n_____________________________________________________________________ \n\n")
+      system("cat weighted_res_multilocus_sci.csv  | column -t -s ';' > x; awk '{print $1,$2,$3,$4,$5,$6,$7,$9}' x | column -t -s ' '; rm x")
+      cat("\n_____________________________________________________________________ \n\n")
+      
+    }
     
-    cat("\n\n--- 10 most significant markers --------------------\n\n")
-    
-    t <- output[order(output$mTDT_empirical_Pval_FDR),]
-    write.table(t[1:10,], "10_significants_markers",sep = "\t", quote = F, col.names = T, row.names = F)
-    system("cat 10_significants_markers | column -t  > x; awk '{print $1,$2,$3,$4,$5,$6,$7,$9}' x | column -t  ; rm  x 10_significants_markers")
-    
-    cat("\n_____________________________________________________________________ \n\n")
-    
+    #-- M-M range by corrected p-values  
+    if (is.null(opt$markerset) == FALSE){
+      
+      cat(" --  Multi-Marker results  \n")
+      cat("\n_____________________________________________________________________  \n\n")
+      system("cat weighted_res_multilocus_sci.csv  | column -t -s ';'")
+      
+      cat("\n\n--- Most significant markers --------------------\n\n")
+      
+      t <- output[order(output$mTDT_empirical_Pval_FDR),]
+      if(nrow(t)>10){
+        write.table(t[1:10,], "10_significants_markers",sep = "\t", quote = F, col.names = T, row.names = F)
+      }else{
+        write.table(t[1:nrow(t),], "10_significants_markers", sep = "\t", quote = F, col.names = T, row.names = F)
+      }
+      system("cat 10_significants_markers | column -t ; rm 10_significants_markers")
+      cat("\n_____________________________________________________________________  \n\n") 
+    }
   }
   
-  #-- M-M range by corrected p-values  
+  
+  # ------------  F I L E   M A N A G E M E N T  ------------------
+  # ---------------------------------------------------------------
+  
+  # --- Output filename
+  
+  if (is.null(opt$markerset) == TRUE ){
+    name_ = paste0(ped_basename,"_SM_results")
+  }
   if (is.null(opt$markerset) == FALSE){
-    
-    cat(" --  Multi-Marker  \n")
-    
-    cat("\n_____________________________________________________________________  \n\n")
-    system("cat weighted_res_multilocus_sci.csv  | column -t -s ';'")
-    
-    cat("\n\n--- Most significant markers --------------------\n\n")
-    t <- output[order(output$mTDT_empirical_Pval_FDR),]
-    
-    if(nrow(t)>10){
-      write.table(t[1:10,], "10_significants_markers",sep = "\t", quote = F, col.names = T, row.names = F)
-    }
-    else{
-      write.table(t[1:nrow(t),], "10_significants_markers", sep = "\t", quote = F, col.names = T, row.names = F)
-    }
-    system("cat 10_significants_markers | column -t ; rm 10_significants_markers")
-    
-    
-    cat("\n_____________________________________________________________________  \n\n") 
+    name_ = paste0(opt$markerset,"_MM_results")
   }
-}
-
-
-# --- File Management 
-# ------------------------------------------------------------------------------------------------------
-
-# --- Output filename based on pedfile name
-
-if (is.null(opt$markerset) == TRUE ){
-  name_ = paste0(unlist(str_split(ped_basename,".ped"))[1],"_SM_results")
-}
-if (is.null(opt$markerset) == FALSE){
   
-  name_ = paste0( "MultiMarker_",name_,"results")
+  # create output directory and move file
+  system(paste0("mkdir ", name_,"; mv weighted* ", name_))
+  
+  # Delete unnecessary files
+  # system(paste0("rm ",map_basename,"_rscol.map"))
+  
+  #system(paste0("mv plink_report ",name_))
+  #system(paste0("mkdir -p ", name_,"/generated_files; mv *CompletePedigree* ", name_,"/generated_files/"))
+  
+  if (file.exists("genoInference_report.txt")){ 
+    system(paste0("mv genoInference_report.txt ",name_))
+    system(paste0("mv *inferred.* ",name_,"/generated_files/"))
+  }
+  
+  #system("rm -r mtdt.R libs __MACOSX genoInference.R mendel_table.tsv")
+  #------------
+  
+  x_= Sys.time()
+  execution_time= as.numeric(difftime(x_,x))
+  cat("\n Run finished [✓] \n---  Finished at: ",as.character(x_),
+      "\n--- ⏱️\tExecution time : ", execution_time, " secs.\n--- 📂\tResults  in : ", name_, "\n\n\n")
+  
+  rm(list=ls())
+  
+  
+}else{
+  cat("There was a problem during the execution.")
 }
-
-# create output directory and move file
-
-system(paste0("mkdir ", name_,"; mv weighted* ", name_))
-system(paste0("mv plink_report ",name_))
-system(paste0("mkdir -p ", name_,"/generated_files; mv *CompletePedigree* ", name_,"/generated_files/"))
-
-if (file.exists("genoInference_report.txt")){ 
-  system(paste0("mv genoInference_report.txt ",name_))
-  system(paste0("mv *inferred.* ",name_,"/generated_files/"))
-}
-
-#system("rm -r mtdt.R libs __MACOSX genoInference.R mendel_table.tsv")
-#------------
-
-x_= Sys.time()
-execution_time= as.numeric(difftime(x_,x))
-cat("\n Run finished [✓] \n---  Finished at: ",as.character(x_),
-    "\n--- ⏱️\tExecution time : ", execution_time, " secs.\n--- 📂\tResults  in : ", name_, "\n\n\n")
-
-rm(list=ls())

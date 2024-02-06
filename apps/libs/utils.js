@@ -65,7 +65,8 @@ module
      * @return { promise}  promise  
      */   
     rsv_file :  (  file  , default_delimiter = ","  , readable_mode  = false  )  => {
-        return new Promise  ( (resolve , reject )  => {
+        return new Promise  ( (resolve , reject )  => { 
+            let  reformat =  module.exports.restructure(auto_restructure , file)   
             readFile(file ,  "utf8" , (e , file_data ) => {
                 if (readable_mode ) 
                     resolve(file_data) 

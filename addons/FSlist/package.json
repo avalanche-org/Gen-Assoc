@@ -1,0 +1,13 @@
+{
+  "name": "fslist",
+  "version": "0.0.1",
+  "description": "Node js addon for  file listing in unix system",
+  "main": "./build/Release/fsl",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "node-gyp rebuild"
+  },
+  "author": "Umar",
+  "license": "BSD-2-Clause",
+  "gypfile": true
+}

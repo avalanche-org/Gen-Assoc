@@ -84,7 +84,6 @@ const __wtcp__ =  {
         writeFile( location_path  ,  file.data  , ( err , data) => { 
             if  (err ) throw err 
 
-            let  reformat =  utils.restructure(auto_restructure ,  location_path )  
              
         }) 
     
@@ -267,6 +266,8 @@ const __wtcp__ =  {
                 }
                
 
+               let  reformat =  utils.restructure(auto_restructure ,   summary_arguments_flags.phenfile) 
+                setTimeout( _ => { 
                 utils.rsv_file(summary_arguments_flags?.phenfile ,  '\t')
                 .then(res => {
                     res-=2   
@@ -281,6 +282,7 @@ const __wtcp__ =  {
 
                         })
                 }) 
+                } , 1000)
             })
              
 

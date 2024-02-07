@@ -31,7 +31,11 @@ ADD  . /mTDT
 
 WORKDIR /mTDT/apps
 
-RUN npm install && npm install -g  pm2
+RUN npm install && npm install -g  pm2 
+RUN if [ -z $DEBUGMOD ] ;then \
+npm install -g nodemon ;\
+fi
+
 RUN npm audit  fix --force   
 
 #HINT : DEFAULT PORT USED IS 4000  BY  MODIFYING  THE ENV $PORT  
@@ -41,4 +45,9 @@ ENV PORT=4000
 
 EXPOSE $PORT 
 
-CMD  ["pm2-runtime" , "mtdt_server.js"] 
+## DEBUG MODE
+## NOTE: 
+CMD ["npm" , "run" , "watch"] 
+
+## PRODMOD 
+#CMD ["pm2-runtime" , "mtdt_server.js"] \

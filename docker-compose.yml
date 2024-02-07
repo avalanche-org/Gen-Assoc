@@ -1,0 +1,12 @@
+version : "3"
+
+services :
+  mtdt_ga :
+    image : mtdtdbg 
+
+    volumes:
+      - ./apps/:/mTDT/apps
+
+    ports : 
+      - 4000:4000 
+

@@ -66,13 +66,16 @@ module
      */   
     rsv_file :  (  file  , default_delimiter = ","  , readable_mode  = false  )  => {
         return new Promise  ( (resolve , reject )  => { 
-            let  reformat =  module.exports.restructure(auto_restructure , file)   
+          //let  reformat =  module.exports.restructure(auto_restructure , file)   
             readFile(file ,  "utf8" , (e , file_data ) => {
-                if (readable_mode ) 
-                    resolve(file_data) 
+              if (readable_mode ) {
+                  resolve(file_data) 
+              } 
 
-                if (e) reject(e.code)
-                const headers = []  
+              if (e) { 
+                reject(e) 
+              }
+              const headers = []  
                 const endcc   =  fromCharCode(0xa) 
                 for ( head  of  file_data.split(default_delimiter))  {
                      if (head.includes(endcc))  {
@@ -82,7 +85,7 @@ module
                     }
                     headers.push(head)
                 }
-                resolve(headers.length)  
+              resolve(headers.length)  
             })  
         
         }) 
@@ -104,7 +107,9 @@ module
     /**
      * retrive information  from the host   how many cpus core are available  
      * @param  { bool }  os_abstract  -  if true retrive  more info  
-     * @return { object  |  int  }    depend on os_abstract  stat  
+     * @return { object  |  int  }    depend on os_abstract  stat 
+     * 
+     * @TODO:  make equivalent using Addon 
      */   
     cpus_core  : (os_abstract = false  )   =>  {  
         if (os_abstract)    
@@ -344,10 +349,12 @@ module
         kwargs.forEach ( k =>  { 
             if ( !allowed_keys_args.includes(k)) throw new Error ("undefined  key words") 
         }) 
-        let interpreter = `Rscript ${script_source} ` 
+      let interpreter = `Rscript ${script_source} ` 
+
         for  ( let kw  in arguments)  
              interpreter+=` --${kw}  ${arguments[kw]}` 
        
+      log("command interpreter -> " , interpreter) 
         return  interpreter     
         
     }, 
@@ -479,7 +486,7 @@ module
         subprocess.stderr.pipe(wstderr)
         tail_logfiles( socket ,  wstdout , "stdout")  
         tail_logfiles( socket ,  wstderr , "stderr") 
-        
+
         try  {  
             subprocess.on("close" , ( exit_code ,   signal  )  =>  { 
                 let  execute_status  =  exit_code  != 0  ? `\nFAILLURE : ${exit_code || signal }\n` : "\nSUCCESS : [ ok ]\n"
@@ -527,27 +534,39 @@ module
         if  (!Object.keys(sksf).includes(where))
             throw new Error(`no log file  name ${where} found `)  
 
-        const  LG_FILE = logfile.path 
+      const  LG_FILE = logfile.path
+
+      log (" log file ->" ,  LG_FILE)
         logfile.on("close" ,  _  =>  { 
-            //! start streaming file  
-            if  (LG_FILE.endsWith('log')) 
-            {
-                const stream_tail = createReadStream(LG_FILE , { encoding:'utf-8'}) 
-                stream_tail.on('data', decode_buffer_data =>  { 
-                    try { 
-                        socket.emit(sksf[where][2] , decode_buffer_data ) 
-                    }catch(error)  { 
-                        socket.emit(sksf[where][2] , error) 
-                        process.exit(1) 
-                    }
-                }) 
-               
-                //! TODO : emmit signal  when it done  ...  
-                stream_tail.on("close" ,  _=>   { 
-                    process.env.LG_CLOSE  =true 
-                })  
-           }
+          //! start streaming file 
+            if  (LG_FILE.endsWith('log')){ 
+            module.exports.stream_log(LG_FILE , socket,sksf[where][2]) ;  
+          } 
+          if ( LG_FILE.endsWith("err") ) {
+            module.exports.stream_log(LG_FILE , socket,sksf[where][2]) ;  
+          }
         })
      
-    }
+    },
+
+  /**
+   *
+   */ 
+  stream_log :  (target_logfile, socket, where) => {  
+
+    const  stream_tail  = createReadStream(target_logfile ,  { encoding :"utf-8"}) 
+    stream_tail
+    ["on"]('data' , logbuffer => { 
+      try { 
+        log("XXXXXXX " , logbuffer) 
+        socket.emit(where ,  logbuffer) ; 
+      }catch(readstream_error) {
+        socket.emit(where ,  readstream_error);  
+        process.exit(~0) ; 
+      }
+    }) 
+
+    stream_tail
+    ["on"]("close" , _=>   process.env.LG_CLOSE = true)  ; 
+  }
  }

@@ -4,6 +4,8 @@
  * description : Mtdt  Http  Server   with Socket io   
  */ 
 
+
+//!TODO :  Replace ASCII art banner 
 mtdtart = `
 ---
  ███╗   ███╗████████╗██████╗ ████████╗
@@ -266,7 +268,7 @@ const __wtcp__ =  {
                 }
                
 
-               let  reformat =  utils.restructure(auto_restructure ,   summary_arguments_flags.phenfile) 
+              let  reformat =  utils.restructure(auto_restructure ,   summary_arguments_flags.phenfile)
                 setTimeout( _ => { 
                 utils.rsv_file(summary_arguments_flags?.phenfile ,  '\t')
                 .then(res => {
@@ -281,7 +283,8 @@ const __wtcp__ =  {
                             sock.emit("next" , exit_code )  
 
                         })
-                }) 
+                })
+                    .catch( error  =>  log(":::error " , error) )
                 } , 1000)
             })
              

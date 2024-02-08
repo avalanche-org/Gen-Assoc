@@ -1,233 +1,127 @@
-<img src="images/mtdtlogobgTransparent.png" width=""  height="" alt="mtdtlogo" style="margin-right:20px;border-radius:35px"  align="left"/><img src="images/h3abionetafrica.png" width="132"  height="" alt="h3abionet" style="margin-right:20px;border-radius:35px"  align="right"/>
-<div>
-<h2>Gen-Assoc</h2>
-<img src="images/institupasteurdk.png" width="132"  height="" alt="h3abionet" style="margin-right:20px"  align="right"/>
-<div>
-<p>Tools and Web Service work Package<br>
-M-TDT tool Documentation. 
+# README
 
- <a href="https://github.com/avalanche-org/Gen_Assoc"><img src ='https://img.shields.io/badge/Gen--Assoc-m--TDT-teal?style=for-the-badge&logo=appveyor'/></a><p>
-</div>
-<hr>
+Created by: Yama
+Created time: January 23, 2024 10:21 AM
+Status: Not started
 
-<div align="center">
-<img src="https://img.shields.io/github/issues/avalanche-org/Gen_Assoc?style=flat-square" alt="issues"/>
-<img src="https://img.shields.io/github/forks/avalanche-org/Gen_Assoc?style=flat-square" alt="forks"/>
-<img src="https://img.shields.io/github/stars/avalanche-org/Gen_Assoc?style=flat-square" alt="start"/>
-<img src="https://img.shields.io/github/license/avalanche-org/Gen_Assoc?style=flat-square" alt="License"/>
-</div> 
+# Multi-Transmission Disequilibrium Test
 
+## **What is it?**
 
-## Index
-* [Introduction](#Introduction)
-* [About Gen-Assoc](#About)
-* [Installation Guide line](#Installation)
-	* [By Cloning](#Cloning) 
-		* [Requirement](#Requirements)
-	* [Using Docker Registry](#Docker)
-* [Usage](#Usage)	
-	* [Following Steps](#Steps)
+**M-TDT** (Multi-locus Transmission Disequilibrium Test) is an open source program computing a family-based statistic testing for association between a phenotype and a set of multi-allelic markers. The program is for family-based genome-wide screening of single and joint effects of genetic mutations on infectious disease traits, either qualitative or quantitative traits, regardless of phenotype distribution.
 
+## Context
 
-## Introduction
-* Many studies in Africa with recruitment in families (trio, nuclear families data)
-* Study of Infectious disease (multifactorial diseases, complex traits)
-* Need statistical analysis methods and tools to handle data from such studies
+- Many studies in Africa with recruitment in families (trio, nuclear families data)
+- Study of Infectious disease (multifactorial diseases, complex traits)
+- Need statistical analysis methods and tools to handle data from such studies
 
-<div align="center">
-<img src="images/familybasedesignTransparent.png" alt="FamilyBaseDesign" align="center" width="400"/>
-<h5> Family Base Design </h5>
-</div> 
- 
-##  About 
+## **Strengths**
 
-We present a webservice version of the M-TDT (the multi-locus transmission disequilibrium test) tool. A tool developed to detect family-based multi-locus multi-allelic effects for qualitative or quantitative traits, extended from the original transmission disequilibrium test (TDT). 
+- Ability to find joint effects of several markers impacting phenotypes in a context of small sample size
+- Retrieve markers that would be missed by classical approaches
+- Handles of main statistical issues like:
+    - non-specified distribution of traits
+    - related individuals
+    - population admixture
+    - linkage disequilibrium among markers
 
-##  Installation 
+****
 
+![*Family-based design*](README%20286373e95592463986dbd89fe495e725/Untitled.png)
 
-> Two versions of the tool are available  the CLI and the Webservice.
- 
- ```diff 
- ! This  Installation  guide is focused only on Webservice Version
- ```
- 
- We  have two kind of installation  process in easy step  
- by **cloning the repos** or **using  Docker container** 
- 
+*Family-based design*
 
- ### Cloning
- #### Requirements
- Before  Starting  installation Part we should  tell you   the requirements to run  the Application 
- correctly.
- For the internal usage you need  to  install  [plink](https://www.cog-genomics.org/plink)  Binaries 
- ![plink binary](images/plinkbinloc.png) 
- 
- *Choose your System  arichecture  type !!!* 
-  
- ```diff 
- - doesn'work correctly  on busybox  
- ```
- 
- And assure  that  you  have  **_git_**  and **_Nodejs_** available  in  your system  
- end  some point [_Docker_]   but it's  optional  except  if   you want build a custum image  
- with  the  existant Docker file  
-  
+## Installation
 
- --- 
- First  copy the  link  and go to your terminal 
- 
- <img src="images/cloning.png" width="500" alt="start"/>
+There is two ways to use M-TDT:
 
- ```bash 
- $  git clone https://github.com/avalanche-org/Gen_Assoc.git
- ``` 
- 
- After then go to apps folder   and  install the requiered dependencies  
- 
- ```bash  
- $ cd  Gen_Assoc  ; cd apps 
- $ npm install
- ``` 
+- Command-line : Here is the link to the CLI [https://github.com/avalanche-org/m-TDT](https://github.com/avalanche-org/m-TDT)
+- The Graphical User Interface, which will be detailed
 
+### GUI : Web Application
 
-Once   it done  you can finaly run the application  
+You can use the tool currently deployed on the Institut Pasteur servers: (link)
 
-```bash
-$ npm run build 
-```
- _*hint_ :
- > Check  the  package.json file  for more  command to  run
- 
+If you want to install the GUI version locally you have two ways to do so:
 
+**1. Node Package Manager (npm)**
 
-If you have some experience with  Docker it's may be insterresting to make your onw build.  
-Some  arguments inputs are allowed to custom your docker image during the  build 
+![Screenshot 2023-11-27 at 10.31.15.png](README%20286373e95592463986dbd89fe495e725/Screenshot_2023-11-27_at_10.31.15.png)
 
-In  Dockerfile  the  Lines which  have   *ARGS ARGUMENT=value*  statement  can be modified during the build 
-```diff 
-+ $  docker build .   --build-arg  ARGUMENT=<_new_value_>  -t <your_tag_name>
-```
+You need to have git and NodeJs installed: (and R)
 
+[https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-#### Docker 
+[https://nodejs.org/en/download](https://nodejs.org/en/download)
 
-For  this  section  Docker  only is required .  
-
-The  Webservice  is Avalaible  on docker Registry  
-
-``` 
-$ docker search  m-tdt   
-```  
- <figcaption>
- <legend> From<a href="https://hub.docker.com/search?q=m-tdt&type=image"> Docker hub</a></legend>
- <hr>
- <img src="images/dockerRistryfound.png" width="600"  alt="GA-dockerhubRegistry">
- </figcaption>
- 
- You  can pull   Directly   The  Webservice app  directly  from the docker  Registry 
-
-```diff
-+ $  docker pull  jukoo/m-tdt
-```
- 
-To  launch  The  docker application 
-
-
-```bash
-$  docker  run  -d  -p <localport>:<containerPort> jukoo/m-tdt  
-```
-
-_The default port of  the container is **4000**_  using  environment variable  
-
-<u>_example_</u>: 
->  **docker run  -d  -p 3000:4000  jukoo/m-tdt**
-
-<u>if  you  want to modify the default </u>
->
-> **docker  run  -d  -e PORT=5000   -p 3000:5000   jukoo/m-tdt**
-
-
-Here you are  now  let's see  to get your work done :rocket: 
-
-
-
-##### COMPLETE OR INCOMPLETE BUILD PROCESS #CIBP  
-
-
-The docker image provided is a complete image that contains the whole application 
-of the application available at the following address  [docker hub]("https://hub.docker.com/repository/docker/jukoo/m-tdt"). 
-
-
-Here are the step to get full build of image  
-
-1 -> build the docker image using the current Dockerfile 
+Clone repository
 
 ```
-$> docker build .  -t <yourImageTagName> 
+$  git clone https://github.com/avalanche-org/Gen_Assoc.git
 ```
 
-From here we have a basic image of the application  
-but you have to take into account that every time you start the application it will do an installation 
-dependencies for a first operation   
-
-To go to the complete phase of the image   
-
-you have to proceed as follows: 
-
-once the first step is over, we enter the container  
- 
-```
-$> docker run -d --name <container_name> -p<hostPort>:<containerPort> <yourImageTagName>  
-$> docker exec -ti <container_name> bash    
-#> cd /mTDT 
-```
-
-You will find a file RpkgAutorun.py (it allows to deduct the missing libraries) 
-to install them  
+Move to Gen_Assoc/apps folder and install the required dependencies
 
 ```
-#> ./RpkgAutorun.py --install or -i  
-```
-(It will take some time) 
-  
-
-Once it's finished, we leave the container  
-
-```
-#>exit  
+$ cd Gen_Assoc; cd apps
+$ npm install
 ```
 
-And we go to the last step.
+Run the application
 
-We create a snapshot of the image 
 ```
-$> docker commit -m <message> -a <outside> <container_name> <yourImageTagName>:<version> 
+$ npm run build
 ```
 
-this version **<yourImageTagName>:<version>** will be the complete version of the application, which includes 
-dependencies.  
+Open your browser and type [http://localhost:4000/](http://localhost:4000/)
 
-complete and incomplete: 
+Here your are !
 
-Incomplete Image: 
+To stop the application, type **Ctrl+c** in terminal.
 
--> because you have to build the dependencies  
--> also count the time to build the dependencies 
+**2. Docker** 
 
+For this section Docker ([Docker](https://docs.docker.com/get-docker/)) is required.
 
-Complete Image : 
-everything is already upstream  
+The Webservice Application docker image is available on docker registry
 
-If you want to do some manipulation more it would be better to use the incomplete image  
-otherwise if you just want to use the application on the complete image 
+[Docker](https://hub.docker.com/r/jukoo/m-tdt/tags)
 
+---
 
-**BASIC DOCKER IMAGE -> MTDT IMCOMPLETE IMAGE (APPLICATION)  ->  MTDT COMPLETE IMAGE (APPLICATION + BINARIES)**
+Open your terminal:
 
+```
+docker pull jukoo/m-tdt:stablev1
+```
 
-**Love  Pull Request** 
+To launch the docker application
 
-![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.png?v=103)
+```
+$  docker run -d -p <localport>:<containerPort> jukoo/m-tdt:stablev1
+```
 
+*The default port of the container is **4000***
 
+*example*:
+
+> `docker run -d -p 3000:4000 jukoo/m-tdt:stablev1`
+> 
+
+<aside>
+💡 If you get a warning indicating a platform mismatch between the requested platform for the Docker image and the platform detected on the host machine, then add `--platform linux/amd64`  to the command
+
+</aside>
+
+Open your browser and type [http://localhost:3000/](http://localhost:4000/)
+
+Here you are  🚀
+
+## Tutorials
+
+Once you have a version of the tool installed you can run the appropriate tutorial.
+
+**[M-TDT Web Application tutorial](https://www.notion.so/M-TDT-Web-Application-tutorial-1ec8734fa5474a6197f259c909e78f97?pvs=21)**
+
+Here is a link to the test dataset:

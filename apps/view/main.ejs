@@ -58,15 +58,24 @@
 
 
 
-<div class="ui basic modal segment inverted" style="height:35%; background-color:rgba(244,255,255,0.9) ; border-radius:10px;color:black;">
+<div class="ui basic modal segment inverted" style="height:75%; background-color:rgba(244,255,255,0.9) ; border-radius:10px;color:black;">
   <div class="ui icon header inverted"  style="color:black">
     <i class="chess board icon"></i>
-    Analysis  <br>  
+    Parameters selection for the emperical distribution <br>  
   </div>
   <div class="ui content input container"> 
-<label >  Number  of Simulation  : </label> 
-<input type="text" id="nbsim"  placeholder="Number of simulation  exemple 10"  style="font-size:14px;">
-<select id="nbcores" name="nbcores"  style="font-size:12px"  class="ui compact selection  dropdown">
+<label > Choose number of permutations:
+<br>  
+<small  style="font-style:italic;color:gray;"> Indicate  the number of simulations you want  to perform  the run under the Mendelian  Law hypothesis        </small>
+</label> 
+<br> 
+<input type="text" id="nbsim"  placeholder="Number of simulation  exemple 10"  style="font-size:14px;width:20%;"> 
+<br> 
+<br> 
+<label>  Choose number of cores to use: <br>
+<small style="font-style:italic;color:gray;">To speed the analysis </small></label><br> 
+
+<select id="nbcores" name="nbcores"  style="font-size:12px;width:80%"  class="ui compact selection  dropdown">
                       <option value = "" disabled selected  >  Number of Cores</option>
         </select> 
   </div>

@@ -504,6 +504,7 @@ run_summary.addEventListener("click" , evt => {
 const markersetting  = [  sm  , mm ]  
 let   [_sm  , _mm ]  = [ false , false ] 
 
+let  msruntitle ;  
 
 markersetting.forEach (  ( marker_runType , code_index  ) =>  {
     //! the code index  take  index array as code  like  -->  sm : 0  and mm  :1  
@@ -511,7 +512,7 @@ markersetting.forEach (  ( marker_runType , code_index  ) =>  {
         evt.preventDefault()
 
         markerset.disabled =  code_index^1   
-        const msruntitle  =`/!\\ Validity Treshold  on Selected files ${gobject.selected_files}\n` 
+        msruntitle  =`/!\\ Validity Treshold  on Selected files ${gobject.selected_files}\n` 
         if  ( markerset.disabled)  
         {
             [_sm  , _mm ]  =[true ,  false] 
@@ -657,6 +658,7 @@ ipcRenderer.on("logerr::notfound" , (evt , data)  => {
     stop_blink_on_faillure(analysis_on_going  , false) 
 }) 
 ipcRenderer.on("term::logerr"     , (evt , data)  => {
+    
     data = fetch_right_data ( activate_extra_elements , evt  ,data ) 
     term.value = data 
     run_summary.disabled=false 

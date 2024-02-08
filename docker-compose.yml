@@ -2,10 +2,8 @@ version : "3"
 
 services :
   mtdt_ga :
-    image : mtdtdbg 
-
-    volumes:
-      - ./apps/:/mTDT/apps
+    restart: unless-stopped
+    image : jukoo/m-tdt:beta2.4 
 
     ports : 
       - 4000:4000 

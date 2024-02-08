@@ -589,13 +589,17 @@ let  enable_switch_between_theorical_or_emperical   = false
 ipcRenderer.on("load::phenotype" ,  incomming_data  =>  {
     processing.classList.toggle("active")  
     phenotype.innerHTML = ""  
-    nbcores.disabled =  false 
+  nbcores.disabled =  false
+  log("phenotypes loaded !") 
+
     incomming_data =  incomming_data
     term_write (`total phenotype ${incomming_data}` )
     for  ( let phen_index  of range(incomming_data )) { 
-        const phenotype_opts = _.createElement("option")  
-        phenotype_opts.text      =  phen_index  
-        phenotype_opts.value     =  phen_index
+      const phenotype_opts = _.createElement("option") 
+      log("pheno index " , phen_index) 
+         
+        phenotype_opts.text      =  phen_index +1  
+        phenotype_opts.value     =  phen_index +1
         phenotype.add(phenotype_opts)   
     } 
      

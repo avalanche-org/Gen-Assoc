@@ -5,16 +5,10 @@
  */ 
 
 
-//!TODO :  Replace ASCII art banner 
 mtdtart = `
----
- ███╗   ███╗████████╗██████╗ ████████╗
- ████╗ ████║╚══██╔══╝██╔══██╗╚══██╔══╝
- ██╔████╔██║   ██║   ██║  ██║   ██║   
- ██║╚██╔╝██║   ██║   ██║  ██║   ██║   
- ██║ ╚═╝ ██║   ██║   ██████╔╝   ██║   
- ╚═╝     ╚═╝   ╚═╝   ╚═════╝    ╚═╝ 
-\t\t\t\t* version  beta 2.0 
+--- 
+🅼-🆃🅳🆃
+\t\t\t\t
 `
 
 __kernel_file__          : { core  = require("./kernel")  }  
@@ -332,7 +326,6 @@ const __wtcp__ =  {
 
             SELECT_PED:  
             sock.on("trigger::select_pedfile"  ,  response =>  { 
-                //Rscript select_ped.R --genoinference “yes” --pedfile sample.ped --mapfile sample.map 
                 delete gi_run_argument_flags.cores 
                 log(gi_run_argument_flags)  
                 gi_run_argument_flags["genoinference"]=response  

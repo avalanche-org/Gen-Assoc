@@ -410,29 +410,7 @@ module
 
         }) 
          
-        /*
-         * TODO  :  fix securty  issue  ... for exec  call  
-         *
-        let xtra_flags = `${udir} ${xtarget.join("")}` 
-        let argopt  = ['-r' , sandbox_path ]  
-        for ( let xflags  of  xtarget ) 
-            argopt.push(xflags)  
-
-
-        const subprocess =  spawn(compression_algorithm  , argopt,  { 
-            detached :true , stdio : 'ignore'
-        }) 
-        subprocess.unref() 
-        subprocess.ref() 
-        subprocess.on("exit" ,  exit_code =>  { 
-            if  (exit_code == 0  ) 
-            {
-                chanel.emit("fsinfo" ,  `+ Compressed as  ::  ${compress_name}`)
-                return  
-            }
-            chanel.emit("fsinfo" ,  `x Compression  Problem  ::  ${compress_name}`)
-        }) 
-        */
+      
         return  fullpathcomp
        
     } , 
@@ -558,7 +536,6 @@ module
     stream_tail
     ["on"]('data' , logbuffer => { 
       try { 
-        log("XXXXXXX " , logbuffer) 
         socket.emit(where ,  logbuffer) ; 
       }catch(readstream_error) {
         socket.emit(where ,  readstream_error);  

@@ -80,6 +80,9 @@ Here your are !
 
 To stop the application, type **Ctrl+c** in terminal.
 
+If the application crashs, type Ctrl+c and rerun npm run build
+
+
 **2. Docker** 
 
 For this section Docker ([Docker](https://docs.docker.com/get-docker/)) is required.

@@ -79,8 +79,7 @@ Open your browser and type [http://localhost:4000/](http://localhost:4000/)
 Here your are !
 
 To stop the application, type **Ctrl+c** in terminal.
-
-If the application crashs, type Ctrl+c and rerun npm run build
+If the application crashes, type Ctrl+c and rerun npm run build
 
 
 **2. Docker** 

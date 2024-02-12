@@ -1,0 +1,757 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>M-TDT Web Application tutorial</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="fe646e25-c039-4350-942e-f264387dc27f" class="page sans"><header><h1 class="page-title"><mark class="highlight-teal"><a href="/main" style="font-size:70px" >M-TDT</a> <br> 
+Web Application tutorial</mark></h1><p class="page-description"></p></header><div class="page-body"><p id="ef6a66c8-964a-45a2-b6ec-8a2f6c99e2cc" class="">
+</p><p id="bd2de0d9-8f58-47e0-921c-d8b5e7211d75" class="">Welcome to M-TDT Web Application tutorial !</p><p id="5d2e15c0-c466-4949-9464-a1345e656378" class="">This tutorial is structured to be easy to follow, with clear instructions and visual aids to assist you at every step.  <br/>This step-by-step guide is designed to help you:<br/><div class="indented"><ul id="155ecfed-c8a6-49e2-8fa2-3fecc3d5170a" class="bulleted-list"><li style="list-style-type:disc">run a complete analysis</li></ul><ul id="ce5a3711-4126-430f-ab1d-ce0cb878ecbc" class="bulleted-list"><li style="list-style-type:disc">understand what is the purpose of each of the steps</li></ul><ul id="473c825a-b794-4b11-a9ed-a375ff21b68a" class="bulleted-list"><li style="list-style-type:disc">understand the output files and how to interpret them </li></ul></div></p><p id="bc7fcd7f-0226-444d-92fa-bcf377f71a9b" class="">Let&#x27;s get started!<br/><br/></p><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Let’s start with the input files ! </summary><div class="indented"><p id="618dedf0-dd89-44cc-8636-3ca535ebb143" class=""><span style="border-bottom:0.05em solid"><strong>The Pedigree file</strong></span> </p><p id="8ca05d3c-c6ba-4437-96ec-fd0b31c668c3" class="">Pedigree (.ped) files describe relationships between individuals in your dataset and also store marker genotypes, disease status and quantitative trait values.</p><div id="819d02a2-f55a-47d8-bb2b-be0d11250a8e" class="column-list"><div id="a36eb15c-041d-40c2-8f79-41f579567b8e" style="width:56.25%" class="column"><figure id="84a50b79-200d-4168-8ec2-c2a8c774cecd" class="image"><a href="/images/ped.png"><img style="width:528px" src="/images/ped.png"/></a><figcaption><strong>Example of a PED file</strong> </figcaption></figure><hr id="4e037c13-64c8-47bf-977f-720b112f7dd1"/><p id="bf3df2af-e6f8-4fb8-b019-b24b276d2e29" class="">
+</p></div><div id="91735fbe-bac8-402f-aba6-2016e43ef9f3" style="width:43.75%" class="column"><p id="211ae47d-b843-41ca-bfce-938fd54bccc5" class="">The fields in a <mark class="highlight-red"><strong>.ped</strong></mark> file are<div class="indented"><ul id="8e7cc830-cc5a-4f10-9710-adf6ab65359e" class="bulleted-list"><li style="list-style-type:disc">Family ID</li></ul><ul id="8ae31a83-9085-46f5-b807-76a25e6fb743" class="bulleted-list"><li style="list-style-type:disc">Sample ID</li></ul><ul id="3e7ab8eb-bb15-47e1-adb6-7cfb44e90f93" class="bulleted-list"><li style="list-style-type:disc">Paternal ID</li></ul><ul id="bf5c5cd7-d96a-4361-9f96-944baecf3141" class="bulleted-list"><li style="list-style-type:disc">Maternal ID</li></ul><ul id="75587308-6b47-48b1-b66d-c82d88bf1a78" class="bulleted-list"><li style="list-style-type:disc">Sex (1=male; 2=female; other=unknown)</li></ul><ul id="6cc5630b-f179-4135-b4df-daa54598851a" class="bulleted-list"><li style="list-style-type:disc">Affection (0=unknown; 1=unaffected; 2=affected)</li></ul><ul id="cdb84529-4c1a-459d-b495-67d8934d4b2f" class="bulleted-list"><li style="list-style-type:disc">Rest of columns : Genotypes (space separated, 2 alleles for each marker. “<strong>0 0</strong>” = missing) </li></ul></div></p></div></div><p id="b47fcd69-ed66-4eb4-818d-0f6a0824dccc" class=""><span style="border-bottom:0.05em solid"><strong>The Map file</strong></span></p><p id="9fd5bcd6-886f-40e1-81e8-5c93a70142e6" class="">The MAP (.map) file contains information about every single SNP. Each row corresponds to one SNP in the PED file. The MAP file must has exactly four tab-separated columns.</p><div id="43301348-b962-47fe-9c70-a9984d0b29e7" class="column-list"><div id="ec556179-680b-4c2f-8bc3-f7ef249d935e" style="width:56.25%" class="column"><figure id="693b05d0-7491-412e-b103-0cbc8aa3ca77" class="image" style="text-align:left"><a href="M-TDT%20Web%20Application%20tutorial%20fe646e25c0394350942ef264387dc27f/Untitled%201.png"><img style="width:432px" src="/images/map.png"/></a><figcaption><strong>Example of a MAP file</strong> </figcaption></figure><hr id="17c7b873-531e-4460-bae9-9f6c2755185f"/></div><div id="dafa2a44-b0a3-4890-bf12-8907dd35e776" style="width:43.75000000000001%" class="column"><p id="9d9c4a5b-72da-458a-a17d-7d95696fd8f1" class="">The fields in a <strong><mark class="highlight-red">.map</mark></strong><strong> </strong>file are: </p><ul id="f4d67f7d-d087-42e1-b8c6-06c3fb0cda4f" class="bulleted-list"><li style="list-style-type:disc">Chromosome ID</li></ul><ul id="1aeac19f-8ab8-4752-87b1-2602d6bf9bc2" class="bulleted-list"><li style="list-style-type:disc">Marker ID</li></ul><ul id="7578b7bf-e54a-4675-93d4-966b3ab12964" class="bulleted-list"><li style="list-style-type:disc">Genetic distance</li></ul><ul id="faaf6a9a-81da-4fbf-969b-9f61d4574908" class="bulleted-list"><li style="list-style-type:disc">Physical position</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="7a182b7e-3c15-4101-86c6-f0777ddda1fb"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><strong>The order of the SNPs must be the same as in the PED file, i.e. the order of the rows in the MAP file must match the columns in the PED file (starting at column 7)</strong></div></figure></div></div><p id="81b3b138-94a5-4ba6-8cd5-15022d467840" class=""><span style="border-bottom:0.05em solid"><strong>The Phen file</strong></span></p><p id="71a2d996-f13e-45eb-b90a-ded1f6dd310c" class="">
+</p><div id="5e2fe4c4-7013-43e1-a77c-3313c8abf0b4" class="column-list"><div id="e426f571-89d0-4542-89d5-1639ec156f2e" style="width:56.25%" class="column"><figure id="166bb1b1-74cf-4943-8ce6-0b7101e5d5a7" class="image" style="text-align:center"><a href="M-TDT%20Web%20Application%20tutorial%20fe646e25c0394350942ef264387dc27f/Untitled%202.png"><img style="width:336px" src="/images/phenfile.png"/></a><figcaption><strong>Example of a PHEN file</strong> </figcaption></figure><hr id="1a0cbd74-640d-480c-9073-77c323ef126f"/></div><div id="7a4b5285-c10c-461f-8e74-d12b3e89ef5b" style="width:43.75000000000001%" class="column"><p id="0929249b-03ac-44a7-9c1c-87a34638696f" class="">The fields in a <mark class="highlight-red"><strong>.phen</strong></mark> file are: <div class="indented"><ul id="14ce72ed-a484-48ab-8669-45e36030eda0" class="bulleted-list"><li style="list-style-type:disc">Chromosome</li></ul><ul id="7b05ca9c-ea24-4aa7-ab20-4e07f019e4ef" class="bulleted-list"><li style="list-style-type:disc">Marker ID</li></ul><ul id="d76793ff-1576-42f7-8e59-b6141d8a27c2" class="bulleted-list"><li style="list-style-type:disc">Genetic distance</li></ul><ul id="6648feba-b053-478e-9ec7-69a9a2db3ca2" class="bulleted-list"><li style="list-style-type:disc">Physical position</li></ul><p id="9af6971c-1550-42d6-85be-2b0769eb6232" class="">
+</p></div></p><p id="d3dd5527-a4a7-4f11-806f-08a724e78578" class="">
+</p></div></div><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="07b76421-573a-41fe-ad2b-99babdab100c"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%"><strong>Reminder</strong><ul id="9cb32632-7895-4a8e-8348-99a63eacb769" class="bulleted-list"><li style="list-style-type:disc">alleles should be coded in <strong>integer</strong> <ul id="ca5c4586-46a9-4cb0-ab17-36ffe1139e8b" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-red"><strong>1</strong></mark>: major allele  </li></ul><ul id="6f2a82c6-9945-49e5-8a61-89a88b54f9f0" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-red"><strong>2</strong></mark>: minor allele for a bi-allelic marker (for instance)</li></ul></li></ul><ul id="4ebd80e6-f408-4103-ad3f-259bcfdc9ff1" class="bulleted-list"><li style="list-style-type:disc">allele separator is <mark class="highlight-red"><strong>SPACE</strong></mark> (e.g., &quot;1<span style="border-bottom:0.05em solid"><mark class="highlight-red_background"> </mark></span>2&quot;)</li></ul><ul id="c924a1f2-3db0-4dd6-a619-d75ecffae5ee" class="bulleted-list"><li style="list-style-type:disc">missing genotypes should be coded &quot;<span style="border-bottom:0.05em solid"><strong>0 0</strong></span>&quot;</li></ul></div></figure><p id="0745f4f0-f498-425f-9124-490ae40f710f" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Now let’s explore each section of the tool</summary><div class="indented"><p id="380a4c96-2f43-4a74-b719-3a0ad0e941e2" class="">
+</p><p id="94078a33-091f-42ab-9d9c-69319eb1208b" class="">Here is the interface of the tool.</p><p id="447e28ba-4397-4226-9aa6-5cd4c04b7f06" class="">
+</p><figure id="d7ed4893-9fc4-4a1d-8b25-87343aadae1c" class="image"><a href="M-TDT%20Web%20Application%20tutorial%20fe646e25c0394350942ef264387dc27f/Picture1.png"><img style="width:1672px" src="/images/tool.png"/></a></figure><p id="380fb0ac-dd47-4e61-bb21-c1d13a8005b8" class="">
+</p><p id="368678b0-ab16-4a5d-9a4e-67be7cf7e0e4" class=""><mark class="highlight-teal"><strong>The Carrousel</strong></mark><strong> </strong>is where you will enter needed information for the analysis</p><p id="2a1f5df7-5458-4c61-96ed-81b6267763f9" class=""><mark class="highlight-orange"><strong>The terminal</strong></mark> is where the results are displayed. Basics command are available to interact with it. Type help in the terminal to see which commands are available.</p><div id="288550ee-12dc-4642-a1fb-a280bc772acf" class="column-list"><div id="e17a40ec-45e1-44f2-b423-51780d0bf05b" style="width:56.25%" class="column"><p id="95b53fa8-3035-4308-b711-1525e9470f2f" class=""><strong>The Tool menu bar</strong> contains the links to:<div class="indented"><ul id="6dd47bee-3b54-4bfe-b31a-f59ad2ba6327" class="bulleted-list"><li style="list-style-type:disc">tool tutorial</li></ul><ul id="6cccbc19-826d-44f2-9eb3-4fc82a6e002c" class="bulleted-list"><li style="list-style-type:disc">an example dataset to test the tool</li></ul><ul id="9a25f1fb-7e10-4498-aed9-adee30f76646" class="bulleted-list"><li style="list-style-type:disc">advise on when to do an empirical test or theoretical one</li></ul><p id="2808cf95-3f29-4008-bcb7-8e01e3eb64bd" class="">
+</p></div></p></div><div id="ead766fb-b979-41f4-9793-75801e1c023f" style="width:43.74999999999999%" class="column"><p id="3496dcd2-acfb-4281-bdd0-b1d53fce3db6" class="">
+</p><figure id="cfc3d7bb-db56-46c7-bc6c-3369a78583d8" class="image"><a href="M-TDT%20Web%20Application%20tutorial%20fe646e25c0394350942ef264387dc27f/Untitled%203.png"><img style="width:324px" src="/images/menubar.png"/></a></figure><p id="2a408250-e2dc-45ce-aa8f-42e3763633b2" class="">
+</p><p id="aa12d832-c52e-4711-bfd0-efd453f7842f" class="">
+</p></div></div><p id="68714f36-322e-48a3-bf25-5daee5f0454e" class="">To do an analysis enter each asked item in the carrousel. A small explanation of what is asked is displayed at each step.</p><p id="4a07843d-d17b-401e-9daa-c35953896517" class="">These are the asked items: <div class="indented"><ul id="3798a3cc-f146-4640-8da1-9cf22989b555" class="toggle"><li><details open=""><summary>The <strong>Jobtitle</strong></summary><p id="3c2c647c-660b-4e48-92ff-771c79c7091d" class="">A user space will be created with the name you’ve chose.</p></details></li></ul><ul id="2386b4e7-c97b-4423-ab8f-0a31b5975d50" class="toggle"><li><details open=""><summary><strong>Upload</strong> the files</summary><p id="71eba01f-962b-44e2-8595-1f50811612ec" class="">Upload the files (.ped, .map, .phen) you want to analyze. Make sure you’ve met all the input requirements. </p><p id="f2b2a217-69b5-4c43-8b25-268e843d392e" class="">The .ped must not contain mendelian errors as it may affect the results.</p></details></li></ul><ul id="7eacf5de-1483-480c-9dbc-eb117a6d35c6" class="toggle"><li><details open=""><summary>Select the files to generate the <strong>summary statistics</strong> of your data</summary><p id="6340a09e-112d-4546-a34a-ca3be72960e8" class=""><span style="border-bottom:0.05em solid">Output example</span></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="14ab3a8b-e1f7-46bb-8ecd-4b5b79494a76" class="code"><code class="language-Bash">+-+-+-+-+-+-+-+  +-+-+-+-+-+-+-+-+-+-+
+  S U M M A R Y    S T A T I S T I C S 
+ +-+-+-+-+-+-+-+  +-+-+-+-+-+-+-+-+-+-+
+
+   [•] Working directory: /Users/ndeyemarieme.top/Desktop/test-zone/Gen-Assoc/apps 
+   [•] Run started at:  2024-02-10 12:43:44 
+
+
+   [•] Files selected: 
+	 MTDT_CL.ped 
+	 MTDT_CL.map 
+	 MTDT_CL.phen 
+____
+
+   [•] DATA DESCRIPTION 
+                 Count
+Families            24
+Founders           398
+Nuclear Families   395
+Trios              877
+Individuals       1275
+Males              689
+Females            586
+Markers              5
+____
+
+   [•] PHENOTYPE DESCRIPTION 
+
+	 2  phenotype(s) detected in  MTDT_CL.phen 
+
+	 Phenotype  V3  :  Quantitative      ------
+
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+-3.525960 -0.711261 -0.369020 -0.518901 -0.165197 -0.000186 
+	
+	 Phenotype  V4  :  Categorial      ------
+
+ Levels:	 1 
+ Counts:	 408 
+
+____
+
+   [•] MISSING GENOTYPES 
+ 
+	Alert on missing values !!! 
+	Method sensitive to missing data. 
+	if you have any it is recommended to use the genotype inference option. 
+
+	There is 2280 missing genotypes for a total of 6375 genotypes
+	+++++++++++++++++++++++++++++++++++++++
+	+++ Percentage of missing values (%): 35.76 
+
+
+total phenotype 2
+</code></pre><p id="e1344064-d6d8-4aa7-b302-a6a16e5f117a" class="">
+</p></details></li></ul><ul id="9419a686-6faa-4828-a520-34f372027242" class="toggle"><li><details open=""><summary>Genotype inference Option</summary><div id="e00078f5-a907-4abf-a474-a9703cd25a37" class="column-list"><div id="d33b2567-9590-4c7a-bf2b-537c5756ffa9" style="width:100%" class="column"><p id="4ba65ad2-fc33-4f31-a7c8-eb3d751101f9" class="">This step is to run the genotype inference option to infer the missing genotypes in your data. <br/>The inference method is based on the Mendelian Law of Heredity. <br/></p></div><div id="e8522b5d-3984-4d20-8334-f4d4652abb81" style="width:100%" class="column"><figure id="a97afe2a-3261-4c0c-8c3f-576de890575c" class="image"><a href="/images/ped.png"><img style="width:489px" src="/images/ped.png"/></a></figure></div></div></details></li></ul><ul id="3834f3c0-e423-47e3-be5c-d8d2f09317f1" class="toggle"><li><details open=""><summary>Choose SNPs (<strong>Single-Marker</strong> or <strong>Multi-marker</strong>)</summary><p id="6bd329e5-4e76-4462-bd53-741ff1fc8cea" class="">Here, you can indicate whether you wish to perform:</p><ul id="056007db-a2aa-49ad-9bc5-4f0d442dc58b" class="bulleted-list"><li style="list-style-type:disc">a Single-Marker analysis to examine the impact of each individual SNP or </li></ul><ul id="e90ed5a7-6db3-48d9-bc0a-c5c8f89829e7" class="bulleted-list"><li style="list-style-type:disc">a Multi-Marker analysis to identify particular SNPs and examine how their interactions may account for the phenotype.</li></ul><p id="2adb2684-09af-4a55-acac-93d8499ffab2" class="">
+</p></details></li></ul><ul id="18528b26-c9a5-4e12-9336-8fafbc32d910" class="toggle"><li><details open=""><summary>Analysis type</summary><figure id="32d809e8-497c-40ea-af52-6755520363e5" class="image"><a href="M-TDT%20Web%20Application%20tutorial%20fe646e25c0394350942ef264387dc27f/Screenshot_2024-02-12_at_11.16.19.png"><img style="width:489px" src="/images/analysis_type.png"/></a></figure><p id="032ee23e-ec2e-4f1c-9d40-293632f12ef9" class="">
+</p><p id="f0b01d36-4a19-4d98-9c55-f4940f2007f4" class="">Here is where you select the type of run you want to do:</p><ul id="12e74dae-c423-443b-a53a-ab2dcd09da5e" class="bulleted-list"><li style="list-style-type:disc"><strong>An empirical run<br/><br/></strong>The real distribution of your data is used. <br/>In this case, you will have to choose the number of permutations and the number of cores to do so.<br/><br/><mark class="highlight-yellow">For each permutation, the offsprings values are erased and a random genotype is assigned to the offspring genotype. The statistic of the test is then recalculated.<br/>After n permutations (n being the number of permutations you chose) the real distribution of your data is obtained and the real statistic of the test is used to see if you p-value is significant. <br/></mark><br/><br/><figure id="d5adb73a-5565-46ba-984d-2d5191e313e8" class="image"><a href="M-TDT%20Web%20Application%20tutorial%20fe646e25c0394350942ef264387dc27f/Screenshot_2024-02-12_at_11.20.07.png"><img style="width:528px" src="/images/empirical_param.png"/></a></figure></li></ul><p id="f981b6fa-0bbf-4933-aa25-ad79c7547613" class="">
+</p><ul id="3868387b-a2cb-4ac9-8ec6-7cf4a56ce753" class="bulleted-list"><li style="list-style-type:disc"><strong>A theoretical run</strong><div id="a282742d-1952-4f67-9216-3ee7736e6422" class="column-list"><div id="3e692f3b-c7fc-4db7-bd96-fd7616084be2" style="width:100%" class="column"><p id="d4961d61-e4d4-4883-8d8b-e470a4f8e52a" class="">The permutations performed for an empirical analysis can be resource and time consuming. <br/>In order to save computational power and reduce program execution time, we simulated different use cases and compared the distributions of the asymptotic and empirical run by changing the following parameters:<br/></p><ul id="afaaaa52-a6ce-4fab-af96-8d6c6846a81f" class="bulleted-list"><li style="list-style-type:disc"><strong>Sample Size </strong>variating from 100 to 1000</li></ul><ul id="dcdd23c1-6c42-4bb4-a2e5-e4dcd2daacdb" class="bulleted-list"><li style="list-style-type:disc"><strong>Frequency of the minor allele </strong>variating from 0.1 to 0.5</li></ul><ul id="8bf66b1d-fcdb-453d-8248-d4c579c481d9" class="bulleted-list"><li style="list-style-type:disc"><strong>Model Complexity </strong></li></ul><p id="b6b0eb31-12f4-4170-a91d-167fecc86e55" class="">
+</p><p id="791cf35d-26f8-4934-850d-6c594494bec7" class="">The following heat map was generated, allowing to visualise under which conditions an asymptotic run is equivalent to the empirical run. You will therefore be recommended to perform an asymptotic run if it is equivalent to the empirical run, based on these same parameters.<br/><br/><br/><br/></p></div><div id="6e08fc16-367a-4aee-b9f2-21e66b57b81b" style="width:100%" class="column"><figure id="79d955b2-61b1-4700-8d1f-3ad691220e16" class="image"><a href="M-TDT%20Web%20Application%20tutorial%20fe646e25c0394350942ef264387dc27f/Untitled%204.png"><img style="width:336px" src="/images/heatmap.png"/></a></figure></div></div></li></ul><p id="71894c8b-1e3b-4625-8d57-d4a135d03ed6" class="">
+</p></details></li></ul><ul id="d6fd72bf-4d1f-44b1-939a-dfbbb71ab2d5" class="toggle"><li><details open=""><summary>Choose the phenotype</summary><div id="dea9a410-5b54-4617-bd40-7de7f0b92e75" class="column-list"><div id="9af8604a-6e8e-4f28-91b3-21c9f3f2e108" style="width:100%" class="column"><p id="abd568ed-2219-4e22-8010-9c17527b0281" class="">Choose your phenotype. <br/>The number selected refers to the <br/><mark class="highlight-orange"><span style="border-bottom:0.05em solid">position of the column containing your phenotype - 2</span></mark> (the first two columns are not considered).</p><p id="ca5c4550-dacb-4237-bf69-ee7610812ca8" class="">Now you can hit the button <mark class="highlight-teal">Run Analysis</mark>.</p><p id="7bf9e02a-0f73-4ca9-bd01-c8bf437c603e" class="">The results will be displayed in the terminal. </p><p id="243f1d04-f570-473d-80c4-e4f1c19024f2" class="">
+</p></div><div id="d63cd970-a944-4320-91fd-515245d069d9" style="width:100%" class="column"><figure id="7add2cdb-8f43-4ad2-9271-3e16029ec0a4" class="image"><a href="M-TDT%20Web%20Application%20tutorial%20fe646e25c0394350942ef264387dc27f/Screenshot_2024-02-12_at_11.34.42.png"><img style="width:432px" src="/images/phen_selection.png"/></a></figure></div></div></details></li></ul></div></p><p id="db974489-5e44-4558-861a-7357f8e0c602" class="">After the analysis you can click on <strong>Download Results</strong>. Your virtual space will be compressed and downloaded.</p><p id="87a3de0c-163c-4420-8e09-e5ad0a4dcec0" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Results </summary><div class="indented"><p id="71b05e00-118a-4860-8904-ef8362d111ba" class="">
+</p><p id="644f5b7f-c3e3-4640-9f88-827aa05339c3" class="">M-TDT results are in a folder named either  <code>&lt;$jobtitle&gt;</code><strong><code>_SM_results</code></strong> or <code>&lt;$selected markers&gt;</code><strong><code>_MM_results</code></strong><strong>  </strong>depending on our choice of analysis.</p><p id="60eb2c6e-aafb-42c5-895f-6273a276055b" class="">
+</p><figure id="9f608f39-07f8-4a6b-a8f6-c75337e67caa" class="image" style="text-align:center"><a href="M-TDT%20Web%20Application%20tutorial%20fe646e25c0394350942ef264387dc27f/Screenshot_2024-02-12_at_12.00.36.png"><img style="width:624px" src="/images/finder_screen.png"/></a></figure><p id="dbbaf3f9-315c-4acc-81e9-7046cb2a2fee" class="">
+</p><p id="ac67bf75-cc6f-4c9e-9bbe-b7d38ca7a60f" class="">M-TDT generates two files are generated : </p><ul id="a6f66b1c-b93c-4fd0-8963-3e223ca96cd5" class="bulleted-list"><li style="list-style-type:disc">weighted_res_multilocus.work: an intermediate file.</li></ul><ul id="4ea92571-e282-4a7a-a42f-5c1cf7495511" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red"><strong>weighted_res_multilocus.csv</strong></mark><table id="768c6eb0-270f-4ca5-8ff8-84d7dfae6891" class="simple-table"><thead class="simple-table-header"><tr id="51e7e932-b9df-4ba0-a338-b13d7e8ed9eb"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">models</th><th id="Hbc[" class="simple-table-header-color simple-table-header" style="width:76.78692626953125px">nb_info_transmi</th><th id="_rEc" class="simple-table-header-color simple-table-header" style="width:61.78692626953125px">LL1</th><th id="PkLx" class="simple-table-header-color simple-table-header" style="width:58.78692626953125px">LL0</th><th id="oviA" class="simple-table-header-color simple-table-header" style="width:60.78692626953125px">mTDT_Stat</th><th id="ZCJj" class="simple-table-header-color simple-table-header" style="width:40px">DF</th><th id="LD|^" class="simple-table-header-color simple-table-header" style="width:120.78692626953125px">mTDT_asympt_Pval</th><th id="Ql=g" class="simple-table-header-color simple-table-header" style="width:123.77555847167969px">mTDT_asympt_Pval_FDR</th><th id="mJQD" class="simple-table-header-color simple-table-header" style="width:126.77272033691406px">mTDT_empirical_Pval</th><th id=";UKV" class="simple-table-header-color simple-table-header" style="width:130.76419067382812px">mTDT_empirical_Pval_FDR</th></tr></thead><tbody><tr id="4a280f80-181f-411a-81b4-07861a521419"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">ZM1</th><td id="Hbc[" class="" style="width:76.78692626953125px">49</td><td id="_rEc" class="" style="width:61.78692626953125px">-115,8</td><td id="PkLx" class="" style="width:58.78692626953125px">-119,7</td><td id="oviA" class="" style="width:60.78692626953125px">7,71</td><td id="ZCJj" class="" style="width:40px">1</td><td id="LD|^" class="" style="width:120.78692626953125px">0,005486076</td><td id="Ql=g" class="" style="width:123.77555847167969px">0,006034684</td><td id="mJQD" class="" style="width:126.77272033691406px">0,02</td><td id=";UKV" class="" style="width:130.76419067382812px">0,022</td></tr><tr id="91b61cdc-4ce8-4a53-8fa0-3c9050c2306e"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">ZM2</th><td id="Hbc[" class="" style="width:76.78692626953125px">84</td><td id="_rEc" class="" style="width:61.78692626953125px">-113,8</td><td id="PkLx" class="" style="width:58.78692626953125px">-119,7</td><td id="oviA" class="" style="width:60.78692626953125px">11,71</td><td id="ZCJj" class="" style="width:40px">1</td><td id="LD|^" class="" style="width:120.78692626953125px">0,000622895</td><td id="Ql=g" class="" style="width:123.77555847167969px">0,001141974</td><td id="mJQD" class="" style="width:126.77272033691406px">0</td><td id=";UKV" class="" style="width:130.76419067382812px">0</td></tr><tr id="9e42339a-8d51-4bb6-b327-c0aac528ff9f"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">ZM3</th><td id="Hbc[" class="" style="width:76.78692626953125px">95</td><td id="_rEc" class="" style="width:61.78692626953125px">-117,4</td><td id="PkLx" class="" style="width:58.78692626953125px">-119,7</td><td id="oviA" class="" style="width:60.78692626953125px">4,57</td><td id="ZCJj" class="" style="width:40px">1</td><td id="LD|^" class="" style="width:120.78692626953125px">0,032479569</td><td id="Ql=g" class="" style="width:123.77555847167969px">0,032479569</td><td id="mJQD" class="" style="width:126.77272033691406px">0,05</td><td id=";UKV" class="" style="width:130.76419067382812px">0,05</td></tr><tr id="9ccfc89a-1bd5-4adb-b2d5-a94e6c66fe9c"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">Additive:ZM1+ZM2</th><td id="Hbc[" class="" style="width:76.78692626953125px">124</td><td id="_rEc" class="" style="width:61.78692626953125px">-111,1</td><td id="PkLx" class="" style="width:58.78692626953125px">-119,7</td><td id="oviA" class="" style="width:60.78692626953125px">17,19</td><td id="ZCJj" class="" style="width:40px">2</td><td id="LD|^" class="" style="width:120.78692626953125px">0,000184714</td><td id="Ql=g" class="" style="width:123.77555847167969px">0,000507964</td><td id="mJQD" class="" style="width:126.77272033691406px">0,02</td><td id=";UKV" class="" style="width:130.76419067382812px">0,022</td></tr><tr id="83cbea55-6036-4b34-8ade-cdd8105ac18b"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">Epistasis:ZM1*ZM2</th><td id="Hbc[" class="" style="width:76.78692626953125px">124</td><td id="_rEc" class="" style="width:61.78692626953125px">-112,2</td><td id="PkLx" class="" style="width:58.78692626953125px">-119,7</td><td id="oviA" class="" style="width:60.78692626953125px">15,01</td><td id="ZCJj" class="" style="width:40px">3</td><td id="LD|^" class="" style="width:120.78692626953125px">0,001810158</td><td id="Ql=g" class="" style="width:123.77555847167969px">0,002212416</td><td id="mJQD" class="" style="width:126.77272033691406px">0,02</td><td id=";UKV" class="" style="width:130.76419067382812px">0,022</td></tr><tr id="fae1587e-4aa8-4b47-879f-d3d386cd0b29"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">Additive:ZM1+ZM3</th><td id="Hbc[" class="" style="width:76.78692626953125px">129</td><td id="_rEc" class="" style="width:61.78692626953125px">-113</td><td id="PkLx" class="" style="width:58.78692626953125px">-119,7</td><td id="oviA" class="" style="width:60.78692626953125px">13,28</td><td id="ZCJj" class="" style="width:40px">2</td><td id="LD|^" class="" style="width:120.78692626953125px">0,001309813</td><td id="Ql=g" class="" style="width:123.77555847167969px">0,001800993</td><td id="mJQD" class="" style="width:126.77272033691406px">0,01</td><td id=";UKV" class="" style="width:130.76419067382812px">0,018333333</td></tr><tr id="6c59b47c-aa59-41bc-b95d-f9768852a787"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">Epistasis:ZM1*ZM3</th><td id="Hbc[" class="" style="width:76.78692626953125px">129</td><td id="_rEc" class="" style="width:61.78692626953125px">-110</td><td id="PkLx" class="" style="width:58.78692626953125px">-119,7</td><td id="oviA" class="" style="width:60.78692626953125px">19,28</td><td id="ZCJj" class="" style="width:40px">3</td><td id="LD|^" class="" style="width:120.78692626953125px">0,000239454</td><td id="Ql=g" class="" style="width:123.77555847167969px">0,000526799</td><td id="mJQD" class="" style="width:126.77272033691406px">0,01</td><td id=";UKV" class="" style="width:130.76419067382812px">0,018333333</td></tr><tr id="8b4701f0-3281-4024-ae57-e211eb45a657"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">Additive:ZM2+ZM3</th><td id="Hbc[" class="" style="width:76.78692626953125px">149</td><td id="_rEc" class="" style="width:61.78692626953125px">-112,6</td><td id="PkLx" class="" style="width:58.78692626953125px">-119,7</td><td id="oviA" class="" style="width:60.78692626953125px">14,09</td><td id="ZCJj" class="" style="width:40px">2</td><td id="LD|^" class="" style="width:120.78692626953125px">0,000871996</td><td id="Ql=g" class="" style="width:123.77555847167969px">0,00137028</td><td id="mJQD" class="" style="width:126.77272033691406px">0</td><td id=";UKV" class="" style="width:130.76419067382812px">0</td></tr><tr id="7964a12f-3786-4bd8-bba1-985480bbbde1"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">Epistasis:ZM2*ZM3</th><td id="Hbc[" class="" style="width:76.78692626953125px">149</td><td id="_rEc" class="" style="width:61.78692626953125px">-105,8</td><td id="PkLx" class="" style="width:58.78692626953125px">-119,7</td><td id="oviA" class="" style="width:60.78692626953125px">27,68</td><td id="ZCJj" class="" style="width:40px">3</td><td id="LD|^" class="" style="width:120.78692626953125px">4,23E-06</td><td id="Ql=g" class="" style="width:123.77555847167969px">2,33E-05</td><td id="mJQD" class="" style="width:126.77272033691406px">0</td><td id=";UKV" class="" style="width:130.76419067382812px">0</td></tr><tr id="79842966-42f6-403e-af4a-1aacdaa7da64"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">Additive:ZM1+ZM2+ZM3</th><td id="Hbc[" class="" style="width:76.78692626953125px">173</td><td id="_rEc" class="" style="width:61.78692626953125px">-109,4</td><td id="PkLx" class="" style="width:58.78692626953125px">-119,7</td><td id="oviA" class="" style="width:60.78692626953125px">20,62</td><td id="ZCJj" class="" style="width:40px">3</td><td id="LD|^" class="" style="width:120.78692626953125px">0,000126353</td><td id="Ql=g" class="" style="width:123.77555847167969px">0,000463296</td><td id="mJQD" class="" style="width:126.77272033691406px">0,02</td><td id=";UKV" class="" style="width:130.76419067382812px">0,022</td></tr><tr id="c7858ad6-ed3a-485f-8124-ffe810faf5c5"><th id="wYsn" class="simple-table-header-color simple-table-header" style="width:183.76988220214844px">Epistasis:ZM1*ZM2*ZM3</th><td id="Hbc[" class="" style="width:76.78692626953125px">173</td><td id="_rEc" class="" style="width:61.78692626953125px">-100</td><td id="PkLx" class="" style="width:58.78692626953125px">-119,7</td><td id="oviA" class="" style="width:60.78692626953125px">39,41</td><td id="ZCJj" class="" style="width:40px">7</td><td id="LD|^" class="" style="width:120.78692626953125px">1,63E-06</td><td id="Ql=g" class="" style="width:123.77555847167969px">1,79E-05</td><td id="mJQD" class="" style="width:126.77272033691406px">0</td><td id=";UKV" class="" style="width:130.76419067382812px">0</td></tr></tbody></table><p id="2a5dec75-0ded-4862-b3a7-3a4c623021c5" class=""><strong>Where</strong> :</p><ul id="aad17818-9758-4494-b503-bff9a3354896" class="bulleted-list"><li style="list-style-type:circle"><strong>models</strong> : the association tested</li></ul><ul id="61ae46ea-2911-4f95-8bac-951c146d77fc" class="bulleted-list"><li style="list-style-type:circle"><strong>nb_info_transmi</strong>:</li></ul><ul id="efe93281-8187-4483-94e2-45bfc6142332" class="bulleted-list"><li style="list-style-type:circle"><strong>LL1</strong>: <em>log-likelihood computed under the alternative model</em></li></ul><ul id="c0f4e533-8463-4798-b26d-2969f0294bff" class="bulleted-list"><li style="list-style-type:circle"><strong>LL0</strong>: <em>−119.7 is the log-likelihood computed under the null model</em></li></ul><ul id="a1fb64f7-0af8-49d5-b743-76e4d8687119" class="bulleted-list"><li style="list-style-type:circle"><strong>mTDT_Statistic</strong>:  <em>2 × (LL1−LL0) is the log likelihood-ratio-based test statistic </em></li></ul><ul id="45249508-a540-4441-9221-baba8dc3850e" class="bulleted-list"><li style="list-style-type:circle"><strong>DF</strong>: <em>the number of degrees of freedom</em></li></ul><ul id="6671f68f-4f6b-4d3a-b0a9-5a76f05a6f04" class="bulleted-list"><li style="list-style-type:circle"><strong>mTDT_asympt_Pval</strong>: I</li></ul><ul id="205f218a-f755-49b4-81f5-a326e40e1542" class="bulleted-list"><li style="list-style-type:circle"><strong>mTDT_asympt_Pval_FDR</strong>: <em>asymptotic P-value FDR-ajusted (False Discovery Rate)</em></li></ul><ul id="9e1e85cb-b33d-4f62-b4e7-25e482139055" class="bulleted-list"><li style="list-style-type:circle"><strong>mTDT_empirical_Pval</strong>: <em>empirical P-value</em></li></ul><ul id="4fecfec9-e1a0-4e77-855e-85043455b887" class="bulleted-list"><li style="list-style-type:circle"><strong>mTDT_empirical_Pval_FDR: </strong><em>empirical P-value FDR-ajusted</em></li></ul></li></ul><p id="988e7350-fdc9-4bc9-aa8c-2651109b2587" class="">
+</p><p id="a5f8fd10-9409-4825-b63c-63dea60c7539" class=""><span style="border-bottom:0.05em solid"><em>Interpretation:</em></span></p></div></details><p id="c9c0c722-60b9-4772-bde5-9640dca96ae3" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

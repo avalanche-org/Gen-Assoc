@@ -1,9 +1,5 @@
 # README
 
-Created by: Yama
-Created time: January 23, 2024 10:21 AM
-Status: Not started
-
 # Multi-Transmission Disequilibrium Test
 
 ## **What is it?**

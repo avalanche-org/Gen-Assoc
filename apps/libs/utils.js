@@ -66,11 +66,7 @@ module
      */   
     rsv_file :  (  file  , default_delimiter = ","  , readable_mode  = false  )  => {
         return new Promise  ( (resolve , reject )  => { 
-<<<<<<< HEAD
-            let  reformat =  module.exports.restructure(auto_restructure , file)   
-=======
           //let  reformat =  module.exports.restructure(auto_restructure , file)   
->>>>>>> maindev
             readFile(file ,  "utf8" , (e , file_data ) => {
               if (readable_mode ) {
                   resolve(file_data) 

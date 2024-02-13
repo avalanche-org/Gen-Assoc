@@ -1,0 +1,13 @@
+{
+  "name": "fsl",
+  "version": "1.0.0",
+  "description": "file system list ",
+  "main": "./build/Release/fsl",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "node-gyp rebuild"
+  },
+  "author": "Umar",
+  "license": "ISC",
+  "gypfile": true
+}

@@ -20,8 +20,6 @@ import  {
     ,form_upload,job_title ,p_menu , interm , giyes,gino,download,job_init
     ,download_assets ,zoom_out , zoom_in , carousels , carousel_next , carousel_prev , gi_modal_no,gi_modal_yes
     ,cancel_analysis , proceed_analysis , validate_ms, processing ,  vthreshold_modal_splascreen ,  trigger_download  
-    //blur_area
-    //,i_lock ,i_unlock , status, microchip , bar_progress
     ,__lock_web_ui_file_operation 
     ,log , error,warn
     ,random , floor  
@@ -30,8 +28,6 @@ import  {
     ,cnav_cache  
 
 }  from  "./ops.js"  
-
-
 
 
 __setup_ipcRenderer(ipcRenderer)  
@@ -73,31 +69,7 @@ if  ( localStorage["task"] )
     job_title.value = ""  
 
 let jauge   =  0 
-/*
-const //progress_step =(state  ,  status_message , duration /*millisec) => {
-    if  ( state >100 ) return 
-    if  (jauge !=  0  && jauge >=  state)  return  
-    status.innerHTML =`<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>${status_message}`
-          bar_value     =  bar_progress.textContent   ,
-          bar_state     =  parseInt(bar_value.slice(0 , -1 ))
-    
-    jauge = bar_state 
-    const  move_progress_bar =  setInterval( animate   , duration)
-    function animate () {
-        if ( jauge==  state) {  
-            clearInterval(move_progress_bar) 
-            status.innerHTML =""
 
-        }
-        bar_progress.style.width=`${jauge}%` 
-        bar_progress.textContent=`${jauge}%`
-        jauge++ 
-    }  
-
-}
-
-//progress_step(10 ,"initialization..." , 200 )
-*/
 
 let display_= (void function ( ) { return  } ())   //  undefine 
 
@@ -217,31 +189,7 @@ const  term_write  =  ( incomming_data  , warning = false ,  wspeed = false , __
             clearTimeout(write_simulation) 
     })()
 }
-/*
-const toggle_blink =  (  element ,  ...colorshemes/* only 2 colors  are allowed )  => {
-    if  (colorshemes.length > 2  || colorshemes <=1  ) 
-        AssertionError("requires two colornames")  
 
-    if ( element.style.color== colorshemes[0] ) 
-        element.style.color =  colorshemes[1]
-    else  
-        element.style.color = colorshemes[0] 
-}
-const use_cpus_resources = signal_trap  => {  
-    let  blink =  null 
-    if  (signal_trap)   {
-         blink = setInterval( () => {  
-            toggle_blink(microchip ,  "black"  , "limegreen")
-        } ,100) //display_)
-    }else  
-        clearInterval(blink)  
-}
-*/
-const stop_blink_on_faillure   = ( target ,   state  ) => {
-    if ( !target )  
-        log("") 
-        //use_cpus_resources(state) 
-}
 
 let  logfile  =  null
 
@@ -253,29 +201,6 @@ ipcRenderer.on("initialization" ,  (evt , data)  =>{
 
     if (!os_detail_info) os_detail_info = data 
     if (!available_cpus_core)  available_cpus_core =  os_detail_info?.cpus
-    /*
-    notify("mTdt ", { body : ` mTdt  version ${version}`})
-    if   ( data.init_proc == 1 &&  localStorage["iproc"] != 1||  os_detail_info)
-    {   
-        for ( let si  in  os_detail_info )
-        {
-            if ( si !== "range") 
-            { 
-                term.value += `${si} : ${os_detail_info[si]}\n`  
-                global_info+= `${si} : ${os_detail_info[si]}\n`  
-            } 
-        } 
-         localStorage["iproc"]= data.init_pro 
-    } 
-    if  ( localStorage['iproc'] == 1  )  {
-        global_info = "" 
-        for ( let si  in  os_detail_info )
-        {
-            if ( si !== "range") 
-                global_info+= `${si} : ${os_detail_info[si]}\n`  
-        } 
-
-    }*/
     if ( available_cpus_core )
     {
         logfile  = logpath_location
@@ -340,7 +265,6 @@ const  optsfeed  =  gdata   => {
 let 
 [paths_collections ,   files_collections]   = [  localStorage["task"]  ||  []  , [] ] 
 
-// on file  chooser  dialog  =>  +5 %  
 
 ipcRenderer.emit("load::fstatic" , null )   
 ipcRenderer.on("Browse::single"   , (evt ,  global_object ) =>   { 
@@ -356,7 +280,6 @@ ipcRenderer.on("Browse::single"   , (evt ,  global_object ) =>   {
     optsfeed(files) 
 
    
-    ////progress_step(15 , `loading  files ` ,  rand(400)) 
 }) 
 ipcRenderer.on("Browse::multiple" , (evt , mbrowse_data )  =>{
     const request_files =  Object.keys(mbrowse_data)  
@@ -364,14 +287,9 @@ ipcRenderer.on("Browse::multiple" , (evt , mbrowse_data )  =>{
     
     for ( let  htm_elmt  of  [ ped  , map , phen ]  )  htm_elmt.innerHTML= ""    
     optsfeed(request_files)
-    //progress_step(15 , "loading files ..." , rand(400)) 
 })
-//ipcRenderer.on("trunc::baseroot" ,  virtual_namespace  =>   {  
     
-  //  path_collections =  virtual_namespace  
     
-//}) 
-//! sync select action  between  ped and maps
 const sync_select_action =  (s_elmt1 , s_elmt2) => {
     s_elmt1.addEventListener("change" , evt =>{ 
         const  file_name      = get_prefix_filename(evt.target.value)  
@@ -400,28 +318,6 @@ sync.addEventListener("change" , evt =>  {
 })  
 //!--end sync  
 
-/*
-mm.addEventListener("click" , evt => { 
-    evt.preventDefault()  
-    if (evt.target.checked) { 
-        markerset.disabled = false 
-        markerset.style.backgroundColor="whitesmoke"
-        markerset.style.color="grey"
-        markerset.focus()
-        //nbsim.disabled     = false 
-    }
-})
-sm.addEventListener("change" , evt => {
-    if(evt.target.checked) { 
-        markerset.disabled = true
-        markerset.style.backgroundColor="grey"
-        markerset.style.color="whitesmoke"
-        //nbsim.disabled     = true 
-    } 
-})
-
-*/
-
 /**
  * bind Ctrl^C  key to   window  for easy aborting  execution 
  */
@@ -429,17 +325,11 @@ sm.addEventListener("change" , evt => {
 /* 
  * navigation control  using arrow 
  */ 
-
 window_keyShortcut(shortcup_maping["lr_arrows"] , [ carousel_prev , carousel_next]  ,   _ => log(""))  
  
 window_keyShortcut(shortcup_maping["jump_step"]  ,  "" ,   index  =>  {  
-
     //carousel_navigation(index) 
 })  
-
-
-
-
 
 let ped_  = null , 
     map_  = null ,
@@ -457,11 +347,6 @@ run_summary.addEventListener("click" , evt => {
     processing.classList.toggle("active") 
     let  annoucement  = "▮ Generating Summary Statistics ... please wait\n" 
     let  warning_alert = false  
-    //plugonlog() 
-    //setInterval(plugonlog , term_display_speed)    
-    //status.innerHTML =`<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i> processing ...`
-    //status.style.color = "blue"   
-    //bar_progress.style.backgroundColor = "limegreen"   
     run_analysis.disabled = true 
     run_summary.disabled  = false   
     gobject ={ 
@@ -504,6 +389,7 @@ run_summary.addEventListener("click" , evt => {
 const markersetting  = [  sm  , mm ]  
 let   [_sm  , _mm ]  = [ false , false ] 
 
+let  msruntitle ;  
 
 markersetting.forEach (  ( marker_runType , code_index  ) =>  {
     //! the code index  take  index array as code  like  -->  sm : 0  and mm  :1  
@@ -511,7 +397,7 @@ markersetting.forEach (  ( marker_runType , code_index  ) =>  {
         evt.preventDefault()
 
         markerset.disabled =  code_index^1   
-        const msruntitle  =`/!\\ Validity Treshold  on Selected files ${gobject.selected_files}\n` 
+        msruntitle  =`/!\\ Validity Treshold  on Selected files ${gobject.selected_files}\n` 
         if  ( markerset.disabled)  
         {
             [_sm  , _mm ]  =[true ,  false] 
@@ -519,7 +405,6 @@ markersetting.forEach (  ( marker_runType , code_index  ) =>  {
             term_write(msruntitle , true ) 
             const  data =   [ +_mm ,  gobject ]  
             ipcRenderer.send_("validitythreshold" ,   data)
-            
             //carousel_next.click()  
             return  
         }
@@ -552,7 +437,7 @@ process_quit_vt_modal.addEventListener("click" , evt => {
 }) 
 
 
-//! MARKER SET VALIDATION  
+//!NOTE :MARKER SET VALIDATION  
 
 validate_ms.addEventListener("click" , evt =>  { 
     evt.preventDefault() 
@@ -588,13 +473,17 @@ let  enable_switch_between_theorical_or_emperical   = false
 ipcRenderer.on("load::phenotype" ,  incomming_data  =>  {
     processing.classList.toggle("active")  
     phenotype.innerHTML = ""  
-    nbcores.disabled =  false 
+  nbcores.disabled =  false
+  log("phenotypes loaded !") 
+
     incomming_data =  incomming_data
     term_write (`total phenotype ${incomming_data}` )
     for  ( let phen_index  of range(incomming_data )) { 
-        const phenotype_opts = _.createElement("option")  
-        phenotype_opts.text      =  phen_index  
-        phenotype_opts.value     =  phen_index
+      const phenotype_opts = _.createElement("option") 
+      log("pheno index " , phen_index) 
+         
+        phenotype_opts.text      =  phen_index +1  
+        phenotype_opts.value     =  phen_index +1
         phenotype.add(phenotype_opts)   
     } 
      
@@ -627,8 +516,6 @@ ipcRenderer.on("term::logout" , data  => {
         run_analysis.disabled = !summary_already_run  
         phenotype.disabled    = !summary_already_run  
         nbsim.disabled        = !summary_already_run
-        //i_lock.classList.remove("fa-lock") 
-        //i_lock.classList.add("fa-unlock") 
         mm.disabled            =  false 
         //blur_area.style.filter = "blur(0px)"
 })
@@ -640,31 +527,20 @@ ipcRenderer.on("log::fail", (evt , data)  => {
     mm.disable = true  
     run_summary.disabled=false  
     term.style.color ="red"
-    log ("--->>>>>>>>") 
-   // status.style.color ="red"
-    //status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> failure ` 
-    //bar_progress.style.backgroundColor = "firebrick"
-    stop_blink_on_faillure(analysis_on_going  ,  false ) 
 }) 
 ipcRenderer.on("logerr::notfound" , (evt , data)  => {
     data = fetch_right_data ( activate_extra_elements , evt  ,data ) 
     term.value = data 
     run_summary.disabled=false 
     term.style.color ="red"
-    //status.style.color ="red"
-    //status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> error log not found`
-    //bar_progress.style.backgroundColor = "firebrick"
-    stop_blink_on_faillure(analysis_on_going  , false) 
-}) 
+})
+
 ipcRenderer.on("term::logerr"     , (evt , data)  => {
+
     data = fetch_right_data ( activate_extra_elements , evt  ,data ) 
     term.value = data 
     run_summary.disabled=false 
     term.style.color   ="whitesmoke"
-   // status.style.color ="red"
-    //status.innerHTML =`<i class="fa fa-times" aria-hidden="true"></i> An error has occurred  ` 
-    //bar_progress.style.backgroundColor = "firebrick"
-    stop_blink_on_faillure(analysis_on_going  ,  false) 
 })  
 ipcRenderer.on("log::broken"      , (evt , data)  => {
     data = fetch_right_data ( activate_extra_elements , evt  ,data ) 
@@ -680,23 +556,17 @@ run_analysis.addEventListener("click" ,  evt => {
     {
         annoucement = `✘ Error on marker set  syntax eg 1,3,23\n` 
         term_write(annoucement , warning = true )  
-        //bar_progress.style.backgroundColor="orange"
         return 
     }
     if   ( mm.checked && markerset.value=="" )   
     {
         annoucement = "require marker set indexation to proceed ... \n"
         term_write (annoucement , warning= true ) 
-        //bar_progress.style.backgroundColor="orange"
         return 
     }
-    //status.innerHTML =`<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i> processing ...`
-    //status.style.color = "blue"   
-    //bar_progress.style.backgroundColor = "limegreen"  
     annoucement ="▮ Running Analysis"
     term_write(annoucement) 
     analysis_on_going = true 
-    //setInterval(plugonlog , term_display_speed)   
      
     log("number simulation" ,   nbsim.value)  
     let gobject  =  { 
@@ -742,7 +612,7 @@ run_analysis.addEventListener("click" ,  evt => {
 
 ipcRenderer.on("run::analysis::done"  , ec =>  { processing.classList.toggle("active")}) 
 
-//--------------- TERMINAL  -----------------------------
+//!TERMINAL
 let detach_term = _.querySelector("#detach_term")  ,  
     taa         = _.querySelector("#term_ascii_art") , 
     container_attached = _.querySelector("#term_area"),
@@ -751,14 +621,10 @@ let detach_term = _.querySelector("#detach_term")  ,
 
 detach_term.addEventListener("click" , evt =>  {
      //send signal to create full terminal emulator    
-    if  ( activate_extra_elements )  
-    {
-        is_detached = true  
+    if  ( activate_extra_elements )  is_detached = true  
     
-    }
     if  ( !is_detached )  
     {   
-        
         const  mirror_cpy  = term.value   
         ipcRenderer.send("detach::term", mirror_cpy)
         //container_attached.removeChild(term) 
@@ -768,12 +634,7 @@ detach_term.addEventListener("click" , evt =>  {
         detach_term.disable=true
         is_detached  = true 
         
-      
     }
-    /*
-        ipcRenderer.send("attach::term ", false) 
-        //container_attached.appendChild(term_footprint) 
-           } */  
 })
 
 ipcRenderer.on("attach::term" , (evt ,data ) => {
@@ -971,15 +832,6 @@ if  (activate_extra_elements)
             
             const linkref=`/download/${file}` 
             trigger_download(linkref)  
-            /*
-            const  request_download  = await  fetch(linkref)  
-            let  hidden_link  = _.createElement('a') 
-            hidden_link.href =  linkref.url   
-            hidden_link.download = file 
-            _.body.appendChild(hidden_link)
-            hidden_link.click() 
-             hidden_link.remove() 
-             */
              
         }
         if   (result == " ")  
@@ -1124,25 +976,7 @@ if  (activate_extra_elements)
         }) 
     })
 
-    /*
-    trunbtn.addEventListener("click"  , evt => { 
-        if  (trunbtn.classList.contains("toggle") && enable_switch_between_theorical_or_emperical )
-        {
-            trunbtn.classList.remove("toggle")  
-            nbcores.disabled = false 
-            nbsim.disabled   = false  
-            ipcRenderer.send_("enable::trun" ,  false )  
-        }else{  
-            trunbtn.classList.add("toggle")  
-            nbcores.disabled = true  
-            nbsim.disabled   = true  
-            ipcRenderer.send_("enable::trun" ,  true )  
-        } 
-        
-        carousel_next.click()  
-    })
-
- */
+ 
     //! zoomin and zoom out  
     const  zooms  =  [ zoom_out ,  zoom_in ] 
     const LIMTE_FSIZE  = [ 6, 24]  
@@ -1172,15 +1006,6 @@ if  (activate_extra_elements)
 
         const  item  = assets.split("/").at(-1)
         trigger_download(`/download/${item}`) 
-        /*
-        const  retrive_native_url  =  await fetch(`/download/${item}`)  
-        let  hidden_link  = _.createElement('a') 
-        hidden_link.href =  retrive_native_url.url   
-        hidden_link.download = item  
-        _.body.appendChild(hidden_link)
-        hidden_link.click() 
-        hidden_link.remove() 
-        */
     }) 
 
      //! dowload sample 

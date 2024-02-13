@@ -1,5 +1,5 @@
 # Dockerfile  for GEN ASSOC 
-# copyright  (c) 2024 , Umar <jUmarB@protonmail.com>  
+# copyright  (c) 2024, Umar <jUmarB@protonmail.com>  
 # -----------------------------------------------------------------
 # GEN ASSOC 
 #  ---------
@@ -15,9 +15,15 @@
 # all lines with <ARG> in front can be modified during the build 
 #-------------------------------------------------------------------
 
+ARG  DEBUGMOD=FALSE 
+
 FROM  jukoo/m-tdt:headessentials 
 
 MAINTAINER  Umar  jUmarB@protonmail.com <github/Jukoo>  
+
+RUN  if [  -z $DEBUGMOD  ] ;then \
+apt install  rsync  sshfs vim --assume-yes ;\
+fi
 
 WORKDIR   / 
 
@@ -26,6 +32,9 @@ ADD  . /mTDT
 WORKDIR /mTDT/apps
 
 RUN npm install && npm install -g  pm2 
+RUN if [ -z $DEBUGMOD ] ;then \
+npm install -g nodemon ;\
+fi
 
 RUN npm audit  fix --force   
 
@@ -36,4 +45,4 @@ ENV PORT=4000
 
 EXPOSE $PORT 
 
-CMD ["pm2-runtime" , "mtdt_server.js"] \
+CMD ["npm" , "run" , "watch"] 

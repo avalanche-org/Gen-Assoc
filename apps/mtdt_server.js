@@ -4,15 +4,11 @@
  * description : Mtdt  Http  Server   with Socket io   
  */ 
 
+
 mtdtart = `
----
- ███╗   ███╗████████╗██████╗ ████████╗
- ████╗ ████║╚══██╔══╝██╔══██╗╚══██╔══╝
- ██╔████╔██║   ██║   ██║  ██║   ██║   
- ██║╚██╔╝██║   ██║   ██║  ██║   ██║   
- ██║ ╚═╝ ██║   ██║   ██████╔╝   ██║   
- ╚═╝     ╚═╝   ╚═╝   ╚═════╝    ╚═╝ 
-\t\t\t\t* version  beta 2.0 
+--- 
+🅼-🆃🅳🆃
+\t\t\t\t
 `
 
 __kernel_file__          : { core  = require("./kernel")  }  
@@ -128,7 +124,7 @@ const __wtcp__ =  {
         })
         ["get"]("/tuto" ,  ( rx , tx ) =>  { 
             tx.setHeader("Content-type" , "text/html")
-            tx.render("tuto.ejs" ,  {socket :false } ) 
+            tx.render("tuto2.html" ,  {socket :false } ) 
 
         }) 
       
@@ -266,7 +262,11 @@ const __wtcp__ =  {
                 }
                
 
+<<<<<<< HEAD
                let  reformat =  utils.restructure(auto_restructure ,   summary_arguments_flags.phenfile) 
+=======
+              let  reformat =  utils.restructure(auto_restructure ,   summary_arguments_flags.phenfile)
+>>>>>>> maindev
                 setTimeout( _ => { 
                 utils.rsv_file(summary_arguments_flags?.phenfile ,  '\t')
                 .then(res => {
@@ -281,7 +281,12 @@ const __wtcp__ =  {
                             sock.emit("next" , exit_code )  
 
                         })
+<<<<<<< HEAD
                 }) 
+=======
+                })
+                    .catch( error  =>  log(":::error " , error) )
+>>>>>>> maindev
                 } , 1000)
             })
              
@@ -329,7 +334,6 @@ const __wtcp__ =  {
 
             SELECT_PED:  
             sock.on("trigger::select_pedfile"  ,  response =>  { 
-                //Rscript select_ped.R --genoinference “yes” --pedfile sample.ped --mapfile sample.map 
                 delete gi_run_argument_flags.cores 
                 log(gi_run_argument_flags)  
                 gi_run_argument_flags["genoinference"]=response  
@@ -401,7 +405,8 @@ const __wtcp__ =  {
                         ,"markerset" :  markerset
                         ,"gi"        :  gi_state 
                         ,"jobtitle"  :  user_namespace
-                    }  
+                    }
+
                     if  ( theorical ) 
                     {
                         delete  analysis_argument_flags?.nbsim    

@@ -27,13 +27,17 @@
 #endif 
 
 #define __dptr_t  DIR*  
-#define CWD  "." 
 
 #define  MAX_DIRENT_CONTENT 0xff 
 
+static int err_ref = 0 ; 
 static __u_char dirent_content_list[MAX_DIRENT_CONTENT] = {0} ; 
+
 /** 
- *
+ * @fn fsl_show_dirent_content(const char * ) 
+ * @brief  list  directory content 
+ * @param  const char *  -  path 
+ * @return void * - [nullable mean fail] 
  */ 
 static void * 
 fsl_show_dirent_content(const char * dirname) 
@@ -42,14 +46,16 @@ fsl_show_dirent_content(const char * dirname)
   assert(dirname != _nullable) ; 
   __dptr_t dirent_status =  opendir(dirname)  ; 
 
-  if (!dirent_status) return _nullable  ;  
+  if (!dirent_status){
+    err_ref=errno ;  
+    return _nullable; 
+  }  
 
   struct  dirent *  dirent_explorer  = _nullable ; 
 
   char content_name[MAX_DIRENT_CONTENT]={0} ; 
   while ( (dirent_explorer = readdir(dirent_status)) != _nullable ) 
   { 
-  
     sprintf(content_name ,"%s\n" ,dirent_explorer->d_name) ; 
     strcat(dirent_content_list , content_name) ; 
     explicit_bzero(content_name ,  MAX_DIRENT_CONTENT) ; 
@@ -59,37 +65,49 @@ fsl_show_dirent_content(const char * dirname)
   return dirent_content_list ; 
 }
 
+/**
+ * @fn list_target_directory(napi_env , napi_callback_info) 
+ * @brief method expose to node 
+ * @param   napi_env 
+ * @param   napi_callback_info
+ * @return  napi_value
+ */ 
 static  napi_value  
 list_target_directory(napi_env env , napi_callback_info  info)
 {
   napi_status  rc  ; 
   napi_value   internal  ; 
 
-  short  argc= 1 ; 
-  napi_value argv ; 
+  size_t   argc= 1; 
+  napi_value args[1] ; 
   
-  rc = napi_get_cb_info(env, info  ,&argc , argv ,  _nullable ,_nullable) ;
-  
+  rc = napi_get_cb_info(env, info  ,&argc , args ,  _nullable ,_nullable) ;
   assert(rc  == napi_ok); 
+  
   if (argc == 0  ) {
     napi_throw_type_error(env  , _nullable , "requier 1 argument position") ;  
     return _nullable ; 
   }
 
-  char cbuff[MAX_DIRENT_CONTENT] ={0}; 
-  size_t size ; 
+  napi_valuetype  expected_type ; 
+  rc = napi_typeof(env , args[0], &expected_type) ; 
 
-  rc = napi_get_value_string_utf8(env , argv , cbuff, MAX_DIRENT_CONTENT, &size) ; 
+  char cbuff[MAX_DIRENT_CONTENT] ={0}; 
+  size_t size ;
+
+  rc = napi_get_value_string_utf8(env , args[0] , cbuff, MAX_DIRENT_CONTENT, &size) ; 
   
   if(rc != napi_ok ) {
-    printf("-argument :: %s :: size : %li\n" ,  cbuff , size);
-    napi_throw_type_error(env ,  _nullable , "napi_get_value_string_utf8: error") ; 
+    napi_throw_type_error(env ,  _nullable,"Fail to get string value") ; 
     return _nullable ;
   }
 
-  printf("-argument :: %s :: size : %li\n" ,  cbuff , size);
-
-  __u_char  *content = (__u_char *) fsl_show_dirent_content(CWD) ; 
+  __u_char  *content = (__u_char *) fsl_show_dirent_content(cbuff) ;
+  
+  if (!content  && err_ref !=0 ){
+    napi_throw_type_error(env, _nullable ,strerror(err_ref)) ; 
+    return _nullable ; 
+  }
 
   rc = napi_create_string_utf8(env , content  , strlen(content) ,  &internal) ; 
 
@@ -99,7 +117,11 @@ list_target_directory(napi_env env , napi_callback_info  info)
 } 
 
 /** 
- *
+ * @fn  fsl_init(napi_env , napi_value) 
+ * @brief  initialize and set some  properties for exposed functions 
+ * @param  napi_env 
+ * @param  napi_value 
+ * @return napi_value 
  */ 
 static  napi_value 
 fsl_init(napi_env env  , napi_value exports) 

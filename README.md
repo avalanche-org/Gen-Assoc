@@ -105,7 +105,7 @@ For this section Docker ([Docker](https://docs.docker.com/get-docker/)) is requi
 
 The Webservice Application docker image is available on docker registry
 
-[Docker](https://hub.docker.com/r/jukoo/m-tdt/tags)
+Here is the link to the [M-TDT Docker image](https://hub.docker.com/r/jukoo/m-tdt/tags)
 
 ---
 

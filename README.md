@@ -44,8 +44,6 @@ M-TDT tool Documentation.
 
 ****
 
-![*Family-based design*](README%20286373e95592463986dbd89fe495e725/Untitled.png)
-
 ![*Family-based design*](https://github.com/avalanche-org/Gen-Assoc/blob/maindev/images/familybasedesignTransparent.png)
 
 *Family-based design*
@@ -64,6 +62,8 @@ You can use the tool currently deployed on the Institut Pasteur servers: (link)
 If you want to install the GUI version locally you have two ways to do so:
 
 **1. Node Package Manager (npm)**
+
+![*git cloning*](https://github.com/avalanche-org/Gen-Assoc/blob/maindev/images/npm.png)
 
 ![Screenshot 2023-11-27 at 10.31.15.png](README%20286373e95592463986dbd89fe495e725/Screenshot_2023-11-27_at_10.31.15.png)
 

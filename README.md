@@ -45,7 +45,7 @@ If you want to install the GUI version locally you have two ways to do so:
 
 **1. Node Package Manager (npm)**
 
-![Screenshot 2023-11-27 at 10.31.15.png](README%20286373e95592463986dbd89fe495e725/Screenshot_2023-11-27_at_10.31.15.png)
+![](README%20286373e95592463986dbd89fe495e725/Screenshot_2023-11-27_at_10.31.15.png)
 
 You need to have git and NodeJs installed: (and R)
 

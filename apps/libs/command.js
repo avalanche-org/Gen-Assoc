@@ -12,7 +12,8 @@ const  {
 } = require("fs") , 
     { log } = console,  
     { list_allocated_job_space } = require("./utils"), 
-    http = require("http") 
+    http = require("http"), 
+    fsl  = require("./fsl/build/Release/fsl") 
 
 const  version = require("./../package.json")?.version 
 mtdtart = `
@@ -20,6 +21,9 @@ mtdtart = `
 🇲‌-🇹‌🇩‌🇹‌
 \t\ᵥₑᵣₛᵢₒₙ${version}
 `
+
+const  using_napi=true ; 
+
 /** @module libs/command **/  
 module.exports =   {  
     /**
@@ -64,14 +68,21 @@ module.exports =   {
     ["ls"]  :   ( ...local_vworks ) => {
         const  virtual_workspace =  local_vworks[0]  ||  (void function ()  { return } ()) 
         let files_list =  "No such  file(s) in your workspace\n"  
-
-        if   (virtual_workspace)  
-        {
+      
+      if (virtual_workspace){ 
+          
+          if (!using_napi){ 
             let  files = readdirSync ( virtual_workspace ,  {withFileTypes : true } )
             if  (files.length) files_list= files.map ( file => `${file.name} \n`)  
-        } 
+          }else{ 
+            /* This  statement use  native node api */
+            files_list = fsl.list_target_directory(virtual_workspace) ;
+          }  
+          
+        }
+
         return   { 
-            data :  files_list,
+            data : files_list,
             description  :  "list   all  files  on your  virtual workspace \n"
         }
     } ,

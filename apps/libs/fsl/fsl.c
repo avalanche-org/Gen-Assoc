@@ -113,6 +113,7 @@ list_target_directory(napi_env env , napi_callback_info  info)
 
   if (rc != napi_ok)return _nullable ; 
 
+  explicit_bzero(content ,  MAX_DIRENT_CONTENT) ; 
   return internal ; 
 } 
 

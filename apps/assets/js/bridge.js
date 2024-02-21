@@ -937,16 +937,18 @@ if  (activate_extra_elements)
     let analysis_btns =[erunbtn ,  trunbtn] 
 
     analysis_btns.map((Abtns ,  index_code) =>  {
-        Abtns.addEventListener("click" , evt => {  
+      Abtns.addEventListener("click" , evt => { 
+        
             if  ( index_code   > 0 )   //!  Theorical    
             {
-                ipcRenderer.send_ ("enable:trun", true ) 
-                nbcores.value  = 1 
-                nbsim.value    = 0 
+                ipcRenderer.send_("theorical", true) 
+                //!NOTE : nbsim and nbcores flag usage #62 (requested By M.Top) 
+                //      ! no needded any more 
+                //nbcores.value  = 1 
+                //nbsim.value    = 0 
                 carousel_next.click() 
                 return  
             }  
-            
 
             //!activate model for settings if  is emperical  
             if  (  !modal2.classList.contains("active") )
@@ -966,7 +968,7 @@ if  (activate_extra_elements)
         whichbtn.addEventListener("click"  , evt  => { 
             if  (  index_code == 1  )   
             {   
-                carousel_next.disabled=false 
+              carousel_next.disabled=false
                 carousel_next.click()   
             }  
             modal2.classList.toggle("active") 

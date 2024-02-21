@@ -17,3 +17,4 @@ vtmp/*
 l
 assets/js/dist/
 *.gz
+libs/fsl/build/

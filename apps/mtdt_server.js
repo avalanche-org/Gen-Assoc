@@ -374,20 +374,24 @@ const __wtcp__ =  {
             })
             
 
-            sock.on("enable::trun" ,  is_theorical_enable => {  theorical =   is_theorical_enable } )  
-          
-            RUN_ANALYSYS :   sock.on("run::analysis" ,  gobject => {
+          sock.on("theorical" ,  is_theorical_enable => {  
+            log("enbale  theorical option")
+            theorical =   is_theorical_enable 
+          } )  
+
+          RUN_ANALYSYS :   sock.on("run::analysis" ,  gobject => {
+                log ("runanalysis  object" ,  gobject)
                 const { paths  , selected_index  }  = gobject,
                      {  mm    , sm , ped , map , phen , phenotype_,  nbsim_ , nbcores_ , markerset }  = selected_index, 
                      [  pedfile , mapfile , phenfile  ] = [ `${paths}/${ped}` , `${paths}/${map}`,`${paths}/${phen}` ]  
 
-                console.table(selected_index)  
+                log("THEORICAL -> " ,  theorical) ; 
                 let user_namespace  =  paths.split(so).slice(-1)[0] 
                 
                 let  analysis_argument_flags = {}    
-                if (mm && markerset!= null && markerset != '')  
-                { 
-                    analysis_argument_flags  =  {  
+                if (mm && markerset!= null && markerset != '')  { 
+               log ("multi marker")
+                  analysis_argument_flags  ={  
                         "pedfile"    :  pedfile 
                         ,"mapfile"   :  mapfile
                         ,"phenfile"  :  phenfile 
@@ -397,17 +401,19 @@ const __wtcp__ =  {
                         ,"markerset" :  markerset
                         ,"gi"        :  gi_state 
                         ,"jobtitle"  :  user_namespace
-                    }
+                  
+                  }
 
-                    if  ( theorical ) 
-                    {
-                        delete  analysis_argument_flags?.nbsim    
-                        delete  analysis_argument_flags?.nbcores  
+                    if  ( theorical ){
+
+                        log("theorical---")
+                        delete  analysis_argument_flags.nbsim    
+                        delete  analysis_argument_flags.nbcores  
                     }
                 } 
                 
-                if  (sm)  
-                {
+                if  (sm){
+
                     analysis_argument_flags  =  {  
                         "pedfile"    :  pedfile 
                         ,"mapfile"   :  mapfile
@@ -418,14 +424,15 @@ const __wtcp__ =  {
                         ,"jobtitle"  :  user_namespace 
                     } 
                     if  (theorical) 
-                         delete  analysis_argument_flags?.nbcores_  
+                         delete  analysis_argument_flags.nbcores_  
 
-                }
-                log ("th" ,  theorical)  
+            }
+
+                log ("th" ,  theorical) 
+                console.table(analysis_argument_flags)  
+
                 utils.std_ofstream(paths ,   utils.scripts(run_analyser  , {  ...analysis_argument_flags }  )  ,  sock ,   exit_code  => {
                     
-                    console.log( "exr", analysis_argument_flags)  
-
                     if(exit_code ==0x00) 
                     {
                         log("exit" , exit_code ) 
@@ -436,6 +443,9 @@ const __wtcp__ =  {
                         utils.mtdt_failure(sock ,  exit_code)  ;  
                     }
                 })
+
+             //!NOTE : desable Theorical on finish 
+             theorical=false  
 
             })
             

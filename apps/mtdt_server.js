@@ -390,8 +390,17 @@ const __wtcp__ =  {
                 
                 let  analysis_argument_flags = {}    
                 if (mm && markerset!= null && markerset != '')  { 
-               log ("multi marker")
-                  analysis_argument_flags  ={  
+                   
+                  analysis_argument_flags  = theorical ? {  
+                        "pedfile"    :  pedfile 
+                        ,"mapfile"   :  mapfile
+                        ,"phenfile"  :  phenfile 
+                        ,"phen"      :  phenotype_
+                        ,"markerset" :  markerset
+                        ,"gi"        :  gi_state 
+                        ,"jobtitle"  :  user_namespace
+                   
+                  }:{   
                         "pedfile"    :  pedfile 
                         ,"mapfile"   :  mapfile
                         ,"phenfile"  :  phenfile 
@@ -401,30 +410,30 @@ const __wtcp__ =  {
                         ,"markerset" :  markerset
                         ,"gi"        :  gi_state 
                         ,"jobtitle"  :  user_namespace
-                  
-                  }
+                   
+                  }      
 
-                    if  ( theorical ){
-
-                        log("theorical---")
-                        delete  analysis_argument_flags.nbsim    
-                        delete  analysis_argument_flags.nbcores  
-                    }
                 } 
                 
                 if  (sm){
 
-                    analysis_argument_flags  =  {  
+                    analysis_argument_flags  = theorical ?  {  
                         "pedfile"    :  pedfile 
                         ,"mapfile"   :  mapfile
                         ,"phenfile"  :  phenfile 
                         ,"phen"      :  phenotype_
-                        ,"nbcores"   :  nbcores_
                         ,"gi"        :  gi_state 
                         ,"jobtitle"  :  user_namespace 
-                    } 
-                    if  (theorical) 
-                         delete  analysis_argument_flags.nbcores_  
+                    }:{
+                      "pedfile"    :  pedfile 
+                        ,"mapfile"   :  mapfile
+                        ,"phenfile"  :  phenfile 
+                        ,"phen"      :  phenotype_
+                        ,"nbcores"   :  nbcores_
+                        ,"nbsim"     :  nbsim_ 
+                        ,"gi"        :  gi_state 
+                        ,"jobtitle"  :  user_namespace 
+                    }
 
             }
 

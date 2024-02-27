@@ -24,8 +24,6 @@
 
 ****
 
-#[*Family-based design*](README%20286373e95592463986dbd89fe495e725/Untitled.png)
-
 ![*Family-based design*](https://github.com/avalanche-org/Gen-Assoc/blob/maindev/images/familybasedesignTransparent.png)
 
 *Family-based design*

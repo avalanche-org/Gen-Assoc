@@ -24,7 +24,7 @@
 
 ****
 
-![*Family-based design*](README%20286373e95592463986dbd89fe495e725/Untitled.png)
+#[*Family-based design*](README%20286373e95592463986dbd89fe495e725/Untitled.png)
 
 ![*Family-based design*](https://github.com/avalanche-org/Gen-Assoc/blob/maindev/images/familybasedesignTransparent.png)
 
@@ -117,11 +117,3 @@ $  docker run -d -p <localport>:<containerPort> jukoo/m-tdt:stablev1
 Open your browser and type [http://localhost:3000/](http://localhost:4000/)
 
 Here you are  🚀
-
-## Tutorials
-
-Once you have a version of the tool installed you can run the appropriate tutorial.
-
-**[M-TDT Web Application tutorial](https://www.notion.so/M-TDT-Web-Application-tutorial-1ec8734fa5474a6197f259c909e78f97?pvs=21)**
-
-Here is a link to the test dataset:

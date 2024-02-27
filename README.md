@@ -52,6 +52,8 @@ You need to have git and NodeJs installed: (and R)
 [https://nodejs.org/en/download](https://nodejs.org/en/download)
 
 Clone repository
+![](https://github.com/avalanche-org/Gen-Assoc/blob/maindev/images/npm.png)
+
 
 ```
 $  git clone https://github.com/avalanche-org/Gen_Assoc.git

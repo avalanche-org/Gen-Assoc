@@ -1,7 +1,5 @@
 # README
 
-
-
 # Multi-Transmission Disequilibrium Test
 
 ## **What is it?**
@@ -104,7 +102,7 @@ To launch the docker application
 $  docker run -d -p <localport>:<containerPort> jukoo/m-tdt:stablev1
 ```
 
-*The default port of the container is **4000***
+*The default port of the container is **4000***
 
 *example*:
 

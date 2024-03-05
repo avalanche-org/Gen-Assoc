@@ -55,14 +55,13 @@ If you want to install the GUI version locally you have two ways to do so:
 
 ![](README%20286373e95592463986dbd89fe495e725/Screenshot_2023-11-27_at_10.31.15.png)
 
-You need to have git and NodeJs installed: (and R)
+You need to install : 
 
-[R](https://www.r-project.org/)
-[https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [R](https://www.r-project.org/)  
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)   
+- [NodeJs](https://nodejs.org/en/download)  
 
-[https://nodejs.org/en/download](https://nodejs.org/en/download)
-
-Clone repository
+1 - Clone repository
 ![](https://github.com/avalanche-org/Gen-Assoc/blob/maindev/images/npm.png)
 
 
@@ -70,14 +69,14 @@ Clone repository
 $  git clone https://github.com/avalanche-org/Gen_Assoc.git
 ```
 
-Move to Gen_Assoc/apps folder and install the required dependencies
+2 - Move to Gen_Assoc/apps folder and install the required dependencies
 
 ```
 $ cd Gen_Assoc; cd apps
 $ npm install
 ```
 
-Run the application
+3 - Run the application
 
 ```
 $ npm run build

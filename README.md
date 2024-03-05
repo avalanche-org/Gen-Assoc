@@ -57,6 +57,7 @@ If you want to install the GUI version locally you have two ways to do so:
 
 You need to have git and NodeJs installed: (and R)
 
+[https://www.r-project.org/](R)
 [https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 [https://nodejs.org/en/download](https://nodejs.org/en/download)

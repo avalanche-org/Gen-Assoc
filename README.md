@@ -62,6 +62,7 @@ You need to install :
 - [NodeJs](https://nodejs.org/en/download)  
 
 1 - Clone repository
+
 ![](https://github.com/avalanche-org/Gen-Assoc/blob/maindev/images/npm.png)
 
 
@@ -69,12 +70,14 @@ You need to install :
 $  git clone https://github.com/avalanche-org/Gen_Assoc.git
 ```
 
+
 2 - Move to Gen_Assoc/apps folder and install the required dependencies
 
 ```
 $ cd Gen_Assoc; cd apps
 $ npm install
 ```
+
 
 3 - Run the application
 

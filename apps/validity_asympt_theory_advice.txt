@@ -1,0 +1,8 @@
+=============================  =========
+         Complexity             Advice  
+=============================  =========
+        Single-Marker          Empirical
+Additive Model with 2 markers  Empirical
+Additive Model with 3 markers  Empirical
+       Epistasis Model         Empirical
+=============================  =========

@@ -57,8 +57,13 @@ get_maf <- function(marker){
   
   # Remove missing genotypes for allele count
   missing = which(geno_population$`ped[, marker + 6]` == "0 0")
-  geno_population <- geno_population[-missing,]
-  #test : length(missing)+length(geno_population)
+  
+  if (isTRUE(length(missing) != 0)){  # FALSE if missing values exist
+    geno_population <- geno_population[-missing,]
+    #test : length(missing)+length(geno_population)
+  } else {
+    geno_population = geno_population[,]
+  }
   
   #genotype repartition 
   homozygous_1 = length(which(geno_population == "1 1"))
@@ -119,7 +124,7 @@ snp_list = maf_list = NULL
 #   markers=7:ncol(ped)-6
 #   cat(paste0("  Marker 1 to ", length(markers) ," \n"))
 
-if (opt$markerset == 0 ){ # single marker case, calculate maf of each market
+if (isTRUE(is.null(opt$markerset) | isTRUE(opt$markerset == 0))){ # single marker case, calculate maf of each marker
   #cat("-- Single-Marker Selected :")
   markers=7:ncol(ped)-6
   #cat(paste0("  Marker 1 to ", length(markers) ," \n"))
@@ -218,3 +223,4 @@ Advice = c(single_marker,add_2,add_3,epistasis)
 write(knitr::kable(cbind(Complexity,Advice), align = "c", "rst"), "validity_asympt_theory_advice.txt")
 
 system("cat validity_asympt_theory_advice.txt ")
+
